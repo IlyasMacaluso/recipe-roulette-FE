@@ -1,9 +1,11 @@
 import { useMutation } from "@tanstack/react-query"
 import { useAuth } from "./useAuth";
 import { useSnackbar } from "../../components/Snackbar/useSnackbar";
+import { useLogin } from "../Form/useLogin";
 
 export function useLogout() {
   const { logout } = useAuth();
+  const {data} = useLogin()
   const {handleOpenSnackbar} = useSnackbar();
 
   async function handleFetchLogout() {
@@ -13,6 +15,9 @@ export function useLogout() {
         headers: {
           "Content-Type": "application/json",
         },
+        body: JSON.stringify({
+          user: data
+        }),
       });
 
       if (!response.ok) {
@@ -42,7 +47,7 @@ export function useLogout() {
   });
 
   function handleLogout() {
-    mutation.mutate();
+    mutation.mutate({user: data});
   }
 
   return {

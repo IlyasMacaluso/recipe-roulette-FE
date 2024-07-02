@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { useAuth } from "../Auth/useAuth";
-import { useNavigate } from "react-router";
 import { useMutation } from "@tanstack/react-query";
 import { useSnackbar } from "../../components/Snackbar/useSnackbar";
 
@@ -9,7 +8,6 @@ export function useLogin() {
   const [showPassword, setShowPassword] = useState(false);
   const { login } = useAuth();
   const {handleOpenSnackbar} = useSnackbar()
-  const navigate = useNavigate();
 
   function createData() {
     return {

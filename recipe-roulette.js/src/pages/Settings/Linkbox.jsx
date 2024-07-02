@@ -13,11 +13,14 @@ import { Popup } from "../../components/Pop-up/Popup"
 import { Login } from "../../components/authentication/login/Login";
 import { ValidationBox } from "../../components/Validation Box/ValidationBox";
 import { useLogout } from "../../hooks/Auth/useLogout";
+import { Signup } from "../../components/authentication/signup/Signup";
+import { useLoginToSignup } from "../../hooks/loginToSignup/useLoginToSignup"
 
 export function LinkBox({ handleLogoutClick }) {
   const [showPopup, setShowPopup] = useState();
   const { isAuthenticated } = useAuth();
-  const {handleLogout} = useLogout()
+  const {handleLogout} = useLogout();
+  const { changeToSignup, setChangeToSignup } = useLoginToSignup()
 
   return (
     <>
@@ -63,11 +66,22 @@ export function LinkBox({ handleLogoutClick }) {
       {showPopup &&
         createPortal(
           <Popup handleClosePopup={() => setShowPopup(false)}>
-            {isAuthenticated ? <ValidationBox
+            {isAuthenticated && <ValidationBox
               message="Confirm logout?"
               setShowPopup={setShowPopup}
               handleValidationAction={handleLogout}
-            /> : <Login setShowPopup={setShowPopup} />}
+            />}            
+            {!changeToSignup ? (
+              <Login
+                setChangeToSignup={setChangeToSignup}
+                setShowPopup={setShowPopup}
+              />
+            ) : (
+              <Signup
+                setChangeToSignup={setChangeToSignup}
+                setShowPopup={setShowPopup}
+              />
+            )}
           </Popup>,
           document.getElementById("popup-root")
         )}
