@@ -1,4 +1,4 @@
-import { useLocation } from "react-router-dom"
+import { useLocation, useNavigate } from "react-router-dom"
 import { useLogin } from "../../../hooks/Form/useLogin"
 import { GoogleLoginBtn } from "../../SocialLoginButtons/GoogleLoginBtn"
 import { FacebookSocialBtn } from "../../SocialLoginButtons/FacebookLoginBtn"
@@ -13,7 +13,7 @@ import StartIcon from "@mui/icons-material/Start"
 import classes from "./Login.module.scss"
 
 export function Login({ setShowPopup = null, setChangeToSignup = null }) {
-    const { data, showPassword, handleInput, handleSubmit, handleShowPassword } = useLogin()
+    const { data, showPassword, mutation, handleInput, handleSubmit, handleShowPassword } = useLogin()
     const location = useLocation()
 
     return (
@@ -75,7 +75,7 @@ export function Login({ setShowPopup = null, setChangeToSignup = null }) {
                         style="primary"
                         type="submit"
                         label="Login"
-                        prevPath={location.pathname}
+                        /* prevPath={location.pathname} */
                         icon={<LoginIcon fontSize="small" />}
                         active={data.username && data.password}
                     />
