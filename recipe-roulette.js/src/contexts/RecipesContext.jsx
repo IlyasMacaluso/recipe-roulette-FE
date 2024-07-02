@@ -50,6 +50,7 @@ export const RecipesProvider = ({ children }) => {
     const [inputValue, setInputValue] = useState("") // Valore dell'input che filtra i risultati
     const [recipeAnimation, setRecipeAnimation] = useState(true) // Stato per animare le recipeCard quando vengono modificati i filtri
     const { isAuthenticated } = useAuth() // Stato di autenticazione
+    const [filtersLoaded, setFiltersLoaded] = useState(false) // Stato per tracciare il caricamento dei filtri
     const { filter } = useManageIngredients()
     const location = useLocation()
 
@@ -72,6 +73,12 @@ export const RecipesProvider = ({ children }) => {
         const retrieveRecipesFromLocalStorage = async () => {
             try {
                 const localRecipes = JSON.parse(localStorage.getItem("recipes"))
+                const sessionFilters = JSON.parse(sessionStorage.getItem("recipeFilter"))
+
+                if (sessionFilters) {
+                    setRecipeFilter(sessionFilters)
+                    setFiltersLoaded(true)
+                }
 
                 if (isAuthenticated) {
                     // Se si è autenticati, imposta le ricette dal localStorage
@@ -108,18 +115,20 @@ export const RecipesProvider = ({ children }) => {
 
     // Salvataggio dei filtri nel localStorage quando vengono modificati, + animazione recipeCard
     useEffect(() => {
-        try {
-            const jsonFilters = JSON.stringify(recipeFilter)
-            window.sessionStorage.setItem("recipeFilter", jsonFilters)
-            // useFetchPreferences(jsonFilters, userId) //si deve prendere userId da qualche parte (cache localStorage) e metterlo li
-        } catch (error) {
-            console.error(error)
+        if (filtersLoaded) {
+            try {
+                const jsonFilters = JSON.stringify(recipeFilter)
+                window.sessionStorage.setItem("recipeFilter", jsonFilters)
+                // useFetchPreferences(jsonFilters, userId) //si deve prendere userId da qualche parte (cache localStorage) e metterlo li
+            } catch (error) {
+                console.error(error)
+            }
         }
 
         // Animazione recipeCard
         recipeAnimation && setTimeout(() => setRecipeAnimation(false), 0) // Se è già in corso, resetta
         setTimeout(() => setRecipeAnimation(true), 300)
-    }, [recipeFilter])
+    }, [recipeFilter, filtersLoaded])
 
     // Aggiornamento ricette visualizzate quando vengono modificati i filtri o aggiunti preferiti
     useEffect(() => {
