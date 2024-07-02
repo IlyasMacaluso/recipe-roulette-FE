@@ -14,6 +14,7 @@ import { Popup } from "../Pop-up/Popup";
 import { useState } from "react";
 import { ValidationBox } from "../Validation Box/ValidationBox";
 import { useSnackbar } from "../Snackbar/useSnackbar";
+import { Login } from "../authentication/login/Login";
 
 
 export function SideMenu({ handleMenuToggle, menuState = false, path = "/" }) {
@@ -72,8 +73,8 @@ export function SideMenu({ handleMenuToggle, menuState = false, path = "/" }) {
               path={path}
               handleMenuToggle={handleMenuToggle}
               label="Login"
-              destination="/login"
               icon={<LoginOutlinedIcon fontSize="small" />}
+              action={() => setShowPopup(true)}
             />
           )}
         </section>
@@ -81,15 +82,14 @@ export function SideMenu({ handleMenuToggle, menuState = false, path = "/" }) {
       {showPopup &&
         createPortal(
           <Popup handleClosePopup={() => setShowPopup(false)}>
-            <ValidationBox
+            {isAuthenticated ? <ValidationBox
               message="Confirm logout?"
               setShowPopup={setShowPopup}
               handleValidationAction={() => {logout(), handleOpenSnackbar("You have successfully logged out.")}}
-            />
+            /> : <Login setShowPopup={setShowPopup} />}
           </Popup>,
           document.getElementById("popup-root")
         )}
-        
     </div>
   );
 }
