@@ -12,12 +12,12 @@ import { useAuth } from "../../hooks/Auth/useAuth";
 import { Popup } from "../../components/Pop-up/Popup"
 import { Login } from "../../components/authentication/login/Login";
 import { ValidationBox } from "../../components/Validation Box/ValidationBox";
-import { useSnackbar } from "../../components/Snackbar/useSnackbar";
+import { useLogout } from "../../hooks/Auth/useLogout";
 
 export function LinkBox({ handleLogoutClick }) {
   const [showPopup, setShowPopup] = useState();
-  const { isAuthenticated, logout } = useAuth();
-  const {handleOpenSnackbar} = useSnackbar()
+  const { isAuthenticated } = useAuth();
+  const {handleLogout} = useLogout()
 
   return (
     <>
@@ -66,7 +66,7 @@ export function LinkBox({ handleLogoutClick }) {
             {isAuthenticated ? <ValidationBox
               message="Confirm logout?"
               setShowPopup={setShowPopup}
-              handleValidationAction={() => {logout(), handleOpenSnackbar("You have successfully logged out.")}}
+              handleValidationAction={handleLogout}
             /> : <Login setShowPopup={setShowPopup} />}
           </Popup>,
           document.getElementById("popup-root")
