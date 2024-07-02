@@ -13,9 +13,9 @@ import StartIcon from "@mui/icons-material/Start"
 import classes from "./Login.module.scss"
 
 export function Login({ setShowPopup = null, setChangeToSignup = null }) {
-    const { data, showPassword, mutation, handleInput, handleSubmit, handleShowPassword } = useLogin()
+    const { data, showPassword, handleInput, handleSubmit, handleShowPassword } = useLogin()
     const location = useLocation()
-
+  
     return (
         <div className={`${classes.container}`}>
             <header className={classes.title}>

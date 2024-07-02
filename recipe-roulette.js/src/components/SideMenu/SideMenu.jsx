@@ -7,7 +7,7 @@ import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined";
 import LoginOutlinedIcon from "@mui/icons-material/LoginOutlined";
 import AutorenewIcon from "@mui/icons-material/Autorenew";
 import LogoutIcon from "@mui/icons-material/Logout";
-import CloseIcon from '@mui/icons-material/Close';
+import CloseIcon from "@mui/icons-material/Close";
 import classes from "./SideMenu.module.scss";
 import { createPortal } from "react-dom";
 import { Popup } from "../Pop-up/Popup";
@@ -15,12 +15,14 @@ import { useState } from "react";
 import { ValidationBox } from "../Validation Box/ValidationBox";
 import { useSnackbar } from "../Snackbar/useSnackbar";
 import { Login } from "../authentication/login/Login";
-
+import { useLoginToSignup } from "../../hooks/loginToSignup/useLoginToSignup"
+import { Signup } from "../authentication/signup/Signup";
 
 export function SideMenu({ handleMenuToggle, menuState = false, path = "/" }) {
   const { logout, isAuthenticated } = useAuth();
   const [showPopup, setShowPopup] = useState();
-  const {handleOpenSnackbar} = useSnackbar()
+  const { handleOpenSnackbar } = useSnackbar();
+  const { changeToSignup, setChangeToSignup } = useLoginToSignup()
 
   return (
     <div>
@@ -35,7 +37,11 @@ export function SideMenu({ handleMenuToggle, menuState = false, path = "/" }) {
       >
         <header>
           <h4>Browse</h4>
-          <IcoButton action={handleMenuToggle} icon={<CloseIcon/>} style="transparent" />
+          <IcoButton
+            action={handleMenuToggle}
+            icon={<CloseIcon />}
+            style="transparent"
+          />
         </header>
         <section className={classes.links}>
           <NavigationLink
@@ -43,7 +49,7 @@ export function SideMenu({ handleMenuToggle, menuState = false, path = "/" }) {
             handleMenuToggle={handleMenuToggle}
             label="Roulette"
             destination="/discovery"
-            icon={<AutorenewIcon fontSize="small" />} 
+            icon={<AutorenewIcon fontSize="small" />}
           />
           <NavigationLink
             path={path}
@@ -82,11 +88,27 @@ export function SideMenu({ handleMenuToggle, menuState = false, path = "/" }) {
       {showPopup &&
         createPortal(
           <Popup handleClosePopup={() => setShowPopup(false)}>
-            {isAuthenticated ? <ValidationBox
-              message="Confirm logout?"
-              setShowPopup={setShowPopup}
-              handleValidationAction={() => {logout(), handleOpenSnackbar("You have successfully logged out.")}}
-            /> : <Login setShowPopup={setShowPopup} />}
+            {isAuthenticated && (
+              <ValidationBox
+                message="Confirm logout?"
+                setShowPopup={setShowPopup}
+                handleValidationAction={() => {
+                  logout(),
+                    handleOpenSnackbar("You have successfully logged out.");
+                }}
+              />
+            )}
+            {!changeToSignup ? (
+              <Login
+                setChangeToSignup={setChangeToSignup}
+                setShowPopup={setShowPopup}
+              />
+            ) : (
+              <Signup
+                setChangeToSignup={setChangeToSignup}
+                setShowPopup={setShowPopup}
+              />
+            )}
           </Popup>,
           document.getElementById("popup-root")
         )}
