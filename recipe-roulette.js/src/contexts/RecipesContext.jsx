@@ -113,22 +113,11 @@ export const RecipesProvider = ({ children }) => {
         retrieveRecipesFromLocalStorage()
     }, [isAuthenticated])
 
-    // Salvataggio dei filtri nel localStorage quando vengono modificati, + animazione recipeCard
+    // Animazione recipeCard
     useEffect(() => {
-        if (filtersLoaded) {
-            try {
-                const jsonFilters = JSON.stringify(recipeFilter)
-                window.sessionStorage.setItem("recipeFilter", jsonFilters)
-                // useFetchPreferences(jsonFilters, userId) //si deve prendere userId da qualche parte (cache localStorage) e metterlo li
-            } catch (error) {
-                console.error(error)
-            }
-        }
-
-        // Animazione recipeCard
         recipeAnimation && setTimeout(() => setRecipeAnimation(false), 0) // Se è già in corso, resetta
         setTimeout(() => setRecipeAnimation(true), 300)
-    }, [recipeFilter, filtersLoaded])
+    }, [recipeFilter])
 
     // Aggiornamento ricette visualizzate quando vengono modificati i filtri o aggiunti preferiti
     useEffect(() => {
@@ -160,31 +149,15 @@ export const RecipesProvider = ({ children }) => {
     }, [recipeFilter, recipes.favorited])
 
     // Gestione di aggiunta/rimozione di ricette dai preferiti
-    const handleRecipesUpdate = (recipeState, setRecipeState, location) => {
-        const prevPath = localStorage.getItem("prevPath")
-
+    const handleRecipesUpdate = (recipeState, setRecipeState) => {
         const updatedResults = recipes.results.map((recipe) =>
             recipe.id === recipeState.id ? { ...recipe, isFavorited: !recipeState.isFavorited } : recipe
         )
-        const updatedResult = updatedResults.find((recipe) => recipe.id === recipeState.id)
 
-        if (location === "/recipes-results" || (location === "/recipe" && prevPath === "/recipes-results")) {
-            console.log("Updated Results:", updatedResults)
-            console.log("Updated Result:", updatedResult)
+        const updatedResultIndex = updatedResults.findIndex((recipe) => recipe.id === recipeState.id)
+        const updatedResult = updatedResultIndex !== -1 ? updatedResults[updatedResultIndex] : null
 
-            const updatedRecipes = {
-                ...recipes,
-                results: updatedResults,
-                searched: updatedResults,
-                filtered: updatedResults,
-                favorited: updatedResult.isFavorited
-                    ? [...recipes.favorited, updatedResult] // Aggiungi se è stato favorito
-                    : recipes.favorited.filter((rec) => rec.id !== recipeState.id), // Rimuovi se non è stato favorito
-            }
-
-            setRecipes(updatedRecipes)
-            setRecipeState((prev) => ({ ...prev, isFavorited: updatedResult.isFavorited }))
-
+        const updateLocalStorage = (updatedRecipes) => {
             if (isAuthenticated) {
                 try {
                     const jsonRecipes = JSON.stringify(updatedRecipes)
@@ -193,32 +166,31 @@ export const RecipesProvider = ({ children }) => {
                     console.error(error)
                 }
             }
-        } else if (location === "/favorited" || (location === "/recipe" && prevPath === "/favorited")) {
-            setTimeout(() => {
-                // Filtra le ricette preferite
-                const newFavorited = { ...recipeState, isFavorited: !recipeState.isFavorited }
-                console.log("Previous Favorited:", recipes.favorited)
-                console.log("New Favorited:", newFavorited)
-
-                const updatedRecipes = {
-                    ...recipes,
-                    results: updatedResult ? updatedResults : recipes.results,
-                    favorited: !newFavorited.isFavorited
-                        ? [...recipes.favorited.filter((rec) => rec.id !== recipeState.id)] // Aggiungi se isFavorited è true
-                        : [...recipes.favorited, updatedResult], // Rimuovi se isFavorited è false
-                }
-
-                // Aggiorna nel localStorage
-                const jsonRecipes = JSON.stringify(updatedRecipes)
-                localStorage.setItem("recipes", jsonRecipes)
-
-                setRecipes(updatedRecipes)
-
-                if (updatedResult) {
-                    setRecipeState((prev) => ({ ...prev, isFavorited: updatedResult.isFavorited }))
-                }
-            }, 100)
         }
+
+        let newFavorites
+        if (updatedResult) {
+            newFavorites = updatedResult.isFavorited
+                ? [...recipes.favorited, updatedResult]
+                : recipes.favorited.filter((rec) => rec.id !== recipeState.id)
+        } else {
+            // Se updatedResult è null, la ricetta aggiornata si trova solo in recipes.favorited
+            newFavorites = recipes.favorited.map((recipe) =>
+                recipe.id === recipeState.id ? { ...recipe, isFavorited: !recipeState.isFavorited } : recipe
+            )
+        }
+
+        const updatedRecipes = {
+            ...recipes,
+            results: updatedResults,
+            filtered: newFavorites,
+            searched: newFavorites,
+            favorited: newFavorites,
+        }
+
+        setRecipes(updatedRecipes)
+        setRecipeState((prev) => ({ ...prev, isFavorited: updatedResult ? updatedResult.isFavorited : !recipeState.isFavorited }))
+        updateLocalStorage(updatedRecipes)
     }
 
     // Gestione della ricetta aperta a schermo intero
@@ -246,27 +218,39 @@ export const RecipesProvider = ({ children }) => {
         }
     }
 
+    // Funzione per settare i filtri nel sessionStorage
+    const setSessionFilters = (updatedFilters) => {
+        try {
+            const jsonFilters = JSON.stringify(updatedFilters)
+            window.sessionStorage.setItem("recipeFilter", jsonFilters)
+            // useFetchPreferences(jsonFilters, userId) //si deve prendere userId da qualche parte (cache localStorage) e metterlo li
+        } catch (error) {
+            console.error(error)
+        }
+    }
+
     // Gestione delle proprietà booleane di recipeFilter
     const toggleRecipeFilter = (prop) => {
         const newState = !filter[prop]
-        setRecipeFilter((prevData) => ({ ...prevData, [prop]: newState }))
+        const newFilters = { ...recipeFilter, [prop]: newState }
+        setRecipeFilter(newFilters)
+        setSessionFilters(newFilters)
     }
 
     // Gestione delle proprietà non booleane di recipeFilter
     const handlePreferencesToggle = (filterType, value, handleSelected, selectedState) => {
         if (filterType === "caloricApport" || filterType === "preparationTime" || filterType === "difficulty") {
             if (!selectedState) {
-                setRecipeFilter((prevData) => ({
-                    ...prevData,
-                    [filterType]: value,
-                }))
+                const newFilters = { ...recipeFilter, [filterType]: value }
+                setRecipeFilter(newFilters)
+                setSessionFilters(newFilters)
             } else {
-                setRecipeFilter((prevData) => ({
-                    ...prevData,
-                    [filterType]: filterType === "difficulty" ? "all" : 9999,
-                }))
+                const newFilters = { ...recipeFilter, [filterType]: filterType === "difficulty" ? "all" : 9999 }
+                setRecipeFilter(newFilters)
+                setSessionFilters(newFilters)
             }
         }
+
         // Gestione della proprietà cuisineEthnicity di recipeFilter
         if (filterType === "cuisineEthnicity") {
             let updatedEthnicity = [...recipeFilter.cuisineEthnicity] // Copia l'array originale
@@ -292,17 +276,16 @@ export const RecipesProvider = ({ children }) => {
                     }
                 }
             }
-
-            setRecipeFilter((prevData) => ({
-                ...prevData,
-                cuisineEthnicity: updatedEthnicity,
-            }))
+            const newFilters = { ...recipeFilter, cuisineEthnicity: updatedEthnicity }
+            setRecipeFilter(newFilters)
+            setSessionFilters(newFilters)
         }
     }
 
     // Reset dei filtri recipeFilter
     const handleDeselectRecipeFilters = () => {
         setRecipeFilter(new RecipeFilter())
+        setSessionFilters(new RecipeFilter())
     }
 
     return (

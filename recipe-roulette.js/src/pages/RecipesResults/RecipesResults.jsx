@@ -22,13 +22,19 @@ export function RecipeResults() {
         <div className={`${classes.recipesResultsPage} ${animate && classes.animateFavorite} `}>
             {!state.loading ? (
                 <section className={classes.recipesWrapper}>
-                    {recipes.searched.map((recipe) => {
-                        return <RecipeCard handleClickLoginSnackBar={handleClickLoginSnackBar} key={recipe.id} recipe={recipe} />
+                    {recipes.results.map((recipe) => {
+                        return (
+                            <RecipeCard
+                                handleClickLoginSnackBar={handleClickLoginSnackBar}
+                                key={recipe.id + recipe.title}
+                                recipe={recipe}
+                            />
+                        )
                     })}
                 </section>
             ) : (
                 <div className={classes.placeholder}>
-                    <BlocksShuffleThree color="#00a55b" width={"40%"} height={"40%"}/>
+                    <BlocksShuffleThree color="#00a55b" width={"40%"} height={"40%"} />
                     <h2>
                         <span>Generating Your Recipes!</span> <br />
                         This could take a couple minutes...

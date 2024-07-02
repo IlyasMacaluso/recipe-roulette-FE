@@ -16,7 +16,7 @@ import LoginIcon from "@mui/icons-material/Login"
 import classes from "./Favorite.module.scss"
 
 export function Favorited() {
-    const { setRecipes, recipes, inputValue } = useRecipesContext()
+    const { recipes, inputValue } = useRecipesContext()
     const { isAuthenticated } = useAuth()
     const [showPopup, setShowPopup] = useState()
 
@@ -34,7 +34,7 @@ export function Favorited() {
                     {searchFavorites && searchFavorites.length > 0 ? (
                         <section className={classes.recipesWrapper}>
                             {searchFavorites.map((recipe) => {
-                                return <RecipeCard recipe={recipe} key={recipe.id} />
+                                return <RecipeCard recipe={recipe} key={recipe.id + recipe.title} />
                             })}
                         </section>
                     ) : (
