@@ -1,8 +1,8 @@
 import { createContext, useContext, useEffect, useState } from "react"
 import { useLocation } from "react-router-dom"
 import { useAuth } from "../hooks/Auth/useAuth"
-import axios from "axios"
 import { useManageIngredients } from "../pages/Discovery/IngredientsContext"
+import { useFetchPreferences } from "../hooks/fetchPreferences/useFetchPreferences"
 
 const RecipesContext = createContext()
 
@@ -51,10 +51,10 @@ export const RecipesProvider = ({ children }) => {
     const [recipeAnimation, setRecipeAnimation] = useState(true) // Stato per animare le recipeCard quando vengono modificati i filtri
     const { isAuthenticated } = useAuth() // Stato di autenticazione
     const { filter } = useManageIngredients()
-    const location = useLocation() // Hook per ottenere la posizione corrente
+    const location = useLocation()
 
+    // Reset dell'inputValue quando si cambia pagina
     useEffect(() => {
-        // Reset dell'inputValue quando si cambia pagina
         setInputValue("")
     }, [location.pathname])
 
@@ -67,47 +67,51 @@ export const RecipesProvider = ({ children }) => {
         })
     }, [inputValue])
 
-    // Recupero dal localStorage/backend quando si effettua il login o si cambia pagina
+    // Recupero le ricette dal localStorage quando isAuthenticated cambia
     useEffect(() => {
-        ;(async () => {
+        const retrieveRecipesFromLocalStorage = async () => {
             try {
-                const localRecipes = JSON.parse(window.localStorage.getItem("recipes"))
-                const sessionFilter = JSON.parse(window.localStorage.getItem("recipeFilter"))
+                const localRecipes = JSON.parse(localStorage.getItem("recipes"))
+
                 if (isAuthenticated) {
-                    // Imposta le ricette dal localStorage se si è autenticati
-                    localRecipes && setRecipes(localRecipes)
-                } else {
-                    // Se non si è autenticati, imposta il contenuto del localStorage e imposta isFavorited a false
+                    // Se si è autenticati, imposta le ricette dal localStorage
                     if (localRecipes) {
-                        let { results, filtered, targetedRecipe, favorited, searched } = localRecipes
-                        results = results.map((rec) => ({ ...rec, isFavorited: false }))
-                        filtered = filtered.map((rec) => ({ ...rec, isFavorited: false }))
-                        targetedRecipe = { ...targetedRecipe, isFavorited: false }
-                        favorited = favorited.map((rec) => ({ ...rec, isFavorited: false }))
-                        searched = searched.map((rec) => ({ ...rec, isFavorited: false }))
-    
-                        setRecipes((prev) => ({
-                            ...prev,
-                            results: results.length > 0 ? results : prev.results,
-                            filtered: filtered.length > 0 ? filtered : prev.filtered,
-                            targetedRecipe: targetedRecipe ? targetedRecipe : prev.targetedRecipe,
-                            favorited: favorited.length > 0 ? favorited : prev.favorited,
-                            searched: searched.length > 0 ? searched : prev.searched,
-                        }))
+                        setRecipes(localRecipes)
+                    }
+                } else {
+                    // Se non si è autenticati, imposta le ricette dal localStorage
+                    if (localRecipes) {
+                        const resetRecipes = (recipes) => {
+                            const resetRecipeList = (list) => list.map((rec) => ({ ...rec, isFavorited: false }))
+
+                            return {
+                                ...recipes,
+                                results: resetRecipeList(recipes.results),
+                                filtered: resetRecipeList(recipes.filtered),
+                                targetedRecipe: localRecipes.targetedRecipe && { ...recipes.targetedRecipe, isFavorited: false },
+                                favorited: [],
+                                searched: resetRecipeList(recipes.searched),
+                            }
                         }
-                    sessionFilter && setRecipeFilter(sessionFilter)
+
+                        setRecipes(resetRecipes(localRecipes))
+                    }
                 }
             } catch (error) {
-                console.error(error)
+                console.error("Errore durante il recupero dal localStorage:", error)
             }
-        })()
-    }, [location, isAuthenticated])
+        }
+
+        // Esegui il recupero solo quando isAuthenticated cambia
+        retrieveRecipesFromLocalStorage()
+    }, [isAuthenticated])
 
     // Salvataggio dei filtri nel localStorage quando vengono modificati, + animazione recipeCard
     useEffect(() => {
         try {
             const jsonFilters = JSON.stringify(recipeFilter)
             window.sessionStorage.setItem("recipeFilter", jsonFilters)
+            // useFetchPreferences(jsonFilters, userId) //si deve prendere userId da qualche parte (cache localStorage) e metterlo li
         } catch (error) {
             console.error(error)
         }
@@ -120,7 +124,7 @@ export const RecipesProvider = ({ children }) => {
     // Aggiornamento ricette visualizzate quando vengono modificati i filtri o aggiunti preferiti
     useEffect(() => {
         let filtering = recipes.favorited.filter(
-            (rec) => rec.caloricApport <= recipeFilter.caloricApport && rec.preparationTime <= recipeFilter.preparationTime
+            (rec) => rec && rec.caloricApport <= recipeFilter.caloricApport && rec.preparationTime <= recipeFilter.preparationTime
         )
 
         // Filtra in base alle preferenze selezionate
@@ -136,9 +140,7 @@ export const RecipesProvider = ({ children }) => {
                 })
             )
         }
-        console.log(recipeFilter.difficulty, filtering);
         if (recipeFilter.difficulty !== "all") {
-            console.log(filtering)
             filtering = filtering.filter((rec) => recipeFilter.difficulty.toLocaleLowerCase() === rec.difficulty.toLowerCase())
         }
         // Imposta il risultato del filtering alla variabile di stato dedicata
@@ -218,8 +220,18 @@ export const RecipesProvider = ({ children }) => {
                 targetedRecipe: recipe,
             }))
         try {
-            const jsonRecipes = JSON.stringify(recipes)
-            localStorage.setItem("recipes", jsonRecipes)
+            const localRecipes = JSON.parse(localStorage.getItem("recipes"))
+            if (localRecipes) {
+                const newLocalRecipes = {
+                    ...localRecipes,
+                    targetedRecipe: recipe,
+                }
+                const jsonRecipes = JSON.stringify(newLocalRecipes)
+                localStorage.setItem("recipes", jsonRecipes)
+            } else {
+                const jsonRecipes = JSON.stringify(recipes)
+                localStorage.setItem("recipes", jsonRecipes)
+            }
         } catch (error) {
             console.error(error)
         }
