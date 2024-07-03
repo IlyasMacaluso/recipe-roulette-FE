@@ -98,8 +98,8 @@ export function SideMenu({ handleMenuToggle, menuState = false, path = "/" }) {
                 }}
               />
             )}
-            {!changeToSignup ? (
-              <Login
+            {!isAuthenticated && (!changeToSignup ?
+              (<Login
                 setChangeToSignup={setChangeToSignup}
                 setShowPopup={setShowPopup}
               />
@@ -108,7 +108,7 @@ export function SideMenu({ handleMenuToggle, menuState = false, path = "/" }) {
                 setChangeToSignup={setChangeToSignup}
                 setShowPopup={setShowPopup}
               />
-            )}
+            ))}
           </Popup>,
           document.getElementById("popup-root")
         )}
