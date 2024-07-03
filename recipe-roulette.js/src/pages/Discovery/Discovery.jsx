@@ -6,7 +6,8 @@ import { useButtonState } from "../../hooks/ButtonState/useButtonState"
 import { useMemo, useState } from "react"
 import { useRecipesContext } from "../../contexts/RecipesContext"
 import { useLocationHook } from "../../hooks/useLocationHook"
-import { useRecipesFetch } from "../../hooks/recipesFetch/useRecipesFetch"
+import { useRecipesFetch } from "../../hooks/useRecipesFetch/useRecipesFetch"
+
 
 import ManageSearchOutlinedIcon from "@mui/icons-material/ManageSearchOutlined"
 import AddIcon from "@mui/icons-material/Add"

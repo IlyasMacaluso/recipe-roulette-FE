@@ -4,11 +4,11 @@ import { useAnimate } from "../../hooks/animatePages/useAnimate"
 
 import { useRecipesContext } from "../../contexts/RecipesContext"
 import { useSnackbar } from "../../components/Snackbar/useSnackbar"
-import { useRecipesFetch } from "../../hooks/recipesFetch/useRecipesFetch"
 import { useLocationHook } from "../../hooks/useLocationHook"
 
 import classes from "./RecipesResults.module.scss"
 import { BlocksShuffleThree } from "react-svg-spinners"
+import { useRecipesFetch } from "../../hooks/useRecipesFetch/useRecipesFetch"
 
 export function RecipeResults() {
     const { recipes } = useRecipesContext()

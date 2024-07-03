@@ -3,7 +3,7 @@ import { useManageIngredients } from "../../../pages/Discovery/IngredientsContex
 import { useSnackbar } from "../../Snackbar/useSnackbar"
 
 export function useIngredientSearch(isFixed, searchCriteria) {
-    const { ing, blackList, displayedIng, handleDeselectAll, handleIngUpdate, setRefresh, filteredIng } = useManageIngredients()
+    const { ing, blackList, displayedIng, handleDeselectAll, handleIngUpdate, filteredIng } = useManageIngredients()
     const { handleOpenSnackbar } = useSnackbar()
 
     const [condition, setCondition] = useState(true)
@@ -102,7 +102,6 @@ export function useIngredientSearch(isFixed, searchCriteria) {
             setInputValues((prev) => ({ ...prev, current: "" }))
             setSearchState({ inputActive: false })
             handleIngUpdate(prop, firstAvailableIngredient, setCardState)
-            setRefresh((b) => !b)
         } else {
             setInputValues((prev) => ({ ...prev, current: "" }))
             setSearchState({ inputActive: false })

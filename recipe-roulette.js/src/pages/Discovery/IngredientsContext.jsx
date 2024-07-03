@@ -1,5 +1,6 @@
 import { useState, useEffect, createContext, useContext } from "react"
 import ingredientsArray from "../../assets/ingredientsArray"
+import { useRecipesContext } from "../../contexts/RecipesContext"
 
 const IngredientsContext = createContext()
 
@@ -7,16 +8,13 @@ export const IngredientsProvider = ({ children }) => {
     const [ing, setIng] = useState(ingredientsArray)
     const [displayedIng, setDisplayedIng] = useState([])
     const [blackList, setBlackList] = useState([])
-    const [refresh, setRefresh] = useState(false)
-    const [filter, setFilter] = useState({ isVegetarian: false, isGlutenFree: false, isVegan: false })
     const [filteredIng, setFilteredIng] = useState(ing)
+    const { recipeFilter } = useRecipesContext()
 
     useEffect(() => {
         try {
-            const sessionFilters = JSON.parse(window.sessionStorage.getItem("filters"))
             const sessionDisplayedIng = JSON.parse(window.sessionStorage.getItem("displayedIng"))
             const sessionIng = JSON.parse(window.sessionStorage.getItem("ing"))
-            sessionFilters && setFilter(sessionFilters)
             if (sessionIng && sessionIng.length > 0) {
                 setIng(sessionIng)
                 setBlackList(sessionIng.filter((ing) => ing.isBlackListed))
@@ -45,34 +43,24 @@ export const IngredientsProvider = ({ children }) => {
     }, [displayedIng])
 
     useEffect(() => {
-        setTimeout(() => {
-            const jsonIngs = JSON.stringify(ing)
-            const jsonFilters = JSON.stringify(filter)
-            window.sessionStorage.setItem("ing", jsonIngs)
-            window.sessionStorage.setItem("filters", jsonFilters)
-        }, 0)
 
         if (filteredIng) {
             setFilteredIng(() => {
                 let newData = ing
-                if (filter.isGlutenFree) {
+                if (recipeFilter.isGlutenFree) {
                     newData = newData.filter((item) => item.isGlutenFree)
                 }
-                if (filter.isVegetarian) {
+                if (recipeFilter.isVegetarian) {
                     newData = newData.filter((item) => item.isVegetarian)
                 }
-                if (filter.isVegan) {
+                if (recipeFilter.isVegan) {
                     newData = newData.filter((item) => item.isVegan)
                 }
                 return newData
             })
         }
-    }, [filter, displayedIng, ing])
+    }, [recipeFilter, displayedIng, ing])
 
-    const toggleFilter = (prop) => {
-        const newState = !filter[prop]
-        setFilter((prevData) => ({ ...prevData, [prop]: newState }))
-    }
 
     const handleIngUpdate = (prop, cardState, setCardState) => {
         const updatedIngs = ing.map((item) => (item.id === cardState.id ? { ...item, [prop]: !cardState[prop] } : item))
@@ -116,31 +104,6 @@ export const IngredientsProvider = ({ children }) => {
                 ...prevState,
                 ...updatedIng,
             }))
-        }
-    }
-
-    const handleDeselectAll = (prop, setCardState, setFilterState) => {
-        const selectedIng = displayedIng.filter((ing) => ing.isSelected)
-        if (prop === "isSelected" && selectedIng.length > 0) {
-            setDisplayedIng((prevData) => prevData.map((ing) => ({ ...ing, [prop]: false })))
-        } else if (prop === "isBlackListed") {
-            setBlackList([])
-            setFilter({ isGlutenFree: false, isVegan: false, isVegetarian: false })
-        }
-        setIng((prevData) => prevData.map((ing) => ({ ...ing, [prop]: false })))
-        if (setFilterState) {
-            setFilterState((prevData) => ({ ...prevData, [prop]: false }))
-        }
-        if (setCardState) {
-            setCardState((prevData) => ({ ...prevData, [prop]: false }))
-        }
-    }
-    const handleDeselectPreferences = (prop, setCardState, setFilterState) => {
-        if (prop === "isBlackListed") {
-            setFilter({ isGlutenFree: false, isVegan: false, isVegetarian: false })
-        }
-        if (setFilterState) {
-            setFilterState((prevData) => ({ ...prevData, [prop]: false }))
         }
     }
 
@@ -211,24 +174,37 @@ export const IngredientsProvider = ({ children }) => {
         }
     }
 
+    //deleseziona anche gli elementi blacklistati!!
+    const handleDeselectAll = (prop, setCardState, setFilterState) => {
+        const selectedIng = displayedIng.filter((ing) => ing.isSelected)
+        if (prop === "isSelected" && selectedIng.length > 0) {
+            setDisplayedIng((prevData) => prevData.map((ing) => ({ ...ing, [prop]: false })))
+        } else if (prop === "isBlackListed") {
+            setBlackList([])
+        }
+        setIng((prevData) => prevData.map((ing) => ({ ...ing, [prop]: false })))
+        if (setFilterState) {
+            setFilterState((prevData) => ({ ...prevData, [prop]: false }))
+        }
+        if (setCardState) {
+            setCardState((prevData) => ({ ...prevData, [prop]: false }))
+        }
+    }
+
     return (
         <IngredientsContext.Provider
             value={{
                 handleIngIncrement,
                 handleIngDecrement,
-                handleDeselectAll,
                 setDisplayedIng,
                 shuffleIng,
                 handleIngUpdate,
                 setBlackList,
                 generateIngredients,
-                setRefresh,
-                toggleFilter,
-                handleDeselectPreferences,
+                handleDeselectAll,
                 ing,
                 displayedIng,
                 blackList,
-                filter,
                 filteredIng,
             }}
         >

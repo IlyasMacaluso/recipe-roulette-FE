@@ -129,7 +129,7 @@ export function Header({ handleMenuToggle, handleSidebarToggle, handleRecipesSid
                 {location.pathname === "/favorited" && (
                     <section className={classes.globalActions}>
                         {/* <IngredientSearch isFixed={true} /> */}
-                        <BaseSearch data={recipes.filtered} inputValue={inputValue} setInputValue={setInputValue} />
+                        <BaseSearch data={recipes.searched} inputValue={inputValue} setInputValue={setInputValue} />
                         <IcoButton
                             action={handleRecipesSidebarToggle}
                             label="Filters"

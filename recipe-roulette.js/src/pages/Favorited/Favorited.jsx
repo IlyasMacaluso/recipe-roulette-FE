@@ -14,9 +14,10 @@ import LoopOutlinedIcon from "@mui/icons-material/LoopOutlined"
 import LoginIcon from "@mui/icons-material/Login"
 
 import classes from "./Favorite.module.scss"
+import { Button } from "../../components/Buttons/Button/Button"
 
 export function Favorited() {
-    const { recipes, inputValue } = useRecipesContext()
+    const { recipes, inputValue, handleDeselectRecipeFilters } = useRecipesContext()
     const { isAuthenticated } = useAuth()
     const [showPopup, setShowPopup] = useState()
 
@@ -41,11 +42,12 @@ export function Favorited() {
                         <div className={`${classes.placeholder} ${classes.placeholderSearch}`}>
                             <h2>
                                 There is <span>no recipe</span> <br />
-                                matching your search!
+                                matching those filters / search <br/>
                             </h2>
                             <div className={classes.placeholderImage}>
                                 <img src="../src/assets/images/undraw_cancel_re_pkdm 1.svg" alt="" />
                             </div>
+                            <Button label="Reset Filters" action={handleDeselectRecipeFilters}/>
                         </div>
                     )}
                 </>

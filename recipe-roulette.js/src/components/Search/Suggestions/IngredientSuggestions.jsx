@@ -1,21 +1,23 @@
-import { useManageIngredients } from "../../../pages/Discovery/IngredientsContext"
-import classes from "./IngredientSuggestions.module.scss"
 import { IngredientSuggestionActive } from "./IngredientSuggestionActive"
 import { IngredientSuggestionInactive } from "./IngredientSuggestionInactive"
+import { useRecipesContext } from "../../../contexts/RecipesContext"
+
+import classes from "./IngredientSuggestions.module.scss"
 
 export function IngredientSuggestions({ inputActive, searchCriteria, suggestions }) {
-    const { filter } = useManageIngredients()
+    const { recipeFilter } = useRecipesContext()
+
     const isIngredientActive = (ingredient) => {
         if (ingredient.isSelected || ingredient.isBlackListed) {
             return false
         }
-        if (filter.isVegetarian && !ingredient.isVegetarian) {
+        if (recipeFilter.isVegetarian && !ingredient.isVegetarian) {
             return false
         }
-        if (filter.isGlutenFree && !ingredient.isGlutenFree) {
+        if (recipeFilter.isGlutenFree && !ingredient.isGlutenFree) {
             return false
         }
-        if (filter.isVegan && !ingredient.isVegan) {
+        if (recipeFilter.isVegan && !ingredient.isVegan) {
             return false
         }
         return true

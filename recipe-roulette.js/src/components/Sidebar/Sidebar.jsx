@@ -13,7 +13,6 @@ import { useRecipesContext } from "../../contexts/RecipesContext"
 
 export function Sidebar({ sidebarState = false, handleSidebarToggle }) {
     const { handleDeselectAll, blackList } = useManageIngredients()
-    const { toggleFilter, filter } = useManageIngredients()
     const { toggleRecipeFilter, recipeFilter, handleDeselectRecipeFilters } = useRecipesContext()
 
     return (
@@ -70,25 +69,22 @@ export function Sidebar({ sidebarState = false, handleSidebarToggle }) {
                             {/* filtra gli ingredienti, inoltre imposta recipeFilter in modo che il fitro 
                             venga passato anche alla richiesta di fetch */}
                             <Switch
-                                state={filter.isGlutenFree}
+                                state={recipeFilter.isGlutenFree}
                                 action={() => {
-                                    toggleFilter("isGlutenFree")
                                     toggleRecipeFilter("isGlutenFree")
                                 }}
                                 label={"Gluten free"}
                             />
                             <Switch
-                                state={filter.isVegetarian}
+                                state={recipeFilter.isVegetarian}
                                 action={() => {
-                                    toggleFilter("isVegetarian")
                                     toggleRecipeFilter("isVegetarian")
                                 }}
                                 label={"Vegetarian"}
                             />
                             <Switch
-                                state={filter.isVegan}
+                                state={recipeFilter.isVegan}
                                 action={() => {
-                                    toggleFilter("isVegan")
                                     toggleRecipeFilter("isVegan")
                                 }}
                                 label={"Vegan"}

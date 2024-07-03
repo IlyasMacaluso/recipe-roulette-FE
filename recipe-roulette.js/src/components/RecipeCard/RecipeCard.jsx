@@ -20,12 +20,12 @@ function RecipeCard({ isExpanded = false, recipe, handleClickLoginSnackBar = nul
 
     const image =
         "https://news.mit.edu/sites/default/files/styles/news_article__image_gallery/public/images/202312/MIT_Food-Diabetes-01_0.jpg?itok=Mp8FVJkC"
+
     return (
         <div
             onClick={() => {
                 if (!expandedCard) {
                     localStorage.setItem("prevPath", location.pathname)
-                    localStorage.setItem("targetedRecipe", JSON.stringify(recipe))
                     handleOpenRecipePage(recipe)
                 }
             }}
