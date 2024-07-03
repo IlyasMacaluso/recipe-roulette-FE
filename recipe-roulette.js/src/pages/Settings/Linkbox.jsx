@@ -71,8 +71,8 @@ export function LinkBox({ handleLogoutClick }) {
               setShowPopup={setShowPopup}
               handleValidationAction={handleLogout}
             />}            
-            {!changeToSignup ? (
-              <Login
+            {!isAuthenticated && (!changeToSignup ?
+              (<Login
                 setChangeToSignup={setChangeToSignup}
                 setShowPopup={setShowPopup}
               />
@@ -81,7 +81,7 @@ export function LinkBox({ handleLogoutClick }) {
                 setChangeToSignup={setChangeToSignup}
                 setShowPopup={setShowPopup}
               />
-            )}
+            ))}
           </Popup>,
           document.getElementById("popup-root")
         )}
