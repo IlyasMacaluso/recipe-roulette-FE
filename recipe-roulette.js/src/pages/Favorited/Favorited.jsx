@@ -17,7 +17,7 @@ import classes from "./Favorite.module.scss"
 import { Button } from "../../components/Buttons/Button/Button"
 
 export function Favorited() {
-    const { recipes, inputValue, handleDeselectRecipeFilters } = useRecipesContext()
+    const { recipes, inputValue, handleDeselectRecipeFilters, setInputValue } = useRecipesContext()
     const { isAuthenticated } = useAuth()
     const [showPopup, setShowPopup] = useState()
 
@@ -42,12 +42,19 @@ export function Favorited() {
                         <div className={`${classes.placeholder} ${classes.placeholderSearch}`}>
                             <h2>
                                 There is <span>no recipe</span> <br />
-                                matching those filters / search <br/>
+                                matching those filters / search <br />
                             </h2>
                             <div className={classes.placeholderImage}>
                                 <img src="../src/assets/images/undraw_cancel_re_pkdm 1.svg" alt="" />
                             </div>
-                            <Button label="Reset Filters" action={handleDeselectRecipeFilters}/>
+                            <Button
+                                style="primary"
+                                label="Reset Filters"
+                                action={() => {
+                                    setInputValue("")
+                                    handleDeselectRecipeFilters()
+                                }}
+                            />
                         </div>
                     )}
                 </>
