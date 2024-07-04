@@ -47,8 +47,13 @@ export const RecipesProvider = ({ children }) => {
         } else {
             // Se non si è autenticati, setta isFavorited:false (nella variabile di stato)
             if (localRecipes) {
+                
                 const resetRecipes = (recipes) => {
-                    const resetRecipeList = (list) => list.map((rec) => ({ ...rec, isFavorited: false }))
+                    const resetRecipeList = (list) => {
+                        if (list && list.length > 0) {
+                            list.map((rec) => ({ ...rec, isFavorited: false }))
+                        }
+                    }
 
                     return {
                         ...recipes,

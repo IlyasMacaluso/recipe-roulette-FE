@@ -1,6 +1,7 @@
 import { useState, useEffect, createContext, useContext } from "react"
 import ingredientsArray from "../../assets/ingredientsArray"
 import { useRecipesContext } from "../../contexts/RecipesContext"
+import { useLocalStorage } from "../../hooks/useLocalStorage/useLocalStorage"
 
 const IngredientsContext = createContext()
 
@@ -9,25 +10,40 @@ export const IngredientsProvider = ({ children }) => {
     const [displayedIng, setDisplayedIng] = useState([])
     const [blackList, setBlackList] = useState([])
     const [filteredIng, setFilteredIng] = useState(ing)
+    const [ingredients, setIngredients] = useState({
+        all: [],
+        filtered: [],
+        displayed: [],
+        blacklisted: [],
+    })
     const { recipeFilter } = useRecipesContext()
+    const { getValue, setValue } = useLocalStorage()
 
     useEffect(() => {
-        try {
-            const sessionDisplayedIng = JSON.parse(window.sessionStorage.getItem("displayedIng"))
-            const sessionIng = JSON.parse(window.sessionStorage.getItem("ing"))
-            if (sessionIng && sessionIng.length > 0) {
-                setIng(sessionIng)
-                setBlackList(sessionIng.filter((ing) => ing.isBlackListed))
-            } else {
-                setIng(ingredientsArray)
-            }
-            if (sessionDisplayedIng && sessionDisplayedIng.length > 0) {
-                setDisplayedIng(sessionDisplayedIng)
-            } else {
-                generateIngredients()
-            }
-        } catch (error) {
-            console.error(error)
+        const localIngredients = getValue("ingredients") //restituisce il valore già parsato se presente
+
+        // const sessionDisplayedIng = JSON.parse(window.sessionStorage.getItem("displayedIng"))
+        // const sessionIng = JSON.parse(window.sessionStorage.getItem("ing"))
+
+        if (sessionIng && sessionIng.length > 0) {
+            setIngredients(localIngredients)
+            
+            // setIng(sessionIng)
+            // setBlackList(sessionIng.filter((ing) => ing.isBlackListed))
+        } else { //se il localStorage è vuoto allora inizilizziamo ad array vuoti per poi fare eventualmente un fetch dei dati
+            // setIng(ingredientsArray) 
+            setIngredients({
+                all: [],
+                filtered: [],
+                displayed: [],
+                blacklisted: [],
+            })
+        }
+
+        if (localIngredients.displayed.length > 0) {
+            setDisplayedIng(sessionDisplayedIng)
+        } else {
+            generateIngredients()
         }
     }, [])
 
@@ -43,7 +59,6 @@ export const IngredientsProvider = ({ children }) => {
     }, [displayedIng])
 
     useEffect(() => {
-
         if (filteredIng) {
             setFilteredIng(() => {
                 let newData = ing
@@ -60,7 +75,6 @@ export const IngredientsProvider = ({ children }) => {
             })
         }
     }, [recipeFilter, displayedIng, ing])
-
 
     const handleIngUpdate = (prop, cardState, setCardState) => {
         const updatedIngs = ing.map((item) => (item.id === cardState.id ? { ...item, [prop]: !cardState[prop] } : item))
