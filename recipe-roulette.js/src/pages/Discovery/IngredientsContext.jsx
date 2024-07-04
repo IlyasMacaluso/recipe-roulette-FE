@@ -28,7 +28,6 @@ export const IngredientsProvider = ({ children }) => {
         setIngredients
     )
 
-
     useEffect(() => {
         const localIngredients = getValue("ingredients") //restituisce il valore già parsato se presente
         if (localIngredients && localIngredients.all.length > 0) {
@@ -48,19 +47,21 @@ export const IngredientsProvider = ({ children }) => {
         }
     }, [])
 
-    useEffect(() => {
-        let filtering = ingredients.all.filter((ing) => !ing.isBlackListed)
+        useEffect(() => {
+            let filtering = ingredients.all.filter((ing) => !ing.isBlackListed)
 
-        recipeFilter.isGlutenFree && (filtering = filtering.filter((item) => item.isGlutenFree))
-        recipeFilter.isVegetarian && (filtering = filtering.filter((item) => item.isVegetarian))
-        recipeFilter.isVegan && (filtering = filtering.filter((item) => item.isVegan))
+            const filterIngredients = ( prop) => filtering = filtering.filter((item) => item[prop]) // funzione per filtrare in base alla prop
 
-        setIngredients((prev) => {
-            const updatedIngredients = { ...prev, filtered: filtering }
-            setValue("ingredients", updatedIngredients)
-            return updatedIngredients
-        })
-    }, [recipeFilter, ingredients.all])
+            recipeFilter.isGlutenFree && filterIngredients("isGlutenFree")
+            recipeFilter.isVegetarian && filterIngredients("isVegetarian")
+            recipeFilter.isVegan && filterIngredients("isVegan")
+
+            setIngredients((prev) => {
+                const updatedIngredients = { ...prev, filtered: filtering }
+                setValue("ingredients", updatedIngredients)
+                return updatedIngredients
+            })
+        }, [recipeFilter, ingredients.all])
 
     return (
         <IngredientsContext.Provider

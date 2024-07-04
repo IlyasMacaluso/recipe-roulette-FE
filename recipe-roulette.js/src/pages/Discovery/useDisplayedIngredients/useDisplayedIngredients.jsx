@@ -51,8 +51,10 @@ export const useDisplayedIngredients = (ingredients, setIngredients) => {
     const handleIngIncrement = () => {
         const availableIngs = ingredients.filtered.filter((ingredient) => !ingredient.isSelected && !ingredient.isBlackListed)
         if (ingredients.displayed.length < 8) {
+            //verifica che a schermo ci siano meno di 8 ingredienti (il massimo)
             ingredients.displayed.forEach((ingB) => {
                 availableIngs.forEach((ingA, index) => {
+                    // confronto il singolo ing a schermo con quelli disponibili, (impediamo che un ingr venga sostituito da se stesso)
                     if (ingA.id === ingB.id) {
                         availableIngs.splice(index, 1)
                     }

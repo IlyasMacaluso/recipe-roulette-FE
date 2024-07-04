@@ -21,17 +21,17 @@ export const RecipesProvider = ({ children }) => {
     const [recipeAnimation, setRecipeAnimation] = useState(true) // Stato per animare le recipeCard quando vengono modificati i filtri
     const location = useLocation()
 
-    //hook per aggiornare il localStorage
+    // hook per aggiornare il localStorage
     const { getValue } = useLocalStorage()
 
-    //funzioni di gestione filtri ricetta
+    // funzioni di gestione filtri ricetta
     const { recipeFilter, setRecipeFilter, toggleRecipeFilter, handlePreferencesToggle, handleDeselectRecipeFilters } =
         useRecipeFilter()
 
-    //hook per aggiornare le ricette
+    // hook per aggiornare le ricette
     const { handleRecipesUpdate, handleTargetedRecipe } = useRecipesUpdate(recipes, setRecipes)
 
-    //hook per l'autenticazione
+    // hook per l'autenticazione
     const { isAuthenticated } = useAuth() // Stato di autenticazione
 
     // Recupero le ricette dal localStorage quando isAuthenticated cambia
@@ -94,10 +94,12 @@ export const RecipesProvider = ({ children }) => {
             (rec) => rec && rec.caloricApport <= recipeFilter.caloricApport && rec.preparationTime <= recipeFilter.preparationTime
         )
 
+        const filterRecipes = (prop) => (filtering = filtering.filter((item) => item[prop])) //funzione per filtrare in base alla prop
+
         // Filtra in base alle preferenze selezionate
-        recipeFilter.isGlutenFree && (filtering = filtering.filter((item) => item.isGlutenFree))
-        recipeFilter.isVegetarian && (filtering = filtering.filter((item) => item.isVegetarian))
-        recipeFilter.isVegan && (filtering = filtering.filter((item) => item.isVegan))
+        recipeFilter.isGlutenFree && filterRecipes("isGlutenFree")
+        recipeFilter.isVegetarian && filterRecipes("isVegetarian")
+        recipeFilter.isVegan && filterRecipes("isVegan")
 
         // Se non è selezionato "all", filtra in base ai tipi di cucina selezionati
         if (!recipeFilter.cuisineEthnicity.find((cuisine) => cuisine === "all")) {
