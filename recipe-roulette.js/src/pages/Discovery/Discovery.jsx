@@ -3,10 +3,11 @@ import { useManageIngredients } from "../Discovery/IngredientsContext"
 import { useAnimate } from "../../hooks/animatePages/useAnimate"
 import { Button } from "../../components/Buttons/Button/Button"
 import { useButtonState } from "../../hooks/ButtonState/useButtonState"
-import { useMemo, useState } from "react"
+import { useMemo } from "react"
 import { useRecipesContext } from "../../contexts/RecipesContext"
 import { useLocationHook } from "../../hooks/useLocationHook"
 import { useRecipesFetch } from "../../hooks/useRecipesFetch/useRecipesFetch"
+import { useShakeAnimation } from "../../hooks/useShakeAnimation/useShakeAnimation"
 
 import ManageSearchOutlinedIcon from "@mui/icons-material/ManageSearchOutlined"
 import AddIcon from "@mui/icons-material/Add"
@@ -14,15 +15,13 @@ import LoopOutlinedIcon from "@mui/icons-material/LoopOutlined"
 import classes from "./Discovery.module.scss"
 
 export function Discovery() {
-    const [animateButton, seAnimateButton] = useState(false)
-
     const { ingredients, shuffleIng, handleIngIncrement } = useManageIngredients()
     const { recipeFilter } = useRecipesContext()
     const { isActive, setIsActive } = useButtonState(true)
     const { location } = useLocationHook()
     const { animate } = useAnimate(location)
     const { handleRecipesFetch } = useRecipesFetch()
-
+    const { handleAnimation, animationState } = useShakeAnimation()
 
     const setButtonState = useMemo(() => {
         ingredients.displayed.length === 8 ? setIsActive(false) : setIsActive(true)
@@ -49,9 +48,9 @@ export function Discovery() {
                     iconWheight={600}
                 />
                 <button
-                    className={`${classes.cycleButton} ${animateButton && classes.cycleButtonAnimation}`}
+                    className={`${classes.cycleButton} ${animationState.isAnimating && classes.cycleButtonAnimation}`}
                     onClick={() => {
-                        seAnimateButton((b) => !b)
+                        handleAnimation()
                         shuffleIng()
                     }}
                 >
