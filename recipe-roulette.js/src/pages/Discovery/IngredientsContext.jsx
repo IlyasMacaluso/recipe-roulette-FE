@@ -34,7 +34,6 @@ export const IngredientsProvider = ({ children }) => {
             const { displayed } = localIngredients
             setIngredients(localIngredients)
             displayed.length === 0 && generateIngredients()
-            console.log(localIngredients)
         } else {
             //se il localStorage è vuoto allora inizilizziamo ad array vuoti per poi fare eventualmente un fetch dei dati (per ora utilizzo l'array locale)
             setIngredients({
