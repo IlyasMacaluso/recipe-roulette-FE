@@ -47,7 +47,6 @@ export const RecipesProvider = ({ children }) => {
         } else {
             // Se non si è autenticati, setta isFavorited:false (nella variabile di stato)
             if (localRecipes) {
-                
                 const resetRecipes = (recipes) => {
                     const resetRecipeList = (list) => {
                         if (list && list.length > 0) {
@@ -83,12 +82,10 @@ export const RecipesProvider = ({ children }) => {
 
     // Filtro i risultati quando viene modificato l'input
     useEffect(() => {
-        setRecipes((prev) => {
-            return {
-                ...prev,
-                searched: prev.filtered.filter((rec) => rec.title.toLowerCase().includes(inputValue.toLowerCase())),
-            }
-        })
+        if (recipes.filtered && recipes.filtered.length > 0) {
+            const newFiltered = recipes.favoritedfilter((rec) => rec.title.toLowerCase().includes(inputValue.toLowerCase()))
+            setRecipes(newFiltered)
+        }
     }, [inputValue])
 
     // Aggiorno le ricette visualizzate quando vengono modificati i filtri o aggiunti preferiti

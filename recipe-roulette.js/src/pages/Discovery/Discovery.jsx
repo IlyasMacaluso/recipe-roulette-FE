@@ -8,36 +8,32 @@ import { useRecipesContext } from "../../contexts/RecipesContext"
 import { useLocationHook } from "../../hooks/useLocationHook"
 import { useRecipesFetch } from "../../hooks/useRecipesFetch/useRecipesFetch"
 
-
 import ManageSearchOutlinedIcon from "@mui/icons-material/ManageSearchOutlined"
 import AddIcon from "@mui/icons-material/Add"
 import LoopOutlinedIcon from "@mui/icons-material/LoopOutlined"
 import classes from "./Discovery.module.scss"
 
 export function Discovery() {
-    const { displayedIng, shuffleIng, handleIngIncrement } = useManageIngredients()
-    const { recipeFilter } = useRecipesContext()
-    const { isActive, setIsActive } = useButtonState(true)
     const [animateButton, seAnimateButton] = useState(false)
 
+    const { ingredients, shuffleIng, handleIngIncrement } = useManageIngredients()
+    const { recipeFilter } = useRecipesContext()
+    const { isActive, setIsActive } = useButtonState(true)
     const { location } = useLocationHook()
     const { animate } = useAnimate(location)
     const { handleRecipesFetch } = useRecipesFetch()
 
+
     const setButtonState = useMemo(() => {
-        if (displayedIng.length === 8) {
-            setIsActive(false)
-        } else {
-            setIsActive(true)
-        }
-    }, [displayedIng.length])
+        ingredients.displayed.length === 8 ? setIsActive(false) : setIsActive(true)
+    }, [ingredients.displayed.length])
 
     return (
         <div className={`${classes.discoveryPage} ${animate && classes.animateDiscovery}`}>
             <div className={classes.contentWrapper}>
                 <div className={classes.ingredientsWrapper}>
-                    {displayedIng.length > 0 &&
-                        displayedIng.map((ing) => {
+                    {ingredients.displayed.length > 0 &&
+                        ingredients.displayed.map((ing) => {
                             return <IngredientCard key={ing.id} ing={ing} />
                         })}
                 </div>
@@ -68,7 +64,7 @@ export function Discovery() {
                     width={"fill"}
                     active={true}
                     action={() => {
-                        const ingNames = displayedIng.map((ing) => ing.name)
+                        const ingNames = ingredients.displayed.map((ing) => ing.name)
                         console.log(ingNames)
                         handleRecipesFetch(
                             ingNames,

@@ -12,7 +12,7 @@ import { FilterChipRecipes } from "../FilterChip/FilterChipRecipes"
 import { useRecipesContext } from "../../contexts/RecipesContext"
 
 export function Sidebar({ sidebarState = false, handleSidebarToggle }) {
-    const { handleDeselectAll, blackList } = useManageIngredients()
+    const { handleDeselectAll, ingredients } = useManageIngredients()
     const { toggleRecipeFilter, recipeFilter, handleDeselectRecipeFilters } = useRecipesContext()
 
     return (
@@ -42,9 +42,9 @@ export function Sidebar({ sidebarState = false, handleSidebarToggle }) {
                         <h4>Add ingredeints to black list</h4>
                         <div className={classes.blackListed}>
                             <IngredientSearch isFixed={true} sidebarSearch={true} searchCriteria="isBlackListed" />
-                            {blackList.length > 0 && (
+                            {ingredients.blacklisted.length > 0 && (
                                 <div className={classes.filterChipWrapper}>
-                                    {blackList
+                                    {ingredients.blacklisted
                                         .filter((ing) => ing.isBlackListed)
                                         .sort((a, b) => (a.name === b.name ? 0 : a.name > b.name ? 1 : -1))
                                         .map((ing) => {

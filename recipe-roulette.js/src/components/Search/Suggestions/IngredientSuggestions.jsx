@@ -26,7 +26,6 @@ export function IngredientSuggestions({ inputActive, searchCriteria, suggestions
     return (
         <div className={`${classes.suggestions} ${inputActive && classes.active}`}>
             {suggestions && suggestions.length > 0 ? (
-                suggestions &&
                 suggestions
                     .sort((a, b) => (a.name === b.name ? 0 : a.name > b.name ? 1 : -1))
                     .map((ingredient) => {

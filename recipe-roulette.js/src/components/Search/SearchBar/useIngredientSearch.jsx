@@ -3,13 +3,13 @@ import { useManageIngredients } from "../../../pages/Discovery/IngredientsContex
 import { useSnackbar } from "../../Snackbar/useSnackbar"
 
 export function useIngredientSearch(isFixed, searchCriteria) {
-    const { ing, blackList, displayedIng, handleDeselectAll, handleIngUpdate, filteredIng } = useManageIngredients()
+    const { ingredients, handleDeselectAll, handleIngUpdate } = useManageIngredients()
     const { handleOpenSnackbar } = useSnackbar()
 
     const [condition, setCondition] = useState(true)
     const [inputValues, setInputValues] = useState({ initial: "", current: "" })
     const [searchState, setSearchState] = useState({ inputActive: false })
-    const [suggestions, setSuggestions] = useState(ing)
+    const [suggestions, setSuggestions] = useState(ingredients.all)
     const [fixedPosition, setFixedPosition] = useState(false)
     const [cardState, setCardState] = useState({
         id: null,
@@ -20,12 +20,12 @@ export function useIngredientSearch(isFixed, searchCriteria) {
     })
 
     useEffect(() => {
-        setSuggestions(ing)
+        setSuggestions(ingredients.all)
     }, [searchState.inputActive])
 
     useMemo(() => {
-        setSuggestions(ing)
-    }, [ing])
+        setSuggestions(ingredients.all)
+    }, [ingredients.all])
 
     const handleInputActivation = (e) => {
         e.stopPropagation()
@@ -42,13 +42,13 @@ export function useIngredientSearch(isFixed, searchCriteria) {
     const handleInputChange = (e) => {
         const inputValue = e.target.value.toUpperCase()
         setInputValues((prev) => ({ ...prev, current: e.target.value }))
-        setSuggestions(ing.filter((ingredient) => ingredient.name.toUpperCase().includes(inputValue)))
+        setSuggestions(ingredients.all.filter((ing) => ing.name.toUpperCase().includes(inputValue)))
     }
 
     const handleSuggestionClick = (e, prop, cardState, setCardState) => {
         e.stopPropagation()
         setInputValues((prev) => ({ ...prev, current: cardState.label }))
-        const selectedIngs = displayedIng.filter((ing) => ing.isSelected)
+        const selectedIngs = ingredients.displayed.filter((ing) => ing.isSelected)
         if (prop === "isBlackListed") {
             handleIngUpdate(prop, cardState, setCardState)
         } else if (prop === "isSelected") {
@@ -64,17 +64,17 @@ export function useIngredientSearch(isFixed, searchCriteria) {
 
     const handleInputDeactivation = (prop) => {
         let firstAvailableIngredient
-        const selectedIngs = displayedIng.filter((ing) => ing.isSelected)
+        const selectedIngs = ingredients.displayed.filter((ing) => ing.isSelected)
 
-        let isInDatabase = filteredIng.filter(
-            (ingredient) =>
-                ingredient.name.toUpperCase().includes(inputValues.current.toUpperCase()) &&
-                !ingredient.isSelected &&
-                !ingredient.isBlackListed
+        let isInDatabase = ingredients.filtered.filter(
+            (ing) =>
+                ing.name.toUpperCase().includes(inputValues.current.toUpperCase()) &&
+                !ing.isSelected &&
+                !ing.isBlackListed
         )
 
         if (prop === "isBlackListed") {
-            const notAlreadyBL = blackList.filter((blIngredient) =>
+            const notAlreadyBL = ingredients.blacklisted.filter((blIngredient) =>
                 isInDatabase.some(
                     (dbIngredient) =>
                         dbIngredient.id === blIngredient.id || dbIngredient.name.toUpperCase() === blIngredient.name.toUpperCase()
@@ -106,7 +106,7 @@ export function useIngredientSearch(isFixed, searchCriteria) {
             setInputValues((prev) => ({ ...prev, current: "" }))
             setSearchState({ inputActive: false })
         }
-        setSuggestions(ing.filter((ing) => !ing.isBlacklisted))
+        setSuggestions(ingredients.all.filter((ing) => !ing.isBlacklisted))
         isFixed && setFixedPosition(false)
     }
 
