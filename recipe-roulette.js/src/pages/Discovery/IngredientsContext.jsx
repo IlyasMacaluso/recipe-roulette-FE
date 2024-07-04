@@ -28,7 +28,7 @@ export const IngredientsProvider = ({ children }) => {
         setIngredients
     )
 
-    
+
     useEffect(() => {
         const localIngredients = getValue("ingredients") //restituisce il valore già parsato se presente
         if (localIngredients && localIngredients.all.length > 0) {
@@ -60,7 +60,7 @@ export const IngredientsProvider = ({ children }) => {
             setValue("ingredients", updatedIngredients)
             return updatedIngredients
         })
-    }, [recipeFilter])
+    }, [recipeFilter, ingredients.all])
 
     return (
         <IngredientsContext.Provider

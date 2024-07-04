@@ -73,7 +73,7 @@ export const useIngredientUpdate = (ingredients, setIngredients) => {
         const selectedIng = ingredients.displayed.filter((ing) => ing.isSelected)
         const newIngredients = ingredients.all.map((ing) => ({ ...ing, [prop]: false }))
         let newDisplayed = ingredients.displayed.map((ing) => ({ ...ing, [prop]: false }))
-        let newBlacklisted = ingredients.blacklisted.map((ing) => ({ ...ing, [prop]: false }))
+        let newBlacklisted = ingredients.blacklisted
 
         if (prop === "isSelected" && selectedIng.length > 0) {
             newDisplayed = ingredients.displayed.map((ing) => ({ ...ing, [prop]: false }))
