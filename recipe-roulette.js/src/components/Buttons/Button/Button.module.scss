@@ -19,6 +19,9 @@
 .button:active {
     background-color: $second-color;
 }
+button:hover{
+    cursor: pointer;
+}
 
 .disabled:active {
     background-color: $lighter-gray;

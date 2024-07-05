@@ -208,3 +208,9 @@
     padding: 0;
     margin-top: 0.5rem;
 }
+.recipeCard:hover {
+    cursor: pointer;
+}
+.recipeCardExpanded:hover{
+    cursor:default;
+}

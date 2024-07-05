@@ -12,17 +12,10 @@ export function FilterChip({ id, label, bgColor, isSelected, isBlackListed }) {
     return (
         <div
             className={`${classes.filterChip} ${isSelected || isBlackListed ? classes.active : classes.inactive}`}
-            onClick={handleDeselectChip}
+            onClick={() => handleDeselectChip && handleDeselectChip}
         >
-            {isSelected && (
-         
-                    <CheckOutlinedIcon className={classes.ico} fontSize="18px" />
-        
-            )}
-            {isBlackListed && (
-
-                    <BlockOutlinedIcon className={classes.ico} fontSize="18px" />
-            )}
+            {isSelected && <CheckOutlinedIcon className={classes.ico} fontSize="18px" />}
+            {isBlackListed && <BlockOutlinedIcon className={classes.ico} fontSize="18px" />}
             <p className={classes.label}>{label}</p>
         </div>
     )
