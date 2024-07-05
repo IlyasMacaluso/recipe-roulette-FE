@@ -1,18 +1,26 @@
-import React, { useCallback, useEffect, useRef } from "react"
-
+import { useCallback, useEffect, useRef } from "react"
 import { BaseSearchSuggestion } from "./BaseSearchSuggestion"
-import { useBaseSearch } from "./useBaseSearch"
 
 import CloseIcon from "@mui/icons-material/Close"
 import SearchIcon from "@mui/icons-material/Search"
 
 import classes from "./BaseSearch.module.scss"
+import { useIngredientSearch } from "../SearchBar/useIngredientSearch"
 
 export function BaseSearch({ data = [], inputValue = "", setInputValue }) {
-    const { handleBlur, handlePressEnter, handleInputActivation, setCondition, condition, isFocused } =
-        useBaseSearch(setInputValue)
+    const {
+        handlePressEnter,
+        setCondition,
+        condition,
+        handleInputActivation,
+        handleBlur,
+        setSearchState,
+        setFixedPosition,
+        searchState,
+    } = useIngredientSearch(true)
 
     const inputRef = useRef(null)
+
     // Handle back button when fixedPosition is true
     const handleBackButton = useCallback(
         (event) => {
@@ -20,20 +28,20 @@ export function BaseSearch({ data = [], inputValue = "", setInputValue }) {
                 event.preventDefault()
                 if (inputRef.current) {
                     inputRef.current.blur()
-                    handleBlur(event) // Update the focus state
+                    handleBlur(inputRef, { setSearchState, setFixedPosition }) // Update the focus state
                     setCondition(true)
                 }
             }
         },
-        [isFocused]
+        [searchState.inputActive]
     )
 
     useEffect(() => {
-        if (isFocused && condition) {
+        if (searchState.inputActive && condition) {
             window.history.pushState(null, document.title, window.location.href)
             window.addEventListener("popstate", handleBackButton)
             setCondition(false)
-        } else if (isFocused) {
+        } else if (searchState.inputActive) {
             window.history.replaceState(null, document.title, window.location.href)
             window.addEventListener("popstate", handleBackButton)
         } else {
@@ -43,46 +51,45 @@ export function BaseSearch({ data = [], inputValue = "", setInputValue }) {
         return () => {
             window.removeEventListener("popstate", handleBackButton)
         }
-    }, [isFocused, handleBackButton])
+    }, [searchState.inputActive, handleBackButton])
 
     return (
-        <div className={`${classes.baseSearch} ${isFocused && classes.baseSearchActive}`}>
+        <div className={`${classes.baseSearch} ${searchState.inputActive && classes.baseSearchActive}`}>
             <div className={classes.searchBar}>
                 <input
                     ref={inputRef}
                     autoComplete="off"
                     className={classes.input}
-                    onKeyDown={(e) => handlePressEnter(e)}
+                    onKeyDown={(e) => handlePressEnter(e, inputRef, { setSearchState, setFixedPosition })}
                     onClick={handleInputActivation}
                     onChange={(e) => setInputValue(e.target.value)}
-                    onBlur={(e) => handleBlur(e)}
                     value={inputValue}
                     type="text"
                     placeholder="Search a recipe"
                 />
                 <div
                     onMouseDown={(e) => {
-                        if (isFocused && inputValue !== "") {
-                            e.stopPropagation()
-                            e.preventDefault()
+                        e.stopPropagation()
+                        e.preventDefault()
+                        if (searchState.inputActive && inputValue !== "") {
                             setInputValue("")
-                        } else if (isFocused && inputValue === "") {
-                            e.stopPropagation()
-                            handleBlur(e)
-                            inputRef.current.blur()
-                        } else if (!isFocused && inputValue !== "") {
-                            e.stopPropagation()
-                            e.preventDefault()
+                        } else if (searchState.inputActive && inputValue === "") {
+                            handleBlur(inputRef, { setSearchState, setFixedPosition })
+                        } else if (!searchState.inputActive && inputValue !== "") {
                             setInputValue("")
                         }
                     }}
                     className={classes.ico}
                 >
-                    {isFocused || inputValue !== "" ? <CloseIcon fontSize="small" /> : <SearchIcon fontSize="small" />}
+                    {searchState.inputActive || inputValue !== "" ? (
+                        <CloseIcon fontSize="small" />
+                    ) : (
+                        <SearchIcon fontSize="small" />
+                    )}
                 </div>
             </div>
             <div className={classes.suggestionsWrapper}>
-                {data.length > 0 ? (
+                {data && data.length > 0 ? (
                     data.map((recipe) => (
                         <BaseSearchSuggestion
                             inputRef={inputRef}
@@ -90,6 +97,7 @@ export function BaseSearch({ data = [], inputValue = "", setInputValue }) {
                             id={recipe.id}
                             handleBlur={handleBlur}
                             setInputValue={setInputValue}
+                            setState={{ setSearchState, setFixedPosition }}
                             title={recipe.title}
                         />
                     ))
