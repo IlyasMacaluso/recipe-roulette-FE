@@ -1,11 +1,13 @@
 import { useEffect, useMemo, useState } from "react"
 import { useManageIngredients } from "../../../pages/Discovery/IngredientsContext"
 import { useSnackbar } from "../../Snackbar/useSnackbar"
-import { useSearchContext } from "../../../contexts/InputStateContext"
 
 export function useIngredientSearch(isFixed, searchCriteria) {
     const { ingredients, handleDeselectAll, handleIngUpdate } = useManageIngredients()
     const { handleOpenSnackbar } = useSnackbar()
+
+    const [fixedPosition, setFixedPosition] = useState(false)
+    const [searchState, setSearchState] = useState({ inputActive: false })
 
     const [condition, setCondition] = useState(true)
     const [inputValues, setInputValues] = useState({ initial: "", current: "" })
@@ -17,8 +19,6 @@ export function useIngredientSearch(isFixed, searchCriteria) {
         isSelected: null,
         isBlacklisted: null,
     })
-    const { fixedPosition, setFixedPosition, searchState, setSearchState } = useSearchContext() //contesto per gestire lo stato della searchbar
-
 
     // aggiornamento dei suggerimenti
     useEffect(() => {
@@ -34,11 +34,11 @@ export function useIngredientSearch(isFixed, searchCriteria) {
         isFixed && setFixedPosition(true)
         setSearchState({ inputActive: true })
     }
-    const handleBlur = (inputRef) => {
+    const handleBlur = (inputRef, setState) => {
         setInputValues((prev) => ({ ...prev, current: "" }))
         inputRef.current.blur()
-        setSearchState({ inputActive: false })
-        setFixedPosition(false)
+        setState.setSearchState({ inputActive: false })
+        setState.setFixedPosition(false)
 
         const h1 = document.querySelector("header h1")
         h1.click() //click sull'header per chiudere la tastiera
@@ -51,7 +51,6 @@ export function useIngredientSearch(isFixed, searchCriteria) {
     }
 
     const handleSuggestionClick = (prop, cardState, setCardState) => {
-        console.log(prop)
         setInputValues((prev) => ({ ...prev, current: cardState.label }))
         const selectedIngs = ingredients.displayed.filter((ing) => ing.isSelected)
         if (prop === "isBlackListed") {
@@ -117,12 +116,12 @@ export function useIngredientSearch(isFixed, searchCriteria) {
         setSuggestions(ingredients.all.filter((ing) => !ing.isBlacklisted))
     }
 
-    const handlePressEnter = (e, inputRef) => {
+    const handlePressEnter = (e, inputRef, setState) => {
         if (e.keyCode === 13) {
             handleInputDeactivation(searchCriteria)
-            handleBlur(inputRef)
+            handleBlur(inputRef, setState)
         } else if (e.keyCode === 27) {
-            handleBlur(inputRef)
+            handleBlur(inputRef, setState)
         }
     }
 
@@ -140,6 +139,8 @@ export function useIngredientSearch(isFixed, searchCriteria) {
         setInputValues,
         handleBlur,
         setCondition,
+        setFixedPosition,
+        setSearchState,
         inputValues,
         searchState,
         suggestions,

@@ -6,7 +6,7 @@ import LockOpenOutlinedIcon from "@mui/icons-material/LockOpenOutlined"
 import classes from "./IngredientSuggestions.module.scss"
 import { useSearchContext } from "../../../contexts/InputStateContext"
 
-export function IngredientSuggestionActive({ ing, prop }) {
+export function IngredientSuggestionActive({ ing, prop, setInputState }) {
     const { id, name, bgColor, isSelected, isBlackListed } = ing
     const { ingState, setIngState } = useIngredientSuggestion(id, name, bgColor, isSelected, isBlackListed)
     const { handleSuggestionClick, handleBlur } = useIngredientSearch()
@@ -19,7 +19,7 @@ export function IngredientSuggestionActive({ ing, prop }) {
                     className={`${classes.activeSuggestion} ${classes.ingredientSuggestion}`}
                     onClick={() => {
                         handleSuggestionClick(prop, ingState, setIngState)
-                        handleBlur(inputRef)
+                        handleBlur(inputRef, setInputState)
                     }}
                 >
                     <CancelOutlinedIcon fontSize="small" />
@@ -31,7 +31,7 @@ export function IngredientSuggestionActive({ ing, prop }) {
                     className={`${classes.activeSuggestion} ${classes.ingredientSuggestion}`}
                     onClick={() => {
                         handleSuggestionClick(prop, ingState, setIngState)
-                        handleBlur(inputRef)
+                        handleBlur(inputRef, setInputState)
                     }}
                 >
                     <LockOpenOutlinedIcon fontSize="small" />

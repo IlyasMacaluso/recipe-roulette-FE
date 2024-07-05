@@ -10,10 +10,7 @@
     overscroll-behavior: contain;
 
     left: 0;
-    transition:
-        height 0.45s cubic-bezier(0.08, 0.82, 0.17, 1),
-        transform 0.45s cubic-bezier(0.08, 0.82, 0.17, 1),
-        width 0.45s cubic-bezier(0.08, 0.82, 0.17, 1);
+    transition: width 0.45s cubic-bezier(0.08, 0.82, 0.17, 1);
 }
 .searchBar {
     position: relative;
@@ -25,9 +22,7 @@
     padding: 0;
     box-sizing: border-box;
     overflow: hidden;
-    transition:
-        height 0.45s cubic-bezier(0.08, 0.82, 0.17, 1),
-        width 0.45s cubic-bezier(0.08, 0.82, 0.17, 1);
+    transition: width 0.45s cubic-bezier(0.08, 0.82, 0.17, 1);
 
     input {
         position: absolute;
@@ -99,10 +94,8 @@
     top: 0;
     width: 100%;
     height: 100svh;
+    padding-bottom: 1rem;
     box-sizing: border-box;
     box-shadow: 0 0 10px rgba($color: #000000, $alpha: 0.2);
-    transition:
-        width 0.45s cubic-bezier(0.08, 0.82, 0.17, 1),
-        height 0.45s cubic-bezier(0.08, 0.82, 0.17, 1),
-        transform 0.45s cubic-bezier(0.08, 0.82, 0.17, 1);
+    transition: width 0.45s cubic-bezier(0.08, 0.82, 0.17, 1);
 }

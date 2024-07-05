@@ -30,6 +30,9 @@
             width  0.45s cubic-bezier(0.08, 0.82, 0.17, 1);
     }
 }
+.filterChip:hover {
+    cursor: pointer;
+}
 .active {
     scale: 1;
     padding-left: 0.5rem;

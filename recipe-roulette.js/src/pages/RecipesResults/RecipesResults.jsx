@@ -1,5 +1,4 @@
 import RecipeCard from "../../components/RecipeCard/RecipeCard"
-import { FilterChipRecipes } from "../../components/FilterChip/FilterChipRecipes"
 import { useAnimate } from "../../hooks/animatePages/useAnimate"
 
 import { useRecipesContext } from "../../contexts/RecipesContext"
@@ -22,15 +21,16 @@ export function RecipeResults() {
         <div className={`${classes.recipesResultsPage} ${animate && classes.animateFavorite} `}>
             {!state.loading ? (
                 <section className={classes.recipesWrapper}>
-                    {recipes.results.map((recipe) => {
-                        return (
-                            <RecipeCard
-                                handleClickLoginSnackBar={handleClickLoginSnackBar}
-                                key={recipe.id + recipe.title}
-                                recipe={recipe}
-                            />
-                        )
-                    })}
+                    {recipes.results &&
+                        recipes.results.map((recipe) => {
+                            return (
+                                <RecipeCard
+                                    handleClickLoginSnackBar={handleClickLoginSnackBar}
+                                    key={recipe.id + recipe.title}
+                                    recipe={recipe}
+                                />
+                            )
+                        })}
                 </section>
             ) : (
                 <div className={classes.placeholder}>

@@ -20,6 +20,8 @@ export function IngredientSearch({ isFixed = false, sidebarSearch = false, searc
         handleInputChange,
         handleInputActivation,
         handleBlur,
+        setSearchState,
+        setFixedPosition,
     } = useIngredientSearch(isFixed, searchCriteria)
 
     const { inputRef } = useSearchContext()
@@ -31,7 +33,7 @@ export function IngredientSearch({ isFixed = false, sidebarSearch = false, searc
                 event.preventDefault()
                 setCondition(true)
                 if (inputRef.current) {
-                    handleBlur(inputRef) // Update the focus state
+                    handleBlur(inputRef, { setSearchState, setFixedPosition }) // Update the focus state
                 }
             }
         },
@@ -68,7 +70,7 @@ export function IngredientSearch({ isFixed = false, sidebarSearch = false, searc
                     placeholder={`${searchCriteria === "isSelected" ? "Add an ingredient" : "Blacklist an ingredient"}`}
                     name="search"
                     type="text"
-                    onKeyUp={(e) => handlePressEnter(e, inputRef)}
+                    onKeyUp={(e) => handlePressEnter(e, inputRef, { setSearchState, setFixedPosition })}
                     onChange={handleInputChange}
                     value={inputValues.current}
                 />
@@ -80,10 +82,7 @@ export function IngredientSearch({ isFixed = false, sidebarSearch = false, searc
 
                 {searchState.inputActive && (
                     <div
-                        onClick={() => {
-                            console.log(inputRef)
-                            handleBlur(inputRef)
-                        }}
+                        onClick={() => handleBlur(inputRef, { setSearchState, setFixedPosition })}
                         className={`${classes.ico} ${classes.closeIco}`}
                     >
                         <CloseOutlinedIcon fontSize="small" />
@@ -94,6 +93,7 @@ export function IngredientSearch({ isFixed = false, sidebarSearch = false, searc
                 inputActive={searchState.inputActive}
                 searchCriteria={searchCriteria}
                 suggestions={suggestions}
+                setInputState={{ setSearchState, setFixedPosition }}
             />
         </div>
     )

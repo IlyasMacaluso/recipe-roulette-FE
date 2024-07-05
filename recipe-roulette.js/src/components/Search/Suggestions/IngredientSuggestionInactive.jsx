@@ -8,7 +8,7 @@ import NoMealsOutlinedIcon from "@mui/icons-material/NoMealsOutlined"
 import classes from "./IngredientSuggestions.module.scss"
 import { useSearchContext } from "../../../contexts/InputStateContext"
 
-export function IngredientSuggestionInactive({ ing, prop = "isSelected" }) {
+export function IngredientSuggestionInactive({ ing, prop = "isSelected", setInputState }) {
     const { id, name, bgColor, isSelected, isBlackListed } = ing
     const { ingState, setIngState } = useIngredientSuggestion(id, name, bgColor, isSelected, isBlackListed)
     const { handleSuggestionClick, handleBlur } = useIngredientSearch()
@@ -26,7 +26,7 @@ export function IngredientSuggestionInactive({ ing, prop = "isSelected" }) {
                 <p
                     onClick={() => {
                         handleSuggestionClick(prop, ingState, setIngState)
-                        handleBlur(inputRef)
+                        handleBlur(inputRef, setInputState)
                     }}
                     className={`${!ing.isSelected && classes.inactiveSuggestion} ${classes.lockedSuggestion} ${classes.ingredientSuggestion}`}
                 >

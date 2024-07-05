@@ -19,9 +19,8 @@
     gap: 0.5rem;
 
     transition:
-        opacity 0.3s ease,
-        padding 0.3s ease,
-        height 0.3s ease;
+        opacity 0.65s cubic-bezier(0.08, 0.82, 0.17, 1),
+        padding 0.65s cubic-bezier(0.08, 0.82, 0.17, 1);
     .activeSuggestion {
         color: $dark-gray;
     }
@@ -42,9 +41,8 @@
     padding-bottom: 3rem;
     box-sizing: border-box;
     transition:
-        opacity 0.4s ease,
-        padding 0.4s ease,
-        height 0.4s ease;
+        opacity 0.65s cubic-bezier(0.08, 0.82, 0.17, 1),
+        padding 0.65s cubic-bezier(0.08, 0.82, 0.17, 1);
 }
 
 .ingredientSuggestion {

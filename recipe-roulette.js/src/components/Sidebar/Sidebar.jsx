@@ -1,15 +1,16 @@
-import classes from "./Sidebar.module.scss"
 import { useManageIngredients } from "../../pages/Discovery/IngredientsContext"
 import { FilterChip } from "../FilterChip/FilterChip"
 import { Switch } from "../Switch/Switch"
 import { IngredientSearch } from "../Search/SearchBar/IngredientSearch"
 import { Button } from "../Buttons/Button/Button"
 import { IcoButton } from "../Buttons/IcoButton/IcoButton"
+import { FilterChipRecipes } from "../FilterChip/FilterChipRecipes"
+import { useRecipesContext } from "../../contexts/RecipesContext"
 
 import CloseIcon from "@mui/icons-material/Close"
 import RotateLeftOutlinedIcon from "@mui/icons-material/RotateLeftOutlined"
-import { FilterChipRecipes } from "../FilterChip/FilterChipRecipes"
-import { useRecipesContext } from "../../contexts/RecipesContext"
+
+import classes from "./Sidebar.module.scss"
 
 export function Sidebar({ sidebarState = false, handleSidebarToggle }) {
     const { handleDeselectAll, ingredients } = useManageIngredients()
