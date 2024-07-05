@@ -57,10 +57,10 @@ export const RecipesProvider = ({ children }) => {
                     return {
                         ...recipes,
                         results: resetRecipeList(recipes.results),
-                        filtered: resetRecipeList(recipes.filtered),
+                        filtered: [],
                         targetedRecipe: localRecipes.targetedRecipe && { ...recipes.targetedRecipe, isFavorited: false },
                         favorited: [],
-                        searched: resetRecipeList(recipes.searched),
+                        searched: [],
                     }
                 }
 
@@ -83,8 +83,8 @@ export const RecipesProvider = ({ children }) => {
     // Filtro i risultati quando viene modificato l'input
     useEffect(() => {
         if (recipes.filtered && recipes.filtered.length > 0) {
-            const newFiltered = recipes.favoritedfilter((rec) => rec.title.toLowerCase().includes(inputValue.toLowerCase()))
-            setRecipes(newFiltered)
+            const newFiltered = recipes.filtered.filter((rec) => rec.title.toLowerCase().includes(inputValue.toLowerCase()))
+            setRecipes((prev) => ({ ...prev, searched: newFiltered }))
         }
     }, [inputValue])
 

@@ -6,6 +6,7 @@ import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined"
 import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined"
 
 import classes from "./IngredientSearch.module.scss"
+import { useSearchContext } from "../../../contexts/InputStateContext"
 
 export function IngredientSearch({ isFixed = false, sidebarSearch = false, searchCriteria = "isBlackListed" }) {
     const {
@@ -19,20 +20,18 @@ export function IngredientSearch({ isFixed = false, sidebarSearch = false, searc
         handleInputChange,
         handleInputActivation,
         handleBlur,
-        handleXClick,
     } = useIngredientSearch(isFixed, searchCriteria)
 
-    const inputRef = useRef(null)
+    const { inputRef } = useSearchContext()
 
     // Handle back button when fixedPosition is true
     const handleBackButton = useCallback(
         (event) => {
             if (searchState.inputActive) {
                 event.preventDefault()
+                setCondition(true)
                 if (inputRef.current) {
-                    inputRef.current.blur()
-                    handleBlur(event) // Update the focus state
-                    setCondition(true)
+                    handleBlur(inputRef) // Update the focus state
                 }
             }
         },
@@ -69,8 +68,7 @@ export function IngredientSearch({ isFixed = false, sidebarSearch = false, searc
                     placeholder={`${searchCriteria === "isSelected" ? "Add an ingredient" : "Blacklist an ingredient"}`}
                     name="search"
                     type="text"
-                    onBlur={(e) => handleBlur(e)}
-                    onKeyDown={(e) => handlePressEnter(e)}
+                    onKeyUp={(e) => handlePressEnter(e, inputRef)}
                     onChange={handleInputChange}
                     value={inputValues.current}
                 />
@@ -81,7 +79,13 @@ export function IngredientSearch({ isFixed = false, sidebarSearch = false, searc
                 )}
 
                 {searchState.inputActive && (
-                    <div onClick={(e) => handleXClick(e)} className={`${classes.ico} ${classes.closeIco}`}>
+                    <div
+                        onClick={() => {
+                            console.log(inputRef)
+                            handleBlur(inputRef)
+                        }}
+                        className={`${classes.ico} ${classes.closeIco}`}
+                    >
                         <CloseOutlinedIcon fontSize="small" />
                     </div>
                 )}

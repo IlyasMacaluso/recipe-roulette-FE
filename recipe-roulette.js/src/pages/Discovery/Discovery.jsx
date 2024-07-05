@@ -64,7 +64,6 @@ export function Discovery() {
                     active={true}
                     action={() => {
                         const ingNames = ingredients.displayed.map((ing) => ing.name)
-                        console.log(ingNames)
                         handleRecipesFetch(
                             ingNames,
                             recipeFilter.preparationTime,

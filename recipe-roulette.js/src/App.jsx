@@ -21,6 +21,7 @@ import { LoginPage } from "./pages/Login/LoginPage"
 import { NotFound404 } from "./pages/NotFound404/NotFound404"
 import { Snackbar } from "./components/Snackbar/Snackbar"
 import { RecipesFetchProvider } from "./hooks/useRecipesFetch/useRecipesFetch"
+import { SearchProvider } from "./contexts/InputStateContext"
 
 function App() {
     const { handleSidebarToggle, sidebarState } = useDiscoverySidebar()
@@ -32,39 +33,44 @@ function App() {
             <AuthProvider>
                 <RecipesProvider>
                     <IngredientsProvider>
-                        <SnackbarProvider>
-                            <RecipesFetchProvider>
-                                <SideMenu handleMenuToggle={handleMenuToggle} menuState={menuState} path={path} />
-                                <SideBarRecipes state={sideBarState} toggleSidebarRecipes={toggleSidebarRecipes} />
-                                <Sidebar sidebarState={sidebarState} handleSidebarToggle={handleSidebarToggle} />
+                        <SearchProvider>
+                            <SnackbarProvider>
+                                <RecipesFetchProvider>
+                                    <SideMenu handleMenuToggle={handleMenuToggle} menuState={menuState} path={path} />
+                                    <SideBarRecipes state={sideBarState} toggleSidebarRecipes={toggleSidebarRecipes} />
+                                    <Sidebar sidebarState={sidebarState} handleSidebarToggle={handleSidebarToggle} />
 
-                                <Header
-                                    handleRecipesSidebarToggle={toggleSidebarRecipes}
-                                    handleSidebarToggle={handleSidebarToggle}
-                                    handleMenuToggle={handleMenuToggle}
-                                />
-                                <Routes classes>
-                                    <Route path="/" element={<DiscoveryPreview />} />
-                                    <Route path="/discovery" element={<Discovery handleSidebarToggle={handleSidebarToggle} />} />
-                                    <Route
-                                        path="/favorited"
-                                        element={<Favorited handleRecipesSidebarToggle={toggleSidebarRecipes} />}
+                                    <Header
+                                        handleRecipesSidebarToggle={toggleSidebarRecipes}
+                                        handleSidebarToggle={handleSidebarToggle}
+                                        handleMenuToggle={handleMenuToggle}
                                     />
-                                    <Route path="/settings" element={<Settings />} />
-                                    <Route
-                                        path="/recipes-results"
-                                        element={<RecipeResults handleRecipesSidebarToggle={toggleSidebarRecipes} />}
-                                    />
-                                    <Route path={`/recipe`} element={<Recipe />} />
+                                    <Routes classes>
+                                        <Route path="/" element={<DiscoveryPreview />} />
+                                        <Route
+                                            path="/discovery"
+                                            element={<Discovery handleSidebarToggle={handleSidebarToggle} />}
+                                        />
+                                        <Route
+                                            path="/favorited"
+                                            element={<Favorited handleRecipesSidebarToggle={toggleSidebarRecipes} />}
+                                        />
+                                        <Route path="/settings" element={<Settings />} />
+                                        <Route
+                                            path="/recipes-results"
+                                            element={<RecipeResults handleRecipesSidebarToggle={toggleSidebarRecipes} />}
+                                        />
+                                        <Route path={`/recipe`} element={<Recipe />} />
 
-                                    <Route path="/login" element={<LoginPage />} />
-                                    <Route path="/sidebarRecipes" element={<SideBarRecipes />} />
-                                    <Route path="/food-preferences" element={<Preferences />} />
-                                    <Route path="/*" element={<NotFound404 />} />
-                                </Routes>
-                                <Snackbar />
-                            </RecipesFetchProvider>
-                        </SnackbarProvider>
+                                        <Route path="/login" element={<LoginPage />} />
+                                        <Route path="/sidebarRecipes" element={<SideBarRecipes />} />
+                                        <Route path="/food-preferences" element={<Preferences />} />
+                                        <Route path="/*" element={<NotFound404 />} />
+                                    </Routes>
+                                    <Snackbar />
+                                </RecipesFetchProvider>
+                            </SnackbarProvider>
+                        </SearchProvider>
                     </IngredientsProvider>
                 </RecipesProvider>
             </AuthProvider>

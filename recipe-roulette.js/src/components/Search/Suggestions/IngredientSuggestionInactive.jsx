@@ -1,16 +1,18 @@
 import { useIngredientSuggestion } from "./useIngredientSuggestion"
 import { useIngredientSearch } from "../SearchBar/useIngredientSearch"
 
-import BlockOutlinedIcon from '@mui/icons-material/BlockOutlined';
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
-import NoMealsOutlinedIcon from '@mui/icons-material/NoMealsOutlined';
+import BlockOutlinedIcon from "@mui/icons-material/BlockOutlined"
+import LockOutlinedIcon from "@mui/icons-material/LockOutlined"
+import NoMealsOutlinedIcon from "@mui/icons-material/NoMealsOutlined"
 
 import classes from "./IngredientSuggestions.module.scss"
+import { useSearchContext } from "../../../contexts/InputStateContext"
 
 export function IngredientSuggestionInactive({ ing, prop = "isSelected" }) {
     const { id, name, bgColor, isSelected, isBlackListed } = ing
     const { ingState, setIngState } = useIngredientSuggestion(id, name, bgColor, isSelected, isBlackListed)
-    const { handleSuggestionClick } = useIngredientSearch()
+    const { handleSuggestionClick, handleBlur } = useIngredientSearch()
+    const { inputRef } = useSearchContext()
 
     return (
         <>
@@ -22,7 +24,10 @@ export function IngredientSuggestionInactive({ ing, prop = "isSelected" }) {
             )}
             {ing.isSelected && (
                 <p
-                onMouseDown={(e) => handleSuggestionClick(e, prop, ingState, setIngState)}
+                    onClick={() => {
+                        handleSuggestionClick(prop, ingState, setIngState)
+                        handleBlur(inputRef)
+                    }}
                     className={`${!ing.isSelected && classes.inactiveSuggestion} ${classes.lockedSuggestion} ${classes.ingredientSuggestion}`}
                 >
                     <LockOutlinedIcon fontSize="small" />

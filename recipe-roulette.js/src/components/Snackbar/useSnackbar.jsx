@@ -12,17 +12,17 @@ export const SnackbarProvider = ({ children }) => {
     const [isActive, setIsActive] = useState(false)
     const [message, setMessage] = useState("")
     const [intervalId, setIntervalId] = useState(null)
-    const { isAuthenticated } = useAuth();
-    const [showBtn, setShowBtn] = useState(false);
+    const { isAuthenticated } = useAuth()
+    const [showBtn, setShowBtn] = useState(false)
 
-    const handleOpenSnackbar = (message) => {
+    const handleOpenSnackbar = (message, duration = 2500) => {
         setShowBtn(false)
         setMessage(message)
         if (!isActive) {
             setIntervalId(
                 setTimeout(() => {
                     setIsActive(false)
-                }, 2500)
+                }, duration)
             )
             setIsActive(true)
         }
@@ -33,7 +33,7 @@ export const SnackbarProvider = ({ children }) => {
         setIsActive(false)
     }
 
-    function handleClickLoginSnackBar (e) {
+    function handleClickLoginSnackBar(e) {
         e.preventDefault()
         if (!isAuthenticated) {
             handleOpenSnackbar("Want to add favorites?")
@@ -42,7 +42,9 @@ export const SnackbarProvider = ({ children }) => {
     }
 
     return (
-        <SnackbarContext.Provider value={{ isActive, message, showBtn, handleCloseSnackbar, handleOpenSnackbar, handleClickLoginSnackBar }}>
+        <SnackbarContext.Provider
+            value={{ isActive, message, showBtn, handleCloseSnackbar, handleOpenSnackbar, handleClickLoginSnackBar }}
+        >
             {children}
         </SnackbarContext.Provider>
     )

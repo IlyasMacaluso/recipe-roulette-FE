@@ -1,6 +1,6 @@
 import { useState } from "react"
 
-export function useBaseSearch(setInputValue) {
+export function useBaseSearch(/*setInputValue*/) {
     const [isFocused, setIsFocused] = useState(false)
     const [condition, setCondition] = useState(true)
 

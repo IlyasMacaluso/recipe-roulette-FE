@@ -14,11 +14,13 @@ import { useManageIngredients } from "../../pages/Discovery/IngredientsContext"
 import { BaseSearch } from "../Search/BaseSearch/BaseSearch"
 
 import classes from "./Header.module.scss"
+import { useAuth } from "../../hooks/Auth/useAuth"
 
 export function Header({ handleMenuToggle, handleSidebarToggle, handleRecipesSidebarToggle }) {
     const [title, setTitle] = useState("/")
     const { recipes, setRecipes, setInputValue, inputValue } = useRecipesContext()
     const { handleDeselectAll } = useManageIngredients()
+    const { isAuthenticated } = useAuth()
 
     const navigate = useNavigate()
     const location = useLocation()
@@ -116,7 +118,7 @@ export function Header({ handleMenuToggle, handleSidebarToggle, handleRecipesSid
 
                     <IcoButton action={handleMenuToggle} icon={<MenuOpenIcon />} style="transparent" />
                 </div>
-{/*                 {location.pathname === "/recipes-results" && (
+                {/*                 {location.pathname === "/recipes-results" && (
                     <section className={classes.globalActions}>
                         <BaseSearch data={recipes.results} inputValue={inputValue} setInputValue={setInputValue} />
                         <IcoButton
@@ -126,7 +128,7 @@ export function Header({ handleMenuToggle, handleSidebarToggle, handleRecipesSid
                         />
                     </section>
                 )} */}
-                {location.pathname === "/favorited" && (
+                {location.pathname === "/favorited" && isAuthenticated && recipes.favorited.length > 0 && (
                     <section className={classes.globalActions}>
                         <BaseSearch data={recipes.searched} inputValue={inputValue} setInputValue={setInputValue} />
                         <IcoButton
