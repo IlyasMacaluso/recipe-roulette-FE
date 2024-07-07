@@ -49,7 +49,7 @@ export const IngredientsProvider = ({ children }) => {
         useEffect(() => {
             let filtering = ingredients.all.filter((ing) => !ing.isBlackListed)
 
-            const filterIngredients = ( prop) => filtering = filtering.filter((item) => item[prop]) // funzione per filtrare in base alla prop
+            const filterIngredients = (prop) => filtering = filtering.filter((item) => item[prop]) // funzione per filtrare in base alla prop
 
             recipeFilter.isGlutenFree && filterIngredients("isGlutenFree")
             recipeFilter.isVegetarian && filterIngredients("isVegetarian")
