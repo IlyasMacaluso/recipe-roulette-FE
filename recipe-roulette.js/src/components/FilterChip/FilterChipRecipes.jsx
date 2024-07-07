@@ -7,15 +7,15 @@ import { useRecipesContext } from "../../contexts/RecipesContext"
 
 export function FilterChipRecipes({ numericValue = 9999, filterType = null, label }) {
     const { handlePreferencesToggle } = useRecipesContext()
-    const { selectedState, handleSelected } = useFilterChipRecipes(label, filterType, numericValue)
+    const { selectedState } = useFilterChipRecipes(label, filterType, numericValue)
 
     return (
         <div
             onClick={() => {
-                filterType === "cuisineEthnicity" && handlePreferencesToggle(filterType, label.toLowerCase(), handleSelected, selectedState)
-                filterType === "caloricApport"  && handlePreferencesToggle(filterType, numericValue, handleSelected, selectedState)
-                filterType === "preparationTime" && handlePreferencesToggle(filterType, numericValue, handleSelected, selectedState)
-                filterType === "difficulty" && handlePreferencesToggle(filterType, numericValue, handleSelected, selectedState)
+                filterType === "cuisineEthnicity" && handlePreferencesToggle(filterType, label.toLowerCase(), selectedState)
+                filterType === "caloricApport"  && handlePreferencesToggle(filterType, numericValue, selectedState)
+                filterType === "preparationTime" && handlePreferencesToggle(filterType, numericValue, selectedState)
+                filterType === "difficulty" && handlePreferencesToggle(filterType, numericValue, selectedState)
             }}
             className={`${classes.filterChip} ${selectedState ? classes.active : classes.inactive}`}
         >

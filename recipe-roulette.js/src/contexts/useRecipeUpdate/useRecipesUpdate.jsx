@@ -1,57 +1,67 @@
 import { useAuth } from "../../hooks/Auth/useAuth"
 import { useLocalStorage } from "../../hooks/useLocalStorage/useLocalStorage"
 
-export const useRecipesUpdate = (recipes, setRecipes ) => {
+export const useRecipesUpdate = (setRecipes) => {
     const { setValue } = useLocalStorage()
-     const { isAuthenticated } = useAuth() // Stato di autenticazione
-    
+    const { isAuthenticated } = useAuth() // Stato di autenticazione
+
     const handleRecipesUpdate = (recipe, setRecipe) => {
-        const updatedRecipe = { ...recipe, isFavorited: !recipe.isFavorited }
-        const isInResults = recipes.results.some((rec) => rec.id === recipe.id && rec.title === recipe.title)
+        let updatedRecipe = { ...recipe, isFavorited: !recipe.isFavorited }
+        setRecipes((prevRecipes) => {
+            const isInResults = prevRecipes.results.some((rec) => rec.id === recipe.id && rec.title === recipe.title)
 
-        let newFavorites
-        let newResults
+            let newFavorites
+            let newResults
 
-        if (isInResults) {
-            newFavorites = updatedRecipe.isFavorited
-                ? [...recipes.favorited, updatedRecipe]
-                : recipes.favorited.filter((rec) => rec.id !== recipe.id && rec.title !== recipe.title)
+            if (isInResults) {
+                newFavorites = updatedRecipe.isFavorited
+                    ? [...prevRecipes.favorited, updatedRecipe]
+                    : prevRecipes.favorited.filter((rec) => rec.id !== recipe.id && rec.title !== recipe.title)
 
-            newResults = recipes.results.map((rec) => (rec.id === recipe.id && rec.title === recipe.title ? updatedRecipe : rec))
-        } else {
-            newFavorites = updatedRecipe.isFavorited
-                ? [...recipes.favorited, updatedRecipe]
-                : recipes.favorited.filter((rec) => rec.id !== recipe.id && rec.title !== recipe.title)
+                newResults = prevRecipes.results.map((rec) =>
+                    rec.id === recipe.id && rec.title === recipe.title ? updatedRecipe : rec
+                )
+            } else {
+                newFavorites = updatedRecipe.isFavorited
+                    ? [...prevRecipes.favorited, updatedRecipe]
+                    : prevRecipes.favorited.filter((rec) => rec.id !== recipe.id && rec.title !== recipe.title)
 
-            newResults = recipes.results
-        }
+                newResults = prevRecipes.results
+            }
 
-        const updatedRecipes = {
-            ...recipes,
-            results: newResults,
-            filtered: newFavorites,
-            searched: newFavorites,
-            favorited: newFavorites,
-        }
+            const updatedRecipes = {
+                ...prevRecipes,
+                results: newResults,
+                filtered: newFavorites,
+                searched: newFavorites,
+                favorited: newFavorites,
+            }
 
-        // Aggiornamento della variabile di stato recipes
-        setRecipes(updatedRecipes)
+            // Aggiornamento localStorage se autenticati
+            if (isAuthenticated) {
+                setValue("recipes", updatedRecipes)
+            }
+
+            return updatedRecipes
+        })
 
         // Aggiornamento dello stato della card
         setRecipe(updatedRecipe)
-
-        // Aggiornamento localStorage se autenticati
-        isAuthenticated && setValue("recipes", updatedRecipes)
     }
 
     // Gestione della ricetta aperta a schermo intero
     const handleTargetedRecipe = (recipe) => {
-        let updatedRecipes = { ...recipes, targetedRecipe: recipe }
+        if (!recipe) return
+        setRecipes((prevRecipes) => {
+            const updatedRecipes = { ...prevRecipes, targetedRecipe: recipe }
 
-        if (recipe) {
-            setRecipes(updatedRecipes)
-            setValue("recipes", updatedRecipes)
-        }
+            // Aggiornamento localStorage se autenticati
+            if (isAuthenticated) {
+                setValue("recipes", updatedRecipes)
+            }            
+            
+            return updatedRecipes // Ritorna il nuovo stato aggiornato di recipes
+        })
     }
 
     return {

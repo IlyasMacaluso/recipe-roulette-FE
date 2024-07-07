@@ -6,31 +6,18 @@ export function useFilterChipRecipes(label, filterType, numericValue) {
     const { recipeFilter } = useRecipesContext()
 
     useEffect(() => {
-        filterType === "cuisineEthnicity" &&
-            setTimeout(() => {
-                if (recipeFilter.cuisineEthnicity.some((cuisine) => cuisine.toLowerCase() === label.toLowerCase())) {
-                    setSelectedState(true)
-                } else {
-                    setSelectedState(false)
-                }
-            }, 0)
-            if (filterType === "caloricApport" || filterType ==="preparationTime" || filterType==="difficulty") {
-                setTimeout(() => {
-                    if (recipeFilter[filterType] === numericValue) {
-                        setSelectedState(true)
-                    } else {
-                        setSelectedState(false)
-                    }
-                }, 0)
+        setSelectedState((prevSelectedState) => {
+            if (filterType === "cuisineEthnicity") {
+                return recipeFilter.cuisineEthnicity.some((cuisine) => cuisine.toLowerCase() === label.toLowerCase());
+            } else if (filterType === "caloricApport" || filterType === "preparationTime" || filterType === "difficulty") {
+                return recipeFilter[filterType] === numericValue;
             }
+            return prevSelectedState; // Ritorna lo stato precedente se nessuna delle condizioni è verificata
+        });
     }, [recipeFilter])
-
-    function handleSelected() {
-        setSelectedState((prevState) => !prevState)
-    }
+    
 
     return {
         selectedState,
-        handleSelected,
     }
 }

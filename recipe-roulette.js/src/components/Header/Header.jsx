@@ -69,7 +69,6 @@ export function Header({ handleMenuToggle, handleSidebarToggle, handleRecipesSid
         if (location.pathname === "/recipe") {
             try {
                 const { targetedRecipe } = JSON.parse(localStorage.getItem("recipes"))
-                console.log(targetedRecipe)
                 if (targetedRecipe) {
                     setRecipes((prev) => {
                         return {

@@ -29,12 +29,13 @@ export const RecipesProvider = ({ children }) => {
         useRecipeFilter()
 
     // hook per aggiornare le ricette
-    const { handleRecipesUpdate, handleTargetedRecipe } = useRecipesUpdate(recipes, setRecipes)
+    const { handleRecipesUpdate, handleTargetedRecipe } = useRecipesUpdate(setRecipes)
 
     // hook per l'autenticazione
     const { isAuthenticated } = useAuth() // Stato di autenticazione
 
     // Recupero le ricette dal localStorage quando isAuthenticated cambia
+
     useEffect(() => {
         const localRecipes = getValue("recipes")
         const localFilters = getValue("recipeFilter")
@@ -46,26 +47,31 @@ export const RecipesProvider = ({ children }) => {
             localRecipes && setRecipes(localRecipes)
         } else {
             // Se non si è autenticati, setta isFavorited:false (nella variabile di stato)
-            if (localRecipes) {
-                const resetRecipes = (recipes) => {
-                    const resetRecipeList = (list) => {
-                        if (list && list.length > 0) {
-                            list.map((rec) => ({ ...rec, isFavorited: false }))
-                        }
-                    }
-
+            const resetRecipeList = (list) => {
+                if (list && list.length > 0) {
+                    return list.map((rec) => ({ ...rec, isFavorited: false }));
+                }
+                return [];
+            }
+            
+            setRecipes((prevRecipes) => {
+            
+                if (localRecipes) {
                     return {
-                        ...recipes,
-                        results: resetRecipeList(recipes.results),
+                        ...prevRecipes,
+                        results: resetRecipeList(localRecipes.results),
                         filtered: [],
-                        targetedRecipe: localRecipes.targetedRecipe && { ...recipes.targetedRecipe, isFavorited: false },
+                        targetedRecipe: localRecipes.targetedRecipe
+                            ? { ...prevRecipes.targetedRecipe, isFavorited: false }
+                            : null,
                         favorited: [],
                         searched: [],
-                    }
+                    };
                 }
-
-                setRecipes(resetRecipes(localRecipes))
-            }
+            
+                return prevRecipes; // Se localRecipes non è definito, ritorna lo stato corrente senza modifiche
+            });
+            
         }
     }, [isAuthenticated])
 
@@ -82,42 +88,41 @@ export const RecipesProvider = ({ children }) => {
 
     // Filtro i risultati quando viene modificato l'input
     useEffect(() => {
-        if (recipes.filtered && recipes.filtered.length > 0) {
-            const newFiltered = recipes.filtered.filter((rec) => rec.title.toLowerCase().includes(inputValue.toLowerCase()))
-            setRecipes((prev) => ({ ...prev, searched: newFiltered }))
-        }
+        setRecipes((prevRecipes) => {
+            if (prevRecipes.filtered && prevRecipes.filtered.length > 0) {
+                const newFiltered = prevRecipes.filtered.filter((rec) =>
+                    rec.title.toLowerCase().includes(inputValue.toLowerCase())
+                )
+
+                return { ...prevRecipes, searched: newFiltered }
+            }
+            return prevRecipes
+        })
     }, [inputValue])
 
     // Aggiorno le ricette visualizzate quando vengono modificati i filtri o aggiunti preferiti
     useEffect(() => {
-        let filtering = recipes.favorited.filter(
-            (rec) => rec && rec.caloricApport <= recipeFilter.caloricApport && rec.preparationTime <= recipeFilter.preparationTime
-        )
+        setRecipes((prevRecipes) => {
+            // Copia delle ricette originali per lavorarci in modo sicuro
+            const updatedFiltered = prevRecipes.favorited.filter((rec) => {
+                return (
+                    rec.caloricApport <= recipeFilter.caloricApport &&
+                    rec.preparationTime <= recipeFilter.preparationTime &&
+                    (recipeFilter.isGlutenFree ? rec.isGlutenFree : true) &&
+                    (recipeFilter.isVegetarian ? rec.isVegetarian : true) &&
+                    (recipeFilter.isVegan ? rec.isVegan : true) &&
+                    (recipeFilter.cuisineEthnicity.includes("all") ||
+                        recipeFilter.cuisineEthnicity.includes(rec.cuisineEthnicity.toLowerCase())) &&
+                    (recipeFilter.difficulty === "all" || recipeFilter.difficulty.toLowerCase() === rec.difficulty.toLowerCase())
+                )
+            })
 
-        const filterRecipes = (prop) => (filtering = filtering.filter((item) => item[prop])) //funzione per filtrare in base alla prop
-
-        // Filtra in base alle preferenze selezionate
-        recipeFilter.isGlutenFree && filterRecipes("isGlutenFree")
-        recipeFilter.isVegetarian && filterRecipes("isVegetarian")
-        recipeFilter.isVegan && filterRecipes("isVegan")
-
-        // Se non è selezionato "all", filtra in base ai tipi di cucina selezionati
-        if (!recipeFilter.cuisineEthnicity.find((cuisine) => cuisine === "all")) {
-            filtering = filtering.filter((rec) =>
-                recipeFilter.cuisineEthnicity.some((cuisine) => {
-                    return cuisine.toLowerCase() === rec.cuisineEthnicity.toLowerCase()
-                })
-            )
-        }
-
-        if (recipeFilter.difficulty !== "all") {
-            filtering = filtering.filter((rec) => recipeFilter.difficulty.toLocaleLowerCase() === rec.difficulty.toLowerCase())
-        }
-        // Imposta il risultato del filtering alla variabile di stato dedicata
-        setRecipes((prev) => ({
-            ...prev,
-            filtered: filtering,
-        }))
+            // Ritorna il nuovo stato di recipes aggiornato, mantenendo inalterate le altre proprietà
+            return {
+                ...prevRecipes,
+                filtered: updatedFiltered,
+            }
+        })
     }, [recipeFilter, recipes.favorited])
 
     return (

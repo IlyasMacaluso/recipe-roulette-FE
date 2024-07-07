@@ -22,7 +22,7 @@ export function useIngredientCard(ing) {
     const { handleOpenSnackbar } = useSnackbar()
 
     useEffect(() => {
-        setCardState({ label, id, bgColor, isSelected, isBlackListed })
+        setCardState(ingState)
     }, [ingredients])
 
     useEffect(() => {

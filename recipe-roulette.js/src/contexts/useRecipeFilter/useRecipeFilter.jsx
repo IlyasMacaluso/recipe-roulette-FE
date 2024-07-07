@@ -36,55 +36,48 @@ export const useRecipeFilter = () => {
 
     // Gestione delle proprietà booleane di recipeFilter
     const toggleRecipeFilter = (prop) => {
-        const newState = !recipeFilter[prop]
-        const newFilters = { ...recipeFilter, [prop]: newState }
-        setRecipeFilter(newFilters)
-        setValue("recipeFilter", newFilters)
+        setRecipeFilter((prevFilters) => {
+            const newState = !prevFilters[prop]
+            const newFilters = { ...prevFilters, [prop]: newState }
+            setValue("recipeFilter", newFilters) // Aggiorna il valore nel local storage o dove necessario
+            return newFilters // Ritorna il nuovo stato aggiornato
+        })
     }
 
     // Gestione delle proprietà non booleane di recipeFilter
-    const handlePreferencesToggle = (filterType, value, handleSelected, selectedState) => {
-        if (filterType === "caloricApport" || filterType === "preparationTime" || filterType === "difficulty") {
-            if (!selectedState) {
-                const newFilters = { ...recipeFilter, [filterType]: value }
-                setRecipeFilter(newFilters)
-                setValue("recipeFilter", newFilters)
-            } else {
-                const newFilters = { ...recipeFilter, [filterType]: filterType === "difficulty" ? "all" : 9999 }
-                setRecipeFilter(newFilters)
-                setValue("recipeFilter", newFilters)
+    const handlePreferencesToggle = (filterType, value, selectedState) => {
+        setRecipeFilter((prevFilters) => {
+            let updatedFilters = { ...prevFilters }
+
+            // Gestione del filtro "caloricApport", "preparationTime" e "difficulty"
+            if (filterType === "caloricApport" || filterType === "preparationTime" || filterType === "difficulty") {
+                const newValue = !selectedState ? value : filterType === "difficulty" ? "all" : 9999
+                updatedFilters = { ...updatedFilters, [filterType]: newValue }
             }
-        }
 
-        // Gestione della proprietà cuisineEthnicity di recipeFilter
-        if (filterType === "cuisineEthnicity") {
-            let updatedEthnicity = [...recipeFilter.cuisineEthnicity] // Copia l'array originale
-            const alreadyThere = updatedEthnicity.find((cuisine) => cuisine.toLowerCase() === value)
+            // Gestione del filtro "cuisineEthnicity"
+            if (filterType === "cuisineEthnicity") {
+                let updatedEthnicity = [...prevFilters.cuisineEthnicity]
+                const alreadyThere = updatedEthnicity.find((cuisine) => cuisine.toLowerCase() === value)
 
-            if (value === "all") {
-                if (recipeFilter.cuisineEthnicity.find((cuisine) => cuisine === "all")) {
-                    updatedEthnicity = [] // Deseleziona tutti se "all" è già selezionato
-                    handleSelected(false)
+                if (value === "all") {
+                    updatedEthnicity = prevFilters.cuisineEthnicity.includes("all") ? [] : new RecipeFilter().cuisineEthnicity
                 } else {
-                    const { cuisineEthnicity } = new RecipeFilter()
-                    updatedEthnicity = cuisineEthnicity // Seleziona tutti se "all" non è selezionato
-                    handleSelected(true)
-                }
-            } else {
-                if (alreadyThere) {
-                    updatedEthnicity = updatedEthnicity.filter((item) => item !== value.toLowerCase() && item !== "all")
-                    handleSelected && handleSelected(false)
-                } else {
-                    updatedEthnicity.push(value.toLowerCase())
-                    if (updatedEthnicity.length === 10) {
-                        updatedEthnicity.push("all") // Seleziona anche "all" se tutte le altre cucine sono selezionate
+                    if (alreadyThere) {
+                        updatedEthnicity = updatedEthnicity.filter((item) => item !== value.toLowerCase() && item !== "all")
+                    } else {
+                        updatedEthnicity.push(value.toLowerCase())
+                        if (updatedEthnicity.length === 10) {
+                            updatedEthnicity.push("all")
+                        }
                     }
                 }
+                updatedFilters = { ...updatedFilters, cuisineEthnicity: updatedEthnicity }
             }
-            const newFilters = { ...recipeFilter, cuisineEthnicity: updatedEthnicity }
-            setRecipeFilter(newFilters)
-            setValue("recipeFilter", newFilters)
-        }
+
+            setValue("recipeFilter", updatedFilters) // Aggiorna il valore nel local storage o dove necessario
+            return updatedFilters // Ritorna il nuovo stato aggiornato
+        })
     }
 
     // Reset dei filtri recipeFilter
