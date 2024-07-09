@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react"
-import { useManageIngredients } from "../../../pages/Discovery/IngredientsContext"
+import { useManageIngredients } from "../../../pages/Roulette/IngredientsContext"
 import { useSnackbar } from "../../Snackbar/useSnackbar"
 
 export function useIngredientSearch(isFixed, searchCriteria) {

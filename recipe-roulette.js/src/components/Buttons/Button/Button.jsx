@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom"
+import { useNavigate } from "@tanstack/react-router"
 import classes from "./Button.module.scss"
 
 export function Button({
@@ -17,17 +17,19 @@ export function Button({
     function handleOnClick() {
         action && action()
         setTimeout(() => {
-            link && navigate(`/${link}`)
-            prevPath && prevPath === "/recipes-results" && navigate("/recipes-results")
-            prevPath && prevPath === "/login" && navigate("/")
-            prevPath && prevPath === "/signup" && navigate("/")
+            link && navigate({ to: `/${link}` })
+            prevPath && prevPath === "/recipes-results" && navigate({ to: "/recipes-results" })
+            prevPath && prevPath === "/login" && navigate({ to: "/" })
+            prevPath && prevPath === "/signup" && navigate({ to: "/" })
         }, 0)
     }
 
     return (
         <button
             type={type}
-            onClick={() => {active && handleOnClick()}}
+            onClick={() => {
+                active && handleOnClick()
+            }}
             className={`${classes.button} ${!active && classes.disabled} 
             ${width === "fill" && classes.wideButton}
             ${style === "primary" && classes.primaryColor}

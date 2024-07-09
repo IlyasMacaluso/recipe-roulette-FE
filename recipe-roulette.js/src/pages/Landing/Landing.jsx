@@ -1,12 +1,12 @@
-import { Link } from "react-router-dom"
+import { Link } from "@tanstack/react-router"
 import { useAnimate } from "../../hooks/animatePages/useAnimate"
 import { useLocationHook } from "../../hooks/useLocationHook"
 
 import LoopOutlinedIcon from "@mui/icons-material/LoopOutlined"
 import VolunteerActivismOutlinedIcon from "@mui/icons-material/VolunteerActivismOutlined"
-import classes from "./DiscoveryPreview.module.scss"
+import classes from "./Landing.module.scss"
 
-export function DiscoveryPreview() {
+export function Landing() {
     const { location } = useLocationHook()
     const { animate } = useAnimate(location)
 
@@ -20,12 +20,12 @@ export function DiscoveryPreview() {
                 </h2>
                 
                 <div className={classes.bottomItems}>
-                    <Link className={classes.cta} to={"./discovery"}>
+                    <Link className={classes.cta} to="/roulette">
                         <LoopOutlinedIcon />
                         <p>Start Ingredients Shuffle</p>
                     </Link>
 
-                    <Link className={classes.button} to={"./discovery"}>
+                    <Link className={classes.button} to="/roulette">
                         <VolunteerActivismOutlinedIcon />
                         <p>Support the Developers</p>
                     </Link>

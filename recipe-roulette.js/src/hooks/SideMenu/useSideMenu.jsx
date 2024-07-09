@@ -1,15 +1,8 @@
-import { useState, useEffect } from "react"
-import { useLocation } from "react-router-dom"
+import { useState } from "react"
 
 export function useSideMenu() {
-    const [path, setPath] = useState("/")
     const [menuState, setMenuState] = useState(false)
-    const location = useLocation()
-
-    useEffect(() => {
-        setPath(location.pathname)
-    }, [location.pathname])
-
+    console.log(menuState);
     function handleMenuToggle() {
         if (menuState) {
             setTimeout(() => {
@@ -20,5 +13,5 @@ export function useSideMenu() {
         }
     }
 
-    return { handleMenuToggle, setPath, path, menuState }
+    return { handleMenuToggle, menuState }
 }

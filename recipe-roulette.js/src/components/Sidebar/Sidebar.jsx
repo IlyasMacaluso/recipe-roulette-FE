@@ -1,4 +1,4 @@
-import { useManageIngredients } from "../../pages/Discovery/IngredientsContext"
+import { useManageIngredients } from "../../pages/Roulette/IngredientsContext"
 import { FilterChip } from "../FilterChip/FilterChip"
 import { Switch } from "../Switch/Switch"
 import { IngredientSearch } from "../Search/SearchBar/IngredientSearch"

@@ -1,4 +1,4 @@
-import { useLocation, useNavigate } from "react-router-dom"
+import { useLocation, useNavigate } from "@tanstack/react-router"
 import { useState, useEffect } from "react"
 import { useRecipesContext } from "../../contexts/RecipesContext"
 
@@ -10,7 +10,7 @@ import MenuOpenIcon from "@mui/icons-material/MenuOpen"
 
 import { IngredientSearch } from "../Search/SearchBar/IngredientSearch"
 import { IcoButton } from "../Buttons/IcoButton/IcoButton"
-import { useManageIngredients } from "../../pages/Discovery/IngredientsContext"
+import { useManageIngredients } from "../../pages/Roulette/IngredientsContext"
 import { BaseSearch } from "../Search/BaseSearch/BaseSearch"
 
 import classes from "./Header.module.scss"
@@ -30,7 +30,7 @@ export function Header({ handleMenuToggle, handleSidebarToggle, handleRecipesSid
             case "/":
                 setTitle("Welcome!")
                 break
-            case "/discovery":
+            case "/roulette":
                 setTitle("Roulette")
                 break
             case "/favorited":
@@ -39,10 +39,10 @@ export function Header({ handleMenuToggle, handleSidebarToggle, handleRecipesSid
             case "/settings":
                 setTitle("Settings")
                 break
-            case "/food-preferences":
+            case "/preferences":
                 setTitle("preferences")
                 break
-            case "/recipes-results":
+            case "/recipe-results":
                 setTitle("Results")
                 break
             case "/recipe":
@@ -91,7 +91,7 @@ export function Header({ handleMenuToggle, handleSidebarToggle, handleRecipesSid
                 <div className={classes.topItem}>
                     <div className={classes.leftItems}>
                         {location.pathname === "/recipes-results" ? (
-                            <IcoButton navigateTo="/discovery" icon={<ArrowBackIcon fontSize="small" />} style="transparent" />
+                            <IcoButton navigateTo="/Roulette" icon={<ArrowBackIcon fontSize="small" />} style="transparent" />
                         ) : null}
                         {location.pathname === "/recipe" ? (
                             <IcoButton
@@ -137,7 +137,7 @@ export function Header({ handleMenuToggle, handleSidebarToggle, handleRecipesSid
                         />
                     </section>
                 )}
-                {location.pathname === "/discovery" && (
+                {location.pathname === "/roulette" && (
                     <div className={classes.globalActions}>
                         <IngredientSearch isFixed={true} searchCriteria="isSelected" />
                         <IcoButton action={() => handleDeselectAll("isSelected")} icon={<LockResetIcon fontSize={"medium"} />} />

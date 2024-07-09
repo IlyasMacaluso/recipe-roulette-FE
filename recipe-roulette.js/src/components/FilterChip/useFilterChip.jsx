@@ -1,5 +1,5 @@
 import { useState } from "react"
-import { useManageIngredients } from "../../pages/Discovery/IngredientsContext"
+import { useManageIngredients } from "../../pages/Roulette/IngredientsContext"
 
 export function useFilterChips( id, label, bgColor, isSelected, isBlackListed )  {
     const [ingState, setIngState] = useState({

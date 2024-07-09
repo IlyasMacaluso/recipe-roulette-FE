@@ -3,7 +3,7 @@ import { useLocalStorage } from "../../../hooks/useLocalStorage/useLocalStorage"
 export const useIngredientUpdate = (ingredients, setIngredients) => {
     const { setValue } = useLocalStorage()
 
-    const handleIngUpdate = (prop, cardState, setCardState) => {
+    const handleIngUpdate = (prop, cardState) => {
         setIngredients((prev) => {
             // Aggiorna la proprietà specificata per l'ingrediente corrispondente in tutti gli ingredienti
             const updatedIngs = prev.all.map((item) =>
@@ -62,37 +62,19 @@ export const useIngredientUpdate = (ingredients, setIngredients) => {
     
             return newIngredients;
         });
-    
-        // Aggiorna lo stato della carta, se definito
-        if (setCardState) {
-            setCardState((prevState) => ({ ...prevState, [prop]: !prevState[prop] }));
-        }
+
     };
     
 
     //deleseziona anche gli elementi blacklistati!!
-    const handleDeselectAll = (prop, setCardState, setFilterState) => {
+    const handleDeselectAll = (prop) => {
         // Funzione per mappare l'array e impostare il valore della proprietà a false
         const mapArray = (array) => array && array.length > 0 && array.map((item) => ({ ...item, [prop]: false }))
 
         setIngredients((prev) => {
-            const selectedIng = prev.displayed.filter((ing) => ing.isSelected)
             const newIngredients = mapArray(prev.all)
             let newDisplayed = mapArray(prev.displayed)
             let newBlacklisted = prev.blacklisted
-
-            // Gestisce la deselezione degli ingredienti selezionati
-            if (prop === "isSelected" && selectedIng.length > 0) {
-                if (setCardState) {
-                    setCardState((prevData) => ({ ...prevData, [prop]: false }))
-                }
-                // Gestisce la rimozione degli ingredienti dalla blacklist
-            } else if (prop === "isBlackListed") {
-                newBlacklisted = []
-                if (setFilterState) {
-                    setFilterState((prevData) => ({ ...prevData, [prop]: false }))
-                }
-            }
 
             // Ritorna il nuovo stato degli ingredienti
             return {

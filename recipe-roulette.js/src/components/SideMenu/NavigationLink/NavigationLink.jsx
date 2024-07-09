@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom"
+import { Link } from "@tanstack/react-router"
 import classes from "../SideMenu.module.scss"
 
 export function NavigationLink({ label, icon, destination, path, handleMenuToggle, action }) {

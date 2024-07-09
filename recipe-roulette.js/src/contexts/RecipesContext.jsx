@@ -1,5 +1,5 @@
 import { createContext, useContext, useEffect, useState } from "react"
-import { useLocation } from "react-router-dom"
+import { useLocation } from  "@tanstack/react-router"
 import { useAuth } from "../hooks/Auth/useAuth"
 import { useFetchPreferences } from "../hooks/fetchPreferences/useFetchPreferences"
 import { useLocalStorage } from "../hooks/useLocalStorage/useLocalStorage"

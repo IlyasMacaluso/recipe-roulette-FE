@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react"
 import { useRecipesContext } from "../../contexts/RecipesContext"
-import { useLocation, useNavigate } from "react-router-dom"
+import { useLocation, useNavigate } from  "@tanstack/react-router"
 import { useAuth } from "../../hooks/Auth/useAuth"
 
 export function useRecipeCard(recipe, isExpanded) {

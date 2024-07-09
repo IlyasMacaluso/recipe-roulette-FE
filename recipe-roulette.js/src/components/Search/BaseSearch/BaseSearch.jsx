@@ -24,12 +24,11 @@ export function BaseSearch({ data = [], inputValue = "", setInputValue }) {
     // Handle back button when fixedPosition is true
     const handleBackButton = useCallback(
         (event) => {
-            if (isFocused) {
+            if (searchState.inputActive) {
                 event.preventDefault()
+                setCondition(true)
                 if (inputRef.current) {
-                    inputRef.current.blur()
                     handleBlur(inputRef, { setSearchState, setFixedPosition }) // Update the focus state
-                    setCondition(true)
                 }
             }
         },

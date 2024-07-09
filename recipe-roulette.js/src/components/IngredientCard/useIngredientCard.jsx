@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react"
-import { useManageIngredients } from "../../pages/Discovery/IngredientsContext"
+import { useManageIngredients } from "../../pages/Roulette/IngredientsContext"
 import { useIngredientSuggestion } from "../Search/Suggestions/useIngredientSuggestion"
 import { useSnackbar } from "../Snackbar/useSnackbar"
 
@@ -13,17 +13,19 @@ export function useIngredientCard(ing) {
         isSelected,
         isBlackListed,
     })
-    const { ingState } = useIngredientSuggestion(id, label, bgColor, isSelected, isBlackListed)
 
-    //Context Provider stuff
+    //Context Provider
     const { handleIngUpdate, handleIngDecrement, ingredients } = useManageIngredients()
 
-    //Snackbar
+    //Snackbar (for messages)
     const { handleOpenSnackbar } = useSnackbar()
 
     useEffect(() => {
-        setCardState(ingState)
-    }, [ingState])
+        console.log(ing)
+        setCardState((old) => {
+            return { ...old, isSelected: ing.isSelected }
+        })
+    }, [ing])
 
     function handleIngredientClick() {
         if (cardState.isBlackListed && !cardState.isSelected) {
@@ -31,7 +33,7 @@ export function useIngredientCard(ing) {
         } else if (!ingredients.filtered.find((ing) => ing.id === cardState.id) && !cardState.isSelected) {
             handleOpenSnackbar("You have filtered this type of ingredeints!")
         } else {
-            handleIngUpdate("isSelected", cardState, setCardState)
+            handleIngUpdate("isSelected", cardState)
         }
     }
 

@@ -2,7 +2,7 @@ import RecipeCard from "../../components/RecipeCard/RecipeCard"
 import { useAnimate } from "../../hooks/animatePages/useAnimate"
 import { useRecipesContext } from "../../contexts/RecipesContext"
 import { useMemo, useState } from "react"
-import { Link } from "react-router-dom"
+import { Link } from "@tanstack/react-router"
 
 import { useAuth } from "../../hooks/Auth/useAuth"
 import { Popup } from "../../components/Pop-up/Popup"
@@ -68,7 +68,7 @@ export function Favorited() {
                         Find and favorite your first recipe!
                     </h2>
 
-                    <Link className={classes.cta} to={"/discovery"}>
+                    <Link className={classes.cta} to="/discovery">
                         <LoopOutlinedIcon />
                         <p>Start Ingredients Shuffle</p>
                     </Link>

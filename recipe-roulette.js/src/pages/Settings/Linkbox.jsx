@@ -5,7 +5,7 @@ import LoginIcon from "@mui/icons-material/Login";
 import NavigateNextOutlinedIcon from "@mui/icons-material/NavigateNextOutlined";
 
 import classes from "./Settings.module.scss";
-import { Link } from "react-router-dom";
+import { Link } from "@tanstack/react-router";
 import { useState } from "react";
 import { createPortal } from "react-dom";
 import { useAuth } from "../../hooks/Auth/useAuth";

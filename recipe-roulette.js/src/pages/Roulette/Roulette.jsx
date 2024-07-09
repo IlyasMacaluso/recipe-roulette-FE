@@ -1,5 +1,4 @@
 import { IngredientCard } from "../../components/IngredientCard/IngredientCard"
-import { useManageIngredients } from "../Discovery/IngredientsContext"
 import { useAnimate } from "../../hooks/animatePages/useAnimate"
 import { Button } from "../../components/Buttons/Button/Button"
 import { useButtonState } from "../../hooks/ButtonState/useButtonState"
@@ -12,9 +11,10 @@ import { useShakeAnimation } from "../../hooks/useShakeAnimation/useShakeAnimati
 import ManageSearchOutlinedIcon from "@mui/icons-material/ManageSearchOutlined"
 import AddIcon from "@mui/icons-material/Add"
 import LoopOutlinedIcon from "@mui/icons-material/LoopOutlined"
-import classes from "./Discovery.module.scss"
+import classes from "./Roulette.module.scss"
+import { useManageIngredients } from "./IngredientsContext"
 
-export function Discovery() {
+export function Roulette() {
     const { ingredients, shuffleIng, handleIngIncrement } = useManageIngredients()
     const { recipeFilter } = useRecipesContext()
     const { isActive, setIsActive } = useButtonState(true)
@@ -59,7 +59,7 @@ export function Discovery() {
                 </button>
 
                 <Button
-                    link={"recipes-results"}
+                    link={"recipe-results"}
                     width={"fill"}
                     active={true}
                     action={() => {

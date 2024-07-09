@@ -1,4 +1,4 @@
-import { useLocation } from "react-router-dom"
+import { useLocation } from  "@tanstack/react-router"
 import { useRecipeCard } from "./useRecipeCard"
 import { useRecipesContext } from "../../contexts/RecipesContext"
 import { FilterChip } from "../FilterChip/FilterChip"
