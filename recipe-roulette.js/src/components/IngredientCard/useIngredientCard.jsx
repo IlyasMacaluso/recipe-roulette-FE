@@ -23,10 +23,6 @@ export function useIngredientCard(ing) {
 
     useEffect(() => {
         setCardState(ingState)
-    }, [ingredients])
-
-    useEffect(() => {
-        setCardState(ingState)
     }, [ingState])
 
     function handleIngredientClick() {
