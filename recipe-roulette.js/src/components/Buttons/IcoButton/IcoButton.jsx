@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router-dom"
+import { useNavigate } from "@tanstack/react-router"
 import classes from "./IcoButton.module.scss"
 
 export function IcoButton({ style = "default", navigateTo = null, icon = null, action = null, active = true }) {

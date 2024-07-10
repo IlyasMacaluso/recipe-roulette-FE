@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from "/src/hooks/Auth/useAuth.jsx";
-import { useNavigate } from "react-router";
+import { useNavigate } from "@tanstack/react-router"
 
 export function useProfile() {
     const [editing, setEditing] = useState(false);

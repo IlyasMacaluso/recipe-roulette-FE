@@ -1,4 +1,4 @@
-import { useNavigate } from "react-router";
+import { useNavigate } from "@tanstack/react-router"
 import { useAuth } from "../../../hooks/Auth/useAuth";
 import { Button } from "../../Buttons/Button/Button";
 import LogoutIcon from '@mui/icons-material/Logout';

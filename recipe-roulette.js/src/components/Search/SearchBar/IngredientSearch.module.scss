@@ -10,7 +10,6 @@
     overscroll-behavior: contain;
 
     left: 0;
-    transition: width 0.45s cubic-bezier(0.08, 0.82, 0.17, 1);
 }
 .searchBar {
     position: relative;
@@ -22,11 +21,7 @@
     padding: 0;
     box-sizing: border-box;
     overflow: hidden;
-    transition: width 0.45s cubic-bezier(0.08, 0.82, 0.17, 1);
-
     input {
-        position: absolute;
-
         display: flex;
         align-items: center;
 

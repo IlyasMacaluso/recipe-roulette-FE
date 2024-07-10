@@ -15,11 +15,13 @@ import { useState } from "react"
 import { ValidationBox } from "../Validation Box/ValidationBox"
 import { useSnackbar } from "../Snackbar/useSnackbar"
 import { Login } from "../authentication/login/Login"
+import { useLocation } from "@tanstack/react-router"
 
-export function SideMenu({ handleMenuToggle, menuState = false, path = "/" }) {
+export function SideMenu({ handleMenuToggle, menuState = false }) {
     const { logout, isAuthenticated } = useAuth()
     const [showPopup, setShowPopup] = useState()
     const { handleOpenSnackbar } = useSnackbar()
+    const {pathname} = useLocation()
 
     return (
         <div>
@@ -34,21 +36,21 @@ export function SideMenu({ handleMenuToggle, menuState = false, path = "/" }) {
                 </header>
                 <section className={classes.links}>
                     <NavigationLink
-                        path={path}
+                        path={pathname}
                         handleMenuToggle={handleMenuToggle}
                         label="Roulette"
                         destination="/roulette"
                         icon={<AutorenewIcon fontSize="small" />}
                     />
                     <NavigationLink
-                        path={path}
+                        path={pathname}
                         handleMenuToggle={handleMenuToggle}
                         label="Favorited"
                         destination="/favorited"
                         icon={<BookmarksOutlinedIcon fontSize="small" />}
                     />
                     <NavigationLink
-                        path={path}
+                        path={pathname}
                         handleMenuToggle={handleMenuToggle}
                         label="Settings"
                         destination="/settings"
@@ -57,7 +59,6 @@ export function SideMenu({ handleMenuToggle, menuState = false, path = "/" }) {
                     <div className={classes.separator} />
                     {isAuthenticated ? (
                         <NavigationLink
-                            path={path}
                             handleMenuToggle={handleMenuToggle}
                             label={"Logout"}
                             icon={<LogoutIcon fontSize="small" />}
@@ -65,7 +66,6 @@ export function SideMenu({ handleMenuToggle, menuState = false, path = "/" }) {
                         />
                     ) : (
                         <NavigationLink
-                            path={path}
                             handleMenuToggle={handleMenuToggle}
                             label="Login"
                             icon={<LoginOutlinedIcon fontSize="small" />}

@@ -141,7 +141,7 @@ export function Header({ handleMenuToggle, handleSidebarToggle, handleRecipesSid
                     <div className={classes.globalActions}>
                         <IngredientSearch isFixed={true} searchCriteria="isSelected" />
                         <IcoButton action={() => handleDeselectAll("isSelected")} icon={<LockResetIcon fontSize={"medium"} />} />
-                        <IcoButton action={() => handleSidebarToggle()} icon={<TuneIcon fontSize={"small"} />} />
+                        <IcoButton action={() => handleSidebarToggle && handleSidebarToggle()} icon={<TuneIcon fontSize={"small"} />} />
                     </div>
                 )}
             </header>

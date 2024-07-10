@@ -1,6 +1,6 @@
 import { useState } from "react"
 import { useMutation } from "@tanstack/react-query"
-import { useNavigate } from "react-router-dom";
+import { useNavigate } from "@tanstack/react-router"
 import { useSnackbar } from "../../components/Snackbar/useSnackbar";
 
 export function useSignup() {

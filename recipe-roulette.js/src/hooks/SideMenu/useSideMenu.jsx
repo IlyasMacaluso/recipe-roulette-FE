@@ -2,7 +2,6 @@ import { useState } from "react"
 
 export function useSideMenu() {
     const [menuState, setMenuState] = useState(false)
-    console.log(menuState);
     function handleMenuToggle() {
         if (menuState) {
             setTimeout(() => {

@@ -32,6 +32,7 @@ export function useIngredientSearch(isFixed, searchCriteria) {
     const handleInputActivation = (e) => {
         e.stopPropagation()
         isFixed && setFixedPosition(true)
+        setInputValues((old) => ({ ...old, current: "" }))
         setSearchState({ inputActive: true })
     }
     const handleBlur = (inputRef, setState) => {
@@ -70,64 +71,64 @@ export function useIngredientSearch(isFixed, searchCriteria) {
             }
         }
     }
-    
+
     const handleInputDeactivation = (prop) => {
         // Filtra gli ingredienti selezionati attualmente nella visualizzazione
-        const selectedIngs = ingredients.displayed.filter((ing) => ing.isSelected);
-    
+        const selectedIngs = ingredients.displayed.filter((ing) => ing.isSelected)
+
         // Filtra gli ingredienti nel database che corrispondono alla ricerca corrente
         const isInDatabase = ingredients.filtered.filter(
             (ing) => ing.name.toUpperCase().includes(inputValues.current.toUpperCase()) && !ing.isSelected && !ing.isBlackListed
-        );
-    
-        let firstAvailableIngredient = null;
-    
+        )
+
+        let firstAvailableIngredient = null
+
         if (prop === "isBlackListed") {
             // Filtra gli ingredienti già presenti nella lista nera
             const notAlreadyBL = ingredients.blacklisted.filter((blIngredient) =>
-                isInDatabase.some((dbIngredient) =>
-                    dbIngredient.id === blIngredient.id || dbIngredient.name.toUpperCase() === blIngredient.name.toUpperCase()
+                isInDatabase.some(
+                    (dbIngredient) =>
+                        dbIngredient.id === blIngredient.id || dbIngredient.name.toUpperCase() === blIngredient.name.toUpperCase()
                 )
-            );
-    
+            )
+
             // Trova il primo ingrediente disponibile che non è già nella lista nera
             firstAvailableIngredient = isInDatabase.find(
                 (dbIngredient) => !notAlreadyBL.some((blIngredient) => blIngredient.id === dbIngredient.id)
-            );
+            )
         } else if (prop === "isSelected") {
             // Filtra gli ingredienti già selezionati nella visualizzazione
             const notAlreadySelected = selectedIngs.filter((onDisplay) =>
-                isInDatabase.some((dbIngredient) =>
-                    dbIngredient.id === onDisplay.id || dbIngredient.name.toUpperCase() === onDisplay.name.toUpperCase()
+                isInDatabase.some(
+                    (dbIngredient) =>
+                        dbIngredient.id === onDisplay.id || dbIngredient.name.toUpperCase() === onDisplay.name.toUpperCase()
                 )
-            );
-    
+            )
+
             // Verifica se il numero massimo di ingredienti selezionati è stato raggiunto
             if (selectedIngs.length === 8) {
-                handleOpenSnackbar("You've reached the maximum number of ingredients!");
+                handleOpenSnackbar("You've reached the maximum number of ingredients!")
             } else {
                 // Trova il primo ingrediente disponibile che non è già stato selezionato
                 firstAvailableIngredient = isInDatabase.find(
                     (dbIngredient) => !notAlreadySelected.some((selIngredient) => selIngredient.id === dbIngredient.id)
-                );
+                )
             }
         }
-    
+
         // Resetta il valore corrente dell'input e lo stato della ricerca
-        setInputValues((prev) => ({ ...prev, current: "" }));
-        setSearchState({ inputActive: false });
-    
+        setInputValues((prev) => ({ ...prev, current: "" }))
+        setSearchState({ inputActive: false })
+
         // Se è stato trovato un ingrediente disponibile, aggiorna lo stato della carta e mostra una notifica
         if (firstAvailableIngredient) {
-            handleIngUpdate(prop, firstAvailableIngredient, setCardState);
-            handleOpenSnackbar(`${firstAvailableIngredient.name} was locked!`, 1500);
+            handleIngUpdate(prop, firstAvailableIngredient, setCardState)
+            handleOpenSnackbar(`${firstAvailableIngredient.name} was locked!`, 1500)
         } else {
             // Altrimenti, aggiorna le suggerimenti degli ingredienti
-            setSuggestions(ingredients.all.filter((ing) => !ing.isBlacklisted));
+            setSuggestions(ingredients.all.filter((ing) => !ing.isBlacklisted))
         }
-    };
-    
-    
+    }
 
     const handlePressEnter = (e, inputRef, setState) => {
         if (e.keyCode === 13) {

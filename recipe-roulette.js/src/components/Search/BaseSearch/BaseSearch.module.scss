@@ -10,15 +10,14 @@
     border-radius: 2rem;
     outline: 1px solid $light-gray;
     overflow: hidden;
+    transition: border-radius 1s cubic-bezier(0.08, 0.82, 0.17, 1);
 
-    transition:
-        transform 0.45s cubic-bezier(0.08, 0.82, 0.17, 1),
-        border-radius 0.1s cubic-bezier(0.08, 0.82, 0.17, 1);
     .searchBar {
         position: relative;
         box-sizing: border-box;
         width: 100%;
         background-color: white;
+
         .input {
             width: 90%;
             background-color: transparent;
@@ -102,26 +101,22 @@
     height: 0;
     overflow: hidden;
     background-color: white;
-    transition: height 0.45s cubic-bezier(0.08, 0.82, 0.17, 1);
 }
 .baseSearchActive {
-    position: absolute;
-    transform: translateY(-3.75rem);
+    position: fixed;
+    transform: translateY(0);
     top: 0;
     left: 0;
     width: 100%;
     height: fit-content;
     border-radius: 0;
 
-    transition:
-        transform 0.45s cubic-bezier(0.08, 0.82, 0.17, 1),
-        border-radius 1s cubic-bezier(0.08, 0.82, 0.17, 1);
+    transition: border-radius 1s cubic-bezier(0.08, 0.82, 0.17, 1);
 }
 
 .baseSearchActive .searchBar {
     background-color: $second-color;
     height: 3rem;
-    transition: height 0.45s cubic-bezier(0.08, 0.82, 0.17, 1);
 }
 .baseSearchActive .suggestionsWrapper {
     height: 100svh;

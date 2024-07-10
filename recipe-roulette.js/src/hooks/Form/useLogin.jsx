@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useAuth } from "../Auth/useAuth";
-import { useNavigate } from "react-router";
+import { useNavigate } from "@tanstack/react-router"
 import { useMutation } from "@tanstack/react-query";
 import { useSnackbar } from "../../components/Snackbar/useSnackbar";
 

@@ -7,12 +7,12 @@ import { useRecipesContext } from "../../contexts/RecipesContext"
 import { useLocationHook } from "../../hooks/useLocationHook"
 import { useRecipesFetch } from "../../hooks/useRecipesFetch/useRecipesFetch"
 import { useShakeAnimation } from "../../hooks/useShakeAnimation/useShakeAnimation"
+import { useManageIngredients } from "./IngredientsContext"
 
 import ManageSearchOutlinedIcon from "@mui/icons-material/ManageSearchOutlined"
 import AddIcon from "@mui/icons-material/Add"
 import LoopOutlinedIcon from "@mui/icons-material/LoopOutlined"
 import classes from "./Roulette.module.scss"
-import { useManageIngredients } from "./IngredientsContext"
 
 export function Roulette() {
     const { ingredients, shuffleIng, handleIngIncrement } = useManageIngredients()
