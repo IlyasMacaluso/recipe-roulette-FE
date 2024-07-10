@@ -99,9 +99,9 @@ export function Header({ handleMenuToggle, handleSidebarToggle, handleRecipesSid
                                     try {
                                         const path = localStorage.getItem("prevPath")
                                         if (path) {
-                                            navigate(path)
+                                            navigate({ to: path })
                                         } else {
-                                            navigate("/")
+                                            navigate({ to: "/" })
                                         }
                                     } catch (error) {
                                         console.log(error)
@@ -141,7 +141,10 @@ export function Header({ handleMenuToggle, handleSidebarToggle, handleRecipesSid
                     <div className={classes.globalActions}>
                         <IngredientSearch isFixed={true} searchCriteria="isSelected" />
                         <IcoButton action={() => handleDeselectAll("isSelected")} icon={<LockResetIcon fontSize={"medium"} />} />
-                        <IcoButton action={() => handleSidebarToggle && handleSidebarToggle()} icon={<TuneIcon fontSize={"small"} />} />
+                        <IcoButton
+                            action={() => handleSidebarToggle && handleSidebarToggle()}
+                            icon={<TuneIcon fontSize={"small"} />}
+                        />
                     </div>
                 )}
             </header>
