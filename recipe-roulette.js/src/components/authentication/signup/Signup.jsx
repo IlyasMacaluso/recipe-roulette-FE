@@ -9,7 +9,7 @@ import CloseIcon from "@mui/icons-material/Close"
 import classes from "./Signup.module.scss"
 
 export function Signup({ setShowPopup = null, setChangeToSignup = null }) {
-    const { data, passError, handleInput, handleSubmit } = useSignup()
+    const { data, passError, handleInput, handleSubmit } = useSignup(setShowPopup)
     const location = useLocation()
 
     return (
@@ -26,7 +26,6 @@ export function Signup({ setShowPopup = null, setChangeToSignup = null }) {
             <form
                 onSubmit={(e) => {
                     handleSubmit(e)
-                    setShowPopup && setShowPopup(false)
                 }}
                 className={classes.formBox}
             >

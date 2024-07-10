@@ -36,8 +36,8 @@ export const Route = createRootRoute({
                                             handleSidebarToggle={handleSidebarToggle}
                                             handleMenuToggle={handleMenuToggle}
                                         />
-                                        <Outlet />
                                         <Snackbar />
+                                        <Outlet />
                                         <TanStackRouterDevtools />
                                     </SearchProvider>
                                 </SnackbarProvider>

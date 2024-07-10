@@ -37,7 +37,7 @@ export function RecipeResults() {
                     <BlocksShuffleThree color="#00a55b" width={"40%"} height={"40%"} />
                     <h2>
                         <span>Generating Your Recipes!</span> <br />
-                        This could take a couple minutes...
+                        This could take a few minutes...
                     </h2>
                 </div>
             )}

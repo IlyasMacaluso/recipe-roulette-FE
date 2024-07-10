@@ -1,4 +1,4 @@
-import { useLocation, useNavigate } from "@tanstack/react-router"
+import { useLocation } from "@tanstack/react-router"
 import { useLogin } from "../../../hooks/Form/useLogin"
 import { GoogleLoginBtn } from "../../SocialLoginButtons/GoogleLoginBtn"
 import { FacebookSocialBtn } from "../../SocialLoginButtons/FacebookLoginBtn"
@@ -13,7 +13,7 @@ import StartIcon from "@mui/icons-material/Start"
 import classes from "./Login.module.scss"
 
 export function Login({ setShowPopup = null, setChangeToSignup = null }) {
-    const { data, showPassword, mutation, handleInput, handleSubmit, handleShowPassword } = useLogin()
+    const { data, showPassword, mutation, handleInput, handleSubmit, handleShowPassword } = useLogin(setShowPopup)
     const location = useLocation()
 
     return (
@@ -30,7 +30,6 @@ export function Login({ setShowPopup = null, setChangeToSignup = null }) {
             <form
                 onSubmit={(e) => {
                     handleSubmit(e)
-                    setShowPopup && setShowPopup(false)
                 }}
                 className={classes.formBox}
             >
@@ -75,7 +74,6 @@ export function Login({ setShowPopup = null, setChangeToSignup = null }) {
                         style="primary"
                         type="submit"
                         label="Login"
-                        /* prevPath={location.pathname} */
                         icon={<LoginIcon fontSize="small" />}
                         active={data.username && data.password}
                     />
@@ -95,7 +93,7 @@ export function Login({ setShowPopup = null, setChangeToSignup = null }) {
                 <div className={classes.message}>
                     <p>Don't have an account yet?</p>
                     <span className={classes.signup}>
-                        <Button action={() => setChangeToSignup(true)} label="Sign Up" />
+                        <Button action={() => setChangeToSignup && setChangeToSignup(true)} label="Sign Up" />
                     </span>
                 </div>
             </form>

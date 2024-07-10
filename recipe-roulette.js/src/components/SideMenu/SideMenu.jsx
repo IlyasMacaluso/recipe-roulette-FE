@@ -16,12 +16,16 @@ import { ValidationBox } from "../Validation Box/ValidationBox"
 import { useSnackbar } from "../Snackbar/useSnackbar"
 import { Login } from "../authentication/login/Login"
 import { useLocation } from "@tanstack/react-router"
+import { useLoginToSignup } from "../../hooks/loginToSignup/useLoginToSignup"
+import { Signup } from "../authentication/signup/Signup"
 
 export function SideMenu({ handleMenuToggle, menuState = false }) {
     const { logout, isAuthenticated } = useAuth()
     const [showPopup, setShowPopup] = useState()
     const { handleOpenSnackbar } = useSnackbar()
-    const {pathname} = useLocation()
+    const { changeToSignup, setChangeToSignup } = useLoginToSignup()
+
+    const { pathname } = useLocation()
 
     return (
         <div>
@@ -85,8 +89,10 @@ export function SideMenu({ handleMenuToggle, menuState = false }) {
                                     logout(), handleOpenSnackbar("You have successfully logged out.")
                                 }}
                             />
+                        ) : !changeToSignup ? (
+                            <Login setChangeToSignup={setChangeToSignup} setShowPopup={setShowPopup} />
                         ) : (
-                            <Login setShowPopup={setShowPopup} />
+                            <Signup setChangeToSignup={setChangeToSignup} setShowPopup={setShowPopup} />
                         )}
                     </Popup>,
                     document.getElementById("popup-root")
