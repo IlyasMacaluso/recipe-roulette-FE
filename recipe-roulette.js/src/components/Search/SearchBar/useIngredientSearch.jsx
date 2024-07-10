@@ -7,7 +7,7 @@ export function useIngredientSearch(isFixed, searchCriteria) {
     const { handleOpenSnackbar } = useSnackbar()
 
     const [fixedPosition, setFixedPosition] = useState(false)
-    const [searchState, setSearchState] = useState({ inputActive: false })
+    const [searchState, setSearchState] = useState(false)
 
     const [condition, setCondition] = useState(true)
     const [inputValues, setInputValues] = useState({ initial: "", current: "" })
@@ -23,7 +23,7 @@ export function useIngredientSearch(isFixed, searchCriteria) {
     // aggiornamento dei suggerimenti
     useEffect(() => {
         setSuggestions(ingredients.all)
-    }, [searchState.inputActive])
+    }, [searchState])
 
     useMemo(() => {
         setSuggestions(ingredients.all)
@@ -33,13 +33,13 @@ export function useIngredientSearch(isFixed, searchCriteria) {
         e.stopPropagation()
         isFixed && setFixedPosition(true)
         setInputValues((old) => ({ ...old, current: "" }))
-        setSearchState({ inputActive: true })
+        setSearchState(true)
     }
     const handleBlur = (inputRef, setState) => {
         setInputValues((prev) => ({ ...prev, current: "" }))
         inputRef.current.blur()
-        setState?.setSearchState && setState.setSearchState({ inputActive: false })
-        setState?.setFixedPosition && setState.setFixedPosition(false)
+        setState?.setCondition && setState.setCondition( false )
+        setState?.setComponent && setState.setComponent(false)
 
         const h1 = document.querySelector("header h1")
         h1.click() //click sull'header per chiudere la tastiera
@@ -118,7 +118,7 @@ export function useIngredientSearch(isFixed, searchCriteria) {
 
         // Resetta il valore corrente dell'input e lo stato della ricerca
         setInputValues((prev) => ({ ...prev, current: "" }))
-        setSearchState({ inputActive: false })
+        setSearchState( false )
 
         // Se è stato trovato un ingrediente disponibile, aggiorna lo stato della carta e mostra una notifica
         if (firstAvailableIngredient) {
@@ -152,13 +152,11 @@ export function useIngredientSearch(isFixed, searchCriteria) {
         handleReset,
         setInputValues,
         handleBlur,
-        setCondition,
         setFixedPosition,
         setSearchState,
         inputValues,
         searchState,
         suggestions,
         fixedPosition,
-        condition,
     }
 }

@@ -1,4 +1,3 @@
-import { useCallback, useEffect, useRef } from "react"
 import { BaseSearchSuggestion } from "./BaseSearchSuggestion"
 
 import CloseIcon from "@mui/icons-material/Close"
@@ -6,54 +5,16 @@ import SearchIcon from "@mui/icons-material/Search"
 
 import classes from "./BaseSearch.module.scss"
 import { useIngredientSearch } from "../SearchBar/useIngredientSearch"
+import { useHandleBackButton } from "../../../hooks/useHandleBackBtn/useHandleBackBtn"
 
 export function BaseSearch({ data = [], inputValue = "", setInputValue }) {
-    const {
-        handlePressEnter,
-        setCondition,
-        condition,
-        handleInputActivation,
-        handleBlur,
-        setSearchState,
-        setFixedPosition,
-        searchState,
-    } = useIngredientSearch(true)
+    const { handlePressEnter, handleInputActivation, handleBlur, setSearchState, setFixedPosition, searchState } =
+        useIngredientSearch(true)
 
-    const inputRef = useRef(null)
-
-    // Handle back button when fixedPosition is true
-    const handleBackButton = useCallback(
-        (event) => {
-            if (searchState.inputActive) {
-                event.preventDefault()
-                setCondition(true)
-                if (inputRef.current) {
-                    handleBlur(inputRef, { setSearchState, setFixedPosition }) // Update the focus state
-                }
-            }
-        },
-        [searchState.inputActive]
-    )
-
-    useEffect(() => {
-        if (searchState.inputActive && condition) {
-            window.history.pushState(null, document.title, window.location.href)
-            window.addEventListener("popstate", handleBackButton)
-            setCondition(false)
-        } else if (searchState.inputActive) {
-            window.history.replaceState(null, document.title, window.location.href)
-            window.addEventListener("popstate", handleBackButton)
-        } else {
-            window.removeEventListener("popstate", handleBackButton)
-        }
-
-        return () => {
-            window.removeEventListener("popstate", handleBackButton)
-        }
-    }, [searchState.inputActive, handleBackButton])
+    const { inputRef } = useHandleBackButton(searchState, setSearchState, setFixedPosition, handleBlur)
 
     return (
-        <div className={`${classes.baseSearch} ${searchState.inputActive && classes.baseSearchActive}`}>
+        <div className={`${classes.baseSearch} ${searchState && classes.baseSearchActive}`}>
             <div className={classes.searchBar}>
                 <input
                     ref={inputRef}
@@ -70,21 +31,17 @@ export function BaseSearch({ data = [], inputValue = "", setInputValue }) {
                     onMouseDown={(e) => {
                         e.stopPropagation()
                         e.preventDefault()
-                        if (searchState.inputActive && inputValue !== "") {
+                        if (searchState && inputValue !== "") {
                             setInputValue("")
-                        } else if (searchState.inputActive && inputValue === "") {
-                            handleBlur(inputRef, { setSearchState, setFixedPosition })
-                        } else if (!searchState.inputActive && inputValue !== "") {
+                        } else if (searchState && inputValue === "") {
+                            handleBlur(inputRef, { setCondition: setSearchState, setComponent: setFixedPosition })
+                        } else if (!searchState && inputValue !== "") {
                             setInputValue("")
                         }
                     }}
                     className={classes.ico}
                 >
-                    {searchState.inputActive || inputValue !== "" ? (
-                        <CloseIcon fontSize="small" />
-                    ) : (
-                        <SearchIcon fontSize="small" />
-                    )}
+                    {searchState || inputValue !== "" ? <CloseIcon fontSize="small" /> : <SearchIcon fontSize="small" />}
                 </div>
             </div>
             <div className={classes.suggestionsWrapper}>
@@ -96,7 +53,7 @@ export function BaseSearch({ data = [], inputValue = "", setInputValue }) {
                             id={recipe.id}
                             handleBlur={handleBlur}
                             setInputValue={setInputValue}
-                            setState={{ setSearchState, setFixedPosition }}
+                            setState={{ setCondition: setSearchState, setComponent: setFixedPosition }}
                             title={recipe.title}
                         />
                     ))

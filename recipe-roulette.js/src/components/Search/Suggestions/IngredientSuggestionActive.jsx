@@ -4,13 +4,11 @@ import { useIngredientSuggestion } from "./useIngredientSuggestion"
 import CancelOutlinedIcon from "@mui/icons-material/CancelOutlined"
 import LockOpenOutlinedIcon from "@mui/icons-material/LockOpenOutlined"
 import classes from "./IngredientSuggestions.module.scss"
-import { useSearchContext } from "../../../contexts/InputStateContext"
 
-export function IngredientSuggestionActive({ ing, prop, setInputState }) {
+export function IngredientSuggestionActive({inputRef = null, ing, prop, setInputState }) {
     const { id, name, bgColor, isSelected, isBlackListed } = ing
     const { ingState, setIngState } = useIngredientSuggestion(id, name, bgColor, isSelected, isBlackListed)
     const { handleSuggestionClick, handleBlur } = useIngredientSearch()
-    const { inputRef } = useSearchContext()
 
     return (
         <>

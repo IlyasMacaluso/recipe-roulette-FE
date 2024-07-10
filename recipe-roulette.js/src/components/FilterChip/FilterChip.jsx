@@ -1,4 +1,3 @@
-import { MaterialSymbol } from "react-material-symbols"
 import { useFilterChips } from "./useFilterChip"
 
 import CheckOutlinedIcon from "@mui/icons-material/CheckOutlined"
@@ -12,7 +11,7 @@ export function FilterChip({ id, label, bgColor, isSelected, isBlackListed }) {
     return (
         <div
             className={`${classes.filterChip} ${isSelected || isBlackListed ? classes.active : classes.inactive}`}
-            onClick={() => handleDeselectChip && handleDeselectChip}
+            onClick={() => handleDeselectChip && handleDeselectChip()}
         >
             {isSelected && <CheckOutlinedIcon className={classes.ico} fontSize="18px" />}
             {isBlackListed && <BlockOutlinedIcon className={classes.ico} fontSize="18px" />}

@@ -6,13 +6,11 @@ import LockOutlinedIcon from "@mui/icons-material/LockOutlined"
 import NoMealsOutlinedIcon from "@mui/icons-material/NoMealsOutlined"
 
 import classes from "./IngredientSuggestions.module.scss"
-import { useSearchContext } from "../../../contexts/InputStateContext"
 
-export function IngredientSuggestionInactive({ ing, prop = "isSelected", setInputState }) {
+export function IngredientSuggestionInactive({ inputRef = null, ing, prop = "isSelected", setInputState }) {
     const { id, name, bgColor, isSelected, isBlackListed } = ing
     const { ingState, setIngState } = useIngredientSuggestion(id, name, bgColor, isSelected, isBlackListed)
     const { handleSuggestionClick, handleBlur } = useIngredientSearch()
-    const { inputRef } = useSearchContext()
 
     return (
         <>

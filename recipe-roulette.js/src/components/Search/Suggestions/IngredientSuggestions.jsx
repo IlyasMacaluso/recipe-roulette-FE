@@ -4,7 +4,7 @@ import { useRecipesContext } from "../../../contexts/RecipesContext"
 
 import classes from "./IngredientSuggestions.module.scss"
 
-export function IngredientSuggestions({ inputActive, searchCriteria, suggestions, setInputState }) {
+export function IngredientSuggestions({ inputRef = null, setInputState, inputActive, searchCriteria, suggestions }) {
     const { recipeFilter } = useRecipesContext()
 
     const isIngredientActive = (ingredient) => {
@@ -30,9 +30,24 @@ export function IngredientSuggestions({ inputActive, searchCriteria, suggestions
                     .sort((a, b) => (a.name === b.name ? 0 : a.name > b.name ? 1 : -1))
                     .map((ingredient) => {
                         if (isIngredientActive(ingredient)) {
-                            return <IngredientSuggestionActive setInputState={setInputState} ing={ingredient} prop={searchCriteria} key={ingredient.id} />
+                            return (
+                                <IngredientSuggestionActive
+                                    inputRef={inputRef}
+                                    setInputState={setInputState}
+                                    ing={ingredient}
+                                    prop={searchCriteria}
+                                    key={ingredient.id}
+                                />
+                            )
                         } else {
-                            return <IngredientSuggestionInactive setInputState={setInputState} ing={ingredient} key={ingredient.id} />
+                            return (
+                                <IngredientSuggestionInactive
+                                    inputRef={inputRef}
+                                    setInputState={setInputState}
+                                    ing={ingredient}
+                                    key={ingredient.id}
+                                />
+                            )
                         }
                     })
             ) : (
