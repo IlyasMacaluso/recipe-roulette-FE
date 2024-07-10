@@ -68,7 +68,7 @@ export function Favorited() {
                         Find and favorite your first recipe!
                     </h2>
 
-                    <Link className={classes.cta} to="/discovery">
+                    <Link className={classes.cta} to="/roulette">
                         <LoopOutlinedIcon />
                         <p>Start Ingredients Shuffle</p>
                     </Link>

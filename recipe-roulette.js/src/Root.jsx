@@ -8,7 +8,7 @@ const queryClient = new QueryClient()
 export function Root() {
     return (
         <QueryClientProvider client={queryClient}>
-                <App />
+            <App />
         </QueryClientProvider>
     )
 }

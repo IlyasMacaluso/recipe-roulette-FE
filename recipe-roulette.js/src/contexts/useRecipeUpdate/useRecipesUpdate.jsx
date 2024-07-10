@@ -8,7 +8,7 @@ export const useRecipesUpdate = (setRecipes) => {
     const handleRecipesUpdate = (recipe, setRecipe) => {
         let updatedRecipe = { ...recipe, isFavorited: !recipe.isFavorited }
         setRecipes((prevRecipes) => {
-            const isInResults = prevRecipes.results.some((rec) => rec.id === recipe.id && rec.title === recipe.title)
+            const isInResults = prevRecipes.results.find((rec) => rec.id === recipe.id && rec.title === recipe.title)
 
             let newFavorites
             let newResults
@@ -58,8 +58,8 @@ export const useRecipesUpdate = (setRecipes) => {
             // Aggiornamento localStorage se autenticati
             if (isAuthenticated) {
                 setValue("recipes", updatedRecipes)
-            }            
-            
+            }
+
             return updatedRecipes // Ritorna il nuovo stato aggiornato di recipes
         })
     }
