@@ -25,8 +25,7 @@ export function useLogout(setShowPopup) {
                 const resData = await res.data
                 return resData
             } catch (error) {
-                console.log(error)
-                throw new Error(error)
+                throw new Error(error.response.data.msg)
             }
         } else {
             throw new Error(error || "Failed retrieving data from local storage")
@@ -51,7 +50,7 @@ export function useLogout(setShowPopup) {
             setTimeout(() => setShowPopup(false), 0)
         },
         onError: (error) => {
-            handleOpenSnackbar(error.response.data.msg, 3500)
+            handleOpenSnackbar(error.message, 3500)
             console.error("Login failed:", error.message)
         },
     })

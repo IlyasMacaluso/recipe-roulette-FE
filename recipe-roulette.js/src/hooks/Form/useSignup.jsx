@@ -51,7 +51,7 @@ export function useSignup(setShowPopup) {
             return resData
         } catch (error) {
             console.log(error)
-            throw new Error(error)
+            throw new Error(error.response.data.msg)
         }
     }
 
@@ -72,10 +72,8 @@ export function useSignup(setShowPopup) {
             }, 0)
         },
         onError: (error) => {
-            handleOpenSnackbar("There is already a user with this username or password", 3500)
-            handleOpenSnackbar(error.message, 3500)
-
-            console.error("Signup failed:", error.message)
+            handleOpenSnackbar(error.message || "There is already a user with this username or password", 3500)
+            console.error(error.message)
         },
     })
 
