@@ -20,7 +20,7 @@ import { Signup } from "../authentication/signup/Signup"
 import { useLogout } from "../../hooks/Form/useLogout"
 
 export function SideMenu({ handleMenuToggle, menuState = false }) {
-    
+
     const [showPopup, setShowPopup] = useState()
     const { isAuthenticated } = useAuth()
     const { handleLogout } = useLogout(setShowPopup)

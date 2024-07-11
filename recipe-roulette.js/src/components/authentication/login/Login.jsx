@@ -13,7 +13,7 @@ import StartIcon from "@mui/icons-material/Start"
 import classes from "./Login.module.scss"
 
 export function Login({ setShowPopup = null, setChangeToSignup = null }) {
-    const { data, showPassword, mutation, handleInput, handleSubmit, handleShowPassword } = useLogin(setShowPopup)
+    const { data, showPassword, handleInput, handleSubmit, handleShowPassword } = useLogin(setShowPopup)
     const location = useLocation()
 
     return (
@@ -31,41 +31,51 @@ export function Login({ setShowPopup = null, setChangeToSignup = null }) {
                 onSubmit={(e) => {
                     handleSubmit(e)
                 }}
-                className={classes.formBox}
+                className={classes.formWrapper}
             >
-                <div className={classes.inputBox}>
-                    <label>Username</label>
-                    <input
-                        type="text"
-                        name="username"
-                        id="username"
-                        value={data.username}
-                        placeholder="Insert username here"
-                        onChange={handleInput}
-                        required
-                    />
-                    <label>Password</label>
-                    <div className={classes.passInput}>
+                <div className={classes.inputsWrapper}>
+                    <div className={classes.inputWrapper}>
+                        <label>Username</label>
                         <input
-                            type={showPassword ? "text" : "password"}
-                            name="password"
-                            id="password"
-                            value={data.password}
-                            placeholder="Insert password here"
+                            type="text"
+                            name="username"
+                            id="username"
+                            value={data.username}
+                            placeholder="Insert username here"
                             onChange={handleInput}
                             required
                         />
-                        {showPassword ? (
-                            <div onClick={handleShowPassword} className={classes.passwordIcon}>
-                                {" "}
-                                <VisibilityOffIcon fontSize="small" />
-                            </div>
-                        ) : (
-                            <div onClick={handleShowPassword} className={classes.passwordIcon}>
-                                {" "}
-                                <VisibilityIcon fontSize="small" />
-                            </div>
-                        )}
+                    </div>
+
+                    <div className={classes.inputWrapper}>
+                        <label>Password</label>
+                        <div className={classes.passInput}>
+                            <input
+                                type={showPassword ? "text" : "password"}
+                                name="password"
+                                id="password"
+                                value={data.password}
+                                placeholder="Insert password here"
+                                onChange={handleInput}
+                                required
+                            />
+                            {showPassword ? (
+                                <div onClick={handleShowPassword} className={classes.passwordIcon}>
+                                    {" "}
+                                    <VisibilityOffIcon fontSize="small" />
+                                </div>
+                            ) : (
+                                <div onClick={handleShowPassword} className={classes.passwordIcon}>
+                                    {" "}
+                                    <VisibilityIcon fontSize="small" />
+                                </div>
+                            )}
+                        </div>
+                    </div>
+
+                    <div className={classes.rememberMe}>
+                        <label htmlFor="check">Remember me</label>
+                        <input id="check" name="check" onChange={handleInput} type="checkbox" checked={data.check} />
                     </div>
                 </div>
 

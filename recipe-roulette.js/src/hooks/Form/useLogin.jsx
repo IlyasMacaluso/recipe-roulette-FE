@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { useAuth } from "../Auth/useAuth"
 import { useMutation, useQuery } from "@tanstack/react-query"
 import { useSnackbar } from "../../components/Snackbar/useSnackbar"
@@ -8,7 +8,7 @@ import { useLocalStorage } from "../useLocalStorage/useLocalStorage"
 export function useLogin(setShowPopup) {
     const [data, setData] = useState(createData())
     const [showPassword, setShowPassword] = useState(false)
-    const { setValue } = useLocalStorage()
+    const { getValue, setValue } = useLocalStorage()
     const { setIsAuthenticated } = useAuth()
     const { handleOpenSnackbar } = useSnackbar()
 
@@ -16,13 +16,21 @@ export function useLogin(setShowPopup) {
         return {
             username: ``,
             password: ``,
-            check: ``,
+            check: false,
         }
     }
+    useEffect(() => {
+        const userData = getValue("userData")
+        if (userData) {
+            const { username, rememberMe } = userData
+            userData.rememberMe && setData((prev) => ({ ...prev, username: username, check: rememberMe }))
+        }
+    }, [])
 
     function handleInput(e) {
+        const type = e.target.type
         const name = e.target.name
-        const value = e.target.value
+        const value = type === "checkbox" ? e.target.checked : e.target.value
 
         setData((old) => {
             return {
@@ -43,19 +51,16 @@ export function useLogin(setShowPopup) {
             const resData = await res.data
             return resData
         } catch (error) {
-            console.log(error)
-            throw new Error(error)
+            throw new Error(error.response.data.msg)
         }
     }
 
     const Login = useMutation({
         mutationFn: loginFn,
-        onSuccess: (data) => {
-            console.log(data);
+        onSuccess: (resData) => {
+            const { id, username, email, token } = resData
+            setValue("userData", { id, username, email, token, rememberMe: data.check, })
 
-            const { id, username, email, token } = data
-            setValue("userData", { id, username, email, token })
-            
             setIsAuthenticated(true)
             handleOpenSnackbar("You are now logged in!", 3000)
 
@@ -66,8 +71,8 @@ export function useLogin(setShowPopup) {
             }, 0)
         },
         onError: (error) => {
-            handleOpenSnackbar("Incorrect credentials", 3500)
-            console.error("Login failed:", error.message)
+            handleOpenSnackbar(error.message || "Invalid credentials", 3500)
+            console.error(error)
         },
     })
 
