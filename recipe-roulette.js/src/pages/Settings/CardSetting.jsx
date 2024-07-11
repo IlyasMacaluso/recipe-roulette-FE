@@ -9,7 +9,7 @@ import { useAuth } from "../../hooks/Auth/useAuth";
 export function CardSetting({
     editing,
     avatar,
-    signupData,
+    userData,
     handleAvatarChange,
     handleSignupInput,
     handleSaveClick,
@@ -55,14 +55,14 @@ export function CardSetting({
                                 type="text"
                                 name="username"
                                 placeholder="Username"
-                                value={signupData.username}
+                                value={userData.username}
                                 onChange={handleSignupInput}
                             />
                             <input
                                 type="email"
                                 name="email"
                                 placeholder="Email"
-                                value={signupData.email}
+                                value={userData.email}
                                 onChange={handleSignupInput}
                             />
                         </section>
@@ -73,14 +73,14 @@ export function CardSetting({
                                 type="password"
                                 name="password"
                                 placeholder="Set new password"
-                                value={signupData.password}
+                                value={userData.password}
                                 onChange={handleSignupInput}
                             />
                             <input
                                 type="password"
                                 name="confirmPass"
                                 placeholder="Repeat new password"
-                                value={signupData.confirmPass}
+                                value={userData.confirmPass}
                                 onChange={handleSignupInput}
                             />
                             {passError && <p className={classes.error}>{passError}</p>}
@@ -106,8 +106,8 @@ export function CardSetting({
             ) : (
                 <div className={classes.profileSection}>
                     <img src={avatar} alt="Profile" className={classes.profilePicture} />
-                    <h2 className={classes.profileName}>{signupData.username}</h2>
-                    <p className={classes.profileEmail}>{signupData.email}</p>
+                    <h2 className={classes.profileName}>{userData.username}</h2>
+                    <p className={classes.profileEmail}>{userData.email}</p>
                     <Button
                         style="primary"
                         width="fill"

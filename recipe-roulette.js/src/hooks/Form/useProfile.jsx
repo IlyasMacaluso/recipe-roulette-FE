@@ -1,92 +1,90 @@
-import { useState, useEffect } from 'react';
-import { useAuth } from "/src/hooks/Auth/useAuth.jsx";
-import { useNavigate } from "@tanstack/react-router"
+import { useState, useEffect } from "react"
+import { useLocalStorage } from "../useLocalStorage/useLocalStorage"
+import { useAuth } from "../Auth/useAuth"
 
 export function useProfile() {
-    const [editing, setEditing] = useState(false);
-    const [initialAvatar, setInitialAvatar] = useState("src/assets/images/3d_avatar_26.png");
-    const [avatar, setAvatar] = useState("src/assets/images/3d_avatar_26.png");
-    const [signupData, setSignupData] = useState({
+    const [editing, setEditing] = useState(false)
+    const [avatar, setAvatar] = useState("src/assets/images/3d_avatar_26.png")
+    const [userData, setUserData] = useState({
         username: "",
         email: "",
         password: "",
         confirmPass: "",
-    });
-
-    const { logout } = useAuth();
-    const navigate = useNavigate();
+    })
+    const { getValue, setValue } = useLocalStorage()
+    const { isAuthenticated } = useAuth()
 
     useEffect(() => {
-        const storedUsername = localStorage.getItem("username");
-        const storedEmail = localStorage.getItem("email");
-        const storedAvatar = localStorage.getItem("avatar");
-
-        setSignupData((prevData) => ({
-            ...prevData,
-            username: storedUsername || "Amazing User",
-            email: storedEmail || "email@provider.dominio",
-        }));
-
-        if (storedAvatar) {
-            setAvatar(storedAvatar);
-            setInitialAvatar(storedAvatar); 
+        const user = getValue("userData")
+        if (user) {
+            setUserData((prevData) => ({
+                ...prevData,
+                username: user.username,
+                email: user.email,
+            }))
+            setAvatar((prev) => user?.avatar || prev)
         }
-    }, []);
+    }, [isAuthenticated, editing])
 
-    const handleEditClick = () => setEditing(true);
+    const handleEditClick = () => setEditing(true)
 
     const handleDiscardClick = () => {
-        const storedUsername = localStorage.getItem("username");
-        const storedEmail = localStorage.getItem("email");
-        const storedAvatar = localStorage.getItem("avatar");
+        const user = getValue("userData")
 
-        setSignupData({
-            username: storedUsername || "Amazing User",
-            email: storedEmail || "email@provider.dominio",
+        setUserData({
+            username: user.username,
+            email: user.email,
             password: "",
             confirmPass: "",
-        });
-
-        setAvatar(initialAvatar);
-
-        setEditing(false);
-    };
+        })
+        setAvatar((prev) => user?.avatar || prev)
+        setEditing(false)
+    }
 
     const handleSaveClick = () => {
-        localStorage.setItem("username", signupData.username);
-        localStorage.setItem("email", signupData.email);
-        if (signupData.password === signupData.confirmPass && signupData.password !== "") {
-            localStorage.setItem("password", signupData.password);
+        let localData = getValue("userData")
+        localData = {
+            ...localData,
+            username: userData.username !== "" ? userData.username : localData.username,
+            email: userData.email !== "" ? userData.email : localData.email,
         }
-        setEditing(false);
-    };
+        setValue("userData", localData)
+        //funzione per aggiornare i dati del database
+
+        // if (userData.password === userData.confirmPass && userData.password !== "") {
+        //     localStorage.setItem("password", userData.password)
+        // }
+        setEditing(false)
+    }
 
     const handleAvatarChange = (e) => {
-        const file = e.target.files[0];
-        const reader = new FileReader();
+        const file = e.target.files[0]
+        const reader = new FileReader()
         reader.onloadend = () => {
-            setAvatar(reader.result);
-            localStorage.setItem("avatar", reader.result);
-        };
-        reader.readAsDataURL(file);
-    };
+            setAvatar(reader.result)
+            localStorage.setItem("avatar", reader.result)
+        }
+        reader.readAsDataURL(file)
+
+        //funzione per aggiornare i dati del database
+    }
 
     const handleSignupInput = (e) => {
-        const { name, value } = e.target;
-        setSignupData((prevData) => ({
+        const { name, value } = e.target
+        setUserData((prevData) => ({
             ...prevData,
             [name]: value,
-        }));
-    };
+        }))
+    }
 
     return {
         editing,
         avatar,
-        signupData,
+        userData,
         handleEditClick,
         handleSaveClick,
         handleAvatarChange,
         handleSignupInput,
         handleDiscardClick,
-    };
+    }
 }

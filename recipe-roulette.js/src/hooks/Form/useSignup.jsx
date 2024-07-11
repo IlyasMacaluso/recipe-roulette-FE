@@ -1,13 +1,17 @@
 import { useState } from "react"
 import { useMutation } from "@tanstack/react-query"
-import { useNavigate } from "@tanstack/react-router"
 import { useSnackbar } from "../../components/Snackbar/useSnackbar"
+import { useLocalStorage } from "../useLocalStorage/useLocalStorage"
+import { useAuth } from "../Auth/useAuth"
+import axios from "axios"
 
 export function useSignup(setShowPopup) {
     const [data, setData] = useState(createData())
     const [passError, setPassError] = useState(null)
     const [isRegistered, setisRegistered] = useState()
     const { handleOpenSnackbar } = useSnackbar()
+    const { setIsAuthenticated } = useAuth()
+    const { setValue } = useLocalStorage()
 
     //ho importato questi per settare nel localStorage i dati dell'utente ed effettuare l'accesso
 
@@ -18,30 +22,6 @@ export function useSignup(setShowPopup) {
             password: ``,
             confirmPass: ``,
             check: false,
-        }
-    }
-
-    function getItem(data) {
-        try {
-            const username = window.localStorage.getItem("username")
-            const email = window.localStorage.getItem("email")
-            const password = window.localStorage.getItem("password")
-
-            if (username && password) {
-                setData({ ...data, username, password, email })
-            }
-        } catch (error) {
-            console.log(error)
-        }
-    }
-
-    function setItem(data) {
-        try {
-            localStorage.setItem("username", data.username)
-            localStorage.setItem("email", data.email)
-            localStorage.setItem("password", data.password)
-        } catch (error) {
-            console.error("Error while saving to localStorage:", error)
         }
     }
 
@@ -59,55 +39,52 @@ export function useSignup(setShowPopup) {
         })
     }
 
-    async function handlePostSignUpData(data) {
+    const signupFn = async (clientData) => {
         try {
-            const response = await fetch("http://localhost:3000/api/users/signup", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                    username: data?.username,
-                    email: data?.email,
-                    password: data?.password,
-                }),
-            })
+            const res = await axios.post("http://localhost:3000/api/users/signup", clientData)
 
-            if (!response.ok) {
-                throw new Error("Network response was not ok " + response.statusText)
+            if (res.status !== 201) {
+                throw new Error(`Network error, ${res.data.msg}`)
             }
 
-            const responseData = await response.json()
-            console.log(responseData)
-            return responseData
+            const resData = await res.data
+            return resData
         } catch (error) {
-            console.error("Error while fetching data:", error)
-            throw new Error("Error while fetching data")
+            console.log(error)
+            throw new Error(error)
         }
     }
 
-    const mutation = useMutation({
-        mutationFn: handlePostSignUpData,
+    const Signup = useMutation({
+        mutationFn: signupFn,
         onSuccess: (data) => {
-            console.log(data)
-            getItem()
-            setItem(data)
+            const { id, username, email, token } = data
+            setValue("userData", { id, username, email, token })
+
             setisRegistered(true)
-            handleOpenSnackbar("Signed up successfully! Please log in", 3000)
-            setTimeout(() => setShowPopup(false), 0)
+            setIsAuthenticated(true)
+            handleOpenSnackbar("Signup & Login successfull!", 3000)
+
+            setTimeout(() => {
+                setShowPopup(false)
+                const h1 = document.querySelector("header h1")
+                h1.click() //click sull'header per chiudere la tastiera
+            }, 0)
         },
         onError: (error) => {
             handleOpenSnackbar("There is already a user with this username or password", 3500)
+            handleOpenSnackbar(error.message, 3500)
+
             console.error("Signup failed:", error.message)
         },
     })
 
-    //serve? il bottone non si attiva se le password non sono uguali
     function handleSubmit(e) {
         e.preventDefault()
         console.log(data)
+        //serve? il bottone non si attiva se le password non sono uguali
         if (data.password === data.confirmPass && data.check) {
-            mutation.mutate({ username: data.username, email: data.email, password: data.password })
+            Signup.mutate({ username: data.username, email: data.email, password: data.password })
         } else {
             console.log("Please, confirm your password")
             setPassError(`Please, confirm your password`)

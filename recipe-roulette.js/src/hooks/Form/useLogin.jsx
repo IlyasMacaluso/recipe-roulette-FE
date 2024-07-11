@@ -1,12 +1,15 @@
 import { useState } from "react"
 import { useAuth } from "../Auth/useAuth"
-import { useMutation } from "@tanstack/react-query"
+import { useMutation, useQuery } from "@tanstack/react-query"
 import { useSnackbar } from "../../components/Snackbar/useSnackbar"
+import axios from "axios"
+import { useLocalStorage } from "../useLocalStorage/useLocalStorage"
 
 export function useLogin(setShowPopup) {
     const [data, setData] = useState(createData())
     const [showPassword, setShowPassword] = useState(false)
-    const { login } = useAuth()
+    const { setValue } = useLocalStorage()
+    const { setIsAuthenticated } = useAuth()
     const { handleOpenSnackbar } = useSnackbar()
 
     function createData() {
@@ -17,75 +20,50 @@ export function useLogin(setShowPopup) {
         }
     }
 
-    function setItem(data) {
-        try {
-            localStorage.setItem("username", data.username)
-            localStorage.setItem("password", data.password)
-        } catch (error) {
-            console.error("Error while saving to localStorage:", error)
-        }
-    }
-
-    function getItem(data) {
-        try {
-            const username = window.localStorage.getItem("username")
-            const password = window.localStorage.getItem("password")
-
-            if (username && password) {
-                setData({ ...data, username, password })
-            }
-        } catch (error) {
-            console.log(error)
-        }
-    }
-
     function handleInput(e) {
         const name = e.target.name
         const value = e.target.value
 
-        setData((d) => {
+        setData((old) => {
             return {
-                ...d,
+                ...old,
                 [name]: value,
             }
         })
     }
 
-    async function handlePostLoginData(data) {
+    const loginFn = async (clientData) => {
         try {
-            const response = await fetch("http://localhost:3000/api/users/login", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                    username: data?.username,
-                    password: data?.password,
-                }),
-            })
+            const res = await axios.post("http://localhost:3000/api/users/login", clientData)
 
-            if (!response.ok) {
-                throw new Error("Network response was not ok " + response.statusText)
+            if (res.status !== 200) {
+                throw new Error(`Network error, ${res.data.msg}`)
             }
 
-            const responseData = await response.json()
-            console.log(responseData)
-            return responseData
+            const resData = await res.data
+            return resData
         } catch (error) {
-            console.error("Error while fetching data:", error)
-            throw new Error("Error while fetching data")
+            console.log(error)
+            throw new Error(error)
         }
     }
 
-    const mutation = useMutation({
-        mutationFn: handlePostLoginData,
+    const Login = useMutation({
+        mutationFn: loginFn,
         onSuccess: (data) => {
-            console.log(data)
-            getItem(data)
-            setItem(data)
+            console.log(data);
+
+            const { id, username, email, token } = data
+            setValue("userData", { id, username, email, token })
+            
+            setIsAuthenticated(true)
             handleOpenSnackbar("You are now logged in!", 3000)
-            login()
-            setTimeout(() => setShowPopup(false), 0)
+
+            setTimeout(() => {
+                setShowPopup(false)
+                const h1 = document.querySelector("header h1")
+                h1.click() //click sull'header per chiudere la tastiera
+            }, 0)
         },
         onError: (error) => {
             handleOpenSnackbar("Incorrect credentials", 3500)
@@ -95,7 +73,7 @@ export function useLogin(setShowPopup) {
 
     function handleSubmit(e) {
         e.preventDefault()
-        mutation.mutate({ username: data.username, password: data.password })
+        Login.mutate(data)
     }
 
     function handleShowPassword() {
@@ -105,10 +83,8 @@ export function useLogin(setShowPopup) {
     return {
         data,
         showPassword,
-        mutation,
         handleInput,
         handleSubmit,
         handleShowPassword,
-        setItem,
     }
 }

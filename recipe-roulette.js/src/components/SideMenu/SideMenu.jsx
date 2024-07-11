@@ -13,16 +13,17 @@ import { createPortal } from "react-dom"
 import { Popup } from "../Pop-up/Popup"
 import { useState } from "react"
 import { ValidationBox } from "../Validation Box/ValidationBox"
-import { useSnackbar } from "../Snackbar/useSnackbar"
 import { Login } from "../authentication/login/Login"
 import { useLocation } from "@tanstack/react-router"
 import { useLoginToSignup } from "../../hooks/loginToSignup/useLoginToSignup"
 import { Signup } from "../authentication/signup/Signup"
+import { useLogout } from "../../hooks/Form/useLogout"
 
 export function SideMenu({ handleMenuToggle, menuState = false }) {
-    const { logout, isAuthenticated } = useAuth()
+    
     const [showPopup, setShowPopup] = useState()
-    const { handleOpenSnackbar } = useSnackbar()
+    const { isAuthenticated } = useAuth()
+    const { handleLogout } = useLogout(setShowPopup)
     const { changeToSignup, setChangeToSignup } = useLoginToSignup()
 
     const { pathname } = useLocation()
@@ -86,7 +87,7 @@ export function SideMenu({ handleMenuToggle, menuState = false }) {
                                 message="Confirm logout?"
                                 setShowPopup={setShowPopup}
                                 handleValidationAction={() => {
-                                    logout(), handleOpenSnackbar("You have successfully logged out.")
+                                    handleLogout()
                                 }}
                             />
                         ) : !changeToSignup ? (
