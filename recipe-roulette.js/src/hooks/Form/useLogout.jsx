@@ -15,7 +15,6 @@ export function useLogout(setShowPopup) {
     const logoutFn = async () => {
         const clientData = getValue("userData")
         if (clientData) {
-            console.log(clientData)
             try {
                 const res = await axios.post("http://localhost:3000/api/users/logout", clientData)
 
@@ -37,8 +36,14 @@ export function useLogout(setShowPopup) {
     const Logout = useMutation({
         mutationFn: logoutFn,
         onSuccess: () => {
-            
-            setValue("userData", null)
+
+            let newUserData = getValue("userData")
+            newUserData = {
+                ...newUserData,
+                token: null,
+            }
+
+            setValue("userData", newUserData)
 
             setIsAuthenticated(false)
             handleOpenSnackbar("You are now logged out!", 3000)
