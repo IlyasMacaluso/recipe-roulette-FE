@@ -20,7 +20,7 @@ export function Login({ setShowPopup = null, setChangeToSignup = null }) {
 
     return (
         <div className={`${classes.container}`}>
-            <header className={classes.title}>
+            <header className={classes.header}>
                 <h1>Login</h1>
                 {setShowPopup && ( //mostra la X solo quando il componente viene utilizzato come popup
                     <div onClick={() => setShowPopup && setShowPopup()} className={classes.closeIco}>

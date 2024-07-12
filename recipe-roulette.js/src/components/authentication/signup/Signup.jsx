@@ -25,7 +25,7 @@ export function Signup({ setShowPopup = null, setChangeToSignup = null }) {
 
     return (
         <div className={`${classes.container}`}>
-            <header className={classes.title}>
+            <header className={classes.header}>
                 <h1>Signup</h1>
                 <div onClick={() => setShowPopup && setShowPopup()} className={classes.closeIco}>
                     <CloseIcon />
