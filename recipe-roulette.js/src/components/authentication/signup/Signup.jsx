@@ -5,79 +5,125 @@ import { useLocation } from "@tanstack/react-router"
 import EditNoteIcon from "@mui/icons-material/EditNote"
 import StartIcon from "@mui/icons-material/Start"
 import CloseIcon from "@mui/icons-material/Close"
+import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline"
+import VisibilityOffIcon from "@mui/icons-material/VisibilityOff"
+import VisibilityIcon from "@mui/icons-material/Visibility"
+import CachedIcon from '@mui/icons-material/Cached';
 
 import classes from "./Signup.module.scss"
+import { useLogin } from "../../../hooks/Form/useLogin"
+import { useMemo } from "react"
 
 export function Signup({ setShowPopup = null, setChangeToSignup = null }) {
-    const { data, passError, handleInput, handleSubmit } = useSignup(setShowPopup)
+    const { data, handleInput, handleSubmit, error, loading } = useSignup(setShowPopup)
+    const { showPassword, handleShowPassword } = useLogin()
     const location = useLocation()
+
+    const { password, confirmPass, username, email } = useMemo(() => {
+        return data
+    }, [data])
 
     return (
         <div className={`${classes.container}`}>
             <header className={classes.title}>
                 <h1>Signup</h1>
-                {setShowPopup && ( //mostra la X solo quando il componente viene utilizzato come popup
-                    <div onClick={() => setShowPopup && setShowPopup()} className={classes.closeIco}>
-                        <CloseIcon />
-                    </div>
-                )}
+                <div onClick={() => setShowPopup && setShowPopup()} className={classes.closeIco}>
+                    <CloseIcon />
+                </div>
             </header>
 
-            <form
-                onSubmit={(e) => {
-                    handleSubmit(e)
-                }}
-                className={classes.formBox}
-            >
-                <div className={classes.inputBox}>
-                    <label>Username</label>
-                    <input
-                        type="text"
-                        name="username"
-                        id="username"
-                        value={data.username}
-                        onChange={handleInput}
-                        placeholder="Insert your username"
-                        required
-                    />
-                    <label>Email</label>
-                    <input
-                        type="email"
-                        name="email"
-                        id="email"
-                        value={data.email}
-                        onChange={handleInput}
-                        placeholder="Insert your email"
-                        required
-                    />
-                    <label>Password</label>
-                    <input
-                        type="password"
-                        name="password"
-                        id="password"
-                        value={data.password}
-                        onChange={handleInput}
-                        placeholder="Insert password"
-                        required
-                    />
-                    <label>Confirm password</label>
-                    <input
-                        type="password"
-                        name="confirmPass"
-                        id="confirmPass"
-                        value={data.confirmPass}
-                        onChange={handleInput}
-                        placeholder="Repeat password"
-                        required
-                    />
-                    {passError && <p>{passError}</p>}
+            <form onSubmit={(e) => handleSubmit(e)} className={classes.formWrapper}>
+                <div className={classes.inputsWrapper}>
+                    <div className={classes.inputWrapper}>
+                        <label>Username</label>
+                        <input
+                            type="text"
+                            name="username"
+                            id="username"
+                            value={username}
+                            onChange={handleInput}
+                            placeholder="Insert your username"
+                            required
+                        />
+                    </div>
+
+                    <div className={classes.inputWrapper}>
+                        <label>Email</label>
+                        <input
+                            type="email"
+                            name="email"
+                            id="email"
+                            value={email}
+                            onChange={handleInput}
+                            placeholder="Insert your email"
+                            required
+                        />
+                    </div>
+
+                    <div className={classes.inputWrapper}>
+                        <label>Password</label>
+                        <div className={classes.passInput}>
+                            <input
+                                className={`${password !== confirmPass && classes.error}`}
+                                type={showPassword ? "text" : "password"}
+                                name="password"
+                                id="password"
+                                value={password}
+                                placeholder="Insert password here"
+                                onChange={handleInput}
+                                required
+                            />
+
+                            <div className={classes.icoWrapper}>
+                                {password !== confirmPass && (
+                                    <ErrorOutlineIcon className={`${classes.ico} ${classes.errIco}`} fontSize="small" />
+                                )}
+                                {showPassword ? (
+                                    <VisibilityOffIcon onClick={handleShowPassword} className={classes.ico} fontSize="small" />
+                                ) : (
+                                    <VisibilityIcon onClick={handleShowPassword} className={classes.ico} fontSize="small" />
+                                )}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div className={classes.inputWrapper}>
+                        <label>Confirm password</label>
+                        <div className={classes.passInput}>
+                            <input
+                                className={`${password !== confirmPass && classes.error}`}
+                                type={showPassword ? "text" : "password"}
+                                name="confirmPass"
+                                id="password"
+                                value={data.confirmPass}
+                                placeholder="Confirm password"
+                                onChange={handleInput}
+                                required
+                            />
+                        </div>
+                    </div>
 
                     <label htmlFor="check" className={classes.checkLabel}>
-                        I agree with<span>Terms & Conditions</span>
+                        <div>
+                            I agree with <span>Terms & Conditions</span>
+                        </div>
                         <input type="checkbox" name="check" id="check" checked={data.check} onChange={handleInput} required />
                     </label>
                 </div>
-                {/* aggiungere messaggio di errore se le pass non sono uguali */}
+
+                {error && (
+                    <div className={`${classes.inlineMsg} ${classes.red}`}>
+                        <ErrorOutlineIcon fontSize="small" />
+                        {error.message}
+                    </div>
+                )}
+                {loading && (
+                    <div className={classes.inlineMsg}>
+                        {<CachedIcon fontSize="small" />}
+                        Loading...
+                    </div>
+                )}
+
                 <div className={classes.buttonsWrapper}>
                     <Button
                         style="primary"

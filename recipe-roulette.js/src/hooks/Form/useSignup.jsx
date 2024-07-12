@@ -7,7 +7,6 @@ import axios from "axios"
 
 export function useSignup(setShowPopup) {
     const [data, setData] = useState(createData())
-    const [passError, setPassError] = useState(null)
     const [isRegistered, setisRegistered] = useState()
     const { handleOpenSnackbar } = useSnackbar()
     const { setIsAuthenticated } = useAuth()
@@ -85,14 +84,14 @@ export function useSignup(setShowPopup) {
             Signup.mutate({ username: data.username, email: data.email, password: data.password })
         } else {
             console.log("Please, confirm your password")
-            setPassError(`Please, confirm your password`)
         }
     }
 
     return {
         data,
-        passError,
         isRegistered,
+        loading: Signup.isPending,
+        error: Signup.error,
         handleInput,
         handleSubmit,
     }

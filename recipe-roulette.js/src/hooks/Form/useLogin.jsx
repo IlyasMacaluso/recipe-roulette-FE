@@ -59,7 +59,7 @@ export function useLogin(setShowPopup) {
         mutationFn: loginFn,
         onSuccess: (resData) => {
             const { id, username, email, token } = resData
-            setValue("userData", { id, username, email, token, rememberMe: data.check, })
+            setValue("userData", { id, username, email, token, rememberMe: data.check })
 
             setIsAuthenticated(true)
             handleOpenSnackbar("You are now logged in!", 3000)
@@ -84,10 +84,11 @@ export function useLogin(setShowPopup) {
     function handleShowPassword() {
         setShowPassword(!showPassword)
     }
-
     return {
         data,
         showPassword,
+        error: Login.error,
+        loading: Login.isPending,
         handleInput,
         handleSubmit,
         handleShowPassword,

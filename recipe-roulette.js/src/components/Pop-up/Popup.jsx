@@ -6,8 +6,8 @@ export function Popup({ handleClosePopup, children }) {
     }
     
     return (
-        <div className={classes.overlay} onClick={() => handleClosePopup()}>
-            <div className={classes.popup} onClick={(e) => stopPropagation(e)}>
+        <div className={classes.overlay}>
+            <div className={classes.popup}>
                 {children}
             </div>
         </div>

@@ -9,12 +9,15 @@ import VisibilityOffIcon from "@mui/icons-material/VisibilityOff"
 import VisibilityIcon from "@mui/icons-material/Visibility"
 import LoginIcon from "@mui/icons-material/Login"
 import StartIcon from "@mui/icons-material/Start"
+import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline"
+import CachedIcon from '@mui/icons-material/Cached';
 
 import classes from "./Login.module.scss"
 
 export function Login({ setShowPopup = null, setChangeToSignup = null }) {
-    const { data, showPassword, handleInput, handleSubmit, handleShowPassword } = useLogin(setShowPopup)
+    const { data, showPassword, handleInput, handleSubmit, handleShowPassword, error, loading } = useLogin(setShowPopup)
     const location = useLocation()
+    console.log(error, loading)
 
     return (
         <div className={`${classes.container}`}>
@@ -77,6 +80,19 @@ export function Login({ setShowPopup = null, setChangeToSignup = null }) {
                         <label htmlFor="check">Remember me</label>
                         <input id="check" name="check" onChange={handleInput} type="checkbox" checked={data.check} />
                     </div>
+
+                    {error && (
+                        <div className={`${classes.inlineMsg} ${classes.red}`}>
+                            <ErrorOutlineIcon fontSize="small" />
+                            {error.message}
+                        </div>
+                    )}
+                    {loading && (
+                        <div className={classes.inlineMsg}>
+                            {<CachedIcon fontSize="small" />}
+                            Loading...
+                        </div>
+                    )}
                 </div>
 
                 <div className={classes.buttonsWrapper}>

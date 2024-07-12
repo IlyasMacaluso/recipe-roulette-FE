@@ -22,7 +22,7 @@
     padding-bottom: 0;
     > h1 {
         margin: 0;
-        font-size: $text-size-32;
+        font-size: $text-size-24;
         color: $dark-gray;
     }
     .closeIco {
@@ -39,15 +39,15 @@
     }
 }
 
-.formBox {
+.formWrapper {
     display: flex;
     flex-direction: column;
     width: 100%;
     padding: 0 1.5rem;
     padding-bottom: 2rem;
     box-sizing: border-box;
-    gap: 1.5rem;
-    .inputBox {
+    gap: 1rem;
+    .inputWrapper {
         display: flex;
         flex-direction: column;
         justify-content: flex-start;
@@ -58,56 +58,37 @@
             align-content: center;
             width: 100%;
             border-radius: $size-24;
-            border: 1px ridge $light-gray;
-            height: 48px;
+            border: 1px solid $light-gray;
+            min-height: 40px;
+            max-height: 48px;
             box-sizing: border-box;
             padding-left: $size-16;
-            font-size: $text-size-16;
+            font-size: $text-size-14;
             font-family: $header-text;
         }
         :focus {
             outline: 2px solid $main-color;
         }
         ::placeholder {
-            font-size: $text-size-16;
+            font-size: $text-size-14;
             color: $medium-light-gray;
         }
         label {
-            font-family: $font-text;
             display: block;
-            padding-top: 0.75rem;
-            padding-bottom: 0.25rem;
             padding-left: 0.25rem;
-            font-size: $text-size-16;
-            font-family: $header-text;
-            font-weight: 500;
-            color: $dark-gray;
-        }
-
-        .checkLabel {
             font-size: $text-size-14;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-            padding-bottom: 0;
-            span {
-                text-decoration: underline;
-            }
-            input {
-                height: fit-content;
-                width: fit-content;
-                margin: 0;
-            }
+            font-family: $header-text;
+            font-weight: 600;
+            color: $dark-gray;
         }
     }
     .message {
         font-size: $text-size-14;
         font-family: $header-text;
+        padding-left: 0.25rem;
         font-weight: 500;
         display: flex;
-        justify-content: center;
         align-items: center;
-        padding-bottom: 0;
         color: $dark-gray;
         p {
             margin: 0;
@@ -124,10 +105,101 @@
         }
     }
 }
+.formWrapper .inputsWrapper {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: fit-content;
+    gap: 1rem;
+    margin-top: 1rem;
+}
 
+.inputsWrapper .inputWrapper {
+    display: flex;
+    flex-direction: column;
+    height: fit-content;
+    gap: 0.25rem;
+}
+
+.checkLabel {
+    padding-left: 0.25rem;
+    font-size: $text-size-14;
+    font-family: $header-text;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 500;
+    color: $dark-gray;
+    width: fit-content;
+
+    span {
+        font-weight: 600;
+        color: #58933d;
+    }
+    input {
+        height: 18px;
+        width: 18px;
+        margin: 0;
+    }
+}
 .buttonsWrapper {
     display: flex;
     flex-direction: column;
     width: 100%;
     gap: 0.5rem;
+}
+
+.formWrapper .inputWrapper .error {
+    position: relative;
+    outline: solid 1px $red;
+}
+.formWrapper .inputWrapper .error ~ .ico {
+    position: absolute;
+    top: 0;
+    transform: translate(-50%, -50%);
+}
+.formWrapper .inputWrapper .passError:focus {
+    outline: solid 2px $main-color;
+}
+
+.passInput {
+    position: relative;
+    width: 100%;
+}
+
+.passInput .icoWrapper {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    right: 0.75rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.passInput .ico {
+    padding: 0.25rem;
+    background-color: transparent;
+    color: $medium-light-gray;
+}
+.passInput .errIco {
+    color: $light-red;
+}
+
+.formWrapper .inlineMsg {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    outline: 2px solid $dark-gray;
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+    color: $dark-gray;
+    font-family: $header-text;
+    font-weight: 500;
+}
+
+.formWrapper .red {
+    color: $red;
+    outline-color: $red;
 }
