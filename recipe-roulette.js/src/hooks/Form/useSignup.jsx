@@ -71,7 +71,6 @@ export function useSignup(setShowPopup) {
             }, 0)
         },
         onError: (error) => {
-            handleOpenSnackbar(error.message || "There is already a user with this username or password", 3500)
             console.error(error.message)
         },
     })

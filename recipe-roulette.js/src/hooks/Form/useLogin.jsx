@@ -71,7 +71,6 @@ export function useLogin(setShowPopup) {
             }, 0)
         },
         onError: (error) => {
-            handleOpenSnackbar(error.message || "Invalid credentials", 3500)
             console.error(error)
         },
     })

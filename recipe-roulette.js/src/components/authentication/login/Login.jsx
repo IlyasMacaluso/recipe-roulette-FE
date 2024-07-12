@@ -17,7 +17,6 @@ import classes from "./Login.module.scss"
 export function Login({ setShowPopup = null, setChangeToSignup = null }) {
     const { data, showPassword, handleInput, handleSubmit, handleShowPassword, error, loading } = useLogin(setShowPopup)
     const location = useLocation()
-    console.log(error, loading)
 
     return (
         <div className={`${classes.container}`}>

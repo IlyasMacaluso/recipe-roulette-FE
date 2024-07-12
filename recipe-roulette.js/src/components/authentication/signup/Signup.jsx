@@ -1,6 +1,8 @@
 import { useSignup } from "../../../hooks/Form/useSignup"
 import { Button } from "../../Buttons/Button/Button"
 import { useLocation } from "@tanstack/react-router"
+import { useLogin } from "../../../hooks/Form/useLogin"
+import { useMemo } from "react"
 
 import EditNoteIcon from "@mui/icons-material/EditNote"
 import StartIcon from "@mui/icons-material/Start"
@@ -11,8 +13,6 @@ import VisibilityIcon from "@mui/icons-material/Visibility"
 import CachedIcon from '@mui/icons-material/Cached';
 
 import classes from "./Signup.module.scss"
-import { useLogin } from "../../../hooks/Form/useLogin"
-import { useMemo } from "react"
 
 export function Signup({ setShowPopup = null, setChangeToSignup = null }) {
     const { data, handleInput, handleSubmit, error, loading } = useSignup(setShowPopup)
