@@ -84,7 +84,7 @@ export function Favorited() {
                     </h2>
                     {showPopup &&
                         createPortal(
-                            <Popup handleClosePopup={() => setShowPopup(false)}>
+                            <Popup>
                                 <Login setShowPopup={setShowPopup} />
                             </Popup>,
                             document.getElementById("popup-root")

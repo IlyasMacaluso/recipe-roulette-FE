@@ -20,10 +20,9 @@ import { Signup } from "../authentication/signup/Signup"
 import { useLogout } from "../../hooks/Form/useLogout"
 
 export function SideMenu({ handleMenuToggle, menuState = false }) {
-
     const [showPopup, setShowPopup] = useState()
     const { isAuthenticated } = useAuth()
-    const { handleLogout } = useLogout(setShowPopup)
+    const { handleLogout, loading, error } = useLogout(setShowPopup)
     const { changeToSignup, setChangeToSignup } = useLoginToSignup()
 
     const { pathname } = useLocation()
@@ -81,9 +80,11 @@ export function SideMenu({ handleMenuToggle, menuState = false }) {
             </div>
             {showPopup &&
                 createPortal(
-                    <Popup handleClosePopup={() => setShowPopup(false)}>
+                    <Popup>
                         {isAuthenticated ? (
                             <ValidationBox
+                                loading={loading}
+                                error={error}
                                 message="Confirm logout?"
                                 setShowPopup={setShowPopup}
                                 handleValidationAction={() => {

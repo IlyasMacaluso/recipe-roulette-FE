@@ -61,6 +61,8 @@ export function useLogout(setShowPopup) {
 
     return {
         data,
+        loading: Logout.isPending,
+        error: Logout.error,
         handleLogout,
     }
 }

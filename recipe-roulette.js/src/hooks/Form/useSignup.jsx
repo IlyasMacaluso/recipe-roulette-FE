@@ -7,7 +7,6 @@ import axios from "axios"
 
 export function useSignup(setShowPopup) {
     const [data, setData] = useState(createData())
-    const [isRegistered, setisRegistered] = useState()
     const { handleOpenSnackbar } = useSnackbar()
     const { setIsAuthenticated } = useAuth()
     const { setValue } = useLocalStorage()
@@ -16,10 +15,10 @@ export function useSignup(setShowPopup) {
 
     function createData() {
         return {
-            username: ``,
-            email: ``,
-            password: ``,
-            confirmPass: ``,
+            username: "",
+            email: "",
+            password: "",
+            confirmPass: "",
             check: false,
         }
     }
@@ -60,7 +59,6 @@ export function useSignup(setShowPopup) {
             const { id, username, email, token } = data
             setValue("userData", { id, username, email, token })
 
-            setisRegistered(true)
             setIsAuthenticated(true)
             handleOpenSnackbar("Signup & Login successfull!", 3000)
 
@@ -88,7 +86,6 @@ export function useSignup(setShowPopup) {
 
     return {
         data,
-        isRegistered,
         loading: Signup.isPending,
         error: Signup.error,
         handleInput,

@@ -62,7 +62,7 @@ export function LinkBox() {
             </div>
             {showPopup &&
                 createPortal(
-                    <Popup handleClosePopup={() => setShowPopup(false)}>
+                    <Popup >
                         {isAuthenticated ? (
                             <ValidationBox
                                 message="Confirm logout?"

@@ -1,9 +1,6 @@
 import classes from "./Popup.module.scss"
 
-export function Popup({ handleClosePopup, children }) {
-    function stopPropagation(e) {
-        e.stopPropagation()
-    }
+export function Popup({ children }) {
     
     return (
         <div className={classes.overlay}>
