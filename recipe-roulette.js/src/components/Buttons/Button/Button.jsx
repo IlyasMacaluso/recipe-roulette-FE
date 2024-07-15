@@ -18,9 +18,9 @@ export function Button({
         action && action()
         setTimeout(() => {
             link && navigate({ to: `/${link}` })
-            prevPath && prevPath === "/recipes-results" && navigate({ to: "/recipes-results" })
-            prevPath && prevPath === "/login" && navigate({ to: "/" })
-            prevPath && prevPath === "/signup" && navigate({ to: "/" })
+            if (prevPath) {
+                prevPath === "/recipes-results" && navigate({ to: "/recipes-results" })
+            }
         }, 0)
     }
 

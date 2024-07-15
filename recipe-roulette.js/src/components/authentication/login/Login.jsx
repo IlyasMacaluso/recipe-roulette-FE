@@ -1,8 +1,10 @@
+import { useCenterItem } from "../../../hooks/useCenterItem/useCenterItem"
 import { useLocation } from "@tanstack/react-router"
 import { useLogin } from "../../../hooks/Form/useLogin"
 import { GoogleLoginBtn } from "../../SocialLoginButtons/GoogleLoginBtn"
 import { FacebookSocialBtn } from "../../SocialLoginButtons/FacebookLoginBtn"
 import { Button } from "../../Buttons/Button/Button"
+import { useRef } from "react"
 
 import CloseIcon from "@mui/icons-material/Close"
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff"
@@ -10,13 +12,16 @@ import VisibilityIcon from "@mui/icons-material/Visibility"
 import LoginIcon from "@mui/icons-material/Login"
 import StartIcon from "@mui/icons-material/Start"
 import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline"
-import CachedIcon from '@mui/icons-material/Cached';
+import CachedIcon from "@mui/icons-material/Cached"
 
 import classes from "./Login.module.scss"
 
 export function Login({ setShowPopup = null, setChangeToSignup = null }) {
-    const { data, showPassword, handleInput, handleSubmit, handleShowPassword, error, loading } = useLogin(setShowPopup)
+    const inputRef = useRef(null)
     const location = useLocation()
+
+    const { data, showPassword, handleInput, handleSubmit, handleShowPassword, error, loading } = useLogin(setShowPopup)
+    const { scrollToCenter, refs } = useCenterItem(2)
 
     return (
         <div className={`${classes.container}`}>
@@ -39,11 +44,13 @@ export function Login({ setShowPopup = null, setChangeToSignup = null }) {
                     <div className={classes.inputWrapper}>
                         <label>Username</label>
                         <input
+                            ref={refs[0]}
                             type="text"
                             name="username"
                             id="username"
                             value={data.username}
                             placeholder="Insert username here"
+                            onFocus={() => scrollToCenter(refs[0])}
                             onChange={handleInput}
                             required
                         />
@@ -53,12 +60,14 @@ export function Login({ setShowPopup = null, setChangeToSignup = null }) {
                         <label>Password</label>
                         <div className={classes.passInput}>
                             <input
+                                ref={refs[1]}
                                 type={showPassword ? "text" : "password"}
                                 name="password"
                                 id="password"
                                 value={data.password}
                                 placeholder="Insert password here"
                                 onChange={handleInput}
+                                onFocus={() => scrollToCenter(refs[1])}
                                 required
                             />
                             {showPassword ? (

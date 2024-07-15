@@ -1,8 +1,9 @@
+import { useCenterItem } from "../../../hooks/useCenterItem/useCenterItem"
 import { useSignup } from "../../../hooks/Form/useSignup"
 import { Button } from "../../Buttons/Button/Button"
 import { useLocation } from "@tanstack/react-router"
 import { useLogin } from "../../../hooks/Form/useLogin"
-import { useMemo } from "react"
+import { useMemo, useRef } from "react"
 
 import EditNoteIcon from "@mui/icons-material/EditNote"
 import StartIcon from "@mui/icons-material/Start"
@@ -10,14 +11,16 @@ import CloseIcon from "@mui/icons-material/Close"
 import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline"
 import VisibilityOffIcon from "@mui/icons-material/VisibilityOff"
 import VisibilityIcon from "@mui/icons-material/Visibility"
-import CachedIcon from '@mui/icons-material/Cached';
+import CachedIcon from "@mui/icons-material/Cached"
 
 import classes from "./Signup.module.scss"
 
 export function Signup({ setShowPopup = null, setChangeToSignup = null }) {
+    const location = useLocation()
+
     const { data, handleInput, handleSubmit, error, loading } = useSignup(setShowPopup)
     const { showPassword, handleShowPassword } = useLogin()
-    const location = useLocation()
+    const { scrollToCenter, refs } = useCenterItem(4)
 
     const { password, confirmPass, username, email } = useMemo(() => {
         return data
@@ -37,12 +40,14 @@ export function Signup({ setShowPopup = null, setChangeToSignup = null }) {
                     <div className={classes.inputWrapper}>
                         <label>Username</label>
                         <input
+                            ref={refs[0]}
                             type="text"
                             name="username"
                             id="username"
                             value={username}
                             onChange={handleInput}
                             placeholder="Insert your username"
+                            onFocus={() => scrollToCenter(refs[0])}
                             required
                         />
                     </div>
@@ -50,12 +55,14 @@ export function Signup({ setShowPopup = null, setChangeToSignup = null }) {
                     <div className={classes.inputWrapper}>
                         <label>Email</label>
                         <input
+                            ref={refs[1]}
                             type="email"
                             name="email"
                             id="email"
                             value={email}
                             onChange={handleInput}
                             placeholder="Insert your email"
+                            onFocus={() => scrollToCenter(refs[1])}
                             required
                         />
                     </div>
@@ -64,6 +71,7 @@ export function Signup({ setShowPopup = null, setChangeToSignup = null }) {
                         <label>Password</label>
                         <div className={classes.passInput}>
                             <input
+                                ref={refs[2]}
                                 className={`${password !== confirmPass && classes.error}`}
                                 type={showPassword ? "text" : "password"}
                                 name="password"
@@ -71,6 +79,7 @@ export function Signup({ setShowPopup = null, setChangeToSignup = null }) {
                                 value={password}
                                 placeholder="Insert password here"
                                 onChange={handleInput}
+                                onFocus={() => scrollToCenter(refs[2])}
                                 required
                             />
 
@@ -91,13 +100,15 @@ export function Signup({ setShowPopup = null, setChangeToSignup = null }) {
                         <label>Confirm password</label>
                         <div className={classes.passInput}>
                             <input
+                                ref={refs[3]}
                                 className={`${password !== confirmPass && classes.error}`}
                                 type={showPassword ? "text" : "password"}
                                 name="confirmPass"
-                                id="password"
+                                id="confirmPass"
                                 value={data.confirmPass}
                                 placeholder="Confirm password"
                                 onChange={handleInput}
+                                onFocus={() => scrollToCenter(refs[3])}
                                 required
                             />
                         </div>
