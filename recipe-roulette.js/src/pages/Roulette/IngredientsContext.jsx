@@ -1,9 +1,11 @@
-import { useState, useEffect, createContext, useContext } from "react"
 import ingredientsArray from "../../assets/ingredientsArray"
+import { useState, useEffect, createContext, useContext } from "react"
 import { useRecipesContext } from "../../contexts/RecipesContext"
 import { useLocalStorage } from "../../hooks/useLocalStorage/useLocalStorage"
 import { useDisplayedIngredients } from "./useDisplayedIngredients/useDisplayedIngredients"
 import { useIngredientUpdate } from "./useIngredientUpdate/useIngredientUpdate"
+import { useAuth } from "../../hooks/Auth/useAuth"
+import { useBlacklistPost } from "../../hooks/useBlacklistFetch/useBlacklistPost"
 
 const IngredientsContext = createContext()
 
@@ -15,25 +17,48 @@ export const IngredientsProvider = ({ children }) => {
         blacklisted: [],
     })
     const { recipeFilter } = useRecipesContext()
+    const { isAuthenticated } = useAuth()
 
     // hook per la gestione del localStorage
     const { setValue, getValue } = useLocalStorage()
 
-    //hook per la gestione dell'aggiornamento degli ingredienti (aggiungi/rimuovi a backlist/selezionati)
+    // logica per la gestione dell'aggiornamento degli ingredienti (aggiungi/rimuovi a backlist/selezionati)
     const { handleIngUpdate, handleDeselectAll } = useIngredientUpdate(ingredients, setIngredients)
 
     // logica per la gestione degli ingrediento a schermo, genera, shuffle, aggiungi, rimuovi
-    const { handleIngDecrement, handleIngIncrement, shuffleIng, generateIngredients } = useDisplayedIngredients(
-        ingredients,
-        setIngredients
-    )
+    const { handleIngDecrement, handleIngIncrement, shuffleIng, generateIngredients } = useDisplayedIngredients(ingredients, setIngredients)
 
     useEffect(() => {
         const localIngredients = getValue("ingredients") //restituisce il valore già parsato se presente
         if (localIngredients && localIngredients.all.length > 0) {
             const { displayed } = localIngredients
-            setIngredients(localIngredients)
             displayed.length === 0 && generateIngredients()
+
+            if (false /* isAuthenticated */) {
+                // const blacklistedFromDB = [] //fetchdatafunction
+
+                function markBlacklisted(ingredients) {
+                    return ingredients.map((ingredient) => {
+                        if (blacklistedFromDB.includes(ingredient.id)) {
+                            return { ...ingredient, isBlacklisted: true }
+                        } else {
+                            return { ...ingredient, isBlacklisted: false }
+                        }
+                    })
+                }
+
+                setIngredients((prev) => {
+                    return {
+                        ...prev,
+                        all: markBlacklisted(localIngredients.all),
+                        filtered: markBlacklisted(localIngredients.filtered),
+                        displayed: markBlacklisted(localIngredients.displayed),
+                        blacklisted: blacklistedFromDB,
+                    }
+                })
+            } else {
+                setIngredients(localIngredients)
+            }
         } else {
             //se il localStorage è vuoto allora inizilizziamo ad array vuoti per poi fare eventualmente un fetch dei dati (per ora utilizzo l'array locale)
             setIngredients({
@@ -46,21 +71,20 @@ export const IngredientsProvider = ({ children }) => {
         }
     }, [])
 
-        useEffect(() => {
-            let filtering = ingredients.all.filter((ing) => !ing.isBlackListed)
-
-            const filterIngredients = (prop) => filtering = filtering.filter((item) => item[prop]) // funzione per filtrare in base alla prop
+    useEffect(() => {
+        setIngredients((prev) => {
+            let filtering = prev.all.filter((ing) => !ing.isBlackListed)
+            const filterIngredients = (prop) => (filtering = filtering.filter((item) => item[prop])) // funzione per filtrare in base alla prop
 
             recipeFilter.isGlutenFree && filterIngredients("isGlutenFree")
             recipeFilter.isVegetarian && filterIngredients("isVegetarian")
             recipeFilter.isVegan && filterIngredients("isVegan")
 
-            setIngredients((prev) => {
-                const updatedIngredients = { ...prev, filtered: filtering }
-                setValue("ingredients", updatedIngredients)
-                return updatedIngredients
-            })
-        }, [recipeFilter, ingredients.all])
+            const updatedIngredients = { ...prev, filtered: filtering }
+            setValue("ingredients", updatedIngredients)
+            return updatedIngredients
+        })
+    }, [recipeFilter, ingredients.all])
 
     return (
         <IngredientsContext.Provider

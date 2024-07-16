@@ -1,5 +1,5 @@
 import { createContext, useContext, useEffect, useState } from "react"
-import { useLocation } from  "@tanstack/react-router"
+import { useLocation } from "@tanstack/react-router"
 import { useAuth } from "../hooks/Auth/useAuth"
 import { useFetchPreferences } from "../hooks/fetchPreferences/useFetchPreferences"
 import { useLocalStorage } from "../hooks/useLocalStorage/useLocalStorage"
@@ -24,15 +24,16 @@ export const RecipesProvider = ({ children }) => {
     // hook per aggiornare il localStorage
     const { getValue } = useLocalStorage()
 
-    // funzioni di gestione filtri ricetta
-    const { recipeFilter, setRecipeFilter, toggleRecipeFilter, handlePreferencesToggle, handleDeselectRecipeFilters } =
-        useRecipeFilter()
-
-    // hook per aggiornare le ricette
-    const { handleRecipesUpdate, handleTargetedRecipe } = useRecipesUpdate(setRecipes)
-
     // hook per l'autenticazione
     const { isAuthenticated } = useAuth() // Stato di autenticazione
+
+    // funzioni di gestione filtri ricetta
+    const { recipeFilter, setRecipeFilter, toggleRecipeFilter, handlePreferencesToggle, handleDeselectRecipeFilters } =
+    useRecipeFilter(isAuthenticated)
+    
+    // hook per aggiornare le ricette
+    const { handleRecipesUpdate, handleTargetedRecipe } = useRecipesUpdate(setRecipes)
+    
 
     // Recupero le ricette dal localStorage quando isAuthenticated cambia
 
@@ -49,13 +50,12 @@ export const RecipesProvider = ({ children }) => {
             // Se non si è autenticati, setta isFavorited:false (nella variabile di stato)
             const resetRecipeList = (list) => {
                 if (list && list.length > 0) {
-                    return list.map((rec) => ({ ...rec, isFavorited: false }));
+                    return list.map((rec) => ({ ...rec, isFavorited: false }))
                 }
-                return [];
+                return []
             }
-            
+
             setRecipes((prevRecipes) => {
-            
                 if (localRecipes) {
                     return {
                         ...prevRecipes,
@@ -66,12 +66,11 @@ export const RecipesProvider = ({ children }) => {
                             : null,
                         favorited: [],
                         searched: [],
-                    };
+                    }
                 }
-            
-                return prevRecipes; // Se localRecipes non è definito, ritorna lo stato corrente senza modifiche
-            });
-            
+
+                return prevRecipes // Se localRecipes non è definito, ritorna lo stato corrente senza modifiche
+            })
         }
     }, [isAuthenticated])
 
@@ -113,7 +112,8 @@ export const RecipesProvider = ({ children }) => {
                     (recipeFilter.isVegan ? rec.isVegan : true) &&
                     (recipeFilter.cuisineEthnicity.includes("all") ||
                         recipeFilter.cuisineEthnicity.includes(rec.cuisineEthnicity.toLowerCase())) &&
-                    (recipeFilter.difficulty === "all" || recipeFilter.difficulty.toLowerCase() === rec.difficulty.toLowerCase())
+                    (recipeFilter.difficulty === "all" ||
+                        recipeFilter.difficulty.toLowerCase() === rec.difficulty.toLowerCase())
                 )
             })
 

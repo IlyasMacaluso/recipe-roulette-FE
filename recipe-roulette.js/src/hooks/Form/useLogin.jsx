@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react"
 import { useAuth } from "../Auth/useAuth"
-import { useMutation, useQuery } from "@tanstack/react-query"
+import { useMutation } from "@tanstack/react-query"
 import { useSnackbar } from "../../components/Snackbar/useSnackbar"
-import axios from "axios"
 import { useLocalStorage } from "../useLocalStorage/useLocalStorage"
+
+import axios from "axios"
 
 export function useLogin(setShowPopup) {
     const [data, setData] = useState(createData())
@@ -47,7 +48,7 @@ export function useLogin(setShowPopup) {
             if (res.status !== 200) {
                 throw new Error(`Network error, ${res.data.msg}`)
             }
-
+            console.log(resData);
             const resData = await res.data
             return resData
         } catch (error) {
@@ -58,6 +59,7 @@ export function useLogin(setShowPopup) {
     const Login = useMutation({
         mutationFn: loginFn,
         onSuccess: (resData) => {
+            console.log(resData);
             const { id, username, email, token } = resData
             setValue("userData", { id, username, email, token, rememberMe: data.check })
 
