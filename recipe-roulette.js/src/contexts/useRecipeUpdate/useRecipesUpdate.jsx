@@ -1,12 +1,14 @@
 import { useAuth } from "../../hooks/Auth/useAuth"
 import { useLocalStorage } from "../../hooks/useLocalStorage/useLocalStorage"
+import { usePostRequest } from "../../hooks/usePostRequest/usePostRequest"
 
 export const useRecipesUpdate = (setRecipes) => {
-    const { setValue } = useLocalStorage()
+    const { setValue, getValue } = useLocalStorage()
+    const { mutation } = usePostRequest("http://localhost:3000/api/preferences/set-favorited-recipes", "favoritesUpdate")
     const { isAuthenticated } = useAuth() // Stato di autenticazione
 
     const handleRecipesUpdate = (recipe, setRecipe) => {
-        let updatedRecipe = { ...recipe, isFavorited: !recipe.isFavorited }
+        const updatedRecipe = { ...recipe, isFavorited: !recipe.isFavorited }
         setRecipes((prevRecipes) => {
             const isInResults = prevRecipes.results.find((rec) => rec.id === recipe.id && rec.title === recipe.title)
 
@@ -18,9 +20,7 @@ export const useRecipesUpdate = (setRecipes) => {
                     ? [...prevRecipes.favorited, updatedRecipe]
                     : prevRecipes.favorited.filter((rec) => rec.id !== recipe.id && rec.title !== recipe.title)
 
-                newResults = prevRecipes.results.map((rec) =>
-                    rec.id === recipe.id && rec.title === recipe.title ? updatedRecipe : rec
-                )
+                newResults = prevRecipes.results.map((rec) => (rec.id === recipe.id && rec.title === recipe.title ? updatedRecipe : rec))
             } else {
                 newFavorites = updatedRecipe.isFavorited
                     ? [...prevRecipes.favorited, updatedRecipe]
@@ -39,7 +39,9 @@ export const useRecipesUpdate = (setRecipes) => {
 
             // Aggiornamento localStorage se autenticati
             if (isAuthenticated) {
+                const userData = getValue("userData")
                 setValue("recipes", updatedRecipes)
+                mutation.mutate({ recipe: updatedRecipe, userId: userData.id })
             }
 
             return updatedRecipes

@@ -14,7 +14,7 @@ function RecipeCard({ isExpanded = false, recipe, handleClickLoginSnackBar = nul
     const { recipeAnimation } = useRecipesContext()
     const { isAuthenticated } = useAuth()
     const location = useLocation()
-    const { id, title, attributes, isFavorited, isGlutenFree, isVegetarian, isVegan, ingQuantities, preparation } = recipe
+    const { title, attributes, isGlutenFree, isVegetarian, isVegan, ingQuantities, preparation } = recipe
     const { handleCardState, cardState, expandedCard, expandedIngredients, handleIngWrapperState, handleOpenRecipePage } =
         useRecipeCard(recipe, isExpanded)
 
