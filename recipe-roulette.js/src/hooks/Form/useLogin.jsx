@@ -48,11 +48,10 @@ export function useLogin(setShowPopup) {
             if (res.status !== 200) {
                 throw new Error(`Network error, ${res.data.msg}`)
             }
-            console.log(resData);
             const resData = await res.data
             return resData
         } catch (error) {
-            throw new Error(error.response.data.msg)
+            throw new Error(error?.response?.data.msg || error)
         }
     }
 

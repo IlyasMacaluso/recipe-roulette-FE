@@ -2,7 +2,6 @@ import { IngredientCard } from "../../components/IngredientCard/IngredientCard"
 import { useAnimate } from "../../hooks/animatePages/useAnimate"
 import { Button } from "../../components/Buttons/Button/Button"
 import { useButtonState } from "../../hooks/ButtonState/useButtonState"
-import { useMemo } from "react"
 import { useRecipesContext } from "../../contexts/RecipesContext"
 import { useLocationHook } from "../../hooks/useLocationHook"
 import { useRecipesFetch } from "../../hooks/useRecipesFetch/useRecipesFetch"
@@ -17,15 +16,11 @@ import classes from "./Roulette.module.scss"
 export function Roulette() {
     const { ingredients, shuffleIng, handleIngIncrement } = useManageIngredients()
     const { recipeFilter } = useRecipesContext()
-    const { isActive, setIsActive } = useButtonState(true)
+    const { isActive, setIsActive } = useButtonState(ingredients)
     const { location } = useLocationHook()
     const { animate } = useAnimate(location)
     const { handleRecipesFetch } = useRecipesFetch()
     const { handleAnimation, animationState } = useShakeAnimation()
-
-    const setButtonState = useMemo(() => {
-        ingredients.displayed.length === 8 ? setIsActive(false) : setIsActive(true)
-    }, [ingredients.displayed.length])
 
     return (
         <div className={`${classes.discoveryPage} ${animate && classes.animateDiscovery}`}>

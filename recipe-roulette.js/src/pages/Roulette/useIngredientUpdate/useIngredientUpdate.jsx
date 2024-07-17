@@ -4,7 +4,7 @@ import { useLocalStorage } from "../../../hooks/useLocalStorage/useLocalStorage"
 
 export const useIngredientUpdate = (ingredients, setIngredients) => {
     const { setValue, getValue } = useLocalStorage()
-    const { handleBlacklistUpdate } = useBlacklistPost(ingredients, setIngredients)
+    const { handleBlacklistUpdate } = useBlacklistPost()
     const { isAuthenticated } = useAuth()
 
     const handleIngUpdate = (prop, cardState) => {
