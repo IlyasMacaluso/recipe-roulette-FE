@@ -15,14 +15,12 @@ import { BaseSearch } from "../Search/BaseSearch/BaseSearch"
 
 import classes from "./Header.module.scss"
 import { useAuth } from "../../hooks/Auth/useAuth"
-import { useHandleBackButton } from "../../hooks/useHandleBackBtn/useHandleBackBtn"
 
 export function Header({ handleMenuToggle, handleSidebarToggle, handleRecipesSidebarToggle }) {
     const [title, setTitle] = useState("/")
     const { recipes, setRecipes, setInputValue, inputValue } = useRecipesContext()
-    const { handleDeselectAll, searchState, setSearchState, setFixedPosition, handleBlur } = useManageIngredients()
+    const { handleDeselectAll } = useManageIngredients()
     const { isAuthenticated } = useAuth()
-    const { inputRef } = useHandleBackButton(searchState, setSearchState, setFixedPosition, handleBlur)
 
     const navigate = useNavigate()
     const location = useLocation()
@@ -121,13 +119,13 @@ export function Header({ handleMenuToggle, handleSidebarToggle, handleRecipesSid
                 </div>
                 {location.pathname === "/favorited" && isAuthenticated && recipes.favorited.length > 0 && (
                     <section className={classes.globalActions}>
-                        <BaseSearch inputRef={inputRef} data={recipes.searched} inputValue={inputValue} setInputValue={setInputValue} />
+                        <BaseSearch data={recipes.searched} inputValue={inputValue} setInputValue={setInputValue} />
                         <IcoButton action={handleRecipesSidebarToggle} label="Filters" icon={<TuneOutlinedIcon fontSize="small" />} />
                     </section>
                 )}
                 {location.pathname === "/roulette" && (
                     <div className={classes.globalActions}>
-                        <IngredientSearch inputRef={inputRef} isFixed={true} searchCriteria="isSelected" />
+                        <IngredientSearch isFixed={true} searchCriteria="isSelected" />
                         <IcoButton action={() => handleDeselectAll("isSelected")} icon={<LockResetIcon fontSize={"medium"} />} />
                         <IcoButton action={() => handleSidebarToggle && handleSidebarToggle()} icon={<TuneIcon fontSize={"small"} />} />
                     </div>

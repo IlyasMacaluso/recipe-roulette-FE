@@ -38,11 +38,11 @@ export function useIngredientSearch(isFixed, searchCriteria) {
     const handleBlur = (inputRef, setState) => {
         setInputValues((prev) => ({ ...prev, current: "" }))
         inputRef.current.blur()
-        setState?.setCondition && setState.setCondition( false )
+        setState?.setCondition && setState.setCondition(false)
         setState?.setComponent && setState.setComponent(false)
 
-        const h1 = document.querySelector("header h1")
-        h1.click() //click sull'header per chiudere la tastiera
+        const root = document.querySelector("#root")
+        root.click() //click sull'header per chiudere la tastiera
     }
 
     const handleInputChange = (e) => {
@@ -100,8 +100,7 @@ export function useIngredientSearch(isFixed, searchCriteria) {
             // Filtra gli ingredienti già selezionati nella visualizzazione
             const notAlreadySelected = selectedIngs.filter((onDisplay) =>
                 isInDatabase.some(
-                    (dbIngredient) =>
-                        dbIngredient.id === onDisplay.id || dbIngredient.name.toUpperCase() === onDisplay.name.toUpperCase()
+                    (dbIngredient) => dbIngredient.id === onDisplay.id || dbIngredient.name.toUpperCase() === onDisplay.name.toUpperCase()
                 )
             )
 
@@ -118,20 +117,20 @@ export function useIngredientSearch(isFixed, searchCriteria) {
 
         // Resetta il valore corrente dell'input e lo stato della ricerca
         setInputValues((prev) => ({ ...prev, current: "" }))
-        setSearchState( false )
+
+        setSearchState(false)
+        setFixedPosition(false)
 
         // Se è stato trovato un ingrediente disponibile, aggiorna lo stato della carta e mostra una notifica
         if (firstAvailableIngredient) {
             handleIngUpdate(prop, firstAvailableIngredient, setCardState)
-            handleOpenSnackbar(`${firstAvailableIngredient.name} was locked!`, 1500)
-        } else {
-            // Altrimenti, aggiorna le suggerimenti degli ingredienti
-            setSuggestions(ingredients.all.filter((ing) => !ing.isBlacklisted))
+            prop === "isSelected" && handleOpenSnackbar(`${firstAvailableIngredient.name} was locked!`, 1500)
         }
     }
 
     const handlePressEnter = (e, inputRef, setState) => {
         if (e.key === "Enter") {
+            e.preventDefault()
             searchCriteria && handleInputDeactivation(searchCriteria)
             handleBlur(inputRef, setState)
         } else if (e.key === "Escape") {

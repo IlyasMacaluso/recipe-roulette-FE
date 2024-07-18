@@ -6,8 +6,9 @@ import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined"
 import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined"
 
 import classes from "./IngredientSearch.module.scss"
+import { useHandleBackButton } from "../../../hooks/useHandleBackBtn/useHandleBackBtn"
 
-export function IngredientSearch({ inputRef = null, isFixed = false, sidebarSearch = false, searchCriteria = "isBlackListed" }) {
+export function IngredientSearch({ isFixed = false, searchCriteria = "isBlackListed" }) {
     const {
         suggestions,
         inputValues,
@@ -20,10 +21,11 @@ export function IngredientSearch({ inputRef = null, isFixed = false, sidebarSear
         setSearchState,
         setFixedPosition,
     } = useIngredientSearch(isFixed, searchCriteria)
+    const { inputRef } = useHandleBackButton(searchState, setSearchState, setFixedPosition, handleBlur)
 
     return (
         <div
-            className={`${fixedPosition && classes.positionFixed} ${fixedPosition && sidebarSearch && classes.sidebarSearch} ${classes.search}`}
+            className={`${fixedPosition && classes.positionFixed} ${classes.search}`}
         >
             <div className={`${classes.searchBar} ${searchState ? classes.inputActive : classes.inputInactive}`}>
                 <input
@@ -34,7 +36,7 @@ export function IngredientSearch({ inputRef = null, isFixed = false, sidebarSear
                     placeholder={`${searchCriteria === "isSelected" ? "Add an ingredient" : "Blacklist an ingredient"}`}
                     name="search"
                     type="text"
-                    onKeyUp={(e) => handlePressEnter(e, inputRef, { setCondition: setSearchState, setComponent: setFixedPosition })}
+                    onKeyDownCapture={(e) => handlePressEnter(e, inputRef, { setCondition: setSearchState, setComponent: setFixedPosition })}
                     onChange={handleInputChange}
                     value={inputValues.current}
                 />
