@@ -2,7 +2,7 @@ import { useEffect, useMemo, useState } from "react"
 import { useManageIngredients } from "../../../pages/Roulette/IngredientsContext"
 import { useSnackbar } from "../../Snackbar/useSnackbar"
 
-export function useIngredientSearch(isFixed, searchCriteria) {
+export function useIngredientSearch(searchCriteria) {
     const { ingredients, handleDeselectAll, handleIngUpdate } = useManageIngredients()
     const { handleOpenSnackbar } = useSnackbar()
 
@@ -31,7 +31,7 @@ export function useIngredientSearch(isFixed, searchCriteria) {
 
     const handleInputActivation = (e) => {
         e.stopPropagation()
-        isFixed && setFixedPosition(true)
+        setFixedPosition(true)
         setInputValues((old) => ({ ...old, current: "" }))
         setSearchState(true)
     }
@@ -40,9 +40,6 @@ export function useIngredientSearch(isFixed, searchCriteria) {
         inputRef.current.blur()
         setState?.setCondition && setState.setCondition(false)
         setState?.setComponent && setState.setComponent(false)
-
-        // const root = document.querySelector("#root")
-        // root.click() //click sull'header per chiudere la tastiera
     }
 
     const handleInputChange = (e) => {
@@ -117,9 +114,6 @@ export function useIngredientSearch(isFixed, searchCriteria) {
 
         // Resetta il valore corrente dell'input e lo stato della ricerca
         setInputValues((prev) => ({ ...prev, current: "" }))
-
-        setSearchState(false)
-        setFixedPosition(false)
 
         // Se è stato trovato un ingrediente disponibile, aggiorna lo stato della carta e mostra una notifica
         if (firstAvailableIngredient) {

@@ -1,7 +1,6 @@
 import { useState } from "react"
 
 export function useDiscoverySidebar() {
-    const [fixedPosition, setFixedPosition] = useState(false)
     const [sidebarState, setsidebarState] = useState(false)
 
     function handleSidebarToggle() {
@@ -9,9 +8,7 @@ export function useDiscoverySidebar() {
     }
 
     return {
-        fixedPosition,
         sidebarState,
-        setFixedPosition,
         handleSidebarToggle,
     }
 }

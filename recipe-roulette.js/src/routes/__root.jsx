@@ -20,6 +20,7 @@ export const Route = createRootRoute({
         const { handleSidebarToggle, sidebarState } = useDiscoverySidebar()
         const { handleMenuToggle, path, menuState } = useSideMenu()
         const { toggleSidebarRecipes, sideBarState } = useRecipesResultsSideBar()
+        
         return (
             <div className="appContainer">
                 <AuthProvider>

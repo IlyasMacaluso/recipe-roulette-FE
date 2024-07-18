@@ -8,7 +8,7 @@ import { useIngredientSearch } from "../SearchBar/useIngredientSearch"
 import { useHandleBackButton } from "../../../hooks/useHandleBackBtn/useHandleBackBtn"
 
 export function BaseSearch({ data = [], inputValue = "", setInputValue }) {
-    const { handlePressEnter, handleInputActivation, handleBlur, setSearchState, setFixedPosition, searchState } = useIngredientSearch(true)
+    const { handlePressEnter, handleInputActivation, handleBlur, setSearchState, setFixedPosition, searchState } = useIngredientSearch()
     const { inputRef } = useHandleBackButton(searchState, setSearchState, setFixedPosition, handleBlur)
 
     return (
