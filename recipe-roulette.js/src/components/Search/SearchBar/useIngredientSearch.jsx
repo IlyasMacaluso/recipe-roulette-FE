@@ -41,8 +41,8 @@ export function useIngredientSearch(isFixed, searchCriteria) {
         setState?.setCondition && setState.setCondition(false)
         setState?.setComponent && setState.setComponent(false)
 
-        const root = document.querySelector("#root")
-        root.click() //click sull'header per chiudere la tastiera
+        // const root = document.querySelector("#root")
+        // root.click() //click sull'header per chiudere la tastiera
     }
 
     const handleInputChange = (e) => {
