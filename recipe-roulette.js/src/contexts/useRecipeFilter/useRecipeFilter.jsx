@@ -1,6 +1,8 @@
 import { useMemo, useState } from "react"
 import { useLocalStorage } from "../../hooks/useLocalStorage/useLocalStorage"
 import { useFetchPreferences } from "../../hooks/fetchPreferences/useFetchPreferences"
+import { usePostRequest } from "../../hooks/usePostRequest/usePostRequest"
+
 // Costruttore per creare i filtri delle ricette
 function RecipeFilter({
     isVegetarian = false,
@@ -34,22 +36,27 @@ function RecipeFilter({
 export const useRecipeFilter = (isAuthenticated) => {
     const [recipeFilter, setRecipeFilter] = useState(new RecipeFilter())
     const { setValue, getValue } = useLocalStorage()
-    const { handlePrefsUpdate } = useFetchPreferences()
+    const { handlePostRequest } = usePostRequest()
 
     const userData = useMemo(() => {
         return getValue("userData")
-    })
+    }, [isAuthenticated])
 
     // Gestione delle proprietà booleane di recipeFilter
     const toggleRecipeFilter = (prop) => {
         setRecipeFilter((prevFilters) => {
             const newState = !prevFilters[prop]
-            const newFilters = { ...prevFilters, [prop]: newState }
-            setValue("recipeFilter", newFilters) // Aggiorna il valore nel local storage o dove necessario
+            const updatedFilters = { ...prevFilters, [prop]: newState }
+            setValue("recipeFilter", updatedFilters) // Aggiorna il valore nel local storage o dove necessario
             if (isAuthenticated) {
-                userData.id && handlePrefsUpdate(newFilters, userData.id)
+                userData.id &&
+                    handlePostRequest(
+                        "http://localhost:3000/api/preferences/set-preferences", //url
+                        { newPreferences: updatedFilters, userId: userData.id }, //payload
+                        "filtersToggleUpdate" //mutationId
+                    )
             }
-            return newFilters // Ritorna il nuovo stato aggiornato
+            return updatedFilters // Ritorna il nuovo stato aggiornato
         })
     }
 
@@ -84,8 +91,12 @@ export const useRecipeFilter = (isAuthenticated) => {
                 updatedFilters = { ...updatedFilters, cuisineEthnicity: updatedEthnicity }
             }
             if (isAuthenticated) {
-                const { id } = userData
-                handlePrefsUpdate(updatedFilters, id)
+                userData.id &&
+                    handlePostRequest(
+                        "http://localhost:3000/api/preferences/set-preferences", //url
+                        { newPreferences: updatedFilters, userId: userData.id }, //payload
+                        "filtersUpdate" //mutationId
+                    )
             }
             setValue("recipeFilter", updatedFilters) // Aggiorna il valore nel local storage o dove necessario
             return updatedFilters // Ritorna il nuovo stato aggiornato

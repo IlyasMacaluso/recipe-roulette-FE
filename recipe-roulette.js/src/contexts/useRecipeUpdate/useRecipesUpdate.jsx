@@ -4,7 +4,7 @@ import { usePostRequest } from "../../hooks/usePostRequest/usePostRequest"
 
 export const useRecipesUpdate = (setRecipes) => {
     const { setValue, getValue } = useLocalStorage()
-    const { mutation } = usePostRequest("http://localhost:3000/api/preferences/set-favorited-recipes", "favoritesUpdate")
+    const { handlePostRequest } = usePostRequest()
     const { isAuthenticated } = useAuth() // Stato di autenticazione
 
     const handleRecipesUpdate = (recipe, setRecipe) => {
@@ -41,7 +41,12 @@ export const useRecipesUpdate = (setRecipes) => {
             if (isAuthenticated) {
                 const userData = getValue("userData")
                 setValue("recipes", updatedRecipes)
-                mutation.mutate({ recipe: updatedRecipe, userId: userData.id })
+                const mutationId = updatedRecipe.id + updatedRecipe.title
+                handlePostRequest(
+                    "http://localhost:3000/api/preferences/set-favorited-recipes", //url
+                    { recipe: updatedRecipe, userId: userData.id }, //payload
+                    mutationId //cancel prev mutations
+                )
             }
 
             return updatedRecipes

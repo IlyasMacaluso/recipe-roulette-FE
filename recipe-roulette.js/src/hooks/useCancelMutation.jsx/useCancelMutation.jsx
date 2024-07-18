@@ -7,23 +7,25 @@ export function useCancelMutation() {
         const mutationCache = queryClient.getMutationCache()
         const mutations = mutationCache.getAll()
 
-        // Identifica l'ultima mutazione con il mutationId specificato
-        const lastMutationIndex = mutations
-            .map((mutation, index) => ({ mutation, index }))
-            .filter(({ mutation }) => mutation.state.context?.id === mutationId)
-            .pop()?.index
+        // Trova l'indice dell'ultima mutazione con mutationId specificato
+        let lastMutationIndex = -1
+        for (let i = mutations.length - 1; i >= 0; i--) {
+            if (mutations[i].state.context?.id === mutationId) {
+                lastMutationIndex = i
+                break
+            }
+        }
 
-        if (lastMutationIndex !== undefined) {
+        if (lastMutationIndex !== -1) {
             mutations.forEach((mutation, index) => {
                 if (mutation.state.context?.id === mutationId && index !== lastMutationIndex) {
-                    mutation.state?.context?.abortController.abort()
+                    mutation.state?.context?.abortController?.abort()
                 }
             })
         }
 
         // Pulisci la cache delle mutazioni se supera una certa lunghezza
         if (mutations.length > 10) {
-            // max 10 to limit performance loss (foreach cicle on each request)
             mutationCache.clear()
         }
     }

@@ -6,6 +6,7 @@ import { Button } from "../Buttons/Button/Button"
 import { IcoButton } from "../Buttons/IcoButton/IcoButton"
 import { FilterChipRecipes } from "../FilterChip/FilterChipRecipes"
 import { useRecipesContext } from "../../contexts/RecipesContext"
+import { useHandleBackButton } from "../../hooks/useHandleBackBtn/useHandleBackBtn"
 
 import CloseIcon from "@mui/icons-material/Close"
 import RotateLeftOutlinedIcon from "@mui/icons-material/RotateLeftOutlined"
@@ -13,8 +14,9 @@ import RotateLeftOutlinedIcon from "@mui/icons-material/RotateLeftOutlined"
 import classes from "./Sidebar.module.scss"
 
 export function Sidebar({ sidebarState = false, handleSidebarToggle }) {
-    const { handleDeselectAll, ingredients } = useManageIngredients()
+    const { handleDeselectAll, ingredients, searchState, setSearchState, setFixedPosition, handleBlur } = useManageIngredients()
     const { toggleRecipeFilter, recipeFilter, handleDeselectRecipeFilters } = useRecipesContext()
+    const { inputRef } = useHandleBackButton(searchState, setSearchState, setFixedPosition, handleBlur)
 
     return (
         <div>
@@ -42,7 +44,7 @@ export function Sidebar({ sidebarState = false, handleSidebarToggle }) {
                     <div className={classes.blackListedWrapper}>
                         <h4>Add ingredeints to black list</h4>
                         <div className={classes.blackListed}>
-                            <IngredientSearch isFixed={true} sidebarSearch={true} searchCriteria="isBlackListed" />
+                            <IngredientSearch inputRef={inputRef} isFixed={true} sidebarSearch={true} searchCriteria="isBlackListed" />
                             {ingredients.blacklisted.length > 0 && (
                                 <div className={classes.filterChipWrapper}>
                                     {ingredients.blacklisted

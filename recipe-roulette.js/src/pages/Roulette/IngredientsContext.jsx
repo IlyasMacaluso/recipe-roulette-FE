@@ -5,7 +5,6 @@ import { useLocalStorage } from "../../hooks/useLocalStorage/useLocalStorage"
 import { useDisplayedIngredients } from "./useDisplayedIngredients/useDisplayedIngredients"
 import { useIngredientUpdate } from "./useIngredientUpdate/useIngredientUpdate"
 import { useAuth } from "../../hooks/Auth/useAuth"
-import { useBlacklistPost } from "../../hooks/useBlacklistFetch/useBlacklistPost"
 
 const IngredientsContext = createContext()
 

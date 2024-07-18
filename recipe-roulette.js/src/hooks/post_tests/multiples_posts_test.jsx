@@ -1,9 +1,9 @@
 import { useEffect } from "react"
-import { useBlacklistPost } from "./useBlacklistPost"
 import { useLocalStorage } from "../useLocalStorage/useLocalStorage"
+import { usePostRequest } from "../usePostRequest/usePostRequest"
 
-export function useTestPost(ingredients, setIngredients) {
-    const { handleBlacklistUpdate } = useBlacklistPost()
+export function useTestPost(ingredients, setIngredients, url) {
+    const { handlePostRequest } = usePostRequest()
     const { getValue } = useLocalStorage()
 
     useEffect(() => {
@@ -32,7 +32,12 @@ export function useTestPost(ingredients, setIngredients) {
                 const updatedBlacklisted = [...prev.blacklisted]
 
                 // Assicurati di usare l'ultimo stato aggiornato per la chiamata al server
-                handleBlacklistUpdate(updatedBlacklisted, id)
+                handlePostRequest(
+                    url,
+                    { updatedBlacklisted, id }
+                    //mutationId
+                    //scopeId
+                )
 
                 return {
                     ...prev,

@@ -1,10 +1,10 @@
 import { useAuth } from "../../../hooks/Auth/useAuth"
-import { useBlacklistPost } from "../../../hooks/useBlacklistFetch/useBlacklistPost"
 import { useLocalStorage } from "../../../hooks/useLocalStorage/useLocalStorage"
+import { usePostRequest } from "../../../hooks/usePostRequest/usePostRequest"
 
 export const useIngredientUpdate = (ingredients, setIngredients) => {
     const { setValue, getValue } = useLocalStorage()
-    const { handleBlacklistUpdate } = useBlacklistPost()
+    const { handlePostRequest } = usePostRequest()
     const { isAuthenticated } = useAuth()
 
     const handleIngUpdate = (prop, cardState) => {
@@ -59,19 +59,24 @@ export const useIngredientUpdate = (ingredients, setIngredients) => {
                 blacklisted: newBlacklisted,
             }
 
-            const awaitUpdate =  () => {
+            const awaitUpdate = () => {
                 if (prop === "isBlackListed" && isAuthenticated) {
                     //se l'utente è autenticato e sta modificando la prop isBlackListed di un ingrediente, aggiorno il db
                     const userData = getValue("userData")
-                    userData.id && handleBlacklistUpdate(newBlacklisted, userData.id)
+                    userData.id &&
+                        handlePostRequest(
+                            "http://localhost:3000/api/preferences/set-blacklisted-ingredients", //url
+                            { newBlacklist: newBlacklisted, userId: userData.id }, //payload
+                            "blacklistUpdate", // mutationId
+                            { meta: { scope: { id: "blacklistUpdate" } } } //scopeId
+                        )
                 }
             }
 
-            
             // Aggiorna il valore degli ingredienti
             setValue("ingredients", newIngredients)
             awaitUpdate()
-            
+
             return newIngredients
         })
     }
@@ -89,7 +94,13 @@ export const useIngredientUpdate = (ingredients, setIngredients) => {
             if (isAuthenticated) {
                 //se l'utente è autenticato e sta modificando la prop isBlackListed di un ingrediente, aggiorno il db
                 const userData = getValue("userData")
-                userData.id && handleBlacklistUpdate(newBlacklisted, userData.id)
+                userData.id &&
+                    handlePostRequest(
+                        "http://localhost:3000/api/preferences/set-blacklisted-ingredients", //url
+                        { newBlacklist: newBlacklisted, userId: userData.id }, //payload
+                        "blacklistUpdate", // mutationId
+                        { meta: { scope: { id: "blacklistUpdate" } } } //scopeId
+                    )
             }
 
             // Ritorna il nuovo stato degli ingredienti

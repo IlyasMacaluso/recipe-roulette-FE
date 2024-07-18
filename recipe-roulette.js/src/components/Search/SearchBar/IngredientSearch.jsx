@@ -1,14 +1,13 @@
 import React from "react"
 import { useIngredientSearch } from "./useIngredientSearch"
 import { IngredientSuggestions } from "../Suggestions/IngredientSuggestions"
-import { useHandleBackButton } from "../../../hooks/useHandleBackBtn/useHandleBackBtn"
 
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined"
 import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined"
 
 import classes from "./IngredientSearch.module.scss"
 
-export function IngredientSearch({ isFixed = false, sidebarSearch = false, searchCriteria = "isBlackListed" }) {
+export function IngredientSearch({ inputRef = null, isFixed = false, sidebarSearch = false, searchCriteria = "isBlackListed" }) {
     const {
         suggestions,
         inputValues,
@@ -21,8 +20,6 @@ export function IngredientSearch({ isFixed = false, sidebarSearch = false, searc
         setSearchState,
         setFixedPosition,
     } = useIngredientSearch(isFixed, searchCriteria)
-
-    const { inputRef } = useHandleBackButton(searchState, setSearchState, setFixedPosition, handleBlur)
 
     return (
         <div
@@ -37,9 +34,7 @@ export function IngredientSearch({ isFixed = false, sidebarSearch = false, searc
                     placeholder={`${searchCriteria === "isSelected" ? "Add an ingredient" : "Blacklist an ingredient"}`}
                     name="search"
                     type="text"
-                    onKeyUp={(e) =>
-                        handlePressEnter(e, inputRef, { setCondition: setSearchState, setComponent: setFixedPosition })
-                    }
+                    onKeyUp={(e) => handlePressEnter(e, inputRef, { setCondition: setSearchState, setComponent: setFixedPosition })}
                     onChange={handleInputChange}
                     value={inputValues.current}
                 />

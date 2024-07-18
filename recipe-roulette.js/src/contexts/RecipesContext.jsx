@@ -29,11 +29,10 @@ export const RecipesProvider = ({ children }) => {
 
     // funzioni di gestione filtri ricetta
     const { recipeFilter, setRecipeFilter, toggleRecipeFilter, handlePreferencesToggle, handleDeselectRecipeFilters } =
-    useRecipeFilter(isAuthenticated)
-    
+        useRecipeFilter(isAuthenticated)
+
     // hook per aggiornare le ricette
     const { handleRecipesUpdate, handleTargetedRecipe } = useRecipesUpdate(setRecipes)
-    
 
     // Recupero le ricette dal localStorage quando isAuthenticated cambia
 
@@ -61,9 +60,7 @@ export const RecipesProvider = ({ children }) => {
                         ...prevRecipes,
                         results: resetRecipeList(localRecipes.results),
                         filtered: [],
-                        targetedRecipe: localRecipes.targetedRecipe
-                            ? { ...prevRecipes.targetedRecipe, isFavorited: false }
-                            : null,
+                        targetedRecipe: localRecipes.targetedRecipe ? { ...prevRecipes.targetedRecipe, isFavorited: false } : null,
                         favorited: [],
                         searched: [],
                     }
@@ -76,8 +73,10 @@ export const RecipesProvider = ({ children }) => {
 
     // Animazione recipeCard
     useEffect(() => {
-        recipeAnimation && setTimeout(() => setRecipeAnimation(false), 0) // Se è già in corso, resetta
-        setTimeout(() => setRecipeAnimation(true), 300)
+        if (location.pathname === "/favorited") {
+            recipeAnimation && setTimeout(() => setRecipeAnimation(false), 0) // Se è già in corso, resetta
+            setTimeout(() => setRecipeAnimation(true), 300)
+        }
     }, [recipeFilter])
 
     // Reset dell'inputValue quando si cambia pagina
@@ -89,9 +88,7 @@ export const RecipesProvider = ({ children }) => {
     useEffect(() => {
         setRecipes((prevRecipes) => {
             if (prevRecipes.filtered && prevRecipes.filtered.length > 0) {
-                const newFiltered = prevRecipes.filtered.filter((rec) =>
-                    rec.title.toLowerCase().includes(inputValue.toLowerCase())
-                )
+                const newFiltered = prevRecipes.filtered.filter((rec) => rec.title.toLowerCase().includes(inputValue.toLowerCase()))
 
                 return { ...prevRecipes, searched: newFiltered }
             }
@@ -112,8 +109,7 @@ export const RecipesProvider = ({ children }) => {
                     (recipeFilter.isVegan ? rec.isVegan : true) &&
                     (recipeFilter.cuisineEthnicity.includes("all") ||
                         recipeFilter.cuisineEthnicity.includes(rec.cuisineEthnicity.toLowerCase())) &&
-                    (recipeFilter.difficulty === "all" ||
-                        recipeFilter.difficulty.toLowerCase() === rec.difficulty.toLowerCase())
+                    (recipeFilter.difficulty === "all" || recipeFilter.difficulty.toLowerCase() === rec.difficulty.toLowerCase())
                 )
             })
 

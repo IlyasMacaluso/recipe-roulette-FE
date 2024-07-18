@@ -5,13 +5,9 @@ import SearchIcon from "@mui/icons-material/Search"
 
 import classes from "./BaseSearch.module.scss"
 import { useIngredientSearch } from "../SearchBar/useIngredientSearch"
-import { useHandleBackButton } from "../../../hooks/useHandleBackBtn/useHandleBackBtn"
 
-export function BaseSearch({ data = [], inputValue = "", setInputValue }) {
-    const { handlePressEnter, handleInputActivation, handleBlur, setSearchState, setFixedPosition, searchState } =
-        useIngredientSearch(true)
-
-    const { inputRef } = useHandleBackButton(searchState, setSearchState, setFixedPosition, handleBlur)
+export function BaseSearch({ inputRef = null, data = [], inputValue = "", setInputValue }) {
+    const { handlePressEnter, handleInputActivation, handleBlur, setSearchState, setFixedPosition, searchState } = useIngredientSearch(true)
 
     return (
         <div className={`${classes.baseSearch} ${searchState && classes.baseSearchActive}`}>
@@ -20,7 +16,7 @@ export function BaseSearch({ data = [], inputValue = "", setInputValue }) {
                     ref={inputRef}
                     autoComplete="off"
                     className={classes.input}
-                    onKeyDown={(e) => handlePressEnter(e, inputRef, { setSearchState, setFixedPosition })}
+                    onKeyUp={(e) => handlePressEnter(e, inputRef, { setCondition: setSearchState, setComponent: setFixedPosition })}
                     onClick={handleInputActivation}
                     onChange={(e) => setInputValue(e.target.value)}
                     value={inputValue}
