@@ -31,7 +31,7 @@
 
 .recipesWrapper {
     display: flex;
-    flex-wrap: wrap;
+    flex-direction: column;
     gap: $size-20;
     box-sizing: border-box;
     padding: 0 1px;
