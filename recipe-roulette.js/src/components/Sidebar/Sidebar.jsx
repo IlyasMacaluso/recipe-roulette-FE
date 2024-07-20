@@ -32,7 +32,7 @@ export function Sidebar({ sidebarState = false, handleSidebarToggle }) {
                             size={18}
                             action={() => {
                                 handleDeselectRecipeFilters()
-                                handleDeselectAll("isBlackListed")
+                                handleDeselectAll("is_blacklisted")
                             }}
                         />
                         <IcoButton action={handleSidebarToggle} style="transparent" icon={<CloseIcon fontSize="small" />} />
@@ -42,11 +42,11 @@ export function Sidebar({ sidebarState = false, handleSidebarToggle }) {
                     <div className={classes.blackListedWrapper}>
                         <h4>Add ingredeints to black list</h4>
                         <div className={classes.blackListed}>
-                            <IngredientSearch searchCriteria="isBlackListed" />
-                            {ingredients.blacklisted.length > 0 && (
+                            <IngredientSearch searchCriteria="is_blacklisted" />
+                            {ingredients?.blacklisted && (
                                 <div className={classes.filterChipWrapper}>
-                                    {ingredients.blacklisted
-                                        .filter((ing) => ing.isBlackListed)
+                                    {ingredients?.blacklisted
+                                        .filter((ing) => ing.is_blacklisted)
                                         .sort((a, b) => (a.name === b.name ? 0 : a.name > b.name ? 1 : -1))
                                         .map((ing) => {
                                             return (
@@ -54,9 +54,9 @@ export function Sidebar({ sidebarState = false, handleSidebarToggle }) {
                                                     key={ing.id}
                                                     id={ing.id}
                                                     label={ing.name}
-                                                    bgColor={ing.bgColor}
-                                                    isBlackListed={ing.isBlackListed}
-                                                    isSelected={ing.isSelected}
+                                                    bg_color={ing.bg_color}
+                                                    is_blacklisted={ing.is_blacklisted}
+                                                    is_selected={ing.is_selected}
                                                 />
                                             )
                                         })}
@@ -70,23 +70,23 @@ export function Sidebar({ sidebarState = false, handleSidebarToggle }) {
                             {/* filtra gli ingredienti, inoltre imposta recipeFilter in modo che il fitro 
                             venga passato anche alla richiesta di fetch */}
                             <Switch
-                                state={recipeFilter.isGlutenFree}
+                                state={recipeFilter.is_gluten_free}
                                 action={() => {
-                                    toggleRecipeFilter("isGlutenFree")
+                                    toggleRecipeFilter("is_gluten_free")
                                 }}
                                 label={"Gluten free"}
                             />
                             <Switch
-                                state={recipeFilter.isVegetarian}
+                                state={recipeFilter.is_vegetarian}
                                 action={() => {
-                                    toggleRecipeFilter("isVegetarian")
+                                    toggleRecipeFilter("is_vegetarian")
                                 }}
                                 label={"Vegetarian"}
                             />
                             <Switch
-                                state={recipeFilter.isVegan}
+                                state={recipeFilter.is_vegan}
                                 action={() => {
-                                    toggleRecipeFilter("isVegan")
+                                    toggleRecipeFilter("is_vegan")
                                 }}
                                 label={"Vegan"}
                             />

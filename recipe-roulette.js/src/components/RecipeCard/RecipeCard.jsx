@@ -14,7 +14,7 @@ function RecipeCard({ isExpanded = false, recipe, handleClickLoginSnackBar = nul
     const { recipeAnimation } = useRecipesContext()
     const { isAuthenticated } = useAuth()
     const location = useLocation()
-    const { title, attributes, isGlutenFree, isVegetarian, isVegan, ingQuantities, preparation } = recipe
+    const { title, attributes, is_gluten_free, is_vegetarian, is_vegan, ingQuantities, preparation } = recipe
     const { handleCardState, cardState, expandedCard, expandedIngredients, handleIngWrapperState, handleOpenRecipePage } =
         useRecipeCard(recipe, isExpanded)
 
@@ -52,9 +52,9 @@ function RecipeCard({ isExpanded = false, recipe, handleClickLoginSnackBar = nul
             {/* bottomItems */}
             <div className={classes.bottomItems}>
                 <section className={classes.chipsWrapper}>
-                    {isVegan && <FilterChip label={"Vegan"} />}
-                    {isVegetarian && <FilterChip label={"Vegetarian"} />}
-                    {isGlutenFree && <FilterChip label={"GlutenFree"} />}
+                    {is_vegan && <FilterChip label={"Vegan"} />}
+                    {is_vegetarian && <FilterChip label={"Vegetarian"} />}
+                    {is_gluten_free && <FilterChip label={"GlutenFree"} />}
 
                     {attributes &&
                         attributes.length > 0 &&

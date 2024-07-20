@@ -1,14 +1,25 @@
-import axios from 'axios';
+import axios from "axios"
 
-export function usePostRequest() {
-    const postRequest = async (url, data) => {
+export function useGetRequest() {
+    const getRequest = async (url) => {
         try {
-            const response = await axios.post(url, data);
-            return response.data;
-        } catch (error) {
-            throw new Error(error.response?.data?.message || 'Something went wrong');
-        }
-    };
+            if (!url) {
+                throw new Error(`Request error: missing URL`)
+            }
 
-    return { postRequest };
+            const res = await axios.get(url)
+
+            if (res.status !== 200) {
+                throw new Error(`Network error, ${res?.data.msg || "Bad request"}`)
+            }
+
+            console.log("no errors");
+            return res.data
+        } catch (error) {
+            console.log(error)
+            throw new Error(error || "soemthing went wrong")
+        }
+    }
+
+    return {  getRequest }
 }

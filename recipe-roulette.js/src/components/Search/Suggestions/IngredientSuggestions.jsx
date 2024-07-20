@@ -8,16 +8,16 @@ export function IngredientSuggestions({ inputRef = null, setInputState, inputAct
     const { recipeFilter } = useRecipesContext()
 
     const isIngredientActive = (ingredient) => {
-        if (ingredient.isSelected || ingredient.isBlackListed) {
+        if (ingredient.is_selected || ingredient.is_blacklisted) {
             return false
         }
-        if (recipeFilter.isVegetarian && !ingredient.isVegetarian) {
+        if (recipeFilter.is_vegetarian && !ingredient.is_vegetarian) {
             return false
         }
-        if (recipeFilter.isGlutenFree && !ingredient.isGlutenFree) {
+        if (recipeFilter.is_gluten_free && !ingredient.is_gluten_free) {
             return false
         }
-        if (recipeFilter.isVegan && !ingredient.isVegan) {
+        if (recipeFilter.is_vegan && !ingredient.is_vegan) {
             return false
         }
         return true

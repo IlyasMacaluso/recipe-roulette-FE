@@ -5,9 +5,9 @@ import { usePostRequest } from "../../hooks/usePostRequest/usePostRequest"
 
 // Costruttore per creare i filtri delle ricette
 function RecipeFilter({
-    isVegetarian = false,
-    isGlutenFree = false,
-    isVegan = false,
+    is_vegetarian = false,
+    is_gluten_free = false,
+    is_vegan = false,
     cuisineEthnicity = [
         "all",
         "italian",
@@ -25,9 +25,9 @@ function RecipeFilter({
     caloricApport = 9999,
     difficulty = "all",
 } = {}) {
-    this.isVegetarian = isVegetarian
-    this.isGlutenFree = isGlutenFree
-    this.isVegan = isVegan
+    this.is_vegetarian = is_vegetarian
+    this.is_gluten_free = is_gluten_free
+    this.is_vegan = is_vegan
     this.cuisineEthnicity = cuisineEthnicity
     this.preparationTime = preparationTime
     this.caloricApport = caloricApport

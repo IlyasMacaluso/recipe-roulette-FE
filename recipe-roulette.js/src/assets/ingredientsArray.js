@@ -2,650 +2,650 @@ let ingredientsArray = [
     {
         id: 1,
         name: "Potato",
-        bgColor: "#f0e68c", // Light yellow (Pastel)
+        bg_color: "#f0e68c", // Light yellow (Pastel)
         categoria: "Vegetable",
         affinity: ["Onion", "Garlic", "Rosemary", "Butter", "Salt"],
         isBlackListed: false,
         isVegan: true,
-        isGlutenFree: true,
-        isVegetarian: true,
+        is_gluten_free: true,
+        is_vegetarian: true,
         isSelected: false,
     },
     {
         id: 2,
         name: "Onion",
-        bgColor: "#f7c6c7", // Light pink (Pastel)
+        bg_color: "#f7c6c7", // Light pink (Pastel)
         categoria: "Vegetable",
         affinity: ["Potato", "Garlic", "Thyme", "Butter", "Pepper"],
         isBlackListed: false,
         isVegan: true,
-        isGlutenFree: true,
-        isVegetarian: true,
+        is_gluten_free: true,
+        is_vegetarian: true,
         isSelected: false,
     },
     {
         id: 3,
         name: "Garlic",
-        bgColor: "#c7f0da", // Light mint green (Pastel)
+        bg_color: "#c7f0da", // Light mint green (Pastel)
         categoria: "Vegetable",
         affinity: ["Potato", "Onion", "Rosemary", "Olive Oil", "Salt"],
         isBlackListed: false,
         isVegan: true,
-        isGlutenFree: true,
-        isVegetarian: true,
+        is_gluten_free: true,
+        is_vegetarian: true,
         isSelected: false,
     },
     {
         id: 4,
         name: "Rosemary",
-        bgColor: "#c9c8f0", // Light lavender (Pastel)
+        bg_color: "#c9c8f0", // Light lavender (Pastel)
         categoria: "Herb",
         affinity: ["Potato", "Garlic", "Thyme", "Olive Oil", "Salt"],
         isBlackListed: false,
         isVegan: true,
-        isGlutenFree: true,
-        isVegetarian: true,
+        is_gluten_free: true,
+        is_vegetarian: true,
         isSelected: false,
     },
     {
         id: 5,
         name: "Butter",
-        bgColor: "#f0dfc7", // Light beige (Pastel)
+        bg_color: "#f0dfc7", // Light beige (Pastel)
         categoria: "Dairy",
         affinity: ["Potato", "Onion", "Garlic", "Thyme", "Pepper"],
         isBlackListed: false,
         isVegan: false,
-        isGlutenFree: true,
-        isVegetarian: true,
+        is_gluten_free: true,
+        is_vegetarian: true,
         isSelected: false,
     },
     {
         id: 6,
         name: "Salt",
-        bgColor: "#f0e8c7", // Light cream (Pastel)
+        bg_color: "#f0e8c7", // Light cream (Pastel)
         categoria: "Seasoning",
         affinity: ["Potato", "Onion", "Garlic", "Rosemary", "Butter"],
         isBlackListed: false,
         isVegan: true,
-        isGlutenFree: true,
-        isVegetarian: true,
+        is_gluten_free: true,
+        is_vegetarian: true,
         isSelected: false,
     },
     {
         id: 7,
         name: "Thyme",
-        bgColor: "#c7f0e3", // Light aqua (Pastel)
+        bg_color: "#c7f0e3", // Light aqua (Pastel)
         categoria: "Herb",
         affinity: ["Onion", "Garlic", "Rosemary", "Olive Oil", "Pepper"],
         isBlackListed: false,
         isVegan: true,
-        isGlutenFree: true,
-        isVegetarian: true,
+        is_gluten_free: true,
+        is_vegetarian: true,
         isSelected: false,
     },
     {
         id: 8,
         name: "Olive Oil",
-        bgColor: "#f0f0c7", // Light yellowish-green (Pastel)
+        bg_color: "#f0f0c7", // Light yellowish-green (Pastel)
         categoria: "Oil",
         affinity: ["Garlic", "Rosemary", "Thyme", "Salt", "Pepper"],
         isBlackListed: false,
         isVegan: true,
-        isGlutenFree: true,
-        isVegetarian: true,
+        is_gluten_free: true,
+        is_vegetarian: true,
         isSelected: false,
     },
     {
         id: 9,
         name: "Pepper",
-        bgColor: "#f0c7dc", // Light pinkish (Pastel)
+        bg_color: "#f0c7dc", // Light pinkish (Pastel)
         categoria: "Seasoning",
         affinity: ["Onion", "Butter", "Thyme", "Olive Oil", "Salt"],
         isBlackListed: false,
         isVegan: true,
-        isGlutenFree: true,
-        isVegetarian: true,
+        is_gluten_free: true,
+        is_vegetarian: true,
         isSelected: false,
     },
     {
         id: 10,
         name: "Eggplant",
-        bgColor: "#c7c7f0", // Light purple (Pastel)
+        bg_color: "#c7c7f0", // Light purple (Pastel)
         categoria: "Vegetable",
         affinity: ["Tomato", "Garlic", "Basil", "Olive Oil", "Parmesan"],
         isBlackListed: false,
         isVegan: true,
-        isGlutenFree: true,
-        isVegetarian: true,
+        is_gluten_free: true,
+        is_vegetarian: true,
         isSelected: false,
     },
     {
         id: 11,
         name: "Tomato",
-        bgColor: "#f7a8a8", // Light red (Pastel)
+        bg_color: "#f7a8a8", // Light red (Pastel)
         categoria: "Vegetable",
         affinity: ["Basil", "Garlic", "Olive Oil", "Mozzarella", "Salt"],
         isBlackListed: false,
         isVegan: true,
-        isGlutenFree: true,
-        isVegetarian: true,
+        is_gluten_free: true,
+        is_vegetarian: true,
         isSelected: false,
     },
     {
         id: 12,
         name: "Basil",
-        bgColor: "#c7f0b4", // Light green (Pastel)
+        bg_color: "#c7f0b4", // Light green (Pastel)
         categoria: "Herb",
         affinity: ["Tomato", "Garlic", "Olive Oil", "Parmesan", "Pine Nuts"],
         isBlackListed: false,
         isVegan: true,
-        isGlutenFree: true,
-        isVegetarian: true,
+        is_gluten_free: true,
+        is_vegetarian: true,
         isSelected: false,
     },
     {
         id: 13,
         name: "Mozzarella",
-        bgColor: "#f0f0f0", // Light gray (Pastel)
+        bg_color: "#f0f0f0", // Light gray (Pastel)
         categoria: "Dairy",
         affinity: ["Tomato", "Basil", "Olive Oil", "Parmesan", "Garlic"],
         isBlackListed: false,
         isVegan: false,
-        isGlutenFree: true,
-        isVegetarian: true,
+        is_gluten_free: true,
+        is_vegetarian: true,
         isSelected: false,
     },
     {
         id: 14,
         name: "Parmesan",
-        bgColor: "#f0e1c7", // Light cream (Pastel)
+        bg_color: "#f0e1c7", // Light cream (Pastel)
         categoria: "Dairy",
         affinity: ["Tomato", "Basil", "Olive Oil", "Garlic", "Pasta"],
         isBlackListed: false,
         isVegan: false,
-        isGlutenFree: true,
-        isVegetarian: true,
+        is_gluten_free: true,
+        is_vegetarian: true,
         isSelected: false,
     },
     {
         id: 15,
         name: "Pine Nuts",
-        bgColor: "#f0e0c7", // Light beige (Pastel)
+        bg_color: "#f0e0c7", // Light beige (Pastel)
         categoria: "Nut",
         affinity: ["Basil", "Parmesan", "Garlic", "Olive Oil", "Pasta"],
         isBlackListed: false,
         isVegan: true,
-        isGlutenFree: true,
-        isVegetarian: true,
+        is_gluten_free: true,
+        is_vegetarian: true,
         isSelected: false,
     },
     {
         id: 16,
         name: "Lemon",
-        bgColor: "#f0f7c7", // Light lemon yellow (Pastel)
+        bg_color: "#f0f7c7", // Light lemon yellow (Pastel)
         categoria: "Fruit",
         affinity: ["Chicken", "Fish", "Garlic", "Basil", "Olive Oil"],
         isBlackListed: false,
         isVegan: true,
-        isGlutenFree: true,
-        isVegetarian: true,
+        is_gluten_free: true,
+        is_vegetarian: true,
         isSelected: false,
     },
     {
         id: 17,
         name: "Cucumber",
-        bgColor: "#c7f0f7", // Light cyan (Pastel)
+        bg_color: "#c7f0f7", // Light cyan (Pastel)
         categoria: "Vegetable",
         affinity: ["Yogurt", "Mint", "Garlic", "Tomato", "Lemon"],
         isBlackListed: false,
         isVegan: true,
-        isGlutenFree: true,
-        isVegetarian: true,
+        is_gluten_free: true,
+        is_vegetarian: true,
         isSelected: false,
     },
     {
         id: 18,
         name: "Mint",
-        bgColor: "#b4f0c7", // Light mint green (Pastel)
+        bg_color: "#b4f0c7", // Light mint green (Pastel)
         categoria: "Herb",
         affinity: ["Cucumber", "Yogurt", "Lemon", "Tomato", "Feta"],
         isBlackListed: false,
         isVegan: true,
-        isGlutenFree: true,
-        isVegetarian: true,
+        is_gluten_free: true,
+        is_vegetarian: true,
         isSelected: false,
     },
     {
         id: 19,
         name: "Yogurt",
-        bgColor: "#f0e1f7", // Light lavender (Pastel)
+        bg_color: "#f0e1f7", // Light lavender (Pastel)
         categoria: "Dairy",
         affinity: ["Cucumber", "Mint", "Garlic", "Lemon", "Tomato"],
         isBlackListed: false,
         isVegan: false,
-        isGlutenFree: true,
-        isVegetarian: true,
+        is_gluten_free: true,
+        is_vegetarian: true,
         isSelected: false,
     },
     {
         id: 20,
         name: "Feta Cheese",
-        bgColor: "#e3f0f7", // Light blue (Pastel)
+        bg_color: "#e3f0f7", // Light blue (Pastel)
         categoria: "Dairy",
         affinity: ["Tomato", "Cucumber", "Olive Oil", "Mint", "Lemon"],
         isBlackListed: false,
         isVegan: false,
-        isGlutenFree: true,
-        isVegetarian: true,
+        is_gluten_free: true,
+        is_vegetarian: true,
         isSelected: false,
     },
     {
         id: 21,
         name: "Spinach",
-        bgColor: "#b4f0b4", // Light green (Pastel)
+        bg_color: "#b4f0b4", // Light green (Pastel)
         categoria: "Vegetable",
         affinity: ["Garlic", "Olive Oil", "Feta", "Lemon", "Parmesan"],
         isBlackListed: false,
         isVegan: true,
-        isGlutenFree: true,
-        isVegetarian: true,
+        is_gluten_free: true,
+        is_vegetarian: true,
         isSelected: false,
     },
     {
         id: 22,
         name: "Broccoli",
-        bgColor: "#c7f7c7", // Light green (Pastel)
+        bg_color: "#c7f7c7", // Light green (Pastel)
         categoria: "Vegetable",
         affinity: ["Garlic", "Lemon", "Parmesan", "Olive Oil", "Salt"],
         isBlackListed: false,
         isVegan: true,
-        isGlutenFree: true,
-        isVegetarian: true,
+        is_gluten_free: true,
+        is_vegetarian: true,
         isSelected: false,
     },
     {
         id: 23,
         name: "Carrot",
-        bgColor: "#f7c7a3", // Light orange (Pastel)
+        bg_color: "#f7c7a3", // Light orange (Pastel)
         categoria: "Vegetable",
         affinity: ["Ginger", "Honey", "Orange", "Cumin", "Salt"],
         isBlackListed: false,
         isVegan: true,
-        isGlutenFree: true,
-        isVegetarian: true,
+        is_gluten_free: true,
+        is_vegetarian: true,
         isSelected: false,
     },
     {
         id: 24,
         name: "Ginger",
-        bgColor: "#f7c7c1", // Light pinkish orange (Pastel)
+        bg_color: "#f7c7c1", // Light pinkish orange (Pastel)
         categoria: "Root",
         affinity: ["Carrot", "Honey", "Orange", "Garlic", "Soy Sauce"],
         isBlackListed: false,
         isVegan: true,
-        isGlutenFree: true,
-        isVegetarian: true,
+        is_gluten_free: true,
+        is_vegetarian: true,
         isSelected: false,
     },
     {
         id: 25,
         name: "Honey",
-        bgColor: "#f7e1c7", // Light honey (Pastel)
+        bg_color: "#f7e1c7", // Light honey (Pastel)
         categoria: "Sweetener",
         affinity: ["Carrot", "Ginger", "Orange", "Yogurt", "Mint"],
         isBlackListed: false,
         isVegan: true,
-        isGlutenFree: true,
-        isVegetarian: true,
+        is_gluten_free: true,
+        is_vegetarian: true,
         isSelected: false,
     },
     {
         id: 26,
         name: "Orange",
-        bgColor: "#f7b4c7", // Light coral (Pastel)
+        bg_color: "#f7b4c7", // Light coral (Pastel)
         categoria: "Fruit",
         affinity: ["Carrot", "Ginger", "Honey", "Cinnamon", "Mint"],
         isBlackListed: false,
         isVegan: true,
-        isGlutenFree: true,
-        isVegetarian: true,
+        is_gluten_free: true,
+        is_vegetarian: true,
         isSelected: false,
     },
     {
         id: 27,
         name: "Cinnamon",
-        bgColor: "#e3b4a3", // Light brown (Pastel)
+        bg_color: "#e3b4a3", // Light brown (Pastel)
         categoria: "Spice",
         affinity: ["Orange", "Honey", "Apple", "Yogurt", "Almond"],
         isBlackListed: false,
         isVegan: true,
-        isGlutenFree: true,
-        isVegetarian: true,
+        is_gluten_free: true,
+        is_vegetarian: true,
         isSelected: false,
     },
     {
         id: 28,
         name: "Apple",
-        bgColor: "#f7c7c7", // Light pinkish (Pastel)
+        bg_color: "#f7c7c7", // Light pinkish (Pastel)
         categoria: "Fruit",
         affinity: ["Cinnamon", "Yogurt", "Almond", "Honey", "Lemon"],
         isBlackListed: false,
         isVegan: true,
-        isGlutenFree: true,
-        isVegetarian: true,
+        is_gluten_free: true,
+        is_vegetarian: true,
         isSelected: false,
     },
     {
         id: 29,
         name: "Almond",
-        bgColor: "#f0e0c7", // Light beige (Pastel)
+        bg_color: "#f0e0c7", // Light beige (Pastel)
         categoria: "Nut",
         affinity: ["Apple", "Cinnamon", "Honey", "Yogurt", "Oats"],
         isBlackListed: false,
         isVegan: true,
-        isGlutenFree: true,
-        isVegetarian: true,
+        is_gluten_free: true,
+        is_vegetarian: true,
         isSelected: false,
     },
     {
         id: 31,
         name: "Banana",
-        bgColor: "#f0f7c7", // Light yellow-green (Pastel)
+        bg_color: "#f0f7c7", // Light yellow-green (Pastel)
         categoria: "Fruit",
         affinity: ["Oats", "Honey", "Yogurt", "Almond", "Cinnamon"],
         isBlackListed: false,
         isVegan: true,
-        isGlutenFree: true,
-        isVegetarian: true,
+        is_gluten_free: true,
+        is_vegetarian: true,
         isSelected: false,
     },
     {
         id: 32,
         name: "Avocado",
-        bgColor: "#c7f7b4", // Light avocado green (Pastel)
+        bg_color: "#c7f7b4", // Light avocado green (Pastel)
         categoria: "Fruit",
         affinity: ["Lime", "Cilantro", "Tomato", "Red Onion", "Garlic"],
         isBlackListed: false,
         isVegan: true,
-        isGlutenFree: true,
-        isVegetarian: true,
+        is_gluten_free: true,
+        is_vegetarian: true,
         isSelected: false,
     },
     {
         id: 33,
         name: "Lime",
-        bgColor: "#b4f0c7", // Light lime green (Pastel)
+        bg_color: "#b4f0c7", // Light lime green (Pastel)
         categoria: "Fruit",
         affinity: ["Avocado", "Cilantro", "Tomato", "Red Onion", "Garlic"],
         isBlackListed: false,
         isVegan: true,
-        isGlutenFree: true,
-        isVegetarian: true,
+        is_gluten_free: true,
+        is_vegetarian: true,
         isSelected: false,
     },
     {
         id: 34,
         name: "Cilantro",
-        bgColor: "#c7f0f7", // Light sky blue (Pastel)
+        bg_color: "#c7f0f7", // Light sky blue (Pastel)
         categoria: "Herb",
         affinity: ["Avocado", "Lime", "Tomato", "Red Onion", "Garlic"],
         isBlackListed: false,
         isVegan: true,
-        isGlutenFree: true,
-        isVegetarian: true,
+        is_gluten_free: true,
+        is_vegetarian: true,
         isSelected: false,
     },
     {
         id: 35,
         name: "Red Onion",
-        bgColor: "#f7c7c7", // Light pink (Pastel)
+        bg_color: "#f7c7c7", // Light pink (Pastel)
         categoria: "Vegetable",
         affinity: ["Avocado", "Lime", "Cilantro", "Tomato", "Garlic"],
         isBlackListed: false,
         isVegan: true,
-        isGlutenFree: true,
-        isVegetarian: true,
+        is_gluten_free: true,
+        is_vegetarian: true,
         isSelected: false,
     },
     {
         id: 36,
         name: "Chicken",
-        bgColor: "#f0dfc7", // Light beige (Pastel)
+        bg_color: "#f0dfc7", // Light beige (Pastel)
         categoria: "Meat",
         affinity: ["Lemon", "Garlic", "Rosemary", "Thyme", "Olive Oil"],
         isBlackListed: false,
         isVegan: false,
-        isGlutenFree: true,
-        isVegetarian: false,
+        is_gluten_free: true,
+        is_vegetarian: false,
         isSelected: false,
     },
     {
         id: 37,
         name: "Beef",
-        bgColor: "#f7e1c7", // Light peach (Pastel)
+        bg_color: "#f7e1c7", // Light peach (Pastel)
         categoria: "Meat",
         affinity: ["Garlic", "Thyme", "Rosemary", "Red Wine", "Potato"],
         isBlackListed: false,
         isVegan: false,
-        isGlutenFree: true,
-        isVegetarian: false,
+        is_gluten_free: true,
+        is_vegetarian: false,
         isSelected: false,
     },
     {
         id: 38,
         name: "Pork",
-        bgColor: "#f0e1f7", // Light lavender (Pastel)
+        bg_color: "#f0e1f7", // Light lavender (Pastel)
         categoria: "Meat",
         affinity: ["Apple", "Garlic", "Rosemary", "Thyme", "Onion"],
         isBlackListed: false,
         isVegan: false,
-        isGlutenFree: true,
-        isVegetarian: false,
+        is_gluten_free: true,
+        is_vegetarian: false,
         isSelected: false,
     },
     {
         id: 39,
         name: "Salmon",
-        bgColor: "#f0e8c7", // Light cream (Pastel)
+        bg_color: "#f0e8c7", // Light cream (Pastel)
         categoria: "Fish",
         affinity: ["Lemon", "Dill", "Garlic", "Olive Oil", "Asparagus"],
         isBlackListed: false,
         isVegan: false,
-        isGlutenFree: true,
-        isVegetarian: false,
+        is_gluten_free: true,
+        is_vegetarian: false,
         isSelected: false,
     },
     {
         id: 40,
         name: "Dill",
-        bgColor: "#c7f0da", // Light seafoam green (Pastel)
+        bg_color: "#c7f0da", // Light seafoam green (Pastel)
         categoria: "Herb",
         affinity: ["Salmon", "Lemon", "Garlic", "Cucumber", "Potato"],
         isBlackListed: false,
         isVegan: true,
-        isGlutenFree: true,
-        isVegetarian: true,
+        is_gluten_free: true,
+        is_vegetarian: true,
         isSelected: false,
     },
     {
         id: 41,
         name: "Asparagus",
-        bgColor: "#c7f7c7", // Light celery green (Pastel)
+        bg_color: "#c7f7c7", // Light celery green (Pastel)
         categoria: "Vegetable",
         affinity: ["Salmon", "Lemon", "Garlic", "Olive Oil", "Potato"],
         isBlackListed: false,
         isVegan: true,
-        isGlutenFree: true,
-        isVegetarian: true,
+        is_gluten_free: true,
+        is_vegetarian: true,
         isSelected: false,
     },
     {
         id: 42,
         name: "Quinoa",
-        bgColor: "#f7c7a3", // Light peach (Pastel)
+        bg_color: "#f7c7a3", // Light peach (Pastel)
         categoria: "Grain",
         affinity: ["Black Beans", "Bell Pepper", "Cilantro", "Lime", "Avocado"],
         isBlackListed: false,
         isVegan: true,
-        isGlutenFree: true,
-        isVegetarian: true,
+        is_gluten_free: true,
+        is_vegetarian: true,
         isSelected: false,
     },
     {
         id: 43,
         name: "Black Beans",
-        bgColor: "#b4f0c7", // Light mint green (Pastel)
+        bg_color: "#b4f0c7", // Light mint green (Pastel)
         categoria: "Legume",
         affinity: ["Quinoa", "Bell Pepper", "Cilantro", "Lime", "Avocado"],
         isBlackListed: false,
         isVegan: true,
-        isGlutenFree: true,
-        isVegetarian: true,
+        is_gluten_free: true,
+        is_vegetarian: true,
         isSelected: false,
     },
     {
         id: 44,
         name: "Bell Pepper",
-        bgColor: "#c7f0f7", // Light sky blue (Pastel)
+        bg_color: "#c7f0f7", // Light sky blue (Pastel)
         categoria: "Vegetable",
         affinity: ["Quinoa", "Black Beans", "Cilantro", "Lime", "Avocado"],
         isBlackListed: false,
         isVegan: true,
-        isGlutenFree: true,
-        isVegetarian: true,
+        is_gluten_free: true,
+        is_vegetarian: true,
         isSelected: false,
     },
     {
         id: 45,
         name: "Tofu",
-        bgColor: "#f0e0c7", // Light beige (Pastel)
+        bg_color: "#f0e0c7", // Light beige (Pastel)
         categoria: "Protein",
         affinity: ["Soy Sauce", "Ginger", "Garlic", "Scallion", "Broccoli"],
         isBlackListed: false,
         isVegan: true,
-        isGlutenFree: true,
-        isVegetarian: true,
+        is_gluten_free: true,
+        is_vegetarian: true,
         isSelected: false,
     },
     {
         id: 46,
         name: "Soy Sauce",
-        bgColor: "#d7f0c7", // Light celery green (Pastel)
+        bg_color: "#d7f0c7", // Light celery green (Pastel)
         categoria: "Condiment",
         affinity: ["Tofu", "Ginger", "Garlic", "Scallion", "Broccoli"],
         isBlackListed: false,
         isVegan: true,
-        isGlutenFree: false,
-        isVegetarian: true,
+        is_gluten_free: false,
+        is_vegetarian: true,
         isSelected: false,
     },
     {
         id: 47,
         name: "Scallion",
-        bgColor: "#f7c7a3", // Light peach (Pastel)
+        bg_color: "#f7c7a3", // Light peach (Pastel)
         categoria: "Vegetable",
         affinity: ["Tofu", "Soy Sauce", "Ginger", "Garlic", "Broccoli"],
         isBlackListed: false,
         isVegan: true,
-        isGlutenFree: true,
-        isVegetarian: true,
+        is_gluten_free: true,
+        is_vegetarian: true,
         isSelected: false,
     },
     {
         id: 48,
         name: "Rice",
-        bgColor: "#b4f0c7", // Light mint green (Pastel)
+        bg_color: "#b4f0c7", // Light mint green (Pastel)
         categoria: "Grain",
         affinity: ["Chicken", "Soy Sauce", "Ginger", "Broccoli", "Carrot"],
         isBlackListed: false,
         isVegan: true,
-        isGlutenFree: true,
-        isVegetarian: true,
+        is_gluten_free: true,
+        is_vegetarian: true,
         isSelected: false,
     },
     {
         id: 49,
         name: "Pasta",
-        bgColor: "#c7f0f7", // Light sky blue (Pastel)
+        bg_color: "#c7f0f7", // Light sky blue (Pastel)
         categoria: "Grain",
         affinity: ["Tomato", "Basil", "Parmesan", "Olive Oil", "Garlic"],
         isBlackListed: false,
         isVegan: false,
-        isGlutenFree: false,
-        isVegetarian: true,
+        is_gluten_free: false,
+        is_vegetarian: true,
         isSelected: false,
     },
     {
         id: 51,
         name: "Shrimp",
-        bgColor: "#f0e8c7", // Light cream (Pastel)
+        bg_color: "#f0e8c7", // Light cream (Pastel)
         categoria: "Seafood",
         affinity: ["Garlic", "Lemon", "Butter", "Pasta", "Chili Flakes"],
         isBlackListed: false,
         isVegan: false,
-        isGlutenFree: true,
-        isVegetarian: false,
+        is_gluten_free: true,
+        is_vegetarian: false,
         isSelected: false,
     },
     {
         id: 52,
         name: "Chili Flakes",
-        bgColor: "#f7c7a3", // Light peach (Pastel)
+        bg_color: "#f7c7a3", // Light peach (Pastel)
         categoria: "Seasoning",
         affinity: ["Garlic", "Tomato", "Pasta", "Shrimp", "Olive Oil"],
         isBlackListed: false,
         isVegan: true,
-        isGlutenFree: true,
-        isVegetarian: true,
+        is_gluten_free: true,
+        is_vegetarian: true,
         isSelected: false,
     },
     {
         id: 53,
         name: "Coconut Milk",
-        bgColor: "#c7f0f7", // Light sky blue (Pastel)
+        bg_color: "#c7f0f7", // Light sky blue (Pastel)
         categoria: "Dairy Alternative",
         affinity: ["Curry Paste", "Ginger", "Garlic", "Lemongrass", "Tofu"],
         isBlackListed: false,
         isVegan: true,
-        isGlutenFree: true,
-        isVegetarian: true,
+        is_gluten_free: true,
+        is_vegetarian: true,
         isSelected: false,
     },
     {
         id: 54,
         name: "Curry Paste",
-        bgColor: "#b4f0c7", // Light mint green (Pastel)
+        bg_color: "#b4f0c7", // Light mint green (Pastel)
         categoria: "Seasoning",
         affinity: ["Coconut Milk", "Ginger", "Garlic", "Lemongrass", "Vegetables"],
         isBlackListed: false,
         isVegan: true,
-        isGlutenFree: true,
-        isVegetarian: true,
+        is_gluten_free: true,
+        is_vegetarian: true,
         isSelected: false,
     },
     {
         id: 55,
         name: "Lemongrass",
-        bgColor: "#c7f7c7", // Light celery green (Pastel)
+        bg_color: "#c7f7c7", // Light celery green (Pastel)
         categoria: "Herb",
         affinity: ["Coconut Milk", "Curry Paste", "Ginger", "Garlic", "Vegetables"],
         isBlackListed: false,
         isVegan: true,
-        isGlutenFree: true,
-        isVegetarian: true,
+        is_gluten_free: true,
+        is_vegetarian: true,
         isSelected: false,
     },
    
     {
         id: 69,
         name: "Pineapple",
-        bgColor: "#f7c7c7", // Light coral (Pastel)
+        bg_color: "#f7c7c7", // Light coral (Pastel)
         categoria: "Fruit",
         affinity: ["Coconut Milk", "Mint", "Basil", "Lime", "Ginger"],
         isBlackListed: false,
         isVegan: true,
-        isGlutenFree: true,
-        isVegetarian: true,
+        is_gluten_free: true,
+        is_vegetarian: true,
         isSelected: false,
     },
 ]

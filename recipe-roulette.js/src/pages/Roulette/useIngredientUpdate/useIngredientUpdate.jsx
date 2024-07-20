@@ -10,7 +10,7 @@ export const useIngredientUpdate = (ingredients, setIngredients) => {
     const handleIngUpdate = (prop, cardState) => {
         setIngredients((prev) => {
             // Aggiorna la proprietà specificata per l'ingrediente corrispondente in tutti gli ingredienti
-            const updatedIngs = prev.all.map((item) => (item.id === cardState.id ? { ...item, [prop]: !cardState[prop] } : item))
+            const updatedIngs = prev?.all.map((item) => (item.id === cardState.id ? { ...item, [prop]: !cardState[prop] } : item))
 
             // Aggiorna la proprietà specificata per l'ingrediente corrispondente negli ingredienti visualizzati
             const updatedDisplayedIngs = prev.displayed.map((item) =>
@@ -26,9 +26,9 @@ export const useIngredientUpdate = (ingredients, setIngredients) => {
             // Inizializza newDisplayed con gli ingredienti visualizzati aggiornati
             let newDisplayed = updatedDisplayedIngs
             // Filtra gli ingredienti nella blacklist
-            const newBlacklisted = updatedIngs.filter((item) => item.isBlackListed)
+            const newBlacklisted = updatedIngs.filter((item) => item.is_blacklisted)
 
-            if (prop === "isSelected") {
+            if (prop === "is_selected") {
                 if (isDisplayed) {
                     newDisplayed = updatedDisplayedIngs
                 } else if (prev.displayed.length === 8) {
@@ -38,7 +38,7 @@ export const useIngredientUpdate = (ingredients, setIngredients) => {
 
                     // Cerca il primo elemento non selezionato per sostituirlo con il nuovo
                     prev.displayed.forEach((ing) => {
-                        if (!ing.isSelected && firstUnselected) {
+                        if (!ing.is_selected && firstUnselected) {
                             newDisplayed.push(updatedIng)
                             firstUnselected = false
                         } else {
@@ -60,8 +60,8 @@ export const useIngredientUpdate = (ingredients, setIngredients) => {
             }
 
             const awaitUpdate = () => {
-                if (prop === "isBlackListed" && isAuthenticated) {
-                    //se l'utente è autenticato e sta modificando la prop isBlackListed di un ingrediente, aggiorno il db
+                if (prop === "is_blacklisted" && isAuthenticated) {
+                    //se l'utente è autenticato e sta modificando la prop is_blacklisted di un ingrediente, aggiorno il db
                     const userData = getValue("userData")
                     userData.id &&
                         handlePostRequest(
@@ -87,12 +87,12 @@ export const useIngredientUpdate = (ingredients, setIngredients) => {
         const mapArray = (array) => array && array.length > 0 && array.map((item) => ({ ...item, [prop]: false }))
 
         setIngredients((prev) => {
-            const newIngredients = mapArray(prev.all)
+            const newIngredients = mapArray(prev?.all)
             let newDisplayed = mapArray(prev.displayed)
             let newBlacklisted = []
 
             if (isAuthenticated) {
-                //se l'utente è autenticato e sta modificando la prop isBlackListed di un ingrediente, aggiorno il db
+                //se l'utente è autenticato e sta modificando la prop is_blacklisted di un ingrediente, aggiorno il db
                 const userData = getValue("userData")
                 userData.id &&
                     handlePostRequest(

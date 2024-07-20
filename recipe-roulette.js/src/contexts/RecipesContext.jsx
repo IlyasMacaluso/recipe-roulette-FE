@@ -9,13 +9,16 @@ import { useRecipeFilter } from "./useRecipeFilter/useRecipeFilter"
 const RecipesContext = createContext()
 
 export const RecipesProvider = ({ children }) => {
+    // hook per l'autenticazione
+    const { isAuthenticated } = useAuth() // Stato di autenticazione
+
     const [recipes, setRecipes] = useState({
         results: [],
         favorited: [],
         filtered: [],
         searched: [],
         targetedRecipe: null,
-    })
+    }) //stato delle ricette
 
     const [inputValue, setInputValue] = useState("") // Valore dell'input che filtra i risultati
     const [recipeAnimation, setRecipeAnimation] = useState(true) // Stato per animare le recipeCard quando vengono modificati i filtri
@@ -23,9 +26,6 @@ export const RecipesProvider = ({ children }) => {
 
     // hook per aggiornare il localStorage
     const { getValue } = useLocalStorage()
-
-    // hook per l'autenticazione
-    const { isAuthenticated } = useAuth() // Stato di autenticazione
 
     // funzioni di gestione filtri ricetta
     const { recipeFilter, setRecipeFilter, toggleRecipeFilter, handlePreferencesToggle, handleDeselectRecipeFilters } =
@@ -104,9 +104,9 @@ export const RecipesProvider = ({ children }) => {
                 return (
                     rec.caloricApport <= recipeFilter.caloricApport &&
                     rec.preparationTime <= recipeFilter.preparationTime &&
-                    (recipeFilter.isGlutenFree ? rec.isGlutenFree : true) &&
-                    (recipeFilter.isVegetarian ? rec.isVegetarian : true) &&
-                    (recipeFilter.isVegan ? rec.isVegan : true) &&
+                    (recipeFilter.is_gluten_free ? rec.is_gluten_free : true) &&
+                    (recipeFilter.is_vegetarian ? rec.is_vegetarian : true) &&
+                    (recipeFilter.is_vegan ? rec.is_vegan : true) &&
                     (recipeFilter.cuisineEthnicity.includes("all") ||
                         recipeFilter.cuisineEthnicity.includes(rec.cuisineEthnicity.toLowerCase())) &&
                     (recipeFilter.difficulty === "all" || recipeFilter.difficulty.toLowerCase() === rec.difficulty.toLowerCase())

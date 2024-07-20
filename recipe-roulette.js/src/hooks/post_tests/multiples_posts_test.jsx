@@ -18,7 +18,7 @@ export function useTestPost(ingredients, setIngredients, url) {
 
     const test_quick_multiple_updates = async () => {
         const { id } = getValue("userData")
-        const newBl = ingredients.all.map((ing) => ({ ...ing, isBlackListed: true }))
+        const newBl = ingredients?.all.map((ing) => ({ ...ing, is_blacklisted: true }))
         setIngredients((prev) => ({ ...prev, blacklisted: newBl }))
 
         const intervalId = setInterval(() => {

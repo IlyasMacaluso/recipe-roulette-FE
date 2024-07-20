@@ -2,7 +2,7 @@
 
 .preferencesPage {
     
-    transition: scale 0.45s cubic-bezier(0.08,0.82,0.17,1);
+    transition: scale 0.25s cubic-bezier(0.08,0.82,0.17,1);
 
     background-color: white;
     margin: 0;
@@ -26,7 +26,7 @@
 }
 .animateSettings {
     scale: 1;
-    transition: scale 0.45s cubic-bezier(0.08,0.82,0.17,1);
+    transition: scale 0.25s cubic-bezier(0.08,0.82,0.17,1);
 }
 
 .bottomButtons {

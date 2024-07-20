@@ -125,8 +125,8 @@ export function Header({ handleMenuToggle, handleSidebarToggle, handleRecipesSid
                 )}
                 {location.pathname === "/roulette" && (
                     <div className={classes.globalActions}>
-                        <IngredientSearch searchCriteria="isSelected" />
-                        <IcoButton action={() => handleDeselectAll("isSelected")} icon={<LockResetIcon fontSize={"medium"} />} />
+                        <IngredientSearch searchCriteria="is_selected" />
+                        <IcoButton action={() => handleDeselectAll("is_selected")} icon={<LockResetIcon fontSize={"medium"} />} />
                         <IcoButton action={() => handleSidebarToggle && handleSidebarToggle()} icon={<TuneIcon fontSize={"small"} />} />
                     </div>
                 )}
