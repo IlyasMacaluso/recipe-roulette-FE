@@ -12,23 +12,26 @@ import { useAuth } from "../../hooks/Auth/useAuth"
 import { Popup } from "../../components/Pop-up/Popup"
 import { Login } from "../../components/authentication/login/Login"
 import { ValidationBox } from "../../components/Validation Box/ValidationBox"
-import { useSnackbar } from "../../components/Snackbar/useSnackbar"
+import { useLogout } from "../../hooks/Form/useLogout"
+import { useLoginToSignup } from "../../hooks/loginToSignup/useLoginToSignup"
+import { Signup } from "../../components/authentication/signup/Signup"
 
 export function LinkBox() {
     const [showPopup, setShowPopup] = useState()
-    const { isAuthenticated, logout } = useAuth()
-    const { handleOpenSnackbar } = useSnackbar()
+    const { handleLogout, loading, error } = useLogout(setShowPopup)
+    const { isAuthenticated } = useAuth()
+    const { changeToSignup, setChangeToSignup } = useLoginToSignup()
 
     return (
         <>
             <div className={classes.menuSection}>
-                <Link to="/food-preferences" className={classes.menuItem}>
-                    Food Preferences
+                <Link to="/history" className={classes.menuItem}>
+                    Recipes History
                     <NavigateNextOutlinedIcon fontSize="medium" />
                 </Link>
-
-                <Link to="/recipes-hisory" className={classes.menuItem}>
-                    Recipes History
+                
+                <Link to="/food-preferences" className={classes.menuItem}>
+                    Food Preferences
                     <NavigateNextOutlinedIcon fontSize="medium" />
                 </Link>
 
@@ -42,9 +45,7 @@ export function LinkBox() {
                     <Button
                         label="Logout"
                         width="fill"
-                        action={() => {
-                            setShowPopup && setShowPopup(true)
-                        }}
+                        action={() => setShowPopup && setShowPopup(true)}
                         icon={<LogoutIcon fontSize="small" />}
                     />
                 ) : (
@@ -54,25 +55,25 @@ export function LinkBox() {
                         label="Login"
                         width="fill"
                         icon={<LoginIcon fontSize="small" />}
-                        action={() => {
-                            setShowPopup && setShowPopup(true)
-                        }}
+                        action={() => setShowPopup && setShowPopup(true)}
                     />
                 )}
             </div>
             {showPopup &&
                 createPortal(
-                    <Popup >
+                    <Popup>
                         {isAuthenticated ? (
                             <ValidationBox
+                                loading={loading}
+                                error={error}
                                 message="Confirm logout?"
                                 setShowPopup={setShowPopup}
-                                handleValidationAction={() => {
-                                    logout(), handleOpenSnackbar("You have successfully logged out.")
-                                }}
+                                handleValidation={handleLogout}
                             />
+                        ) : !changeToSignup ? (
+                            <Login setChangeToSignup={setChangeToSignup} setShowPopup={setShowPopup} />
                         ) : (
-                            <Login setShowPopup={setShowPopup} />
+                            <Signup setChangeToSignup={setChangeToSignup} setShowPopup={setShowPopup} />
                         )}
                     </Popup>,
                     document.getElementById("popup-root")

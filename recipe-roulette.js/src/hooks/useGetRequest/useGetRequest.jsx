@@ -13,7 +13,6 @@ export function useGetRequest() {
                 throw new Error(`Network error, ${res?.data.msg || "Bad request"}`)
             }
 
-            console.log("no errors");
             return res.data
         } catch (error) {
             console.log(error)

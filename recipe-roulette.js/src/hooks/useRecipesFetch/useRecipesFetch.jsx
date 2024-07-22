@@ -38,8 +38,6 @@ export const RecipesFetchProvider = ({ children }) => {
                     const updatedRecipes = {
                         ...prev,
                         results: parsedData?.meals,
-                        filtered: parsedData?.meals,
-                        searched: parsedData?.meals,
                     }
 
                     // Salva le ricette aggiornate nel local storage

@@ -22,7 +22,7 @@ export function usePostRequest() {
                 console.log("request canceled", error.message)
             } else {
                 console.log(error)
-                throw new Error(error.response?.data.msg || "soemthing went wrong")
+                throw new Error(error.response?.data.msg || "Something went wrong")
             }
         }
     }
@@ -59,5 +59,5 @@ export function usePostRequest() {
         )
     }
 
-    return { handlePostRequest }
+    return { handlePostRequest, postRequest }
 }

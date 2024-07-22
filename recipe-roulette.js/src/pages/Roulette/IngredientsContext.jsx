@@ -83,7 +83,7 @@ export const IngredientsProvider = ({ children }) => {
         }
 
         initialSetup()
-    }, [blacklistedLoading, ingredientsLoading])
+    }, [blacklistedLoading, ingredientsLoading, isAuthenticated])
 
     useEffect(() => {
         if (ingredientsLoading || blacklistedLoading) return // Wait until data is loaded

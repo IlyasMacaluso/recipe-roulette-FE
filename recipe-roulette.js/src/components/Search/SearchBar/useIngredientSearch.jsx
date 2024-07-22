@@ -32,7 +32,7 @@ export function useIngredientSearch(searchCriteria) {
     const handleInputActivation = (e) => {
         e.stopPropagation()
         setFixedPosition(true)
-        setInputValues((old) => ({ ...old, current: "" }))
+        setInputValues((prev) => ({ ...prev, current: "" }))
         setSearchState(true)
     }
     const handleBlur = (inputRef, setState) => {

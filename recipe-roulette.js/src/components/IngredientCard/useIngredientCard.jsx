@@ -21,8 +21,8 @@ export function useIngredientCard(ing) {
     const { handleOpenSnackbar } = useSnackbar()
 
     useEffect(() => {
-        setCardState((old) => {
-            return { ...old, is_selected: ing.is_selected }
+        setCardState((prev) => {
+            return { ...prev, is_selected: ing.is_selected }
         })
     }, [ing, ing.bg_color])
 

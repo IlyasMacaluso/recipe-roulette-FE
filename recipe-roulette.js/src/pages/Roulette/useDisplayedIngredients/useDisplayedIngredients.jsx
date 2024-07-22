@@ -64,7 +64,6 @@ export const useDisplayedIngredients = (ingredients, setIngredients) => {
 
     const handleIngIncrement = () => {
         setIngredients((prev) => {
-            // Copia dell'array displayed e filtered per lavorarci in modo sicuro
             const currentDisplayed = [...prev?.displayed]
             const currentFiltered = [...prev?.filtered]
 
@@ -82,11 +81,8 @@ export const useDisplayedIngredients = (ingredients, setIngredients) => {
                 // Trova il primo ingrediente disponibile rimasto
                 const newIng = availableIngs.find((ingredient) => ingredient)
 
-                // Ritorna il nuovo stato aggiornato in modo immutabile
-                return {
-                    ...prev,
-                    displayed: [...currentDisplayed, newIng],
-                }
+                setValue("ingredients", { ...prev, displayed: [...currentDisplayed, newIng] })
+                return { ...prev, displayed: [...currentDisplayed, newIng] }
             }
 
             // Se non si verificano modifiche, ritorna lo stato corrente
@@ -97,7 +93,10 @@ export const useDisplayedIngredients = (ingredients, setIngredients) => {
     const handleIngDecrement = (id, e) => {
         e.stopPropagation()
         if (ingredients?.displayed.length > 3) {
-            setIngredients((prev) => ({ ...prev, displayed: prev.displayed.filter((ing) => ing.id !== id) }))
+            setIngredients((prev) => {
+                setValue("ingredients", { ...prev, displayed: prev.displayed.filter((ing) => ing.id !== id) })
+                return { ...prev, displayed: prev.displayed.filter((ing) => ing.id !== id) }
+            })
         }
     }
 

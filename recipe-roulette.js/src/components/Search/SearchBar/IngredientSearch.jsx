@@ -21,6 +21,7 @@ export function IngredientSearch({searchCriteria = "is_blacklisted" }) {
         setSearchState,
         setFixedPosition,
     } = useIngredientSearch(searchCriteria)
+    
     const { inputRef } = useHandleBackButton(searchState, setSearchState, setFixedPosition, handleBlur)
 
     return (

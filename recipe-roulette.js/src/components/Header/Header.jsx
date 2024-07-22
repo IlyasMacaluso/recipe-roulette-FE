@@ -36,6 +36,9 @@ export function Header({ handleMenuToggle, handleSidebarToggle, handleRecipesSid
             case "/favorited":
                 setTitle("Favorited")
                 break
+            case "/history":
+                setTitle("History")
+                break
             case "/settings":
                 setTitle("Settings")
                 break
@@ -117,7 +120,7 @@ export function Header({ handleMenuToggle, handleSidebarToggle, handleRecipesSid
 
                     <IcoButton action={handleMenuToggle} icon={<MenuOpenIcon />} style="transparent" />
                 </div>
-                {location.pathname === "/favorited" && isAuthenticated && recipes.favorited.length > 0 && (
+                {location.pathname === "/favorited" && isAuthenticated && recipes?.favorited.length > 0 && (
                     <section className={classes.globalActions}>
                         <BaseSearch data={recipes.searched} inputValue={inputValue} setInputValue={setInputValue} />
                         <IcoButton action={handleRecipesSidebarToggle} label="Filters" icon={<TuneOutlinedIcon fontSize="small" />} />
