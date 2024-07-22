@@ -19,10 +19,11 @@ export const RecipesProvider = ({ children }) => {
         history: [],
         targetedRecipe: null,
     }) //stato delle ricette
+    
+    const location = useLocation()
 
     const [inputValue, setInputValue] = useState("") // Valore dell'input che filtra i risultati
     const [recipeAnimation, setRecipeAnimation] = useState(true) // Stato per animare le recipeCard quando vengono modificati i filtri
-    const location = useLocation()
 
     const { isAuthenticated } = useAuth() // Stato di autenticazione
     const { getValue, setValue } = useLocalStorage()
@@ -90,7 +91,7 @@ export const RecipesProvider = ({ children }) => {
             if (!favoritedLoading && !foodPrefLoading && !historyLoading) {
                 const DBRecipes = {
                     ...localRecipes,
-                    results: [],
+                    results: localRecipes.results || [],
                     favorited: DBFAvorited || [],
                     filtered: DBFAvorited || [],
                     searched: DBFAvorited || [],
@@ -128,7 +129,7 @@ export const RecipesProvider = ({ children }) => {
                 return prevRecipes // Se localRecipes non è definito, ritorna lo stato corrente senza modifiche
             })
         }
-    }, [isAuthenticated, favoritedLoading, historyLoading, foodPrefLoading])
+    }, [isAuthenticated, favoritedLoading, historyLoading, recipesHistory, foodPrefLoading, location.pathname])
 
     // Animazione recipeCard
     useEffect(() => {

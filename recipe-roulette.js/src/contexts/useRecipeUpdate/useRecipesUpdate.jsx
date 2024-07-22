@@ -12,7 +12,6 @@ export const useRecipesUpdate = (setRecipes) => {
     const handleRecipesUpdate = (recipe, setRecipe) => {
         const updatedRecipe = { ...recipe, isFavorited: !recipe.isFavorited }
         setRecipes((prev) => {
-
             let newFavorites
             let newResults
             let newHistory
@@ -48,6 +47,12 @@ export const useRecipesUpdate = (setRecipes) => {
                         { recipe: updatedRecipe, userId: userData.id }, //payload
                         mutationId //cancel prev mutations
                     )
+
+                handlePostRequest(
+                    "http://localhost:3000/api/preferences/update-recipes-history", //url
+                    { recipe: updatedRecipe, userId: userData.id }, //payload
+                    mutationId //cancel prev mutations
+                )
             }
 
             return updatedRecipes
@@ -71,11 +76,11 @@ export const useRecipesUpdate = (setRecipes) => {
                 const mutationId = recipe.id + recipe.title
 
                 userData.id &&
-                    pathname === "/recipe-results" &&
                     handlePostRequest(
                         "http://localhost:3000/api/preferences/update-recipes-history", //url
                         { recipe, userId: userData.id }, //payload
-                        mutationId //cancel prev mutations
+                        mutationId, //cancel prev mutations
+                        "get-recipes-history"
                     )
             }
 

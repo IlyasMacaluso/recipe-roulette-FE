@@ -14,6 +14,8 @@ import { SideMenu } from "../components/SideMenu/SideMenu"
 import { Sidebar } from "../components/Sidebar/Sidebar"
 import { SideBarRecipes } from "../components/Sidebar/SideBarRecipes"
 import { Snackbar } from "../components/Snackbar/Snackbar"
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
+
 
 export const Route = createRootRoute({
     component: () => {
@@ -40,6 +42,7 @@ export const Route = createRootRoute({
                                         <Snackbar />
                                         <Outlet />
                                         <TanStackRouterDevtools />
+                                        <ReactQueryDevtools />
                                     </SearchProvider>
                                 </SnackbarProvider>
                             </RecipesFetchProvider>

@@ -1,9 +1,10 @@
-import { useMutation } from "@tanstack/react-query"
+import { QueryClient, useMutation, useQueryClient } from "@tanstack/react-query"
 import { useCancelMutation } from "../useCancelMutation.jsx/useCancelMutation"
 import axios from "axios"
 
 export function usePostRequest() {
     const { cancelMutation } = useCancelMutation()
+    const queryClient = useQueryClient()
 
     const postRequest = async (data) => {
         try {
@@ -34,9 +35,13 @@ export function usePostRequest() {
             const context = { id: variables.mutationId, abortController, variables }
             return context
         },
-        onSuccess: (resData) => {
-            if (resData) {
-                console.log(resData)
+        onSuccess: (data, variables) => {
+            if (data) {
+                console.log(data)
+            }
+            console.log(variables?.queryKey)
+            if (variables?.queryKey) {
+                queryClient.invalidateQueries({ queryKey: [variables.queryKey] })
             }
         },
         onError: (error) => {
@@ -44,15 +49,17 @@ export function usePostRequest() {
         },
     })
 
-    const handlePostRequest = async (url, payload, mutationId = null, meta = null) => {
+    const handlePostRequest = async (url, payload, mutationId = null, queryKey = null, meta = null) => {
         //meta !== null => mutation with this mutationId will be queued
         //mutationId => sameId = sameQueue
+        console.log(queryKey)
         mutationId && cancelMutation(mutationId)
         mutation.mutate(
             {
                 url,
                 payload,
                 mutationId,
+                queryKey,
                 signal: mutationId ? mutation?.context?.abortController.signal : null,
             },
             { meta }
