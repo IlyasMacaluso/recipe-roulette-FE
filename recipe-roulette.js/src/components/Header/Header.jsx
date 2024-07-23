@@ -7,6 +7,7 @@ import TuneIcon from "@mui/icons-material/Tune"
 import LockResetIcon from "@mui/icons-material/LockReset"
 import TuneOutlinedIcon from "@mui/icons-material/TuneOutlined"
 import MenuOpenIcon from "@mui/icons-material/MenuOpen"
+import FilterListIcon from '@mui/icons-material/FilterList';
 
 import { IngredientSearch } from "../Search/SearchBar/IngredientSearch"
 import { IcoButton } from "../Buttons/IcoButton/IcoButton"
@@ -123,14 +124,14 @@ export function Header({ handleMenuToggle, handleSidebarToggle, handleRecipesSid
                 {location.pathname === "/favorited" && isAuthenticated && recipes?.favorited.length > 0 && (
                     <section className={classes.globalActions}>
                         <BaseSearch data={recipes.searched} inputValue={inputValue} setInputValue={setInputValue} />
-                        <IcoButton action={handleRecipesSidebarToggle} label="Filters" icon={<TuneOutlinedIcon fontSize="small" />} />
+                        <IcoButton action={handleRecipesSidebarToggle} label="Filters" icon={<FilterListIcon fontSize="small" />} />
                     </section>
                 )}
                 {location.pathname === "/roulette" && (
                     <div className={classes.globalActions}>
                         <IngredientSearch searchCriteria="is_selected" />
-                        <IcoButton action={() => handleDeselectAll("is_selected")} icon={<LockResetIcon fontSize={"medium"} />} />
-                        <IcoButton action={() => handleSidebarToggle && handleSidebarToggle()} icon={<TuneIcon fontSize={"small"} />} />
+                        <IcoButton action={() => handleDeselectAll("is_selected")} icon={<LockResetIcon fontSize={"small"} />} />
+                        <IcoButton action={() => handleSidebarToggle && handleSidebarToggle()} icon={<FilterListIcon fontSize={"small"} />} />
                     </div>
                 )}
             </header>

@@ -28,7 +28,7 @@ export function Roulette() {
             <div className={classes.contentWrapper}>
                 <div className={classes.ingredientsWrapper}>
                     {ingredientsLoading || blacklistedLoading
-                        ? [...Array(5)].map(() => <Skeleton className={classes.skeleton} key={Math.random()} sx={{ bgcolor: "#c5e4c9" }} variant="rounded" width={"100%"} height={"100%"} />)
+                        ? [...Array(5)].map(() => <Skeleton className={classes.skeleton} key={Math.random()} sx={{ bgcolor: "#c5e4c9" }} variant="rounded" width={"100%"}/>)
                         : ingredients?.displayed.map((ing) => <IngredientCard key={ing.id} ing={ing} />)}
                 </div>
             </div>

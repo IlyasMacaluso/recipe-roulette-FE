@@ -6,7 +6,7 @@
     background-color: $accent-color;
     border-radius: $size-16;
     width: calc(100vw - 3rem);
-    max-width: 30rem;
+    max-width: 25rem;
     font-size: $text-size-14;
     border: 1px solid $light-gray;
 }
@@ -57,116 +57,21 @@
     gap: 1rem;
     margin-top: 1rem;
 }
-
-.inputWrapper {
-    display: flex;
-    flex-direction: column;
-    gap: 0.25rem;
-
-    label {
-        padding-left: 0.25rem;
-        font-size: $text-size-14;
-        font-family: $header-text;
-        font-weight: 600;
-        color: $dark-gray;
-    }
-
-    input {
-        width: 100%;
-        border-radius: $size-24;
-        border: 1px solid $light-gray;
-        min-height: 40px;
-        max-height: 48px;
-        box-sizing: border-box;
-        padding-left: $size-16;
-        font-size: $text-size-14;
-        font-family: $header-text;
-
-        &:focus {
-            outline: 2px solid $main-color;
-        }
-
-        &::placeholder {
-            font-size: $text-size-14;
-            color: $medium-light-gray;
-        }
-    }
-}
-
-.passInput {
-    position: relative;
-    width: 100%;
-
-    .passwordIcon {
-        position: absolute;
-        border: none;
-        width: 2rem;
-        height: 2rem;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        background-color: transparent;
-        top: 50%;
-        transform: translateY(-50%);
-        right: 0.5rem;
-        color: $medium-light-gray;
-    }
-}
-
-.rememberMe {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    font-size: $text-size-14;
-    font-family: $header-text;
-    font-weight: 600;
-    color: $dark-gray;
-
-    label {
-        margin: 0;
-        padding-left: 0.25rem;
-    }
-
-    input {
-        margin: 0;
-        min-height: 18px;
-        min-width: 18px;
-    }
-}
-
-.inlineMsg {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    outline: 2px solid $dark-gray;
-    padding: 0.5rem;
-    border-radius: 0.5rem;
-    color: $dark-gray;
-    font-family: $header-text;
-    font-weight: 500;
-    line-height: 120%;
-
-    &.red {
-        color: $red;
-        outline-color: $red;
-    }
-}
-
 .buttonsWrapper {
     display: flex;
     flex-direction: column;
     gap: 0.75rem;
 }
 
-.loginBtnBox {
+.externalLoginWrapper {
     display: flex;
     justify-content: center;
     gap: 0.5rem;
     box-sizing: border-box;
 }
 
-.message {
-    display: flex;
+.loginToSignup {
+    display: inline;
     justify-content: center;
     align-items: center;
     font-size: $text-size-14;
@@ -174,13 +79,17 @@
     font-weight: 500;
     padding: 0;
     color: $dark-gray;
+    width: fit-content;
 
     p {
+        display: inline;
         margin: 0;
         padding-left: 0.25rem;
+        width: fit-content;
     }
 
     button {
+        display: inline;
         padding: 0 0.25rem;
         font-weight: 600;
         color: #58933d;

@@ -17,6 +17,8 @@ import LoginOutlinedIcon from "@mui/icons-material/LoginOutlined"
 import AutorenewIcon from "@mui/icons-material/Autorenew"
 import LogoutIcon from "@mui/icons-material/Logout"
 import CloseIcon from "@mui/icons-material/Close"
+import HistoryIcon from "@mui/icons-material/History"
+
 import classes from "./SideMenu.module.scss"
 
 export function SideMenu({ handleMenuToggle, menuState = false }) {
@@ -38,6 +40,12 @@ export function SideMenu({ handleMenuToggle, menuState = false }) {
             label: "Favorited",
             destination: "/favorited",
             icon: <BookmarksOutlinedIcon fontSize="small" />,
+        },
+        {
+            id: "history",
+            label: "History",
+            destination: "/history",
+            icon: <HistoryIcon fontSize="small" />,
         },
         {
             id: "settings",

@@ -4,30 +4,44 @@ import { useLogin } from "../../../hooks/Form/useLogin"
 import { GoogleLoginBtn } from "../../SocialLoginButtons/GoogleLoginBtn"
 import { FacebookSocialBtn } from "../../SocialLoginButtons/FacebookLoginBtn"
 import { Button } from "../../Buttons/Button/Button"
-import { useRef } from "react"
+import { useForm } from "../../../hooks/useForm/useForm"
+import { useEffect } from "react"
+import { useLocalStorage } from "../../../hooks/useLocalStorage/useLocalStorage"
+import { Input } from "../../Input/Input"
+import { InlineMessage } from "../../InlineMessage/InlineMessage"
 
 import CloseIcon from "@mui/icons-material/Close"
-import VisibilityOffIcon from "@mui/icons-material/VisibilityOff"
-import VisibilityIcon from "@mui/icons-material/Visibility"
 import LoginIcon from "@mui/icons-material/Login"
 import StartIcon from "@mui/icons-material/Start"
-import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline"
-import CachedIcon from "@mui/icons-material/Cached"
 
 import classes from "./Login.module.scss"
 
 export function Login({ setShowPopup = null, setChangeToSignup = null }) {
-    const inputRef = useRef(null)
     const location = useLocation()
 
-    const { data, showPassword, handleInput, handleSubmit, handleShowPassword, error, loading } = useLogin(setShowPopup)
-    const { scrollToCenter, refs } = useCenterItem(2)
+    const { getValue } = useLocalStorage()
+    const { handleSubmit, error, loading } = useLogin(setShowPopup)
+    const { data, setData, showText, handleInputChange, handleShowText } = useForm({
+        username: "",
+        email: "",
+        password: "",
+        rememberMe: false,
+    })
+
+    useEffect(() => {
+        //imposta il campo username se: 1) nel localStorage ci sono dati salvati, 2) rememberMe è stata checkata
+        const userData = getValue("userData")
+        if (userData) {
+            const { username, rememberMe } = userData
+            userData.rememberMe && setData((prev) => ({ ...prev, username: username, rememberMe: rememberMe }))
+        }
+    }, [])
 
     return (
         <div className={`${classes.container}`}>
             <header className={classes.header}>
                 <h1>Login</h1>
-                {setShowPopup && ( //mostra la X solo quando il componente viene utilizzato come popup
+                {setShowPopup && (
                     <div onClick={() => setShowPopup && setShowPopup()} className={classes.closeIco}>
                         <CloseIcon />
                     </div>
@@ -35,82 +49,56 @@ export function Login({ setShowPopup = null, setChangeToSignup = null }) {
             </header>
 
             <form
-                onSubmit={(e) => {
-                    handleSubmit(e)
-                }}
                 className={classes.formWrapper}
+                onSubmit={(e) => {
+                    e.preventDefault()
+                    handleSubmit(data)
+                }}
             >
                 <div className={classes.inputsWrapper}>
-                    <div className={classes.inputWrapper}>
-                        <label>Username</label>
-                        <input
-                            ref={refs[0]}
-                            type="text"
-                            name="username"
-                            id="username"
-                            value={data.username}
-                            placeholder="Insert username here"
-                            onFocus={() => scrollToCenter(refs[0])}
-                            onChange={handleInput}
-                            required
-                        />
-                    </div>
+                    <Input
+                        name="username"
+                        value={data.username}
+                        placeholder={"Insert username here"}
+                        handleInputChange={(e) => handleInputChange(e)}
+                        label="Username"
+                        required={true}
+                    />
 
-                    <div className={classes.inputWrapper}>
-                        <label>Password</label>
-                        <div className={classes.passInput}>
-                            <input
-                                ref={refs[1]}
-                                type={showPassword ? "text" : "password"}
-                                name="password"
-                                id="password"
-                                value={data.password}
-                                placeholder="Insert password here"
-                                onChange={handleInput}
-                                onFocus={() => scrollToCenter(refs[1])}
-                                required
-                            />
-                            {showPassword ? (
-                                <div onClick={handleShowPassword} className={classes.passwordIcon}>
-                                    {" "}
-                                    <VisibilityOffIcon fontSize="small" />
-                                </div>
-                            ) : (
-                                <div onClick={handleShowPassword} className={classes.passwordIcon}>
-                                    {" "}
-                                    <VisibilityIcon fontSize="small" />
-                                </div>
-                            )}
-                        </div>
-                    </div>
+                    <Input
+                        name="password"
+                        type={showText ? "text" : "password"}
+                        label="Password"
+                        placeholder={"Insert password here"}
+                        value={data.password}
+                        required={true}
+                        hasIcons={true}
+                        handleInputChange={(e) => handleInputChange(e)}
+                        handleShowText={handleShowText}
+                        showText={showText}
+                    />
 
-                    <div className={classes.rememberMe}>
-                        <label htmlFor="check">Remember me</label>
-                        <input id="check" name="check" onChange={handleInput} type="checkbox" checked={data.check} />
-                    </div>
+                    <Input
+                        type="checkbox"
+                        name="rememberMe"
+                        id="rememberMe"
+                        value={data.rememberMe}
+                        handleInputChange={handleInputChange}
+                        label="Remember me"
+                    />
 
-                    {error && (
-                        <div className={`${classes.inlineMsg} ${classes.red}`}>
-                            <ErrorOutlineIcon fontSize="small" />
-                            {error.message}
-                        </div>
-                    )}
-                    {loading && (
-                        <div className={classes.inlineMsg}>
-                            {<CachedIcon fontSize="small" />}
-                            Loading...
-                        </div>
-                    )}
+                    <InlineMessage error={error} loading={loading} />
                 </div>
 
                 <div className={classes.buttonsWrapper}>
                     <Button
-                        style="primary"
                         type="submit"
+                        style="primary"
                         label="Login"
                         icon={<LoginIcon fontSize="small" />}
                         active={data.username && data.password}
                     />
+
                     <Button
                         action={() => setShowPopup && setShowPopup(false)}
                         prevPath={location.pathname}
@@ -119,16 +107,14 @@ export function Login({ setShowPopup = null, setChangeToSignup = null }) {
                     />
                 </div>
 
-                <div className={classes.loginBtnBox}>
+                <div className={classes.externalLoginWrapper}>
                     <GoogleLoginBtn />
                     <FacebookSocialBtn />
                 </div>
 
-                <div className={classes.message}>
+                <div className={classes.loginToSignup}>
                     <p>Don't have an account yet?</p>
-                    <span className={classes.signup}>
-                        <Button action={() => setChangeToSignup && setChangeToSignup(true)} label="Sign Up" />
-                    </span>
+                    <Button action={() => setChangeToSignup && setChangeToSignup(true)} label="Sign Up" />
                 </div>
             </form>
         </div>

@@ -1,4 +1,3 @@
-import { useLocation } from "@tanstack/react-router"
 import { useAuth } from "../../hooks/Auth/useAuth"
 import { useLocalStorage } from "../../hooks/useLocalStorage/useLocalStorage"
 import { usePostRequest } from "../../hooks/usePostRequest/usePostRequest"
@@ -7,7 +6,6 @@ export const useRecipesUpdate = (setRecipes) => {
     const { setValue, getValue } = useLocalStorage()
     const { handlePostRequest } = usePostRequest()
     const { isAuthenticated } = useAuth() // Stato di autenticazione
-    const { pathname } = useLocation()
 
     const handleRecipesUpdate = (recipe, setRecipe) => {
         const updatedRecipe = { ...recipe, isFavorited: !recipe.isFavorited }
@@ -35,24 +33,27 @@ export const useRecipesUpdate = (setRecipes) => {
                 targetedRecipe: isTargetedRecipe ? updatedRecipe : prev.targetedRecipe,
             }
 
-            // Aggiornamento localStorage se autenticati
+            // Aggiornamento localStorage e DB se autenticati
             if (isAuthenticated) {
                 const userData = getValue("userData")
                 setValue("recipes", updatedRecipes)
                 const mutationId = updatedRecipe.id + updatedRecipe.title
 
                 userData.id &&
-                    handlePostRequest(
-                        "http://localhost:3000/api/preferences/set-favorited-recipes", //url
-                        { recipe: updatedRecipe, userId: userData.id }, //payload
-                        mutationId //cancel prev mutations
-                    )
+                    handlePostRequest({
+                        url: "http://localhost:3000/api/preferences/set-favorited-recipes",
+                        payload: { recipe: updatedRecipe, userId: userData.id },
+                        mutationId: mutationId,
+                        queryKey: [["get-favorited-recipes"], ["get-recipes-history"]],
+                    })
 
-                handlePostRequest(
-                    "http://localhost:3000/api/preferences/update-recipes-history", //url
-                    { recipe: updatedRecipe, userId: userData.id }, //payload
-                    mutationId //cancel prev mutations
-                )
+                userData.id &&
+                    handlePostRequest({
+                        url: "http://localhost:3000/api/preferences/update-recipes-history",
+                        payload: { recipe: updatedRecipe, userId: userData.id },
+                        mutationId: mutationId,
+                        queryKey: [["get-favorited-recipes"], ["get-recipes-history"]],
+                    })
             }
 
             return updatedRecipes
@@ -76,12 +77,12 @@ export const useRecipesUpdate = (setRecipes) => {
                 const mutationId = recipe.id + recipe.title
 
                 userData.id &&
-                    handlePostRequest(
-                        "http://localhost:3000/api/preferences/update-recipes-history", //url
-                        { recipe, userId: userData.id }, //payload
-                        mutationId, //cancel prev mutations
-                        "get-recipes-history"
-                    )
+                    handlePostRequest({
+                        url: "http://localhost:3000/api/preferences/update-recipes-history",
+                        payload: { recipe, userId: userData.id },
+                        mutationId: mutationId,
+                        queryKey: [["get-recipes-history"]],
+                    })
             }
 
             return updatedRecipes // Ritorna il nuovo stato aggiornato di recipes

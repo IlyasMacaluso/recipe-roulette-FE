@@ -3,7 +3,7 @@
 .discoveryPage {
     scale: 0.8;
     transition: scale 0.25s cubic-bezier(0.08, 0.82, 0.17, 1);
-
+    
     background-color: white;
     width: 100%;
     height: 100%;
@@ -17,16 +17,16 @@
         display: flex;
         flex-direction: column;
         flex-grow: 1;
-        max-height: 100%;
         box-sizing: border-box;
         align-items: center;
+        overflow: hidden;
         .ingredientsWrapper {
             width: 100%;
             display: flex;
             flex-direction: column;
             flex-grow: 1;
             box-sizing: border-box;
-            align-items: center;
+            align-items: stretch;
             gap: 0.375rem;
         }
     }
@@ -54,6 +54,9 @@
     }
 }
 
+.skeleton {
+    flex-grow: 1;
+}
 .skeleton:last-child {
     border-radius: 8px 8px 16px 16px;
 }

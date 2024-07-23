@@ -31,13 +31,10 @@ export function useTestPost(ingredients, setIngredients, url) {
                 prev.blacklisted.pop()
                 const updatedBlacklisted = [...prev.blacklisted]
 
-                // Assicurati di usare l'ultimo stato aggiornato per la chiamata al server
-                handlePostRequest(
-                    url,
-                    { updatedBlacklisted, id }
-                    //mutationId
-                    //scopeId
-                )
+                handlePostRequest({
+                        url: url,
+                        payload: { updatedBlacklisted, id },
+                    })
 
                 return {
                     ...prev,

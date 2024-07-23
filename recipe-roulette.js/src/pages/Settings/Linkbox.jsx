@@ -25,15 +25,11 @@ export function LinkBox() {
     return (
         <>
             <div className={classes.menuSection}>
-                <Link to="/history" className={classes.menuItem}>
-                    Recipes History
-                    <NavigateNextOutlinedIcon fontSize="medium" />
-                </Link>
-                
-                <Link to="/food-preferences" className={classes.menuItem}>
+
+                {/* <Link to="/food-preferences" className={classes.menuItem}>
                     Food Preferences
                     <NavigateNextOutlinedIcon fontSize="medium" />
-                </Link>
+                </Link> */}
 
                 <Link to="/feedback-&-support" className={classes.menuItem}>
                     Feedback & Support

@@ -1,0 +1,95 @@
+@use "../../assets/scss/" as *;
+
+.inputComponent {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+
+    label {
+        padding-left: 0.25rem;
+        font-size: $text-size-14;
+        font-family: $header-text;
+        font-weight: 600;
+        color: $dark-gray;
+    }
+
+    .inputWrapper {
+        position: relative;
+        width: 100%;
+
+        .inputIcons {
+            position: absolute;
+            display: flex;
+            align-items: center;
+            background-color: transparent;
+            top: 50%;
+            transform: translateY(-50%);
+            right: 2px;
+            color: $medium-light-gray;
+            background-color: white;
+            border-radius: 2rem;
+            padding-right: 0.5rem;
+        }
+
+        .icon {
+            background-color: transparent;
+            width: 2rem;
+            height: 2rem;
+            padding: 6px;
+            box-sizing: border-box;
+            color: $medium-light-gray;
+        }
+        
+        .inputError:focus {
+            outline: 1px solid $dark-red;
+        }
+
+        input {
+            width: 100%;
+            border-radius: $size-24;
+            border: 1px solid $light-gray;
+            min-height: 40px;
+            max-height: 40px;
+            box-sizing: border-box;
+            padding-left: $size-16;
+            font-size: $text-size-14;
+            font-family: $header-text;
+            letter-spacing: 0.025rem;
+
+            &:focus {
+                outline: 2px solid $main-color;
+            }
+            &::placeholder {
+                font-size: $text-size-14;
+                color: $medium-light-gray;
+            }
+        }
+    }
+}
+
+.checkbox {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: $text-size-14;
+    font-family: $header-text;
+    font-weight: 600;
+    color: $dark-gray;
+
+    label {
+        margin: 0;
+        padding-left: 0.25rem;
+    }
+
+    input {
+        margin: 0;
+        min-height: 18px;
+        min-width: 18px;
+        box-sizing: border-box;
+    }
+}
+.checkboxWrapper {
+    display: flex;
+    max-width: fit-content;
+    max-height: fit-content;
+}

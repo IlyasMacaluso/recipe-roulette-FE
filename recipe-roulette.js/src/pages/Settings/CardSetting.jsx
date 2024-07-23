@@ -1,10 +1,10 @@
-import classes from "./Settings.module.scss";
 import { Button } from "../../components/Buttons/Button/Button";
+import { useAuth } from "../../hooks/Auth/useAuth";
 import DoneAllIcon from "@mui/icons-material/DoneAll";
 import EditNoteIcon from "@mui/icons-material/EditNote";
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
-import ModeEditOutlinedIcon from "@mui/icons-material/ModeEditOutlined";
-import { useAuth } from "../../hooks/Auth/useAuth";
+import UploadIcon from '@mui/icons-material/Upload';
+import classes from "./Settings.module.scss";
 
 export function CardSetting({
     editing,
@@ -17,7 +17,7 @@ export function CardSetting({
     handleEditClick,
     passError,
 }) {
-    const { isAuthenticated, logout } = useAuth();
+    const { isAuthenticated } = useAuth();
 
     if (!isAuthenticated) {
         return (
@@ -43,8 +43,8 @@ export function CardSetting({
                                 id="profileImageInput"
                             />
                             <label htmlFor="profileImageInput" className={classes.editProfileImageButtonLabel}>
-                                <ModeEditOutlinedIcon fontSize="small" />
-                                Profile image
+                                <UploadIcon fontSize="small" />
+                                Upload new image
                             </label>
                         </div>
                     </section>
@@ -109,7 +109,6 @@ export function CardSetting({
                     <h2 className={classes.profileName}>{userData.username}</h2>
                     <p className={classes.profileEmail}>{userData.email}</p>
                     <Button
-                        style="primary"
                         width="fill"
                         action={handleEditClick}
                         label="Edit Information"

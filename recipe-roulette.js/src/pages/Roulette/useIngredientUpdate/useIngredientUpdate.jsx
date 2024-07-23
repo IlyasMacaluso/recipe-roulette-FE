@@ -65,10 +65,12 @@ export const useIngredientUpdate = (ingredients, setIngredients) => {
                     const userData = getValue("userData")
                     userData.id &&
                         handlePostRequest(
-                            "http://localhost:3000/api/preferences/set-blacklisted-ingredients", //url
-                            { newBlacklist: newBlacklisted, userId: userData.id }, //payload
-                            "blacklistUpdate", // mutationId
-                            { meta: { scope: { id: "blacklistUpdate" } } } //scopeId
+                            {
+                                url: "http://localhost:3000/api/preferences/set-blacklisted-ingredients",
+                                payload: { newBlacklist: newBlacklisted, userId: userData.id },
+                                mutationId: "blacklistUpdate",
+                            },
+                            { meta: { scope: { id: "blacklistUpdate" } } }
                         )
                 }
             }
@@ -96,9 +98,11 @@ export const useIngredientUpdate = (ingredients, setIngredients) => {
                 const userData = getValue("userData")
                 userData.id &&
                     handlePostRequest(
-                        "http://localhost:3000/api/preferences/set-blacklisted-ingredients", //url
-                        { newBlacklist: newBlacklisted, userId: userData.id }, //payload
-                        "blacklistUpdate", // mutationId
+                        {
+                            url: "http://localhost:3000/api/preferences/set-blacklisted-ingredients",
+                            payload: { newBlacklist: newBlacklisted, userId: userData.id },
+                            mutationId: "blacklistUpdate",
+                        },
                         { meta: { scope: { id: "blacklistUpdate" } } } //scopeId
                     )
             }

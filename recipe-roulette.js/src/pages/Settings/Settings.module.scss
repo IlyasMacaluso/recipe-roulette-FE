@@ -1,12 +1,12 @@
 @use "../../assets/scss" as *;
 
 .profilePicture {
-    width: 96px;
-    height: 96px;
+    width: 18vh;
+    height: 18vh;
     object-fit: cover;
     border-radius: 50%;
-    border: 1px solid $light-gray;
-    margin-bottom: 0.25rem;
+    outline: 1px solid $light-gray;
+    outline-offset: -2px;
 }
 .settingsPage {
     scale: 0.8;
@@ -34,8 +34,8 @@
         display: flex;
         flex-direction: column;
         align-items: center;
-        background-color: $third-color;
-        border: 1px solid $light-gray;
+        background-color: white;
+        border: 1px solid $border-color;
         color: #3c3838;
         border-radius: $size-16;
         width: 100%;
@@ -90,11 +90,8 @@
         display: flex;
         flex-direction: column;
         align-items: center;
-        background-color: #f1f8eb;
-        border-radius: $size-16;
+        padding: 0;
         width: 100%;
-        padding: $size-24;
-        box-sizing: border-box;
 
         .profileImageSection {
             width: 100%;
@@ -105,8 +102,17 @@
             margin-bottom: 1rem;
             .editProfileImageButtonWrapper {
                 position: relative;
+                width: 100%;
+                font-family: $header-text;
+                font-size: $text-size-14;
+                font-weight: 500;
+                max-height: 40px;
+
+
                 .editProfileImageButton {
                     display: none;
+                    width: 100%;
+
                 }
                 .editProfileImageButtonLabel {
                     display: flex;
@@ -114,12 +120,13 @@
                     justify-content: center;
                     gap: 8px;
                     height: 40px;
-                    padding: 0 16px;
                     background-color: white;
                     border: 1px solid $light-gray;
                     border-radius: 2rem;
-                    color: #3c3838;
+                    color: $darkish-gray;
                     cursor: pointer;
+                    box-sizing: border-box;
+                    max-height: 40px;
                 }
             }
         }
@@ -142,7 +149,8 @@
                 }
                 input {
                     width: 100%;
-                    height: 48px;
+                    height: 40px;
+                    font-family: $header-text;
                     padding: 0 $size-16;
                     font-size: $text-size-14;
                     border: 1px solid $light-gray;

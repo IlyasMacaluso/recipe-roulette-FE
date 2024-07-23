@@ -50,11 +50,11 @@ export const useRecipeFilter = (isAuthenticated) => {
             setValue("recipeFilter", updatedFilters) // Aggiorna il valore nel local storage o dove necessario
             if (isAuthenticated) {
                 userData.id &&
-                    handlePostRequest(
-                        "http://localhost:3000/api/preferences/set-preferences", //url
-                        { newPreferences: updatedFilters, userId: userData.id }, //payload
-                        "filtersToggleUpdate" //mutationId
-                    )
+                    handlePostRequest({
+                        url: "http://localhost:3000/api/preferences/set-preferences",
+                        payload: { newPreferences: updatedFilters, userId: userData.id },
+                        mutationId: "filtersToggleUpdate", //mutationId
+                    })
             }
             return updatedFilters // Ritorna il nuovo stato aggiornato
         })
@@ -92,11 +92,11 @@ export const useRecipeFilter = (isAuthenticated) => {
             }
             if (isAuthenticated) {
                 userData.id &&
-                    handlePostRequest(
-                        "http://localhost:3000/api/preferences/set-preferences", //url
-                        { newPreferences: updatedFilters, userId: userData.id }, //payload
-                        "filtersUpdate" //mutationId
-                    )
+                    handlePostRequest({
+                        url: "http://localhost:3000/api/preferences/set-preferences",
+                        payload: { newPreferences: updatedFilters, userId: userData.id },
+                        mutationId: "filtersUpdate",
+                    })
             }
             setValue("recipeFilter", updatedFilters) // Aggiorna il valore nel local storage o dove necessario
             return updatedFilters // Ritorna il nuovo stato aggiornato
