@@ -36,7 +36,7 @@ export function usePostRequest() {
             return context
         },
         onSuccess: (data, variables) => {
-            data && console.log(data)
+            console.log(data)
 
             if (variables?.queryKey) {
                 variables.queryKey.forEach((key) => {

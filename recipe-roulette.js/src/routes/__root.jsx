@@ -41,8 +41,8 @@ export const Route = createRootRoute({
                                         />
                                         <Snackbar />
                                         <Outlet />
-                                        {/* <TanStackRouterDevtools />
-                                        <ReactQueryDevtools /> */}
+                                        <TanStackRouterDevtools />
+                                        <ReactQueryDevtools />
                                     </SearchProvider>
                                 </SnackbarProvider>
                             </RecipesFetchProvider>
