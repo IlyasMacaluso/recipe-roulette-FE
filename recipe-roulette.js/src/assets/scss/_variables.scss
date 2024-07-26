@@ -6,41 +6,58 @@ $font-logo: "Poppins";
 $font-title: "Puritan", "Noto Sans", "system-ui";
 $header-text: "Poppins", "Lato", "Roboto", "Segoe UI", "system-ui";
 $font-text: "Noto Sans CJK KR", "Lato", "Roboto", "system-ui";
+
 // text dimension
-$text-size-12: 0.75rem;
-$text-size-14: 0.875rem;
-$text-size-16: 1rem;
-$text-size-20: 1.25rem;
-$text-size-24: 1.5rem;
-$text-size-32: 2rem;
+$text-size-12: 12px;
+$text-size-14: 14px;
+$text-size-16: 16px;
+$text-size-20: 20px;
+$text-size-24: 24px;
+$text-size-32: 32px;
 
 // colors
-$main-color: #87c38f;
-$second-color: #c5e4c9;
-$third-color: #f8fff8;
-$accent-color: #f9f7eb;
-$light-red: #fa4d56;
-$red: #da1e28;
-$dark-red: #a2191f;
-$green: #24a148;
-$light-gray: #e5e0df; // outline
-$lighter-gray: #f7f3f2; // outline (when selected)
-$medium-gray: #8f8b8b; // inactive buttons
-$medium-light-gray: #a2a9b0; //placeholder text
 
+// green
+$primary-green: #00a55b;
+$darkest-green: #23512a;
+$dark-green: #2f7a4f;
+$darkish-green: #449a50;
+$medium-green: #87c38f;
+$light-green: #c5e4c9;
+$light-desaturated-green: #d9e9dc;
+$lightest-green: #f8fff8;
+
+//
+$accent-color: #f9f7eb;
+$yellow: #ba9f36;
+
+// red
+$red: #dd3e46;
+$dark-red: #a2191f;
+$medium-red: #fa4d56;
+
+// yellow
+$light-yellow: #ece4b9;
+$lightest-yellow: #fffcf1;
+
+// gray
+$darkest-gray: #21272a; //text color
 $dark-gray: #3c3838; //text color
 $darkish-gray: #4d5358; //text color
-$darkest-gray: #21272a; //text color
+$medium-gray: #8f8b8b; // inactive buttons
+$medium-light-gray: #a2a9b0; //placeholder text
+$light-gray: #e5e0df; // outline
+$lighter-gray: #f7f3f2; // outline (when selected)
 
 // layout (border, padding, margin)
-$size-4: 0.25rem;
-$size-8: 0.5rem;
-$size-16: 1rem;
-$size-20: 1.25rem;
-$size-24: 1.5rem;
+$size-4: 4px;
+$size-8: 8px;
+$size-16: 16px;
+$size-20: 20px;
+$size-24: 24px;
 
 //dimensions
-$height-40: 2.5rem;
-$height-80: 5rem;
-$width-320: 20rem;
-$width-360: 22.5rem;
+$height-40: 40px;
+$height-80: 80px;
+$width-320: 320px;
+$width-360: 360px;

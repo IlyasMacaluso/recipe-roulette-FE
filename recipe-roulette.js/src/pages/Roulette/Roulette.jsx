@@ -2,12 +2,12 @@ import { IngredientCard } from "../../components/IngredientCard/IngredientCard"
 import { useAnimate } from "../../hooks/animatePages/useAnimate"
 import { Button } from "../../components/Buttons/Button/Button"
 import { useButtonState } from "../../hooks/ButtonState/useButtonState"
-import { useMemo } from "react"
 import { useRecipesContext } from "../../contexts/RecipesContext"
 import { useLocationHook } from "../../hooks/useLocationHook"
 import { useRecipesFetch } from "../../hooks/useRecipesFetch/useRecipesFetch"
 import { useShakeAnimation } from "../../hooks/useShakeAnimation/useShakeAnimation"
 import { useManageIngredients } from "./IngredientsContext"
+import { Skeleton } from "@mui/material"
 
 import ManageSearchOutlinedIcon from "@mui/icons-material/ManageSearchOutlined"
 import AddIcon from "@mui/icons-material/Add"
@@ -15,26 +15,21 @@ import LoopOutlinedIcon from "@mui/icons-material/LoopOutlined"
 import classes from "./Roulette.module.scss"
 
 export function Roulette() {
-    const { ingredients, shuffleIng, handleIngIncrement } = useManageIngredients()
+    const { ingredients, shuffleIng, handleIngIncrement, ingredientsLoading, blacklistedLoading } = useManageIngredients()
     const { recipeFilter } = useRecipesContext()
-    const { isActive, setIsActive } = useButtonState(true)
+    const { isActive, setIsActive } = useButtonState(ingredients)
     const { location } = useLocationHook()
     const { animate } = useAnimate(location)
     const { handleRecipesFetch } = useRecipesFetch()
     const { handleAnimation, animationState } = useShakeAnimation()
 
-    const setButtonState = useMemo(() => {
-        ingredients.displayed.length === 8 ? setIsActive(false) : setIsActive(true)
-    }, [ingredients.displayed.length])
-
     return (
         <div className={`${classes.discoveryPage} ${animate && classes.animateDiscovery}`}>
             <div className={classes.contentWrapper}>
                 <div className={classes.ingredientsWrapper}>
-                    {ingredients.displayed.length > 0 &&
-                        ingredients.displayed.map((ing) => {
-                            return <IngredientCard key={ing.id} ing={ing} />
-                        })}
+                    {ingredientsLoading || blacklistedLoading
+                        ? [...Array(5)].map(() => <Skeleton className={classes.skeleton} key={Math.random()} sx={{ bgcolor: "#c5e4c9" }} variant="rounded" width={"100%"}/>)
+                        : ingredients?.displayed && ingredients?.displayed.map((ing) => <IngredientCard key={ing.id} ing={ing} />)}
                 </div>
             </div>
             <div className={classes.bottomButtons}>
@@ -42,7 +37,7 @@ export function Roulette() {
                     width={"fill"}
                     active={isActive}
                     action={() => handleIngIncrement()}
-                    label="Ingredient"
+                    label="Item"
                     icon={<AddIcon fontSize="small" />}
                     size={18}
                     iconWheight={600}
@@ -63,15 +58,15 @@ export function Roulette() {
                     width={"fill"}
                     active={true}
                     action={() => {
-                        const ingNames = ingredients.displayed.map((ing) => ing.name)
+                        const ingNames = ingredients?.displayed.map((ing) => ing.name)
                         handleRecipesFetch(
                             ingNames,
                             recipeFilter.preparationTime,
                             recipeFilter.caloricApport,
                             recipeFilter.cuisineEthnicity,
-                            recipeFilter.isVegetarian,
-                            recipeFilter.isVegan,
-                            recipeFilter.isGlutenFree,
+                            recipeFilter.is_vegetarian,
+                            recipeFilter.is_vegan,
+                            recipeFilter.is_gluten_free,
                             recipeFilter.difficulty
                         )
                     }}

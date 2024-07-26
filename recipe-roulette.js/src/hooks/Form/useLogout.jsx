@@ -1,52 +1,24 @@
-import { useState } from "react"
 import { useAuth } from "../Auth/useAuth"
 import { useMutation } from "@tanstack/react-query"
 import { useSnackbar } from "../../components/Snackbar/useSnackbar"
-import axios from "axios"
 import { useLocalStorage } from "../useLocalStorage/useLocalStorage"
+import { usePostRequest } from "../usePostRequest/usePostRequest"
 
 export function useLogout(setShowPopup) {
-    const [data, setData] = useState()
-
     const { setValue, getValue } = useLocalStorage()
     const { setIsAuthenticated } = useAuth()
     const { handleOpenSnackbar } = useSnackbar()
-
-    const logoutFn = async () => {
-        const clientData = getValue("userData")
-        if (clientData) {
-            try {
-                const res = await axios.post("http://localhost:3000/api/users/logout", clientData)
-
-                if (res.status !== 200) {
-                    throw new Error(`Network error, ${res.data.msg}`)
-                }
-
-                const resData = await res.data
-                return resData
-            } catch (error) {
-                throw new Error(error.response.data.msg)
-            }
-        } else {
-            throw new Error(error || "Failed retrieving data from local storage")
-        }
-    }
+    const { postRequest } = usePostRequest()
 
     const Logout = useMutation({
-        mutationFn: logoutFn,
+        mutationFn: () => postRequest({ url: "http://localhost:3000/api/users/logout", payload: getValue("userData") }),
         onSuccess: () => {
-
             let newUserData = getValue("userData")
-            newUserData = {
-                ...newUserData,
-                token: null,
-            }
+            newUserData = { ...newUserData, token: null }
 
-            setValue("userData", newUserData)
-
+            setValue("userData", newUserData) // setLocalStorage localStorage
             setIsAuthenticated(false)
             handleOpenSnackbar("You are now logged out!", 3000)
-
             setTimeout(() => setShowPopup(false), 0)
         },
         onError: (error) => {
@@ -56,11 +28,10 @@ export function useLogout(setShowPopup) {
     })
 
     function handleLogout() {
-        Logout.mutate(data)
+        Logout.mutate()
     }
 
     return {
-        data,
         loading: Logout.isPending,
         error: Logout.error,
         handleLogout,

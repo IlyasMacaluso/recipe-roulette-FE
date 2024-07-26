@@ -1,14 +1,14 @@
 import React from "react"
 import { useIngredientSearch } from "./useIngredientSearch"
 import { IngredientSuggestions } from "../Suggestions/IngredientSuggestions"
-import { useHandleBackButton } from "../../../hooks/useHandleBackBtn/useHandleBackBtn"
 
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined"
 import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined"
 
 import classes from "./IngredientSearch.module.scss"
+import { useHandleBackButton } from "../../../hooks/useHandleBackBtn/useHandleBackBtn"
 
-export function IngredientSearch({ isFixed = false, sidebarSearch = false, searchCriteria = "isBlackListed" }) {
+export function IngredientSearch({searchCriteria = "is_blacklisted" }) {
     const {
         suggestions,
         inputValues,
@@ -20,13 +20,13 @@ export function IngredientSearch({ isFixed = false, sidebarSearch = false, searc
         handleBlur,
         setSearchState,
         setFixedPosition,
-    } = useIngredientSearch(isFixed, searchCriteria)
-
+    } = useIngredientSearch(searchCriteria)
+    
     const { inputRef } = useHandleBackButton(searchState, setSearchState, setFixedPosition, handleBlur)
 
     return (
         <div
-            className={`${fixedPosition && classes.positionFixed} ${fixedPosition && sidebarSearch && classes.sidebarSearch} ${classes.search}`}
+            className={`${fixedPosition && classes.positionFixed} ${classes.search}`}
         >
             <div className={`${classes.searchBar} ${searchState ? classes.inputActive : classes.inputInactive}`}>
                 <input
@@ -34,12 +34,10 @@ export function IngredientSearch({ isFixed = false, sidebarSearch = false, searc
                     autoComplete="off"
                     className={classes.header}
                     onClick={handleInputActivation}
-                    placeholder={`${searchCriteria === "isSelected" ? "Add an ingredient" : "Blacklist an ingredient"}`}
+                    placeholder={`${searchCriteria === "is_selected" ? "Add an ingredient" : "Blacklist an ingredient"}`}
                     name="search"
                     type="text"
-                    onKeyUp={(e) =>
-                        handlePressEnter(e, inputRef, { setCondition: setSearchState, setComponent: setFixedPosition })
-                    }
+                    onKeyDown={(e) => handlePressEnter(e, inputRef, { setCondition: setSearchState, setComponent: setFixedPosition })}
                     onChange={handleInputChange}
                     value={inputValues.current}
                 />

@@ -5,6 +5,8 @@ import { useLocationHook } from "../../hooks/useLocationHook"
 import LoopOutlinedIcon from "@mui/icons-material/LoopOutlined"
 import VolunteerActivismOutlinedIcon from "@mui/icons-material/VolunteerActivismOutlined"
 import classes from "./Landing.module.scss"
+import { Placeholder } from "../../components/Placeholder/Placeholder"
+import { Button } from "../../components/Buttons/Button/Button"
 
 export function Landing() {
     const { location } = useLocationHook()
@@ -12,25 +14,15 @@ export function Landing() {
 
     return (
         <div className={`${classes.discoveryPreview} ${animate && classes.discoveryPreviewAnimate}`}>
-            <div className={classes.mainContent}>
-                <img src="../src/assets/images/undraw_ideas_flow_re_bmea.svg" alt="" />
-
-                <h2>
-                    Reduce food wastes and get inspired by <span>RecipeRoulette!</span>
-                </h2>
-                
-                <div className={classes.bottomItems}>
-                    <Link className={classes.cta} to="/roulette">
-                        <LoopOutlinedIcon />
-                        <p>Start Ingredients Shuffle</p>
-                    </Link>
-
-                    <Link className={classes.button} to="/roulette">
-                        <VolunteerActivismOutlinedIcon />
-                        <p>Support the Developers</p>
-                    </Link>
-                </div>
-            </div>
+            <Placeholder
+                text="Reduce food wastes and get inspired by "
+                hightlitedText="Recipe Roulette"
+                topImage={"undraw_ideas_flow_re_bmea.svg"}
+                buttons={[
+                    <Button style="primary" label="Start Ingredients Shuffle" height={"large"} icon={<LoopOutlinedIcon />} link="/roulette" />,
+                    <Button label="Support the Developers" icon={<VolunteerActivismOutlinedIcon fontSize="small" />} />,
+                ]}
+            />
         </div>
     )
 }

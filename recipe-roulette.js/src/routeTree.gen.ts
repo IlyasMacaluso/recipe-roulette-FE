@@ -17,6 +17,7 @@ import { Route as RecipeResultsImport } from './routes/recipe-results'
 import { Route as RecipeImport } from './routes/recipe'
 import { Route as PreferencesImport } from './routes/preferences'
 import { Route as NotFoundImport } from './routes/not-found'
+import { Route as HistoryImport } from './routes/history'
 import { Route as FavoritedImport } from './routes/favorited'
 import { Route as IndexImport } from './routes/index'
 
@@ -52,6 +53,11 @@ const NotFoundRoute = NotFoundImport.update({
   getParentRoute: () => rootRoute,
 } as any)
 
+const HistoryRoute = HistoryImport.update({
+  path: '/history',
+  getParentRoute: () => rootRoute,
+} as any)
+
 const FavoritedRoute = FavoritedImport.update({
   path: '/favorited',
   getParentRoute: () => rootRoute,
@@ -78,6 +84,13 @@ declare module '@tanstack/react-router' {
       path: '/favorited'
       fullPath: '/favorited'
       preLoaderRoute: typeof FavoritedImport
+      parentRoute: typeof rootRoute
+    }
+    '/history': {
+      id: '/history'
+      path: '/history'
+      fullPath: '/history'
+      preLoaderRoute: typeof HistoryImport
       parentRoute: typeof rootRoute
     }
     '/not-found': {
@@ -130,6 +143,7 @@ declare module '@tanstack/react-router' {
 export const routeTree = rootRoute.addChildren({
   IndexRoute,
   FavoritedRoute,
+  HistoryRoute,
   NotFoundRoute,
   PreferencesRoute,
   RecipeRoute,
@@ -148,6 +162,7 @@ export const routeTree = rootRoute.addChildren({
       "children": [
         "/",
         "/favorited",
+        "/history",
         "/not-found",
         "/preferences",
         "/recipe",
@@ -161,6 +176,9 @@ export const routeTree = rootRoute.addChildren({
     },
     "/favorited": {
       "filePath": "favorited.jsx"
+    },
+    "/history": {
+      "filePath": "history.jsx"
     },
     "/not-found": {
       "filePath": "not-found.jsx"

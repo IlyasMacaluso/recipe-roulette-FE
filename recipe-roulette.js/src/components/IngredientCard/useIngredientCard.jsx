@@ -5,13 +5,13 @@ import { useSnackbar } from "../Snackbar/useSnackbar"
 
 export function useIngredientCard(ing) {
     //Card State
-    const { id, label, bgColor, isBlackListed, isSelected } = ing
+    const { id, label, bg_color, is_blacklisted, is_selected } = ing
     const [cardState, setCardState] = useState({
         label: ing.name,
         id,
-        bgColor,
-        isSelected,
-        isBlackListed,
+        bg_color,
+        is_selected,
+        is_blacklisted,
     })
 
     //Context Provider
@@ -21,24 +21,24 @@ export function useIngredientCard(ing) {
     const { handleOpenSnackbar } = useSnackbar()
 
     useEffect(() => {
-        setCardState((old) => {
-            return { ...old, isSelected: ing.isSelected }
+        setCardState((prev) => {
+            return { ...prev, is_selected: ing.is_selected }
         })
-    }, [ing])
+    }, [ing, ing.bg_color])
 
     function handleIngredientClick() {
-        if (cardState.isBlackListed && !cardState.isSelected) {
+        if (cardState.is_blacklisted && !cardState.is_selected) {
             handleOpenSnackbar("The ingredient is blacklisted!")
-        } else if (!ingredients.filtered.find((ing) => ing.id === cardState.id) && !cardState.isSelected) {
+        } else if (!ingredients?.filtered.find((ing) => ing.id === cardState.id) && !cardState.is_selected) {
             handleOpenSnackbar("You have filtered this type of ingredeints!")
         } else {
-            handleIngUpdate("isSelected", cardState)
+            handleIngUpdate("is_selected", cardState)
         }
     }
 
     function handleXClick(e) {
         e.stopPropagation()
-        if (cardState.isSelected) {
+        if (cardState.is_selected) {
             handleIngredientClick()
         } else {
             handleIngDecrement(cardState.id, e)

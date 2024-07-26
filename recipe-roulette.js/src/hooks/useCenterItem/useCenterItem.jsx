@@ -11,7 +11,7 @@ export const useCenterItem = (n) => {
         const handleResize = () => {
             const currentHeight = window.innerHeight
 
-            if (screenHeight * 0.8 > currentHeight) {
+            if (screenHeight * 0.7 > currentHeight) {
                 setIsKeyboardOpen(true)
             } else {
                 setIsKeyboardOpen(false)
@@ -26,6 +26,7 @@ export const useCenterItem = (n) => {
     }, [])
 
     const scrollToCenter = (currentRef) => {
+        console.log(currentRef);
         const scrollItem = () => {
             currentRef.current.scrollIntoView({
                 behavior: "smooth",
@@ -37,7 +38,8 @@ export const useCenterItem = (n) => {
             scrollItem()
         // if the keyboard is closed the item will be centered after a 200ms delay, (wait the new window.innerHeight before the item is centered)
         } else {
-            setTimeout(() => scrollItem(), 200)
+            console.log("hi");
+            setTimeout(() => scrollItem(), 150)
         }
     }
 

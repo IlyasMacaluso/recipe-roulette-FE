@@ -6,11 +6,10 @@ import SearchIcon from "@mui/icons-material/Search"
 import classes from "./BaseSearch.module.scss"
 import { useIngredientSearch } from "../SearchBar/useIngredientSearch"
 import { useHandleBackButton } from "../../../hooks/useHandleBackBtn/useHandleBackBtn"
+import { Placeholder } from "../../Placeholder/Placeholder"
 
 export function BaseSearch({ data = [], inputValue = "", setInputValue }) {
-    const { handlePressEnter, handleInputActivation, handleBlur, setSearchState, setFixedPosition, searchState } =
-        useIngredientSearch(true)
-
+    const { handlePressEnter, handleInputActivation, handleBlur, setSearchState, setFixedPosition, searchState } = useIngredientSearch()
     const { inputRef } = useHandleBackButton(searchState, setSearchState, setFixedPosition, handleBlur)
 
     return (
@@ -20,7 +19,7 @@ export function BaseSearch({ data = [], inputValue = "", setInputValue }) {
                     ref={inputRef}
                     autoComplete="off"
                     className={classes.input}
-                    onKeyDown={(e) => handlePressEnter(e, inputRef, { setSearchState, setFixedPosition })}
+                    onKeyDown={(e) => handlePressEnter(e, inputRef, { setCondition: setSearchState, setComponent: setFixedPosition })}
                     onClick={handleInputActivation}
                     onChange={(e) => setInputValue(e.target.value)}
                     value={inputValue}
@@ -58,15 +57,13 @@ export function BaseSearch({ data = [], inputValue = "", setInputValue }) {
                         />
                     ))
                 ) : (
-                    <div className={classes.placeholder}>
-                        <h2>
-                            There is <span>no recipe</span> <br />
-                            matching your search!
-                        </h2>
-                        <div className={classes.placeholderImage}>
-                            <img src="../src/assets/images/undraw_cancel_re_pkdm 1.svg" alt="" />
-                        </div>
-                    </div>
+                    <Placeholder
+                    bottomImage={"searching.svg"}
+                    text="Your search has  "
+                    hightlitedText="no matching results"
+                    highlightColor="#dd3e46"
+                    spacious={true}
+                     />
                 )}
             </div>
         </div>

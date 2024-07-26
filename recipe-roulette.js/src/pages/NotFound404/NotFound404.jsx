@@ -1,27 +1,25 @@
-import { Link } from "@tanstack/react-router"
+import { Placeholder } from "../../components/Placeholder/Placeholder"
+import { Button } from "../../components/Buttons/Button/Button"
+
 import { useAnimate } from "../../hooks/animatePages/useAnimate"
 import { useLocationHook } from "../../hooks/useLocationHook"
 
-import ArrowBackOutlinedIcon from "@mui/icons-material/ArrowBackOutlined"
-import classes from "./NotFound404.module.scss"
+import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined"
+import cssAnimation from "../../assets/scss/pageLayout/pageTransition.module.scss"
+import pageStyle from "../../assets/scss/pageLayout/pageFH.module.scss"
 
 export function NotFound404() {
     const { location } = useLocationHook()
     const { animate } = useAnimate(location)
-    return (
-        <div className={`${classes.discoveryPreview} ${animate && classes.discoveryPreviewAnimate}`}>
-            <div className={classes.mainContent}>
-                <img src="../" />
-                <img src="../src/assets/images/notfound.svg" alt="" />
 
-                <h2>
-                    The page you're looking for <br /> <span>does not exist!</span>
-                </h2>
-                <Link className={classes.cta} to={-1}>
-                    <ArrowBackOutlinedIcon />
-                    <p>Go back</p>
-                </Link>
-            </div>
+    return (
+        <div className={`${pageStyle.pageFH} ${animate ? cssAnimation.animationEnd : cssAnimation.animationStart}`}>
+            <Placeholder
+                topImage={"notfound.svg"}
+                text="The page you're looking for "
+                hightlitedText="does not exist!"
+                buttons={[<Button label="Return to home" icon={<HomeOutlinedIcon />} link={"/"} height={"large"} />]}
+            />
         </div>
     )
 }

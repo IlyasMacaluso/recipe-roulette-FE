@@ -1,10 +1,13 @@
-import { useState } from "react"
+import { useMemo, useState } from "react"
 import { useLocalStorage } from "../../hooks/useLocalStorage/useLocalStorage"
+import { useFetchPreferences } from "../../hooks/fetchPreferences/useFetchPreferences"
+import { usePostRequest } from "../../hooks/usePostRequest/usePostRequest"
+
 // Costruttore per creare i filtri delle ricette
 function RecipeFilter({
-    isVegetarian = false,
-    isGlutenFree = false,
-    isVegan = false,
+    is_vegetarian = false,
+    is_gluten_free = false,
+    is_vegan = false,
     cuisineEthnicity = [
         "all",
         "italian",
@@ -22,25 +25,38 @@ function RecipeFilter({
     caloricApport = 9999,
     difficulty = "all",
 } = {}) {
-    this.isVegetarian = isVegetarian
-    this.isGlutenFree = isGlutenFree
-    this.isVegan = isVegan
+    this.is_vegetarian = is_vegetarian
+    this.is_gluten_free = is_gluten_free
+    this.is_vegan = is_vegan
     this.cuisineEthnicity = cuisineEthnicity
     this.preparationTime = preparationTime
     this.caloricApport = caloricApport
     this.difficulty = difficulty
 }
-export const useRecipeFilter = () => {
+export const useRecipeFilter = (isAuthenticated) => {
     const [recipeFilter, setRecipeFilter] = useState(new RecipeFilter())
-    const { setValue } = useLocalStorage()
+    const { setValue, getValue } = useLocalStorage()
+    const { handlePostRequest } = usePostRequest()
+
+    const userData = useMemo(() => {
+        return getValue("userData")
+    }, [isAuthenticated])
 
     // Gestione delle proprietà booleane di recipeFilter
     const toggleRecipeFilter = (prop) => {
         setRecipeFilter((prevFilters) => {
             const newState = !prevFilters[prop]
-            const newFilters = { ...prevFilters, [prop]: newState }
-            setValue("recipeFilter", newFilters) // Aggiorna il valore nel local storage o dove necessario
-            return newFilters // Ritorna il nuovo stato aggiornato
+            const updatedFilters = { ...prevFilters, [prop]: newState }
+            setValue("recipeFilter", updatedFilters) // Aggiorna il valore nel local storage o dove necessario
+            if (isAuthenticated) {
+                userData.id &&
+                    handlePostRequest({
+                        url: "http://localhost:3000/api/preferences/set-preferences",
+                        payload: { newPreferences: updatedFilters, userId: userData.id },
+                        mutationId: "filtersToggleUpdate", //mutationId
+                    })
+            }
+            return updatedFilters // Ritorna il nuovo stato aggiornato
         })
     }
 
@@ -74,7 +90,14 @@ export const useRecipeFilter = () => {
                 }
                 updatedFilters = { ...updatedFilters, cuisineEthnicity: updatedEthnicity }
             }
-
+            if (isAuthenticated) {
+                userData.id &&
+                    handlePostRequest({
+                        url: "http://localhost:3000/api/preferences/set-preferences",
+                        payload: { newPreferences: updatedFilters, userId: userData.id },
+                        mutationId: "filtersUpdate",
+                    })
+            }
             setValue("recipeFilter", updatedFilters) // Aggiorna il valore nel local storage o dove necessario
             return updatedFilters // Ritorna il nuovo stato aggiornato
         })

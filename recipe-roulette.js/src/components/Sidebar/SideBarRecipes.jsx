@@ -53,23 +53,23 @@ export function SideBarRecipes({ state, toggleSidebarRecipes }) {
                         <h4>Preferences</h4>
                         <div className={classes.switchesWrapper}>
                             <Switch
-                                state={recipeFilter.isGlutenFree}
+                                state={recipeFilter.is_gluten_free}
                                 action={() => {
-                                    toggleRecipeFilter("isGlutenFree")
+                                    toggleRecipeFilter("is_gluten_free")
                                 }}
                                 label={"Gluten free"}
                             />
                             <Switch
-                                state={recipeFilter.isVegetarian}
+                                state={recipeFilter.is_vegetarian}
                                 action={() => {
-                                    toggleRecipeFilter("isVegetarian")
+                                    toggleRecipeFilter("is_vegetarian")
                                 }}
                                 label={"Vegetarian"}
                             />
                             <Switch
-                                state={recipeFilter.isVegan}
+                                state={recipeFilter.is_vegan}
                                 action={() => {
-                                    toggleRecipeFilter("isVegan")
+                                    toggleRecipeFilter("is_vegan")
                                 }}
                                 label={"Vegan"}
                             />

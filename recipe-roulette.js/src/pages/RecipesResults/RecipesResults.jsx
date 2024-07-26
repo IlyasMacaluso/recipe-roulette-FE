@@ -8,6 +8,7 @@ import { useLocationHook } from "../../hooks/useLocationHook"
 import classes from "./RecipesResults.module.scss"
 import { BlocksShuffleThree } from "react-svg-spinners"
 import { useRecipesFetch } from "../../hooks/useRecipesFetch/useRecipesFetch"
+import { Placeholder } from "../../components/Placeholder/Placeholder"
 
 export function RecipeResults() {
     const { recipes } = useRecipesContext()
@@ -33,13 +34,11 @@ export function RecipeResults() {
                         })}
                 </section>
             ) : (
-                <div className={classes.placeholder}>
-                    <BlocksShuffleThree color="#00a55b" width={"40%"} height={"40%"} />
-                    <h2>
-                        <span>Generating Your Recipes!</span> <br />
-                        This could take a few minutes...
-                    </h2>
-                </div>
+                <Placeholder
+                    text="Generating Your Recipes, "
+                    hightlitedText="This could take a few minutes"
+                    loadingAnimation={<BlocksShuffleThree color="#00a55b" width={"40%"} height={"40%"} />}
+                />
             )}
         </div>
     )

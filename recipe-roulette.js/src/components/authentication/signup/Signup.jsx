@@ -1,28 +1,31 @@
-import { useCenterItem } from "../../../hooks/useCenterItem/useCenterItem"
 import { useSignup } from "../../../hooks/Form/useSignup"
 import { Button } from "../../Buttons/Button/Button"
 import { useLocation } from "@tanstack/react-router"
-import { useLogin } from "../../../hooks/Form/useLogin"
-import { useMemo, useRef } from "react"
+import { useMemo } from "react"
 
 import EditNoteIcon from "@mui/icons-material/EditNote"
 import StartIcon from "@mui/icons-material/Start"
 import CloseIcon from "@mui/icons-material/Close"
-import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline"
-import VisibilityOffIcon from "@mui/icons-material/VisibilityOff"
-import VisibilityIcon from "@mui/icons-material/Visibility"
-import CachedIcon from "@mui/icons-material/Cached"
 
-import classes from "./Signup.module.scss"
+
+import classes from "../login/Login.module.scss"
+import { Input } from "../../Input/Input"
+import { useForm } from "../../../hooks/useForm/useForm"
+import { InlineMessage } from "../../InlineMessage/InlineMessage"
 
 export function Signup({ setShowPopup = null, setChangeToSignup = null }) {
     const location = useLocation()
 
-    const { data, handleInput, handleSubmit, error, loading } = useSignup(setShowPopup)
-    const { showPassword, handleShowPassword } = useLogin()
-    const { scrollToCenter, refs } = useCenterItem(4)
+    const { handleSubmit, error, loading } = useSignup(setShowPopup)
+    const { data, showText, handleInputChange, handleShowText } = useForm({
+        username: "",
+        email: "",
+        password: "",
+        confirmPass: "",
+        termsAndConditions: false,
+    })
 
-    const { password, confirmPass, username, email } = useMemo(() => {
+    const { password, confirmPass, username, email, termsAndConditions } = useMemo(() => {
         return data
     }, [data])
 
@@ -35,105 +38,67 @@ export function Signup({ setShowPopup = null, setChangeToSignup = null }) {
                 </div>
             </header>
 
-            <form onSubmit={(e) => handleSubmit(e)} className={classes.formWrapper}>
+            <form
+                className={classes.formWrapper}
+                onSubmit={(e) => {
+                    e.preventDefault()
+                    handleSubmit(data)
+                }}
+            >
                 <div className={classes.inputsWrapper}>
-                    <div className={classes.inputWrapper}>
-                        <label>Username</label>
-                        <input
-                            ref={refs[0]}
-                            type="text"
-                            name="username"
-                            id="username"
-                            value={username}
-                            onChange={handleInput}
-                            placeholder="Insert your username"
-                            onFocus={() => scrollToCenter(refs[0])}
-                            required
-                        />
-                    </div>
+                    <Input
+                        name="username"
+                        value={username}
+                        handleInputChange={handleInputChange}
+                        placeholder={"Insert your username"}
+                        label="Username"
+                        required={true}
+                    />
 
-                    <div className={classes.inputWrapper}>
-                        <label>Email</label>
-                        <input
-                            ref={refs[1]}
-                            type="email"
-                            name="email"
-                            id="email"
-                            value={email}
-                            onChange={handleInput}
-                            placeholder="Insert your email"
-                            onFocus={() => scrollToCenter(refs[1])}
-                            required
-                        />
-                    </div>
+                    <Input
+                        name="email"
+                        type="email"
+                        value={email}
+                        handleInputChange={handleInputChange}
+                        placeholder={"Insert your email"}
+                        label="Email"
+                    />
 
-                    <div className={classes.inputWrapper}>
-                        <label>Password</label>
-                        <div className={classes.passInput}>
-                            <input
-                                ref={refs[2]}
-                                className={`${password !== confirmPass && classes.error}`}
-                                type={showPassword ? "text" : "password"}
-                                name="password"
-                                id="password"
-                                value={password}
-                                placeholder="Insert password here"
-                                onChange={handleInput}
-                                onFocus={() => scrollToCenter(refs[2])}
-                                required
-                            />
+                    <Input
+                        name="password"
+                        type={showText ? "text" : "password"}
+                        placeholder={"Insert your password"}
+                        handleInputChange={handleInputChange}
+                        hasIcons={true}
+                        handleShowText={handleShowText}
+                        error={password && confirmPass && password !== confirmPass}
+                        value={password}
+                        label="Password"
+                    />
 
-                            <div className={classes.icoWrapper}>
-                                {password !== confirmPass && (
-                                    <ErrorOutlineIcon className={`${classes.ico} ${classes.errIco}`} fontSize="small" />
-                                )}
-                                {showPassword ? (
-                                    <VisibilityOffIcon onClick={handleShowPassword} className={classes.ico} fontSize="small" />
-                                ) : (
-                                    <VisibilityIcon onClick={handleShowPassword} className={classes.ico} fontSize="small" />
-                                )}
-                            </div>
-                        </div>
-                    </div>
+                    <Input
+                        name="confirmPass"
+                        type={showText ? "text" : "password"}
+                        placeholder={"Confrim your password"}
+                        handleInputChange={handleInputChange}
+                        hasIcons={true}
+                        handleShowText={handleShowText}
+                        error={password && confirmPass && password !== confirmPass}
+                        value={confirmPass}
+                        label="Password"
+                    />
 
-                    <div className={classes.inputWrapper}>
-                        <label>Confirm password</label>
-                        <div className={classes.passInput}>
-                            <input
-                                ref={refs[3]}
-                                className={`${password !== confirmPass && classes.error}`}
-                                type={showPassword ? "text" : "password"}
-                                name="confirmPass"
-                                id="confirmPass"
-                                value={data.confirmPass}
-                                placeholder="Confirm password"
-                                onChange={handleInput}
-                                onFocus={() => scrollToCenter(refs[3])}
-                                required
-                            />
-                        </div>
-                    </div>
-
-                    <label htmlFor="check" className={classes.checkLabel}>
-                        <div>
-                            I agree with <span>Terms & Conditions</span>
-                        </div>
-                        <input type="checkbox" name="check" id="check" checked={data.check} onChange={handleInput} required />
-                    </label>
+                    <Input
+                        type="checkbox"
+                        name="termsAndConditions"
+                        id="termsAndConditions"
+                        value={termsAndConditions}
+                        handleInputChange={handleInputChange}
+                        label={"I agree with Terms & Conditions"}
+                    />
                 </div>
 
-                {error && (
-                    <div className={`${classes.inlineMsg} ${classes.red}`}>
-                        <ErrorOutlineIcon fontSize="small" />
-                        {error.message}
-                    </div>
-                )}
-                {loading && (
-                    <div className={classes.inlineMsg}>
-                        {<CachedIcon fontSize="small" />}
-                        Loading...
-                    </div>
-                )}
+                <InlineMessage error={error} loading={loading} />
 
                 <div className={classes.buttonsWrapper}>
                     <Button
@@ -142,14 +107,7 @@ export function Signup({ setShowPopup = null, setChangeToSignup = null }) {
                         type="submit"
                         label="Sign up"
                         icon={<EditNoteIcon fontSize="small" />}
-                        active={
-                            data.username &&
-                            data.password &&
-                            data.confirmPass &&
-                            data.confirmPass === data.password &&
-                            data.email &&
-                            data.check
-                        }
+                        active={username && password && confirmPass && email && termsAndConditions && confirmPass === password}
                         prevPath={location.pathname}
                     />
 
@@ -160,11 +118,9 @@ export function Signup({ setShowPopup = null, setChangeToSignup = null }) {
                         icon={<StartIcon fontSize="small" />}
                     />
                 </div>
-                <div className={classes.message}>
+                <div className={classes.loginToSignup}>
                     <p>Already have an account?</p>
-                    <span className={classes.login}>
-                        <Button action={() => setChangeToSignup(false)} label="Login" />
-                    </span>
+                    <Button action={() => setChangeToSignup(false)} label="Login" />
                 </div>
             </form>
         </div>

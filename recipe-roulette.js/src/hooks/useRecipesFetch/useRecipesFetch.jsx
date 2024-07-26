@@ -14,7 +14,7 @@ export const RecipesFetchProvider = ({ children }) => {
     const { setRecipes } = useRecipesContext()
 
     const handleRecipesFetch = useCallback(
-        async (ingredients, prepTime, caloricApport, cuisineEthnicity, isVegetarian, isVegan, isGlutenFree, difficulty) => {
+        async (ingredients, prepTime, caloricApport, cuisineEthnicity, is_vegetarian, is_vegan, is_gluten_free, difficulty) => {
             setState({ error: false, loading: true })
 
             try {
@@ -25,9 +25,9 @@ export const RecipesFetchProvider = ({ children }) => {
                     cuisineEthnicity,
                     difficulty,
                     preferences: {
-                        isVegan,
-                        isVegetarian,
-                        isGlutenFree,
+                        is_vegan,
+                        is_vegetarian,
+                        is_gluten_free,
                     },
                 })
 
@@ -38,8 +38,6 @@ export const RecipesFetchProvider = ({ children }) => {
                     const updatedRecipes = {
                         ...prev,
                         results: parsedData?.meals,
-                        filtered: parsedData?.meals,
-                        searched: parsedData?.meals,
                     }
 
                     // Salva le ricette aggiornate nel local storage

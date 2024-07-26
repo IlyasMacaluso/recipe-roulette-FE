@@ -7,16 +7,16 @@
     width: 2.5rem;
     min-width: 2.5rem;
     height: 2.5rem;
-    color: $dark-gray;
-    border: 1px solid #e5e0df;
+    color: $darkish-green;
+    border: 1px solid $light-desaturated-green;
     border-radius: 1.5rem;
-    background-color: white;
+    background-color: $lightest-green;
     box-sizing: border-box;
     padding: 0;
 }
 
 button:active {
-    background-color: $third-color;
+    background-color: $lightest-green;
 }
 .noBorder {
     height: 2rem;
@@ -24,6 +24,7 @@ button:active {
     min-width: 2rem;
     border: none;
     background-color: none;
+    color: $dark-gray;
 }
 .disabled {
     background-color: $lighter-gray;

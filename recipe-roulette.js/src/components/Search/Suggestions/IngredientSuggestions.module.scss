@@ -29,10 +29,10 @@
     }
 }
 .activeSuggestion:hover {
-    background-color: $second-color;
+    background-color: $light-green;
 }
 .activeSuggestion:active {
-    background-color: $second-color;
+    background-color: $light-green;
 }
 .active {
     opacity: 1;
@@ -62,52 +62,8 @@
 }
 .lockedSuggestion {
     color: $dark-gray;
-    background-color: $second-color;
+    background-color: $light-green;
 }
 .ingredientSuggestion:hover {
     cursor: pointer;
-}
-
-.placeholder {
-    display: flex;
-    flex-direction: column;
-    flex-grow: 1;
-    justify-content: space-evenly;
-    box-sizing: border-box;
-    overflow: hidden;
-    gap: 1.5rem;
-    padding: 1rem;
-    .placeholderImage {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        box-sizing: border-box;
-        padding: 2rem;
-        padding-top: 0;
-        padding-bottom: 0;
-        border-radius: 1.5rem;
-        overflow: hidden;
-        > img {
-            object-fit: cover;
-            max-height: 100%;
-            max-width: 100%;
-        }
-    }
-}
-
-.placeholder h2 {
-    color: $dark-gray;
-    padding: 0;
-    margin: 0;
-    text-align: center;
-
-    font-family: $font-title;
-    font-weight: 700;
-    font-size: $size-20;
-    span {
-        background-color: #da1e28;
-        border-radius: 0.5rem;
-        padding: 0 0.5rem;
-        color: white;
-    }
 }

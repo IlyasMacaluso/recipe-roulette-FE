@@ -5,7 +5,6 @@ import { LinkBox } from "./Linkbox"
 import { useLocationHook } from "../../hooks/useLocationHook"
 
 import classes from "./Settings.module.scss"
-import { useLogout } from "../../hooks/Form/useLogout"
 
 export function Settings() {
     const {
@@ -19,7 +18,6 @@ export function Settings() {
         handleDiscardClick,
     } = useProfile()
 
-    const { handleLogout } = useLogout()
     const { location } = useLocationHook()
     const { animate } = useAnimate(location)
 
@@ -38,7 +36,7 @@ export function Settings() {
                 handleDiscardClick={handleDiscardClick}
                 passError={passError}
             />
-            {!editing && <LinkBox handleLogoutClick={handleLogout} />}
+            {!editing && <LinkBox />}
         </div>
     )
 }

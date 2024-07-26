@@ -1,66 +1,107 @@
 import { useState, useEffect, createContext, useContext } from "react"
-import ingredientsArray from "../../assets/ingredientsArray"
+import { useQuery } from "@tanstack/react-query"
+import { useAuth } from "../../hooks/Auth/useAuth"
 import { useRecipesContext } from "../../contexts/RecipesContext"
 import { useLocalStorage } from "../../hooks/useLocalStorage/useLocalStorage"
 import { useDisplayedIngredients } from "./useDisplayedIngredients/useDisplayedIngredients"
 import { useIngredientUpdate } from "./useIngredientUpdate/useIngredientUpdate"
+import { useGetRequest } from "../../hooks/useGetRequest/useGetRequest"
 
 const IngredientsContext = createContext()
 
 export const IngredientsProvider = ({ children }) => {
     const [ingredients, setIngredients] = useState({
-        all: [...ingredientsArray],
-        filtered: [...ingredientsArray],
+        all: [],
+        filtered: [],
         displayed: [],
         blacklisted: [],
     })
+
+    const { isAuthenticated } = useAuth()
     const { recipeFilter } = useRecipesContext()
-
-    // hook per la gestione del localStorage
     const { setValue, getValue } = useLocalStorage()
-
-    //hook per la gestione dell'aggiornamento degli ingredienti (aggiungi/rimuovi a backlist/selezionati)
     const { handleIngUpdate, handleDeselectAll } = useIngredientUpdate(ingredients, setIngredients)
+    const { handleIngDecrement, handleIngIncrement, shuffleIng, generateIngredients } = useDisplayedIngredients(ingredients, setIngredients)
+    const { getRequest } = useGetRequest()
 
-    // logica per la gestione degli ingrediento a schermo, genera, shuffle, aggiungi, rimuovi
-    const { handleIngDecrement, handleIngIncrement, shuffleIng, generateIngredients } = useDisplayedIngredients(
-        ingredients,
-        setIngredients
-    )
+    // Fetch ingredients
+    const {
+        data: DBIngredients,
+        error: ingredientsError,
+        isLoading: ingredientsLoading,
+    } = useQuery({
+        queryKey: ["ingredients"],
+        queryFn: async () => await getRequest("http://localhost:3000/api/ingredients/get-ingredients"),
+    })
+
+    // Fetch blacklisted ingredients
+    const {
+        data: DBBlacklisted,
+        error: blacklistedError,
+        isLoading: blacklistedLoading,
+    } = useQuery({
+        queryKey: ["blacklisted"],
+        queryFn: async () => {
+            const { id } = getValue("userData")
+            const res = await getRequest(`http://localhost:3000/api/preferences/get-blacklisted-ingredients/${id}`)
+            return res
+        },
+        enabled: isAuthenticated,
+    })
 
     useEffect(() => {
-        const localIngredients = getValue("ingredients") //restituisce il valore già parsato se presente
-        if (localIngredients && localIngredients.all.length > 0) {
-            const { displayed } = localIngredients
-            setIngredients(localIngredients)
-            displayed.length === 0 && generateIngredients()
-        } else {
-            //se il localStorage è vuoto allora inizilizziamo ad array vuoti per poi fare eventualmente un fetch dei dati (per ora utilizzo l'array locale)
-            setIngredients({
-                all: [...ingredientsArray],
-                filtered: [...ingredientsArray],
-                displayed: [],
-                blacklisted: [],
-            })
-            generateIngredients()
+        const localIngredients = getValue("ingredients")
+        const initialSetup = async () => {
+            if (ingredientsLoading || blacklistedLoading) return // Wait until data is loaded
+
+            const markBlacklisted = (ings, blIngs) => {
+                return ings.map((ingredient) => ({
+                    ...ingredient,
+                    is_blacklisted: blIngs.includes(ingredient.id),
+                }))
+            }
+
+            if (DBIngredients) {
+                setIngredients((prev) => {
+                    const blacklistedIds = DBBlacklisted?.map((ing) => ing.id)
+                    const all = markBlacklisted(DBIngredients, blacklistedIds || [])
+                    const displayed = markBlacklisted(localIngredients?.displayed || [], blacklistedIds || [])
+
+                    if (!localIngredients?.displayed.length && !displayed.length) {
+                        generateIngredients()
+                    }
+
+                    return {
+                        ...prev,
+                        all: all,
+                        filtered: all,
+                        displayed: displayed,
+                        blacklisted: DBBlacklisted || [],
+                    }
+                })
+            }
         }
-    }, [])
 
-        useEffect(() => {
-            let filtering = ingredients.all.filter((ing) => !ing.isBlackListed)
+        initialSetup()
+    }, [blacklistedLoading, ingredientsLoading, isAuthenticated])
 
-            const filterIngredients = (prop) => filtering = filtering.filter((item) => item[prop]) // funzione per filtrare in base alla prop
+    useEffect(() => {
+        if (ingredientsLoading || blacklistedLoading) return // Wait until data is loaded
+        setIngredients((prev) => {
+            if (prev?.all) {
+                let filtering = prev?.all.filter((ing) => !ing.is_blacklisted)
+                const filterIngredients = (prop) => (filtering = filtering.filter((item) => item[prop]))
 
-            recipeFilter.isGlutenFree && filterIngredients("isGlutenFree")
-            recipeFilter.isVegetarian && filterIngredients("isVegetarian")
-            recipeFilter.isVegan && filterIngredients("isVegan")
+                recipeFilter.is_gluten_free && filterIngredients("is_gluten_free")
+                recipeFilter.is_vegetarian && filterIngredients("is_vegetarian")
+                recipeFilter.is_vegan && filterIngredients("is_vegan")
 
-            setIngredients((prev) => {
                 const updatedIngredients = { ...prev, filtered: filtering }
                 setValue("ingredients", updatedIngredients)
                 return updatedIngredients
-            })
-        }, [recipeFilter, ingredients.all])
+            }
+        })
+    }, [recipeFilter, ingredients?.all])
 
     return (
         <IngredientsContext.Provider
@@ -73,6 +114,8 @@ export const IngredientsProvider = ({ children }) => {
                 handleDeselectAll,
                 setIngredients,
                 ingredients,
+                ingredientsLoading,
+                blacklistedLoading,
             }}
         >
             {children}

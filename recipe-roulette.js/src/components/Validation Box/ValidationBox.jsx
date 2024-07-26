@@ -5,7 +5,7 @@ import CachedIcon from '@mui/icons-material/Cached';
 
 import classes from "./ValidationBox.module.scss"
 
-export function ValidationBox({ message, setShowPopup = null, handleValidationAction, loading, error }) {
+export function ValidationBox({ message, setShowPopup = null, handleValidation, loading, error }) {
     return (
         <div className={`${classes.container}`}>
             <header>{message}</header>
@@ -23,7 +23,7 @@ export function ValidationBox({ message, setShowPopup = null, handleValidationAc
             )}
             <div className={classes.buttonsWrapper}>
                 <Button label="Cancel" action={() => setShowPopup(false)} style="transparent" />
-                <Button label="Log out" action={() => handleValidationAction()} style="primary" />
+                <Button label="Log out" action={() => handleValidation()} style="primary" />
             </div>
         </div>
     )
