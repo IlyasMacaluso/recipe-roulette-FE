@@ -2,13 +2,14 @@ import RecipeCard from "../../components/RecipeCard/RecipeCard"
 import { useAnimate } from "../../hooks/animatePages/useAnimate"
 import { useRecipesContext } from "../../contexts/RecipesContext"
 import { useMemo, useState } from "react"
-import { Link } from "@tanstack/react-router"
 import { useAuth } from "../../hooks/Auth/useAuth"
 import { Popup } from "../../components/Pop-up/Popup"
 import { createPortal } from "react-dom"
 import { Login } from "../../components/authentication/login/Login"
 import { useLocationHook } from "../../hooks/useLocationHook"
 import { Skeleton } from "@mui/material"
+import { Placeholder } from "../../components/Placeholder/Placeholder"
+import { Button } from "../../components/Buttons/Button/Button"
 
 import LoopOutlinedIcon from "@mui/icons-material/LoopOutlined"
 import LoginIcon from "@mui/icons-material/Login"
@@ -45,41 +46,46 @@ export function History() {
                             ))}
                         </section>
                     ) : (
-                        <div className={`${classes.placeholder} ${classes.placeholderSearch}`}>
-                            <h2>
-                                There is <span>no recipe</span> <br />
-                                matching this search <br />
-                            </h2>
-                            <div className={classes.placeholderImage}>
-                                <img src="../src/assets/images/undraw_cancel_re_pkdm 1.svg" alt="" />
-                            </div>
-                        </div>
+                        <Placeholder
+                            text="Your search has  "
+                            hightlitedText="no matching results"
+                            highlightColor="#dd3e46"
+                            spacious={true}
+                            bottomImage={"searching.svg"}
+                        />
                     )}
                 </>
             ) : isAuthenticated ? (
-                <div className={classes.placeholder}>
-                    <div className={classes.placeholderImage}>
-                        <img src="../src/assets/images/undraw_add_files_re_v09.svg" alt="" />
-                    </div>
-                    <h2>
-                        <span>Your History is empty!</span> <br />
-                        Recipes you open will be stored here!
-                    </h2>
-
-                    <Link className={classes.cta} to="/roulette">
-                        <LoopOutlinedIcon />
-                        <p>Start Ingredients Shuffle</p>
-                    </Link>
-                </div>
+                <Placeholder
+                    text="Your History is empty! "
+                    hightlitedText=" Recipes will be stored here!"
+                    topImage={"searching.svg"}
+                    buttons={[
+                        <Button
+                            link={"roulette"}
+                            style="primary"
+                            label="Start Ingredients Shuffle"
+                            icon={<LoopOutlinedIcon />}
+                            height={"large"}
+                        />,
+                    ]}
+                />
             ) : (
-                <div className={classes.placeholder}>
-                    <div className={classes.placeholderImage}>
-                        <img src="../src/assets/images/undraw_access_account_re_8spm.svg" alt="" />
-                    </div>
-                    <h2>
-                        <span>You need to login</span> <br />
-                        To see your History!
-                    </h2>
+                <>
+                    <Placeholder
+                        text="You need to login "
+                        hightlitedText="To see your History!"
+                        topImage={"undraw_access_account_re_8spm.svg"}
+                        buttons={[
+                            <Button
+                                action={() => setShowPopup(true)}
+                                style="primary"
+                                label="Login or Signup"
+                                icon={<LoginIcon />}
+                                height={"large"}
+                            />,
+                        ]}
+                    />
                     {showPopup &&
                         createPortal(
                             <Popup>
@@ -87,11 +93,7 @@ export function History() {
                             </Popup>,
                             document.getElementById("popup-root")
                         )}
-                    <Link className={classes.cta} onClick={() => setShowPopup(true)}>
-                        <LoginIcon fontSize="small" />
-                        <p>Signup or Login</p>
-                    </Link>
-                </div>
+                </>
             )}
         </div>
     )

@@ -88,16 +88,18 @@ export const IngredientsProvider = ({ children }) => {
     useEffect(() => {
         if (ingredientsLoading || blacklistedLoading) return // Wait until data is loaded
         setIngredients((prev) => {
-            let filtering = prev?.all.filter((ing) => !ing.is_blacklisted)
-            const filterIngredients = (prop) => (filtering = filtering.filter((item) => item[prop]))
+            if (prev?.all) {
+                let filtering = prev?.all.filter((ing) => !ing.is_blacklisted)
+                const filterIngredients = (prop) => (filtering = filtering.filter((item) => item[prop]))
 
-            recipeFilter.is_gluten_free && filterIngredients("is_gluten_free")
-            recipeFilter.is_vegetarian && filterIngredients("is_vegetarian")
-            recipeFilter.is_vegan && filterIngredients("is_vegan")
+                recipeFilter.is_gluten_free && filterIngredients("is_gluten_free")
+                recipeFilter.is_vegetarian && filterIngredients("is_vegetarian")
+                recipeFilter.is_vegan && filterIngredients("is_vegan")
 
-            const updatedIngredients = { ...prev, filtered: filtering }
-            setValue("ingredients", updatedIngredients)
-            return updatedIngredients
+                const updatedIngredients = { ...prev, filtered: filtering }
+                setValue("ingredients", updatedIngredients)
+                return updatedIngredients
+            }
         })
     }, [recipeFilter, ingredients?.all])
 
@@ -113,7 +115,7 @@ export const IngredientsProvider = ({ children }) => {
                 setIngredients,
                 ingredients,
                 ingredientsLoading,
-                blacklistedLoading
+                blacklistedLoading,
             }}
         >
             {children}

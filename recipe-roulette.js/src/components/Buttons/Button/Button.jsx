@@ -4,6 +4,7 @@ import classes from "./Button.module.scss"
 export function Button({
     type = "button",
     width = "fitContent",
+    height = null,
     label = "label",
     icon = null,
     action,
@@ -16,12 +17,19 @@ export function Button({
 
     function handleOnClick() {
         action && action()
-        setTimeout(() => {
+        if (action) {
+            setTimeout(() => {
+                link && navigate({ to: `/${link}` })
+                if (prevPath) {
+                    prevPath === "/recipes-results" && navigate({ to: "/recipes-results" })
+                }
+            }, 0)
+        } else {
             link && navigate({ to: `/${link}` })
             if (prevPath) {
                 prevPath === "/recipes-results" && navigate({ to: "/recipes-results" })
             }
-        }, 0)
+        }
     }
 
     return (
@@ -31,9 +39,10 @@ export function Button({
                 active && handleOnClick()
             }}
             className={`${classes.button} ${!active && classes.disabled} 
-            ${width === "fill" && classes.wideButton}
-            ${style === "primary" && classes.primaryColor}
-            ${style === "transparent" && classes.transparent}`}
+                ${width === "fill" && classes.wideButton}
+                ${style === "primary" && classes.primaryColor}
+                ${height === "large" && classes.cta}
+                ${style === "transparent" && classes.transparent}`}
         >
             {icon}
             {label}

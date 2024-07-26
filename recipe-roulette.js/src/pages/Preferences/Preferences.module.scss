@@ -18,7 +18,7 @@
     .fakeContent {
         width: 100%;
         height: $height-80;
-        background-color: $second-color;
+        background-color: $light-green;
         border-radius: $size-16;
         margin-bottom: $size-16;
     }
@@ -62,8 +62,8 @@
     font-family: $header-text;
     border: 1px solid #e5e0df;
     border-radius: 1.5rem;
-    background-color:$green;
+    background-color:$primary-green;
 }
 .button:active {
-    background-color: $second-color;
+    background-color: $light-green;
 }

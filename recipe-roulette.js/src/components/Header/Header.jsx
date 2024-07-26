@@ -7,7 +7,7 @@ import TuneIcon from "@mui/icons-material/Tune"
 import LockResetIcon from "@mui/icons-material/LockReset"
 import TuneOutlinedIcon from "@mui/icons-material/TuneOutlined"
 import MenuOpenIcon from "@mui/icons-material/MenuOpen"
-import FilterListIcon from '@mui/icons-material/FilterList';
+import FilterListIcon from "@mui/icons-material/FilterList"
 
 import { IngredientSearch } from "../Search/SearchBar/IngredientSearch"
 import { IcoButton } from "../Buttons/IcoButton/IcoButton"
@@ -127,11 +127,23 @@ export function Header({ handleMenuToggle, handleSidebarToggle, handleRecipesSid
                         <IcoButton action={handleRecipesSidebarToggle} label="Filters" icon={<FilterListIcon fontSize="small" />} />
                     </section>
                 )}
+                {location.pathname === "/history" && isAuthenticated && recipes.history.length > 0 && (
+                    <section className={classes.globalActions}>
+                        <BaseSearch
+                            data={recipes.history.filter((rec) => rec.title.toLowerCase().includes(inputValue.toLowerCase()))}
+                            inputValue={inputValue}
+                            setInputValue={setInputValue}
+                        />
+                    </section>
+                )}
                 {location.pathname === "/roulette" && (
                     <div className={classes.globalActions}>
                         <IngredientSearch searchCriteria="is_selected" />
                         <IcoButton action={() => handleDeselectAll("is_selected")} icon={<LockResetIcon fontSize={"small"} />} />
-                        <IcoButton action={() => handleSidebarToggle && handleSidebarToggle()} icon={<FilterListIcon fontSize={"small"} />} />
+                        <IcoButton
+                            action={() => handleSidebarToggle && handleSidebarToggle()}
+                            icon={<FilterListIcon fontSize={"small"} />}
+                        />
                     </div>
                 )}
             </header>

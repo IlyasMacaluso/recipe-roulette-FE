@@ -2,7 +2,6 @@ import RecipeCard from "../../components/RecipeCard/RecipeCard"
 import { useAnimate } from "../../hooks/animatePages/useAnimate"
 import { useRecipesContext } from "../../contexts/RecipesContext"
 import { useMemo, useState } from "react"
-import { Link } from "@tanstack/react-router"
 import { useAuth } from "../../hooks/Auth/useAuth"
 import { Popup } from "../../components/Pop-up/Popup"
 import { createPortal } from "react-dom"
@@ -10,13 +9,16 @@ import { Login } from "../../components/authentication/login/Login"
 import { useLocationHook } from "../../hooks/useLocationHook"
 import { Button } from "../../components/Buttons/Button/Button"
 import { Skeleton } from "@mui/material"
+import { Placeholder } from "../../components/Placeholder/Placeholder"
 
 import LoopOutlinedIcon from "@mui/icons-material/LoopOutlined"
+import RotateLeftOutlinedIcon from "@mui/icons-material/RotateLeftOutlined"
 import LoginIcon from "@mui/icons-material/Login"
 import classes from "./Favorite.module.scss"
 
 export function Favorited() {
-    const { recipes, inputValue, handleDeselectRecipeFilters, setInputValue, favoritedLoading, historyLoading, foodPrefLoading } = useRecipesContext()
+    const { recipes, inputValue, handleDeselectRecipeFilters, setInputValue, favoritedLoading, historyLoading, foodPrefLoading } =
+        useRecipesContext()
     const { isAuthenticated } = useAuth()
     const [showPopup, setShowPopup] = useState()
 
@@ -42,49 +44,58 @@ export function Favorited() {
                             ))}
                         </section>
                     ) : (
-                        <div className={`${classes.placeholder} ${classes.placeholderSearch}`}>
-                            <h2>
-                                There is <span>no recipe</span> <br />
-                                matching those filters / search <br />
-                            </h2>
-                            <div className={classes.placeholderImage}>
-                                <img src="../src/assets/images/undraw_cancel_re_pkdm 1.svg" alt="" />
-                            </div>
-                            <Button
-                                style="primary"
-                                label="Reset Filters"
-                                action={() => {
-                                    setInputValue("")
-                                    handleDeselectRecipeFilters()
-                                }}
-                            />
-                        </div>
+                        <Placeholder
+                            bottomImage={"searching.svg"}
+                            text="Your search has  "
+                            hightlitedText="no matching results"
+                            highlightColor="#dd3e46"
+                            spacious={true}
+                            buttons={[
+                                <Button
+                                    icon={<RotateLeftOutlinedIcon fontSize="small"/>}
+                                    height={"large"}
+                                    label="Reset Filters"
+                                    action={() => {
+                                        setInputValue("")
+                                        handleDeselectRecipeFilters()
+                                    }}
+                                />,
+                            ]}
+                        />
                     )}
                 </>
             ) : isAuthenticated ? (
-                <div className={classes.placeholder}>
-                    <div className={classes.placeholderImage}>
-                        <img src="../src/assets/images/undraw_add_files_re_v09.svg" alt="" />
-                    </div>
-                    <h2>
-                        <span>Your Favorited list is empty!</span> <br />
-                        Find and favorite your first recipe!
-                    </h2>
-
-                    <Link className={classes.cta} to="/roulette">
-                        <LoopOutlinedIcon />
-                        <p>Start Ingredients Shuffle</p>
-                    </Link>
-                </div>
+                <Placeholder
+                    topImage={"undraw_add_files_re_v09.svg"}
+                    text="Your Favorited list is empty!  "
+                    hightlitedText="Favorite your first recipe!"
+                    buttons={[
+                        <Button
+                            icon={<LoopOutlinedIcon fontSize="small" />}
+                            height="large"
+                            style="primary"
+                            label="Start Ingredients Shuffle"
+                            link={"/roulette"}
+                        />,
+                    ]}
+                />
             ) : (
-                <div className={classes.placeholder}>
-                    <div className={classes.placeholderImage}>
-                        <img src="../src/assets/images/undraw_access_account_re_8spm.svg" alt="" />
-                    </div>
-                    <h2>
-                        <span>You need to login</span> <br />
-                        To add or see your Favorited!
-                    </h2>
+                <>
+                    <Placeholder
+                        topImage={"undraw_access_account_re_8spm.svg"}
+                        text="Your Favorited list is empty,  "
+                        hightlitedText="Favorite your first recipe!"
+                        spacious={true}
+                        buttons={[
+                            <Button
+                                icon={<LoginIcon fontSize="small" />}
+                                style="primary"
+                                height="large"
+                                label="Login or Signup"
+                                action={() => setShowPopup(true)}
+                            />,
+                        ]}
+                    />
                     {showPopup &&
                         createPortal(
                             <Popup>
@@ -92,11 +103,7 @@ export function Favorited() {
                             </Popup>,
                             document.getElementById("popup-root")
                         )}
-                    <Link className={classes.cta} onClick={() => setShowPopup(true)}>
-                        <LoginIcon fontSize="small" />
-                        <p>Signup or Login</p>
-                    </Link>
-                </div>
+                </>
             )}
         </div>
     )

@@ -2,7 +2,8 @@ export const useLocalStorage = () => {
     const getValue = (key, initialValue) => {
         try {
             const item = window.localStorage.getItem(key)
-            return item ? JSON.parse(item) : initialValue
+                return item ? JSON.parse(item) : initialValue
+
         } catch (error) {
             console.error(error)
             return initialValue

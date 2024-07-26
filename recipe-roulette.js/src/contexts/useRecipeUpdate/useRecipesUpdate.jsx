@@ -21,7 +21,7 @@ export const useRecipesUpdate = (setRecipes) => {
             newResults = prev.results.map((rec) => (rec.id === recipe.id && rec.title === recipe.title ? updatedRecipe : rec))
             newHistory = prev.history.map((rec) => (rec.id === recipe.id && rec.title === recipe.title ? updatedRecipe : rec))
 
-            const isTargetedRecipe = prev.targetedRecipe.id + prev.targetedRecipe.title === recipe.id + recipe.title
+            const isTargetedRecipe = prev?.targetedRecipe?.id + prev?.targetedRecipe?.title === recipe.id + recipe.title
 
             const updatedRecipes = {
                 ...prev,

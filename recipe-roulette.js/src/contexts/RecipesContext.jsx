@@ -91,7 +91,7 @@ export const RecipesProvider = ({ children }) => {
             if (!favoritedLoading && !foodPrefLoading && !historyLoading) {
                 const DBRecipes = {
                     ...localRecipes,
-                    results: localRecipes.results || [],
+                    results: localRecipes?.results || [],
                     favorited: DBFAvorited || [],
                     filtered: DBFAvorited || [],
                     searched: DBFAvorited || [],

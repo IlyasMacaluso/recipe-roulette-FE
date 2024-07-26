@@ -76,9 +76,9 @@
             letter-spacing: 0.025rem;
         }
         .activeLink {
-            background-color: $third-color;
+            background-color: $lightest-green;
             box-sizing: border-box;
-            border: 1px solid $border-color;
+            border: 1px solid $light-desaturated-green;
             color: $darkish-green;
         }
     }

@@ -29,7 +29,7 @@ export function Roulette() {
                 <div className={classes.ingredientsWrapper}>
                     {ingredientsLoading || blacklistedLoading
                         ? [...Array(5)].map(() => <Skeleton className={classes.skeleton} key={Math.random()} sx={{ bgcolor: "#c5e4c9" }} variant="rounded" width={"100%"}/>)
-                        : ingredients?.displayed.map((ing) => <IngredientCard key={ing.id} ing={ing} />)}
+                        : ingredients?.displayed && ingredients?.displayed.map((ing) => <IngredientCard key={ing.id} ing={ing} />)}
                 </div>
             </div>
             <div className={classes.bottomButtons}>
@@ -37,7 +37,7 @@ export function Roulette() {
                     width={"fill"}
                     active={isActive}
                     action={() => handleIngIncrement()}
-                    label="Ingredient"
+                    label="Item"
                     icon={<AddIcon fontSize="small" />}
                     size={18}
                     iconWheight={600}

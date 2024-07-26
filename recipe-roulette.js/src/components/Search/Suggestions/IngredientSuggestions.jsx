@@ -3,6 +3,7 @@ import { IngredientSuggestionInactive } from "./IngredientSuggestionInactive"
 import { useRecipesContext } from "../../../contexts/RecipesContext"
 
 import classes from "./IngredientSuggestions.module.scss"
+import { Placeholder } from "../../Placeholder/Placeholder"
 
 export function IngredientSuggestions({ inputRef = null, setInputState, inputActive, searchCriteria, suggestions }) {
     const { recipeFilter } = useRecipesContext()
@@ -51,15 +52,13 @@ export function IngredientSuggestions({ inputRef = null, setInputState, inputAct
                         }
                     })
             ) : (
-                <div className={classes.placeholder}>
-                    <h2>
-                        There is <span>no ingredient</span> <br />
-                        matching your search!
-                    </h2>
-                    <div className={classes.placeholderImage}>
-                        <img src="../src/assets/images/undraw_cancel_re_pkdm 1.svg" alt="" />
-                    </div>
-                </div>
+                <Placeholder
+                    bottomImage={"searching.svg"}
+                    text="Your search has  "
+                    hightlitedText="no matching results"
+                    highlightColor="#dd3e46"
+                    spacious={true}
+                />
             )}
         </div>
     )
