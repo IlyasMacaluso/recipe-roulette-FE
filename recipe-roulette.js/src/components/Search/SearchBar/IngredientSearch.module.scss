@@ -2,7 +2,6 @@
 
 .search {
     z-index: 1;
-    position: relative;
     width: 100%;
     height: 2.5rem;
     box-sizing: border-box;
@@ -10,10 +9,6 @@
     overscroll-behavior: contain;
 
     left: 0;
-    transition:
-        transform 0.45s cubic-bezier(0.08, 0.82, 0.17, 1),
-        height 0.45s cubic-bezier(0.08, 0.82, 0.17, 1),
-        width 0.45s cubic-bezier(0.08, 0.82, 0.17, 1);
 }
 .searchBar {
     position: relative;
@@ -25,13 +20,7 @@
     padding: 0;
     box-sizing: border-box;
     overflow: hidden;
-    transition:
-        height 0.45s cubic-bezier(0.08, 0.82, 0.17, 1),
-        width 0.45s cubic-bezier(0.08, 0.82, 0.17, 1);
-
     input {
-        position: absolute;
-
         display: flex;
         align-items: center;
 
@@ -89,26 +78,15 @@
 .inputActive {
     height: 3rem;
     border-radius: 0;
-    background-color: $second-color;
+    background-color: $light-green;
     transition: border-radius 1s cubic-bezier(0.08, 0.82, 0.17, 1);
 }
 .positionFixed {
-    position: absolute;
-    transform: translateY(-3.75rem);
+    position: fixed;
     z-index: 11;
     top: 0;
     width: 100%;
     height: 100svh;
-    box-sizing: border-box;
-    box-shadow: 0 0 10px rgba($color: #000000, $alpha: 0.2);
-    transition:
-        height 0.45s cubic-bezier(0.08, 0.82, 0.17, 1),
-        width 0.45s cubic-bezier(0.08, 0.82, 0.17, 1),
-        transform 0.45s cubic-bezier(0.08, 0.82, 0.17, 1);
-}
-.sidebarSearch {
-    transform: translateY(0rem);
-    height: calc(100svh - 60px);
     padding-bottom: 1rem;
-
+    box-sizing: border-box;
 }

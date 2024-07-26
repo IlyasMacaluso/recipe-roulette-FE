@@ -1,7 +1,7 @@
 @use "../../assets/scss/" as *;
 
 .snackbar {
-  z-index: 10;
+  z-index: 10 ;
   position: fixed;
 
   left: 50%;
@@ -10,10 +10,12 @@
   width: 91%;
   padding: 1rem 1rem;
   border-radius: 1rem;
-  box-shadow: 0 0 10px rgba($color: $darkest-gray, $alpha: 0.15);
+  box-shadow: 0 0 10px rgba($color: $darkest-gray, $alpha: 0.2);
   box-sizing: border-box;
   color: $darkish-gray;
-  background-color: $third-color;
+  background-color: $lightest-green;
+  border: 1px solid $light-gray;
+
 
   font-family: $header-text;
   font-size: 14px;

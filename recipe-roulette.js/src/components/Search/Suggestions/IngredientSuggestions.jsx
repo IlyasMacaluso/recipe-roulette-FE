@@ -1,21 +1,24 @@
-import { useManageIngredients } from "../../../pages/Discovery/IngredientsContext"
-import classes from "./IngredientSuggestions.module.scss"
 import { IngredientSuggestionActive } from "./IngredientSuggestionActive"
 import { IngredientSuggestionInactive } from "./IngredientSuggestionInactive"
+import { useRecipesContext } from "../../../contexts/RecipesContext"
 
-export function IngredientSuggestions({ inputActive, searchCriteria, suggestions }) {
-    const { filter } = useManageIngredients()
+import classes from "./IngredientSuggestions.module.scss"
+import { Placeholder } from "../../Placeholder/Placeholder"
+
+export function IngredientSuggestions({ inputRef = null, setInputState, inputActive, searchCriteria, suggestions }) {
+    const { recipeFilter } = useRecipesContext()
+
     const isIngredientActive = (ingredient) => {
-        if (ingredient.isSelected || ingredient.isBlackListed) {
+        if (ingredient.is_selected || ingredient.is_blacklisted) {
             return false
         }
-        if (filter.isVegetarian && !ingredient.isVegetarian) {
+        if (recipeFilter.is_vegetarian && !ingredient.is_vegetarian) {
             return false
         }
-        if (filter.isGlutenFree && !ingredient.isGlutenFree) {
+        if (recipeFilter.is_gluten_free && !ingredient.is_gluten_free) {
             return false
         }
-        if (filter.isVegan && !ingredient.isVegan) {
+        if (recipeFilter.is_vegan && !ingredient.is_vegan) {
             return false
         }
         return true
@@ -24,26 +27,38 @@ export function IngredientSuggestions({ inputActive, searchCriteria, suggestions
     return (
         <div className={`${classes.suggestions} ${inputActive && classes.active}`}>
             {suggestions && suggestions.length > 0 ? (
-                suggestions &&
                 suggestions
                     .sort((a, b) => (a.name === b.name ? 0 : a.name > b.name ? 1 : -1))
                     .map((ingredient) => {
                         if (isIngredientActive(ingredient)) {
-                            return <IngredientSuggestionActive ing={ingredient} prop={searchCriteria} key={ingredient.id} />
+                            return (
+                                <IngredientSuggestionActive
+                                    inputRef={inputRef}
+                                    setInputState={setInputState}
+                                    ing={ingredient}
+                                    prop={searchCriteria}
+                                    key={ingredient.id}
+                                />
+                            )
                         } else {
-                            return <IngredientSuggestionInactive ing={ingredient} key={ingredient.id} />
+                            return (
+                                <IngredientSuggestionInactive
+                                    inputRef={inputRef}
+                                    setInputState={setInputState}
+                                    ing={ingredient}
+                                    key={ingredient.id}
+                                />
+                            )
                         }
                     })
             ) : (
-                <div className={classes.placeholder}>
-                    <h2>
-                        There is <span>no ingredient</span> <br />
-                        matching your search!
-                    </h2>
-                    <div className={classes.placeholderImage}>
-                        <img src="../src/assets/images/undraw_cancel_re_pkdm 1.svg" alt="" />
-                    </div>
-                </div>
+                <Placeholder
+                    bottomImage={"searching.svg"}
+                    text="Your search has  "
+                    hightlitedText="no matching results"
+                    highlightColor="#dd3e46"
+                    spacious={true}
+                />
             )}
         </div>
     )

@@ -10,10 +10,9 @@
     outline: 1px solid $light-gray;
     text-decoration: none;
     color: inherit;
-    overflow: hidden;
+    min-height: max-content;
     transition: scale 0.3s cubic-bezier(0.68, -0.55, 0.27, 1.55);
-    min-height: fit-content;
-    height: fit-content;
+    outline-offset: -2px;
 
     .topItems {
         position: relative;
@@ -21,6 +20,7 @@
         height: 50vw;
         min-height: 12rem;
         max-height: 20rem;
+        border-radius: 1rem 1rem 0 0;
         overflow: hidden;
         outline: 2px solid $lighter-gray;
         box-sizing: border-box;
@@ -31,13 +31,15 @@
         }
         .favIcon {
             position: absolute;
-            right: 0;
-            top: 0;
+            right: 1rem;
+            top: 1rem;
             display: flex;
             justify-content: center;
             align-items: center;
-            height: 3.5rem;
-            width: 3.5rem;
+            margin: 0;
+            padding: 0;
+            min-height: 2rem;
+            min-width: 2rem;
         }
     }
     .bottomItems {
@@ -52,6 +54,7 @@
         font-size: $text-size-16;
         line-height: 120%;
         padding: 1rem 0.75rem;
+        min-height: fit-content;
         .chipsWrapper {
             display: flex;
             flex-wrap: wrap;
@@ -207,4 +210,10 @@
     margin: 0;
     padding: 0;
     margin-top: 0.5rem;
+}
+.recipeCard:hover {
+    cursor: pointer;
+}
+.recipeCardExpanded:hover{
+    cursor:default;
 }

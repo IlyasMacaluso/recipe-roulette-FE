@@ -1,0 +1,83 @@
+@use "../../assets/scss/" as *;
+.mainContent {
+    display: flex;
+    flex-direction: column;
+    
+    align-items: center;
+    justify-content: space-evenly;
+    overflow: hidden;
+
+    gap: 2rem;
+    padding-top: $size-24;
+
+    height: 0;
+    flex-grow: 1;
+    
+    object-fit: contain;
+    box-sizing: border-box;
+}
+.mainContent h2 {
+    font-size: $size-24;
+    color: $darkish-gray;
+    font-family: $font-title;
+    text-align: center;
+    font-weight: bold;
+    margin: 0;
+    line-height: 130%;
+}
+.mainContent h2 span {
+    display: inline-block;
+    background-color: $primary-green;
+    color: white;
+    padding: 0 0.5rem;
+    border-radius: 0.5rem;
+}
+
+.mainContent > img {
+    width: 100%;
+
+    height: 0;
+    flex-grow: 1;
+
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+.mainContent .cta {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.5rem;
+    font-weight: 600;
+    letter-spacing: 0.025rem;
+    font-family: $header-text;
+
+    text-decoration: none;
+    color: white;
+    background-color: #00a538;
+
+    height: 100px;
+    min-height: 100px;
+    padding: 1rem;
+    border-radius: 1.25rem;
+    box-sizing: border-box;
+}
+
+.mainContent .buttonsWrapper {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.spacious > img {
+    height: auto;
+    flex-grow: 0;
+    max-height: 100%;
+    min-height: fit-content;
+    overflow: hidden;
+}
+.spacious {
+    padding-top: $size-24;
+}

@@ -1,4 +1,4 @@
-import { useLocation, useNavigate } from "react-router-dom"
+import { useLocation, useNavigate } from "@tanstack/react-router"
 import { useState, useEffect } from "react"
 import { useRecipesContext } from "../../contexts/RecipesContext"
 
@@ -7,18 +7,21 @@ import TuneIcon from "@mui/icons-material/Tune"
 import LockResetIcon from "@mui/icons-material/LockReset"
 import TuneOutlinedIcon from "@mui/icons-material/TuneOutlined"
 import MenuOpenIcon from "@mui/icons-material/MenuOpen"
+import FilterListIcon from "@mui/icons-material/FilterList"
 
 import { IngredientSearch } from "../Search/SearchBar/IngredientSearch"
 import { IcoButton } from "../Buttons/IcoButton/IcoButton"
-import { useManageIngredients } from "../../pages/Discovery/IngredientsContext"
+import { useManageIngredients } from "../../pages/Roulette/IngredientsContext"
 import { BaseSearch } from "../Search/BaseSearch/BaseSearch"
 
 import classes from "./Header.module.scss"
+import { useAuth } from "../../hooks/Auth/useAuth"
 
 export function Header({ handleMenuToggle, handleSidebarToggle, handleRecipesSidebarToggle }) {
     const [title, setTitle] = useState("/")
     const { recipes, setRecipes, setInputValue, inputValue } = useRecipesContext()
     const { handleDeselectAll } = useManageIngredients()
+    const { isAuthenticated } = useAuth()
 
     const navigate = useNavigate()
     const location = useLocation()
@@ -28,19 +31,22 @@ export function Header({ handleMenuToggle, handleSidebarToggle, handleRecipesSid
             case "/":
                 setTitle("Welcome!")
                 break
-            case "/discovery":
+            case "/roulette":
                 setTitle("Roulette")
                 break
             case "/favorited":
                 setTitle("Favorited")
                 break
+            case "/history":
+                setTitle("History")
+                break
             case "/settings":
                 setTitle("Settings")
                 break
-            case "/food-preferences":
+            case "/preferences":
                 setTitle("preferences")
                 break
-            case "/recipes-results":
+            case "/recipe-results":
                 setTitle("Results")
                 break
             case "/recipe":
@@ -67,7 +73,6 @@ export function Header({ handleMenuToggle, handleSidebarToggle, handleRecipesSid
         if (location.pathname === "/recipe") {
             try {
                 const { targetedRecipe } = JSON.parse(localStorage.getItem("recipes"))
-                console.log(targetedRecipe)
                 if (targetedRecipe) {
                     setRecipes((prev) => {
                         return {
@@ -90,7 +95,7 @@ export function Header({ handleMenuToggle, handleSidebarToggle, handleRecipesSid
                 <div className={classes.topItem}>
                     <div className={classes.leftItems}>
                         {location.pathname === "/recipes-results" ? (
-                            <IcoButton navigateTo="/discovery" icon={<ArrowBackIcon fontSize="small" />} style="transparent" />
+                            <IcoButton navigateTo="/Roulette" icon={<ArrowBackIcon fontSize="small" />} style="transparent" />
                         ) : null}
                         {location.pathname === "/recipe" ? (
                             <IcoButton
@@ -98,9 +103,9 @@ export function Header({ handleMenuToggle, handleSidebarToggle, handleRecipesSid
                                     try {
                                         const path = localStorage.getItem("prevPath")
                                         if (path) {
-                                            navigate(path)
+                                            navigate({ to: path })
                                         } else {
-                                            navigate("/")
+                                            navigate({ to: "/" })
                                         }
                                     } catch (error) {
                                         console.log(error)
@@ -116,32 +121,29 @@ export function Header({ handleMenuToggle, handleSidebarToggle, handleRecipesSid
 
                     <IcoButton action={handleMenuToggle} icon={<MenuOpenIcon />} style="transparent" />
                 </div>
-{/*                 {location.pathname === "/recipes-results" && (
+                {location.pathname === "/favorited" && isAuthenticated && recipes?.favorited.length > 0 && (
                     <section className={classes.globalActions}>
-                        <BaseSearch data={recipes.results} inputValue={inputValue} setInputValue={setInputValue} />
-                        <IcoButton
-                            action={handleRecipesSidebarToggle}
-                            label="Filters"
-                            icon={<TuneOutlinedIcon fontSize="small" />}
-                        />
+                        <BaseSearch data={recipes.searched} inputValue={inputValue} setInputValue={setInputValue} />
+                        <IcoButton action={handleRecipesSidebarToggle} label="Filters" icon={<FilterListIcon fontSize="small" />} />
                     </section>
-                )} */}
-                {location.pathname === "/favorited" && (
+                )}
+                {location.pathname === "/history" && isAuthenticated && recipes.history.length > 0 && (
                     <section className={classes.globalActions}>
-                        {/* <IngredientSearch isFixed={true} /> */}
-                        <BaseSearch data={recipes.filtered} inputValue={inputValue} setInputValue={setInputValue} />
-                        <IcoButton
-                            action={handleRecipesSidebarToggle}
-                            label="Filters"
-                            icon={<TuneOutlinedIcon fontSize="small" />}
+                        <BaseSearch
+                            data={recipes.history.filter((rec) => rec.title.toLowerCase().includes(inputValue.toLowerCase()))}
+                            inputValue={inputValue}
+                            setInputValue={setInputValue}
                         />
                     </section>
                 )}
-                {location.pathname === "/discovery" && (
+                {location.pathname === "/roulette" && (
                     <div className={classes.globalActions}>
-                        <IngredientSearch isFixed={true} searchCriteria="isSelected" />
-                        <IcoButton action={() => handleDeselectAll("isSelected")} icon={<LockResetIcon fontSize={"medium"} />} />
-                        <IcoButton action={() => handleSidebarToggle()} icon={<TuneIcon fontSize={"small"} />} />
+                        <IngredientSearch searchCriteria="is_selected" />
+                        <IcoButton action={() => handleDeselectAll("is_selected")} icon={<LockResetIcon fontSize={"small"} />} />
+                        <IcoButton
+                            action={() => handleSidebarToggle && handleSidebarToggle()}
+                            icon={<FilterListIcon fontSize={"small"} />}
+                        />
                     </div>
                 )}
             </header>

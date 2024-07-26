@@ -1,14 +1,17 @@
 import { createContext, useEffect, useState } from "react"
+import { useLocalStorage } from "../../hooks/useLocalStorage/useLocalStorage"
 
 export const AuthContext = createContext()
 
 export function AuthProvider({ children }) {
     const [isAuthenticated, setIsAuthenticated] = useState(false)
+    const { getValue } = useLocalStorage()
 
     useEffect(() => {
         try {
-            const localAuthentication = JSON.parse(window.localStorage.getItem("authToken"))
-            if (localAuthentication) {
+            const userData = getValue("userData")
+            
+            if (userData?.token) {
                 setIsAuthenticated(true)
             } else {
                 setIsAuthenticated(false)
@@ -18,20 +21,5 @@ export function AuthProvider({ children }) {
         }
     }, [])
 
-    function login() {
-        setIsAuthenticated(true)
-        try {
-            const examepleToken = JSON.stringify({ token: 9999 })
-            window.localStorage.setItem("authToken", examepleToken)
-        } catch (error) {
-            console.error(error)
-        }
-    }
-
-    function logout() {
-        window.localStorage.removeItem("authToken")
-        setIsAuthenticated(false)
-    }
-
-    return <AuthContext.Provider value={{ isAuthenticated, login, logout }}>{children}</AuthContext.Provider>
+    return <AuthContext.Provider value={{ isAuthenticated, setIsAuthenticated }}>{children}</AuthContext.Provider>
 }

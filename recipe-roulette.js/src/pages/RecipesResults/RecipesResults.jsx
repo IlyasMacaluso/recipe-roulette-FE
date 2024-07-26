@@ -1,14 +1,14 @@
 import RecipeCard from "../../components/RecipeCard/RecipeCard"
-import { FilterChipRecipes } from "../../components/FilterChip/FilterChipRecipes"
 import { useAnimate } from "../../hooks/animatePages/useAnimate"
 
 import { useRecipesContext } from "../../contexts/RecipesContext"
 import { useSnackbar } from "../../components/Snackbar/useSnackbar"
-import { useRecipesFetch } from "../../hooks/recipesFetch/useRecipesFetch"
 import { useLocationHook } from "../../hooks/useLocationHook"
 
 import classes from "./RecipesResults.module.scss"
 import { BlocksShuffleThree } from "react-svg-spinners"
+import { useRecipesFetch } from "../../hooks/useRecipesFetch/useRecipesFetch"
+import { Placeholder } from "../../components/Placeholder/Placeholder"
 
 export function RecipeResults() {
     const { recipes } = useRecipesContext()
@@ -22,18 +22,23 @@ export function RecipeResults() {
         <div className={`${classes.recipesResultsPage} ${animate && classes.animateFavorite} `}>
             {!state.loading ? (
                 <section className={classes.recipesWrapper}>
-                    {recipes.searched.map((recipe) => {
-                        return <RecipeCard handleClickLoginSnackBar={handleClickLoginSnackBar} key={recipe.id} recipe={recipe} />
-                    })}
+                    {recipes.results &&
+                        recipes.results.map((recipe) => {
+                            return (
+                                <RecipeCard
+                                    handleClickLoginSnackBar={handleClickLoginSnackBar}
+                                    key={recipe.id + recipe.title}
+                                    recipe={recipe}
+                                />
+                            )
+                        })}
                 </section>
             ) : (
-                <div className={classes.placeholder}>
-                    <BlocksShuffleThree color="#00a55b" width={"40%"} height={"40%"}/>
-                    <h2>
-                        <span>Generating Your Recipes!</span> <br />
-                        This could take a couple minutes...
-                    </h2>
-                </div>
+                <Placeholder
+                    text="Generating Your Recipes, "
+                    hightlitedText="This could take a few minutes"
+                    loadingAnimation={<BlocksShuffleThree color="#00a55b" width={"40%"} height={"40%"} />}
+                />
             )}
         </div>
     )

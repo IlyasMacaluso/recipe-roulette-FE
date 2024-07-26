@@ -1,16 +1,16 @@
 @use "./assets/scss/" as *;
 @import url(./root.css);
 
-#root {
-    height: 100svh;
-    box-sizing: border-box;
-    overflow: hidden;
-}
-
 body {
     margin: 0;
     box-sizing: border-box;
+    height: 100svh;
+}
+#root {
     height: 100%;
+    box-sizing: border-box;
+    overflow: hidden;
+    -webkit-tap-highlight-color: transparent;
 }
 .appContainer {
     display: flex;

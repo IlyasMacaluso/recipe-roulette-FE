@@ -1,20 +1,20 @@
 import { useState } from "react"
-import { useManageIngredients } from "../../pages/Discovery/IngredientsContext"
+import { useManageIngredients } from "../../pages/Roulette/IngredientsContext"
 
-export function useFilterChips( id, label, bgColor, isSelected, isBlackListed )  {
+export function useFilterChips( id, label, bg_color, is_selected, is_blacklisted )  {
     const [ingState, setIngState] = useState({
         id,
         label,
-        bgColor,
-        isSelected,
-        isBlackListed
+        bg_color,
+        is_selected,
+        is_blacklisted
     })
 
     const { handleIngUpdate } = useManageIngredients()
 
 
     function handleDeselectChip() {
-        handleIngUpdate("isBlackListed",ingState, setIngState)
+        handleIngUpdate("is_blacklisted",ingState, setIngState)
     }
 
     return {

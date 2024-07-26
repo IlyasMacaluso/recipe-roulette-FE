@@ -2,7 +2,7 @@
 
 .preferencesPage {
     
-    transition: scale 0.45s cubic-bezier(0.08,0.82,0.17,1);
+    transition: scale 0.25s cubic-bezier(0.08,0.82,0.17,1);
 
     background-color: white;
     margin: 0;
@@ -18,7 +18,7 @@
     .fakeContent {
         width: 100%;
         height: $height-80;
-        background-color: $second-color;
+        background-color: $light-green;
         border-radius: $size-16;
         margin-bottom: $size-16;
     }
@@ -26,7 +26,7 @@
 }
 .animateSettings {
     scale: 1;
-    transition: scale 0.45s cubic-bezier(0.08,0.82,0.17,1);
+    transition: scale 0.25s cubic-bezier(0.08,0.82,0.17,1);
 }
 
 .bottomButtons {
@@ -62,8 +62,8 @@
     font-family: $header-text;
     border: 1px solid #e5e0df;
     border-radius: 1.5rem;
-    background-color:$green;
+    background-color:$primary-green;
 }
 .button:active {
-    background-color: $second-color;
+    background-color: $light-green;
 }

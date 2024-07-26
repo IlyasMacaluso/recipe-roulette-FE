@@ -1,19 +1,19 @@
-import classes from "./Sidebar.module.scss"
-import { useManageIngredients } from "../../pages/Discovery/IngredientsContext"
+import { useManageIngredients } from "../../pages/Roulette/IngredientsContext"
 import { FilterChip } from "../FilterChip/FilterChip"
 import { Switch } from "../Switch/Switch"
 import { IngredientSearch } from "../Search/SearchBar/IngredientSearch"
 import { Button } from "../Buttons/Button/Button"
 import { IcoButton } from "../Buttons/IcoButton/IcoButton"
-
-import CloseIcon from "@mui/icons-material/Close"
-import RotateLeftOutlinedIcon from "@mui/icons-material/RotateLeftOutlined"
 import { FilterChipRecipes } from "../FilterChip/FilterChipRecipes"
 import { useRecipesContext } from "../../contexts/RecipesContext"
 
+import CloseIcon from "@mui/icons-material/Close"
+import RotateLeftOutlinedIcon from "@mui/icons-material/RotateLeftOutlined"
+
+import classes from "./Sidebar.module.scss"
+
 export function Sidebar({ sidebarState = false, handleSidebarToggle }) {
-    const { handleDeselectAll, blackList } = useManageIngredients()
-    const { toggleFilter, filter } = useManageIngredients()
+    const { handleDeselectAll, ingredients } = useManageIngredients()
     const { toggleRecipeFilter, recipeFilter, handleDeselectRecipeFilters } = useRecipesContext()
 
     return (
@@ -32,7 +32,7 @@ export function Sidebar({ sidebarState = false, handleSidebarToggle }) {
                             size={18}
                             action={() => {
                                 handleDeselectRecipeFilters()
-                                handleDeselectAll("isBlackListed")
+                                handleDeselectAll("is_blacklisted")
                             }}
                         />
                         <IcoButton action={handleSidebarToggle} style="transparent" icon={<CloseIcon fontSize="small" />} />
@@ -42,11 +42,11 @@ export function Sidebar({ sidebarState = false, handleSidebarToggle }) {
                     <div className={classes.blackListedWrapper}>
                         <h4>Add ingredeints to black list</h4>
                         <div className={classes.blackListed}>
-                            <IngredientSearch isFixed={true} sidebarSearch={true} searchCriteria="isBlackListed" />
-                            {blackList.length > 0 && (
+                            <IngredientSearch searchCriteria="is_blacklisted" />
+                            {ingredients?.blacklisted && (
                                 <div className={classes.filterChipWrapper}>
-                                    {blackList
-                                        .filter((ing) => ing.isBlackListed)
+                                    {ingredients?.blacklisted
+                                        .filter((ing) => ing.is_blacklisted)
                                         .sort((a, b) => (a.name === b.name ? 0 : a.name > b.name ? 1 : -1))
                                         .map((ing) => {
                                             return (
@@ -54,9 +54,9 @@ export function Sidebar({ sidebarState = false, handleSidebarToggle }) {
                                                     key={ing.id}
                                                     id={ing.id}
                                                     label={ing.name}
-                                                    bgColor={ing.bgColor}
-                                                    isBlackListed={ing.isBlackListed}
-                                                    isSelected={ing.isSelected}
+                                                    bg_color={ing.bg_color}
+                                                    is_blacklisted={ing.is_blacklisted}
+                                                    is_selected={ing.is_selected}
                                                 />
                                             )
                                         })}
@@ -70,26 +70,23 @@ export function Sidebar({ sidebarState = false, handleSidebarToggle }) {
                             {/* filtra gli ingredienti, inoltre imposta recipeFilter in modo che il fitro 
                             venga passato anche alla richiesta di fetch */}
                             <Switch
-                                state={filter.isGlutenFree}
+                                state={recipeFilter.is_gluten_free}
                                 action={() => {
-                                    toggleFilter("isGlutenFree")
-                                    toggleRecipeFilter("isGlutenFree")
+                                    toggleRecipeFilter("is_gluten_free")
                                 }}
                                 label={"Gluten free"}
                             />
                             <Switch
-                                state={filter.isVegetarian}
+                                state={recipeFilter.is_vegetarian}
                                 action={() => {
-                                    toggleFilter("isVegetarian")
-                                    toggleRecipeFilter("isVegetarian")
+                                    toggleRecipeFilter("is_vegetarian")
                                 }}
                                 label={"Vegetarian"}
                             />
                             <Switch
-                                state={filter.isVegan}
+                                state={recipeFilter.is_vegan}
                                 action={() => {
-                                    toggleFilter("isVegan")
-                                    toggleRecipeFilter("isVegan")
+                                    toggleRecipeFilter("is_vegan")
                                 }}
                                 label={"Vegan"}
                             />

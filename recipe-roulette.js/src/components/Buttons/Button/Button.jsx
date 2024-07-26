@@ -1,9 +1,10 @@
-import { useNavigate } from "react-router-dom"
+import { useNavigate } from "@tanstack/react-router"
 import classes from "./Button.module.scss"
 
 export function Button({
     type = "button",
     width = "fitContent",
+    height = null,
     label = "label",
     icon = null,
     action,
@@ -16,22 +17,32 @@ export function Button({
 
     function handleOnClick() {
         action && action()
-        setTimeout(() => {
-            link && navigate(`/${link}`)
-            prevPath && prevPath === "/recipes-results" && navigate("/recipes-results")
-            prevPath && prevPath === "/login" && navigate("/")
-            prevPath && prevPath === "/signup" && navigate("/")
-        }, 0)
+        if (action) {
+            setTimeout(() => {
+                link && navigate({ to: `/${link}` })
+                if (prevPath) {
+                    prevPath === "/recipes-results" && navigate({ to: "/recipes-results" })
+                }
+            }, 0)
+        } else {
+            link && navigate({ to: `/${link}` })
+            if (prevPath) {
+                prevPath === "/recipes-results" && navigate({ to: "/recipes-results" })
+            }
+        }
     }
 
     return (
         <button
             type={type}
-            onClick={() => {active && handleOnClick()}}
+            onClick={() => {
+                active && handleOnClick()
+            }}
             className={`${classes.button} ${!active && classes.disabled} 
-            ${width === "fill" && classes.wideButton}
-            ${style === "primary" && classes.primaryColor}
-            ${style === "transparent" && classes.transparent}`}
+                ${width === "fill" && classes.wideButton}
+                ${style === "primary" && classes.primaryColor}
+                ${height === "large" && classes.cta}
+                ${style === "transparent" && classes.transparent}`}
         >
             {icon}
             {label}

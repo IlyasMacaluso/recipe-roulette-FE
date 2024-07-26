@@ -1,88 +1,50 @@
-import React, { useCallback, useEffect, useRef } from "react"
-
 import { BaseSearchSuggestion } from "./BaseSearchSuggestion"
-import { useBaseSearch } from "./useBaseSearch"
 
 import CloseIcon from "@mui/icons-material/Close"
 import SearchIcon from "@mui/icons-material/Search"
 
 import classes from "./BaseSearch.module.scss"
+import { useIngredientSearch } from "../SearchBar/useIngredientSearch"
+import { useHandleBackButton } from "../../../hooks/useHandleBackBtn/useHandleBackBtn"
+import { Placeholder } from "../../Placeholder/Placeholder"
 
 export function BaseSearch({ data = [], inputValue = "", setInputValue }) {
-    const { handleBlur, handlePressEnter, handleInputActivation, setCondition, condition, isFocused } =
-        useBaseSearch(setInputValue)
-
-    const inputRef = useRef(null)
-    // Handle back button when fixedPosition is true
-    const handleBackButton = useCallback(
-        (event) => {
-            if (isFocused) {
-                event.preventDefault()
-                if (inputRef.current) {
-                    inputRef.current.blur()
-                    handleBlur(event) // Update the focus state
-                    setCondition(true)
-                }
-            }
-        },
-        [isFocused]
-    )
-
-    useEffect(() => {
-        if (isFocused && condition) {
-            window.history.pushState(null, document.title, window.location.href)
-            window.addEventListener("popstate", handleBackButton)
-            setCondition(false)
-        } else if (isFocused) {
-            window.history.replaceState(null, document.title, window.location.href)
-            window.addEventListener("popstate", handleBackButton)
-        } else {
-            window.removeEventListener("popstate", handleBackButton)
-        }
-
-        return () => {
-            window.removeEventListener("popstate", handleBackButton)
-        }
-    }, [isFocused, handleBackButton])
+    const { handlePressEnter, handleInputActivation, handleBlur, setSearchState, setFixedPosition, searchState } = useIngredientSearch()
+    const { inputRef } = useHandleBackButton(searchState, setSearchState, setFixedPosition, handleBlur)
 
     return (
-        <div className={`${classes.baseSearch} ${isFocused && classes.baseSearchActive}`}>
+        <div className={`${classes.baseSearch} ${searchState && classes.baseSearchActive}`}>
             <div className={classes.searchBar}>
                 <input
                     ref={inputRef}
                     autoComplete="off"
                     className={classes.input}
-                    onKeyDown={(e) => handlePressEnter(e)}
+                    onKeyDown={(e) => handlePressEnter(e, inputRef, { setCondition: setSearchState, setComponent: setFixedPosition })}
                     onClick={handleInputActivation}
                     onChange={(e) => setInputValue(e.target.value)}
-                    onBlur={(e) => handleBlur(e)}
                     value={inputValue}
                     type="text"
                     placeholder="Search a recipe"
                 />
                 <div
                     onMouseDown={(e) => {
-                        if (isFocused && inputValue !== "") {
-                            e.stopPropagation()
-                            e.preventDefault()
+                        e.stopPropagation()
+                        e.preventDefault()
+                        if (searchState && inputValue !== "") {
                             setInputValue("")
-                        } else if (isFocused && inputValue === "") {
-                            e.stopPropagation()
-                            handleBlur(e)
-                            inputRef.current.blur()
-                        } else if (!isFocused && inputValue !== "") {
-                            e.stopPropagation()
-                            e.preventDefault()
+                        } else if (searchState && inputValue === "") {
+                            handleBlur(inputRef, { setCondition: setSearchState, setComponent: setFixedPosition })
+                        } else if (!searchState && inputValue !== "") {
                             setInputValue("")
                         }
                     }}
                     className={classes.ico}
                 >
-                    {isFocused || inputValue !== "" ? <CloseIcon fontSize="small" /> : <SearchIcon fontSize="small" />}
+                    {searchState || inputValue !== "" ? <CloseIcon fontSize="small" /> : <SearchIcon fontSize="small" />}
                 </div>
             </div>
             <div className={classes.suggestionsWrapper}>
-                {data.length > 0 ? (
+                {data && data.length > 0 ? (
                     data.map((recipe) => (
                         <BaseSearchSuggestion
                             inputRef={inputRef}
@@ -90,19 +52,18 @@ export function BaseSearch({ data = [], inputValue = "", setInputValue }) {
                             id={recipe.id}
                             handleBlur={handleBlur}
                             setInputValue={setInputValue}
+                            setState={{ setCondition: setSearchState, setComponent: setFixedPosition }}
                             title={recipe.title}
                         />
                     ))
                 ) : (
-                    <div className={classes.placeholder}>
-                        <h2>
-                            There is <span>no recipe</span> <br />
-                            matching your search!
-                        </h2>
-                        <div className={classes.placeholderImage}>
-                            <img src="../src/assets/images/undraw_cancel_re_pkdm 1.svg" alt="" />
-                        </div>
-                    </div>
+                    <Placeholder
+                    bottomImage={"searching.svg"}
+                    text="Your search has  "
+                    hightlitedText="no matching results"
+                    highlightColor="#dd3e46"
+                    spacious={true}
+                     />
                 )}
             </div>
         </div>

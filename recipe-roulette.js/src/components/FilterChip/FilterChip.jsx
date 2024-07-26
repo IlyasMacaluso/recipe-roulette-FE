@@ -1,4 +1,3 @@
-import { MaterialSymbol } from "react-material-symbols"
 import { useFilterChips } from "./useFilterChip"
 
 import CheckOutlinedIcon from "@mui/icons-material/CheckOutlined"
@@ -6,23 +5,16 @@ import BlockOutlinedIcon from "@mui/icons-material/BlockOutlined"
 
 import classes from "./FilterChip.module.scss"
 
-export function FilterChip({ id, label, bgColor, isSelected, isBlackListed }) {
-    const { handleDeselectChip } = useFilterChips(id, label, bgColor, isSelected, isBlackListed)
+export function FilterChip({ id, label, bg_color, is_selected, is_blacklisted }) {
+    const { handleDeselectChip } = useFilterChips(id, label, bg_color, is_selected, is_blacklisted)
 
     return (
         <div
-            className={`${classes.filterChip} ${isSelected || isBlackListed ? classes.active : classes.inactive}`}
-            onClick={handleDeselectChip}
+            className={`${classes.filterChip} ${is_selected || is_blacklisted ? classes.active : classes.inactive} ${is_blacklisted && classes.blacklisted}`}
+            onClick={() => handleDeselectChip && handleDeselectChip()}
         >
-            {isSelected && (
-         
-                    <CheckOutlinedIcon className={classes.ico} fontSize="18px" />
-        
-            )}
-            {isBlackListed && (
-
-                    <BlockOutlinedIcon className={classes.ico} fontSize="18px" />
-            )}
+            {is_selected && <CheckOutlinedIcon className={classes.ico} fontSize="18px" />}
+            {is_blacklisted && <BlockOutlinedIcon className={classes.ico} fontSize="18px" />}
             <p className={classes.label}>{label}</p>
         </div>
     )

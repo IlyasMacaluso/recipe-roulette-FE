@@ -1,15 +1,15 @@
 import { useEffect, useState } from "react"
 import { useRecipesContext } from "../../contexts/RecipesContext"
-import { useLocation, useNavigate } from "react-router-dom"
+import { useLocation, useNavigate } from "@tanstack/react-router"
 import { useAuth } from "../../hooks/Auth/useAuth"
 
 export function useRecipeCard(recipe, isExpanded) {
+    const location = useLocation()
+    
     const [cardState, setCardState] = useState(recipe)
     const [expandedCard, setExpandedCard] = useState(isExpanded)
     const [expandedIngredients, setExpandedIngredients] = useState(true)
-    const { handleRecipesUpdate, setRecipes } = useRecipesContext()
-    const location = useLocation()
-    const navigate = useNavigate()
+    const { handleRecipesUpdate, setRecipes, handleTargetedRecipe } = useRecipesContext()
     const { isAuthenticated } = useAuth()
 
     useEffect(() => {
@@ -29,25 +29,7 @@ export function useRecipeCard(recipe, isExpanded) {
     }
 
     function handleOpenRecipePage(recipe) {
-        setRecipes((prev) => {
-            const updatedRecipes = {
-                ...prev,
-                targetedRecipe: recipe,
-            }
-
-            // Salva le ricette aggiornate nel local storage
-            try {
-                const jsonRecipes = JSON.stringify(updatedRecipes)
-                localStorage.setItem("recipes", jsonRecipes)
-            } catch (error) {
-                console.error("Failed to save recipes to local storage:", error)
-            }
-
-            return updatedRecipes
-        })
-
-        // Naviga alla pagina della ricetta
-        navigate("/recipe")
+        handleTargetedRecipe(recipe)
     }
 
     return {

@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback, useRef, useState } from "react"
+import React from "react"
 import { useIngredientSearch } from "./useIngredientSearch"
 import { IngredientSuggestions } from "../Suggestions/IngredientSuggestions"
 
@@ -6,90 +6,62 @@ import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined"
 import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined"
 
 import classes from "./IngredientSearch.module.scss"
+import { useHandleBackButton } from "../../../hooks/useHandleBackBtn/useHandleBackBtn"
 
-export function IngredientSearch({ isFixed = false, sidebarSearch = false, searchCriteria = "isBlackListed" }) {
+export function IngredientSearch({searchCriteria = "is_blacklisted" }) {
     const {
         suggestions,
         inputValues,
         searchState,
         fixedPosition,
-        condition,
-        setCondition,
         handlePressEnter,
         handleInputChange,
         handleInputActivation,
         handleBlur,
-        handleXClick,
-    } = useIngredientSearch(isFixed, searchCriteria)
-
-    const inputRef = useRef(null)
-
-    // Handle back button when fixedPosition is true
-    const handleBackButton = useCallback(
-        (event) => {
-            if (searchState.inputActive) {
-                event.preventDefault()
-                if (inputRef.current) {
-                    inputRef.current.blur()
-                    handleBlur(event) // Update the focus state
-                    setCondition(true)
-                }
-            }
-        },
-        [searchState.inputActive]
-    )
-
-    useEffect(() => {
-        if (searchState.inputActive && condition) {
-            window.history.pushState(null, document.title, window.location.href)
-            window.addEventListener("popstate", handleBackButton)
-            setCondition(false)
-        } else if (searchState.inputActive) {
-            window.history.replaceState(null, document.title, window.location.href)
-            window.addEventListener("popstate", handleBackButton)
-        } else {
-            window.removeEventListener("popstate", handleBackButton)
-        }
-
-        return () => {
-            window.removeEventListener("popstate", handleBackButton)
-        }
-    }, [searchState.inputActive, handleBackButton])
+        setSearchState,
+        setFixedPosition,
+    } = useIngredientSearch(searchCriteria)
+    
+    const { inputRef } = useHandleBackButton(searchState, setSearchState, setFixedPosition, handleBlur)
 
     return (
         <div
-            className={`${fixedPosition && classes.positionFixed} ${fixedPosition && sidebarSearch && classes.sidebarSearch} ${classes.search}`}
+            className={`${fixedPosition && classes.positionFixed} ${classes.search}`}
         >
-            <div className={`${classes.searchBar} ${searchState.inputActive ? classes.inputActive : classes.inputInactive}`}>
+            <div className={`${classes.searchBar} ${searchState ? classes.inputActive : classes.inputInactive}`}>
                 <input
                     ref={inputRef}
                     autoComplete="off"
                     className={classes.header}
                     onClick={handleInputActivation}
-                    placeholder={`${searchCriteria === "isSelected" ? "Add an ingredient" : "Blacklist an ingredient"}`}
+                    placeholder={`${searchCriteria === "is_selected" ? "Add an ingredient" : "Blacklist an ingredient"}`}
                     name="search"
                     type="text"
-                    onBlur={(e) => handleBlur(e)}
-                    onKeyDown={(e) => handlePressEnter(e)}
+                    onKeyDown={(e) => handlePressEnter(e, inputRef, { setCondition: setSearchState, setComponent: setFixedPosition })}
                     onChange={handleInputChange}
                     value={inputValues.current}
                 />
-                {!searchState.inputActive && (
+                {!searchState && (
                     <div className={`${classes.ico} ${classes.searchIco}`}>
                         <SearchOutlinedIcon fontSize="small" />
                     </div>
                 )}
 
-                {searchState.inputActive && (
-                    <div onClick={(e) => handleXClick(e)} className={`${classes.ico} ${classes.closeIco}`}>
+                {searchState && (
+                    <div
+                        onClick={() => handleBlur(inputRef, { setCondition: setSearchState, setComponent: setFixedPosition })}
+                        className={`${classes.ico} ${classes.closeIco}`}
+                    >
                         <CloseOutlinedIcon fontSize="small" />
                     </div>
                 )}
             </div>
             <IngredientSuggestions
-                inputActive={searchState.inputActive}
+                inputActive={searchState}
                 searchCriteria={searchCriteria}
                 suggestions={suggestions}
+                inputRef={inputRef}
+                setInputState={{ setCondition: setSearchState, setComponent: setFixedPosition }}
             />
         </div>
     )

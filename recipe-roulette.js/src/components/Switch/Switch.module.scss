@@ -13,6 +13,9 @@
         font-weight: 500;
     }
 }
+.switchComponent:hover {
+    cursor: pointer;
+}
 .switch {
     position: relative;
     align-items: center;
@@ -41,7 +44,7 @@
     }
     .select {
         transform: translate(24px, -50%);
-        background-color: $darkish-gray;
+        background-color: $darkish-green;
         height: $size-24;
         width: $size-24;
         transition:
@@ -51,6 +54,6 @@
     }
 }
 .select {
-    background-color: $second-color;
+    background-color: $light-green;
     outline: none;
 }

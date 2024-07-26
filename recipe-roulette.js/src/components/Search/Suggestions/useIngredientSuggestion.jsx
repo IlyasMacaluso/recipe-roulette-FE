@@ -1,12 +1,12 @@
 import { useState } from "react"
 
-export function useIngredientSuggestion(id, label, bgColor, isSelected, isBlackListed) {
+export function useIngredientSuggestion(id, label, bg_color, is_selected, is_blacklisted) {
     const [ingState, setIngState] = useState({
         id,
         label,
-        bgColor,
-        isSelected,
-        isBlackListed,
+        bg_color,
+        is_selected,
+        is_blacklisted,
     })
 
     return {

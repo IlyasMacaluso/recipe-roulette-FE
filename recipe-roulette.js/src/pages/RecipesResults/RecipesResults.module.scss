@@ -2,7 +2,7 @@
 
 .recipesResultsPage {
     scale: 0.8;
-    transition: scale 0.45s cubic-bezier(0.08, 0.82, 0.17, 1);
+    transition: scale 0.25s cubic-bezier(0.08, 0.82, 0.17, 1);
 
     display: flex;
     flex-direction: column;
@@ -31,45 +31,17 @@
 
 .recipesWrapper {
     display: flex;
-    flex-wrap: wrap;
+    flex-direction: column;
     gap: $size-20;
     box-sizing: border-box;
     padding: 0 1px;
     padding-bottom: 2rem;
     width: 100%;
-    height: 100%;
-    overflow: visible;
+    min-height: fit-content;
     overflow-y: scroll;
 }
-.placeholder {
-    display: flex;
-    flex-direction: column;
-    flex-grow: 1;
-    align-items: center;
-    justify-content: space-evenly;
-    box-sizing: border-box;
-    overflow: hidden;
-    gap: 2rem;
-    padding: 1rem;
-}
 
-.placeholder h2 {
-    color: $dark-gray;
-    padding: 0;
-    margin: 0;
-    text-align: center;
-    font-family: $font-title;
-    font-weight: 700;
-    font-size: $size-20;
-    line-height: 120%;
-    span {
-        background-color: #00a55b;
-        border-radius: 0.5rem;
-        padding: 0 0.5rem;
-        color: white;
-    }
-}
 .animateFavorite {
     scale: 1;
-    transition: scale 0.45s cubic-bezier(0.08, 0.82, 0.17, 1);
+    transition: scale 0.25s cubic-bezier(0.08, 0.82, 0.17, 1);
 }

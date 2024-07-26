@@ -1,15 +1,18 @@
-import classes from "./Settings.module.scss";
-import { Button } from "../../components/Buttons/Button/Button";
-import DoneAllIcon from "@mui/icons-material/DoneAll";
-import EditNoteIcon from "@mui/icons-material/EditNote";
-import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
-import ModeEditOutlinedIcon from "@mui/icons-material/ModeEditOutlined";
-import { useAuth } from "../../hooks/Auth/useAuth";
+import { Button } from "../../components/Buttons/Button/Button"
+import { useAuth } from "../../hooks/Auth/useAuth"
+import { Input } from "../../components/Input/Input.jsx"
+
+import DoneAllIcon from "@mui/icons-material/DoneAll"
+import EditNoteIcon from "@mui/icons-material/EditNote"
+import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined"
+import UploadIcon from "@mui/icons-material/Upload"
+
+import classes from "./Settings.module.scss"
 
 export function CardSetting({
     editing,
     avatar,
-    signupData,
+    userData,
     handleAvatarChange,
     handleSignupInput,
     handleSaveClick,
@@ -17,7 +20,7 @@ export function CardSetting({
     handleEditClick,
     passError,
 }) {
-    const { isAuthenticated, logout } = useAuth();
+    const { isAuthenticated } = useAuth()
 
     if (!isAuthenticated) {
         return (
@@ -25,7 +28,7 @@ export function CardSetting({
                 <h2 className={classes.profileName}>Not Logged In</h2>
                 <p className={classes.profileEmail}>Please log in to edit your profile</p>
             </div>
-        );
+        )
     }
 
     return (
@@ -43,47 +46,39 @@ export function CardSetting({
                                 id="profileImageInput"
                             />
                             <label htmlFor="profileImageInput" className={classes.editProfileImageButtonLabel}>
-                                <ModeEditOutlinedIcon fontSize="small" />
-                                Profile image
+                                <UploadIcon fontSize="small" />
+                                Upload new image
                             </label>
                         </div>
                     </section>
                     <div className={classes.editForm}>
                         <section className={classes.formSection}>
-                            <label>Edit ID and Email</label>
-                            <input
-                                type="text"
+                            <Input
+                                handleInputChange={handleSignupInput}
+                                label="Edit username or email"
                                 name="username"
                                 placeholder="Username"
-                                value={signupData.username}
-                                onChange={handleSignupInput}
+                                value={userData.username}
                             />
-                            <input
-                                type="email"
-                                name="email"
-                                placeholder="Email"
-                                value={signupData.email}
-                                onChange={handleSignupInput}
-                            />
+                            <Input name="email" placeholder="Email" value={userData.email} handleInputChange={handleSignupInput} />
                         </section>
 
                         <section className={classes.formSection}>
-                            <label>Change password</label>
-                            <input
-                                type="password"
+                            <Input
+                                label="Change password"
                                 name="password"
-                                placeholder="Set new password"
-                                value={signupData.password}
-                                onChange={handleSignupInput}
-                            />
-                            <input
                                 type="password"
-                                name="confirmPass"
-                                placeholder="Repeat new password"
-                                value={signupData.confirmPass}
-                                onChange={handleSignupInput}
+                                placeholder="Set new password"
+                                value={userData.password}
+                                handleInputChange={handleSignupInput}
                             />
-                            {passError && <p className={classes.error}>{passError}</p>}
+                            <Input
+                                name="confirmPass"
+                                type="password"
+                                placeholder="Confirm new password"
+                                value={userData.confirmPass}
+                                handleInputChange={handleSignupInput}
+                            />
                         </section>
 
                         <div className={classes.bottomItems}>
@@ -106,17 +101,11 @@ export function CardSetting({
             ) : (
                 <div className={classes.profileSection}>
                     <img src={avatar} alt="Profile" className={classes.profilePicture} />
-                    <h2 className={classes.profileName}>{signupData.username}</h2>
-                    <p className={classes.profileEmail}>{signupData.email}</p>
-                    <Button
-                        style="primary"
-                        width="fill"
-                        action={handleEditClick}
-                        label="Edit Information"
-                        icon={<EditNoteIcon fontSize="small" />}
-                    />
+                    <h2 className={classes.profileName}>{userData.username}</h2>
+                    <p className={classes.profileEmail}>{userData.email}</p>
+                    <Button width="fill" action={handleEditClick} label="Edit Information" icon={<EditNoteIcon fontSize="small" />} />
                 </div>
             )}
         </>
-    );
+    )
 }

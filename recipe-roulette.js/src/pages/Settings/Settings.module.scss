@@ -1,8 +1,17 @@
 @use "../../assets/scss" as *;
 
+.profilePicture {
+    width: 18vh;
+    height: 18vh;
+    object-fit: cover;
+    border-radius: 50%;
+    outline: 1px solid $light-gray;
+    outline-offset: -2px;
+}
+
 .settingsPage {
     scale: 0.8;
-    transition: scale 0.45s cubic-bezier(0.08, 0.82, 0.17, 1);
+    transition: scale 0.25s cubic-bezier(0.08, 0.82, 0.17, 1);
 
     background-color: white;
     margin: 0;
@@ -26,20 +35,14 @@
         display: flex;
         flex-direction: column;
         align-items: center;
-        background-color: $third-color;
-        border: 1px solid $light-gray;
+        background-color: white;
+        border: 1px solid $light-desaturated-green;
         color: #3c3838;
         border-radius: $size-16;
         width: 100%;
         padding: $size-24;
         box-sizing: border-box;
-        gap: 1rem;
-        .profilePicture {
-            width: 96px;
-            height: 96px;
-            border-radius: 50%;
-            border: 1px solid $light-gray;
-        }
+        gap: 0.5rem;
         .profileName {
             font-size: $text-size-20;
             margin: 0;
@@ -50,7 +53,7 @@
             margin: 0;
         }
         button {
-            margin-top: 1rem;
+            margin-top: 0.5rem;
         }
     }
     .menuSection {
@@ -73,11 +76,10 @@
             cursor: pointer;
             font-size: $text-size-16;
             font-family: $header-text;
-            font-weight: 500;
+            font-weight: 600;
             text-decoration: none;
             color: #3c3838;
             letter-spacing: 0.025rem;
-            transition: width 0.45s ease;
         }
     }
     .logoutButtonWrapper {
@@ -88,30 +90,30 @@
         display: flex;
         flex-direction: column;
         align-items: center;
-        background-color: #f1f8eb;
-        border-radius: $size-16;
+        padding: 0;
         width: 100%;
-        padding: $size-24;
-        box-sizing: border-box;
 
         .profileImageSection {
             width: 100%;
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: $size-24;
-            padding-top: 0;
             gap: 1rem;
-            .profilePicture {
-                width: 96px;
-                height: 96px;
-                border-radius: 50%;
-                border: 1px solid $light-gray;
-            }
+            margin-bottom: 1rem;
+
             .editProfileImageButtonWrapper {
                 position: relative;
+                width: 100%;
+                font-family: $header-text;
+                font-size: $text-size-14;
+                font-weight: 500;
+                max-height: 40px;
+
+
                 .editProfileImageButton {
                     display: none;
+                    width: 100%;
+
                 }
                 .editProfileImageButtonLabel {
                     display: flex;
@@ -119,12 +121,13 @@
                     justify-content: center;
                     gap: 8px;
                     height: 40px;
-                    padding: 0 16px;
                     background-color: white;
                     border: 1px solid $light-gray;
                     border-radius: 2rem;
-                    color: #3c3838;
+                    color: $darkish-gray;
                     cursor: pointer;
+                    box-sizing: border-box;
+                    max-height: 40px;
                 }
             }
         }
@@ -134,27 +137,13 @@
             display: flex;
             flex-direction: column;
             gap: 24px;
+
             .formSection {
                 display: flex;
                 flex-direction: column;
                 gap: 12px;
-                label {
-                    font-size: $text-size-16;
-                    color: #3c3838;
-                    font-family: $header-text;
-                    font-weight: 600;
-                    padding-left: 4px;
-                }
-                input {
-                    width: 100%;
-                    height: 48px;
-                    padding: 0 $size-16;
-                    font-size: $text-size-14;
-                    border: 1px solid $light-gray;
-                    border-radius: 2rem;
-                    box-sizing: border-box;
-                }
             }
+
             .bottomItems {
                 display: flex;
                 flex-direction: column;
@@ -165,5 +154,5 @@
 }
 .animateSettings {
     scale: 1;
-    transition: scale 0.45s cubic-bezier(0.08, 0.82, 0.17, 1);
+    transition: scale 0.25s cubic-bezier(0.08, 0.82, 0.17, 1);
 }

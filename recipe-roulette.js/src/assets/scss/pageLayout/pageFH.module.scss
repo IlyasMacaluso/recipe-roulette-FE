@@ -1,0 +1,15 @@
+@use "../variables" as *;
+
+.pageFH {
+    display: flex;
+    flex-direction: column;
+
+    justify-content: center;
+
+    padding: $size-20;
+    padding-bottom: 2rem;
+    box-sizing: border-box;
+
+    height: 100%;
+    overflow: hidden;
+}

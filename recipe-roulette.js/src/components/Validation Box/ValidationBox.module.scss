@@ -30,3 +30,23 @@
         
     }
 }
+
+.inlineMsg {
+    width: 100%;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    outline: 2px solid $dark-gray;
+    padding: 0.5rem;
+    border-radius: 0.5rem;
+    color: $dark-gray;
+    font-family: $header-text;
+    font-weight: 500;
+    line-height: 120%;
+
+    &.red {
+        color: $red;
+        outline-color: $red;
+    }
+}

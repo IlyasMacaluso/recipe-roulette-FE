@@ -9,12 +9,9 @@ import { useRecipesContext } from "../../contexts/RecipesContext"
 import { IcoButton } from "../Buttons/IcoButton/IcoButton"
 
 import classes from "./SideBarRecipes.module.scss"
-import { useManageIngredients } from "../../pages/Discovery/IngredientsContext"
 
 export function SideBarRecipes({ state, toggleSidebarRecipes }) {
-    const { toggleRecipeFilter, recipeFilter } = useRecipesContext()
-    const { toggleFilter, filter, handleDeselectPreferences } = useManageIngredients()
-    const { handleDeselectRecipeFilters } = useRecipesContext()
+    const { toggleRecipeFilter, recipeFilter, handleDeselectRecipeFilters } = useRecipesContext()
 
     function handleSidebarClick(e) {
         e.stopPropagation()
@@ -34,7 +31,6 @@ export function SideBarRecipes({ state, toggleSidebarRecipes }) {
                             label="Reset All"
                             action={() => {
                                 handleDeselectRecipeFilters()
-                                handleDeselectPreferences("isBlackListed")
                             }}
                             icon={<RotateLeftOutlinedIcon className={classes.ico} fontSize="small" />}
                         />
@@ -57,26 +53,23 @@ export function SideBarRecipes({ state, toggleSidebarRecipes }) {
                         <h4>Preferences</h4>
                         <div className={classes.switchesWrapper}>
                             <Switch
-                                state={filter.isGlutenFree}
+                                state={recipeFilter.is_gluten_free}
                                 action={() => {
-                                    toggleFilter("isGlutenFree")
-                                    toggleRecipeFilter("isGlutenFree")
+                                    toggleRecipeFilter("is_gluten_free")
                                 }}
                                 label={"Gluten free"}
                             />
                             <Switch
-                                state={filter.isVegetarian}
+                                state={recipeFilter.is_vegetarian}
                                 action={() => {
-                                    toggleFilter("isVegetarian")
-                                    toggleRecipeFilter("isVegetarian")
+                                    toggleRecipeFilter("is_vegetarian")
                                 }}
                                 label={"Vegetarian"}
                             />
                             <Switch
-                                state={filter.isVegan}
+                                state={recipeFilter.is_vegan}
                                 action={() => {
-                                    toggleFilter("isVegan")
-                                    toggleRecipeFilter("isVegan")
+                                    toggleRecipeFilter("is_vegan")
                                 }}
                                 label={"Vegan"}
                             />
@@ -104,7 +97,7 @@ export function SideBarRecipes({ state, toggleSidebarRecipes }) {
                             <FilterChipRecipes filterType={"caloricApport"} label="All" />
                             <FilterChipRecipes numericValue={250} filterType={"caloricApport"} label="250 kcal or less" />
                             <FilterChipRecipes numericValue={350} filterType={"caloricApport"} label="350 kcal of less" />
-                            <FilterChipRecipes numericValue={500} filterType={"caloricApport"} label="500 kcal or less" />
+                            <FilterChipRecipes numericValue={550} filterType={"caloricApport"} label="550 kcal or less" />
                         </div>
                     </div>
 

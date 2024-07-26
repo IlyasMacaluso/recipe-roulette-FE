@@ -4,28 +4,27 @@
     display: flex;
     flex-direction: column;
     background-color: $accent-color;
-    box-sizing: border-box;
     border-radius: $size-16;
     width: calc(100vw - 3rem);
-    max-width: 30rem;
+    max-width: 25rem;
     font-size: $text-size-14;
     border: 1px solid $light-gray;
 }
 
-.title {
+.header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    width: 100%;
     box-sizing: border-box;
-    font-size: $text-size-20;
     padding: 1.5rem;
     padding-bottom: 0;
-    > h1 {
+
+    h1 {
         margin: 0;
-        font-size: $text-size-32;
+        font-size: $text-size-24;
         color: $dark-gray;
     }
+
     .closeIco {
         color: $dark-gray;
         display: flex;
@@ -33,111 +32,69 @@
         width: 2rem;
         justify-content: flex-end;
         align-items: center;
+
         svg {
             stroke: $dark-gray;
-            stroke-width: .5;
+            stroke-width: 0.5;
         }
     }
 }
 
-.formBox {
-    width: 100%;
-    height: 100%;
+.formWrapper {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     padding: 0 1.5rem;
     padding-bottom: 2rem;
     box-sizing: border-box;
-    gap: 1.5rem;
-
-    p {
-        margin: 0;
-    }
-    .inputBox {
-        display: flex;
-        flex-direction: column;
-        width: 100%;
-        height: fit-content;
-        input {
-            width: 100%;
-            border-radius: $size-24;
-            border: 1px ridge $light-gray;
-            height: 3rem;
-            box-sizing: border-box;
-            padding-left: $size-16;
-            font-size: 1rem;
-            font-family: $header-text;
-        }
-        :focus {
-            outline: 2px solid $main-color;
-        }
-        ::placeholder {
-            font-size: $text-size-16;
-            color: $medium-light-gray;
-        }
-
-        label {
-            display: block;
-            padding-top: 0.75rem;
-            padding-bottom: 0.25rem;
-            padding-left: 0.25rem;
-            font-size: $text-size-16;
-            font-family: $header-text;
-            font-weight: 500;
-            color: $dark-gray;
-        }
-        .passInput {
-            position: relative;
-            width: 100%;
-        }
-        .passwordIcon {
-            position: absolute;
-            border: none;
-            width: 2rem;
-            height: 2rem;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background-color: transparent;
-            top: 50%;
-            transform: translateY(-50%);
-            right: 0.5rem;
-            color: $medium-light-gray;
-        }
-    }
-    .message {
-        font-size: $text-size-14;
-        font-family: $header-text;
-        font-weight: 500;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        padding-bottom: 0;
-        color: $dark-gray;
-        button {
-            padding: 0 4px;
-            height: 32px;
-            font-weight: 600;
-            text-decoration: underline;
-            color: #58933d;
-            border: none;
-            text-decoration: none;
-            background-color: transparent;
-        }
-    }
+    gap: 1rem;
+    height: 100%;
 }
 
+.inputsWrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-top: 1rem;
+}
 .buttonsWrapper {
     display: flex;
     flex-direction: column;
-    width: 100%;
     gap: 0.75rem;
 }
-.loginBtnBox {
+
+.externalLoginWrapper {
     display: flex;
-    width: 100%;
     justify-content: center;
     gap: 0.5rem;
     box-sizing: border-box;
+}
+
+.loginToSignup {
+    display: inline;
+    justify-content: center;
+    align-items: center;
+    font-size: $text-size-14;
+    font-family: $header-text;
+    font-weight: 500;
+    padding: 0;
+    color: $dark-gray;
+    width: fit-content;
+
+    p {
+        display: inline;
+        margin: 0;
+        padding-left: 0.25rem;
+        width: fit-content;
+    }
+
+    button {
+        display: inline;
+        padding: 0 0.25rem;
+        font-weight: 600;
+        color: #58933d;
+        border: none;
+        background-color: transparent;
+        text-decoration: none;
+    }
 }

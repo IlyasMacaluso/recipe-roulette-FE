@@ -28,7 +28,7 @@ export function Snackbar() {
             </div>
             {showPopup &&
                 createPortal(
-                    <Popup handleClosePopup={() => setShowPopup(false)}>
+                    <Popup>
                         {!changeToSignup ? (
                             <Login setChangeToSignup={setChangeToSignup} setShowPopup={setShowPopup} />
                         ) : (
