@@ -1,10 +1,13 @@
-import { Button } from "../../components/Buttons/Button/Button";
-import { useAuth } from "../../hooks/Auth/useAuth";
-import DoneAllIcon from "@mui/icons-material/DoneAll";
-import EditNoteIcon from "@mui/icons-material/EditNote";
-import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
-import UploadIcon from '@mui/icons-material/Upload';
-import classes from "./Settings.module.scss";
+import { Button } from "../../components/Buttons/Button/Button"
+import { useAuth } from "../../hooks/Auth/useAuth"
+import { Input } from "../../components/Input/Input.jsx"
+
+import DoneAllIcon from "@mui/icons-material/DoneAll"
+import EditNoteIcon from "@mui/icons-material/EditNote"
+import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined"
+import UploadIcon from "@mui/icons-material/Upload"
+
+import classes from "./Settings.module.scss"
 
 export function CardSetting({
     editing,
@@ -17,7 +20,7 @@ export function CardSetting({
     handleEditClick,
     passError,
 }) {
-    const { isAuthenticated } = useAuth();
+    const { isAuthenticated } = useAuth()
 
     if (!isAuthenticated) {
         return (
@@ -25,7 +28,7 @@ export function CardSetting({
                 <h2 className={classes.profileName}>Not Logged In</h2>
                 <p className={classes.profileEmail}>Please log in to edit your profile</p>
             </div>
-        );
+        )
     }
 
     return (
@@ -50,40 +53,32 @@ export function CardSetting({
                     </section>
                     <div className={classes.editForm}>
                         <section className={classes.formSection}>
-                            <label>Edit ID and Email</label>
-                            <input
-                                type="text"
+                            <Input
+                                handleInputChange={handleSignupInput}
+                                label="Edit username or email"
                                 name="username"
                                 placeholder="Username"
                                 value={userData.username}
-                                onChange={handleSignupInput}
                             />
-                            <input
-                                type="email"
-                                name="email"
-                                placeholder="Email"
-                                value={userData.email}
-                                onChange={handleSignupInput}
-                            />
+                            <Input name="email" placeholder="Email" value={userData.email} handleInputChange={handleSignupInput} />
                         </section>
 
                         <section className={classes.formSection}>
-                            <label>Change password</label>
-                            <input
-                                type="password"
+                            <Input
+                                label="Change password"
                                 name="password"
+                                type="password"
                                 placeholder="Set new password"
                                 value={userData.password}
-                                onChange={handleSignupInput}
+                                handleInputChange={handleSignupInput}
                             />
-                            <input
-                                type="password"
+                            <Input
                                 name="confirmPass"
-                                placeholder="Repeat new password"
+                                type="password"
+                                placeholder="Confirm new password"
                                 value={userData.confirmPass}
-                                onChange={handleSignupInput}
+                                handleInputChange={handleSignupInput}
                             />
-                            {passError && <p className={classes.error}>{passError}</p>}
                         </section>
 
                         <div className={classes.bottomItems}>
@@ -108,14 +103,9 @@ export function CardSetting({
                     <img src={avatar} alt="Profile" className={classes.profilePicture} />
                     <h2 className={classes.profileName}>{userData.username}</h2>
                     <p className={classes.profileEmail}>{userData.email}</p>
-                    <Button
-                        width="fill"
-                        action={handleEditClick}
-                        label="Edit Information"
-                        icon={<EditNoteIcon fontSize="small" />}
-                    />
+                    <Button width="fill" action={handleEditClick} label="Edit Information" icon={<EditNoteIcon fontSize="small" />} />
                 </div>
             )}
         </>
-    );
+    )
 }

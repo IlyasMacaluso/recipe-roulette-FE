@@ -3,7 +3,6 @@ import { useProfile } from "../../hooks/Form/useProfile"
 import { CardSetting } from "./CardSetting"
 import { LinkBox } from "./Linkbox"
 import { useLocationHook } from "../../hooks/useLocationHook"
-import { useLogout } from "../../hooks/Form/useLogout"
 
 import classes from "./Settings.module.scss"
 

@@ -15,6 +15,7 @@ export function Placeholder({
             {topImage && <img src={`../src/assets/images/${topImage}`} alt="" />}
 
             {loadingAnimation && loadingAnimation}
+            
             <h2>
                 {text}
                 <span style={{ backgroundColor: highlightColor }}> {hightlitedText} </span>
