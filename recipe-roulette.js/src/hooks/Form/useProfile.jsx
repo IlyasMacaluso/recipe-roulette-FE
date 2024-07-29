@@ -6,7 +6,13 @@ import { useForm } from "../useForm/useForm"
 export function useProfile() {
     const [isEditing, setIsEditing] = useState(false)
 
-    const { data, showText, setData, handleInputChange, handleShowText } = useForm({
+    const {
+        data: profileData,
+        showText,
+        setData,
+        handleInputChange,
+        handleShowText,
+    } = useForm({
         username: "",
         email: "",
         password: "",
@@ -38,14 +44,34 @@ export function useProfile() {
 
     const handleAvatarChange = (e) => {
         const file = e.target.files[0]
+        let localData = getValue("userData")
+
+        console.log(file)
 
         if (file) {
-            const filePath = URL.createObjectURL(file)
+            const reader = new FileReader()
+            reader.onloadend = () => {
+                const base64String = reader.result
 
-            // Aggiorna data.avatar con il percorso del file
-            setData((prev) => ({ ...prev, avatar: filePath }))
+                setData((prev) => {
+                    return {
+                        ...prev,
+                        avatar: base64String,
+                    }
+                })
 
-            //funzione per aggiornare i dati del database
+                localData = {
+                    ...localData,
+                    avatar: base64String,
+                }
+
+                setValue("userData", localData)
+
+                console.log(base64String) // Verifica la stringa base64
+
+                // Funzione per aggiornare i dati del database
+            }
+            reader.readAsDataURL(file) // Assicurati di chiamare readAsDataURL per leggere il file
         }
     }
 
@@ -94,7 +120,7 @@ export function useProfile() {
     }
 
     return {
-        data,
+        profileData,
         handleInputChange,
 
         isEditing,

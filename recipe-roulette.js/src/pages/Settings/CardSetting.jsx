@@ -14,14 +14,14 @@ import { useMemo } from "react"
 
 export function CardSetting({
     isEditing,
-    data,
+    profileData,
     setIsEditing,
     handleAvatarChange,
     handleInputChange,
     handleSaveChanges,
     handleDiscardChanges,
     showText,
-    handleShowText
+    handleShowText,
 }) {
     const { isAuthenticated } = useAuth()
     const { handlePostRequest, error, loading } = usePostRequest()
@@ -33,8 +33,8 @@ export function CardSetting({
         email = null,
         avatar = null,
     } = useMemo(() => {
-        return data
-    }, [data])
+        return profileData
+    }, [profileData])
 
     const message = useMemo(() => {
         if (password && confirmPass) {
@@ -123,6 +123,7 @@ export function CardSetting({
 
                         <div className={classes.bottomItems}>
                             <Button
+                                active={(!password && !confirmPass) || (password.length >= 8 && password === confirmPass)}
                                 style="primary"
                                 width="fill"
                                 action={handleSaveChanges}
@@ -139,11 +140,14 @@ export function CardSetting({
                         </div>
                     </div>
                 </div>
+                
             ) : (
+
                 <div className={classes.profileSection}>
                     <img src={avatar} alt="Profile" className={classes.profilePicture} />
                     <h2 className={classes.profileName}>{username}</h2>
                     <p className={classes.profileEmail}>{email}</p>
+
                     <Button
                         width="fill"
                         action={() => setIsEditing(true)}
@@ -151,6 +155,7 @@ export function CardSetting({
                         icon={<EditNoteIcon fontSize="small" />}
                     />
                 </div>
+
             )}
         </>
     )

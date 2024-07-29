@@ -9,7 +9,7 @@ import classes from "./Settings.module.scss"
 export function Settings() {
 
     const {
-        data,
+        profileData,
         handleInputChange,
 
         isEditing,
@@ -31,7 +31,7 @@ export function Settings() {
         <div className={`${classes.settingsPage} ${animate && classes.animateSettings}`}>
             <CardSetting
                 isEditing={isEditing}
-                data={data}
+                profileData={profileData}
                 handleAvatarChange={handleAvatarChange}
                 handleInputChange={handleInputChange}
                 handleSaveChanges={handleSaveChanges}
