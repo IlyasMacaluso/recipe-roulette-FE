@@ -111,7 +111,7 @@ export function Signup({ setShowPopup = null, setChangeToSignup = null }) {
                     />
                 </div>
 
-                <InlineMessage message={message && { message: message }} error={error} loading={loading} />
+                <InlineMessage message={message && message} error={error} loading={loading} />
 
                 <div className={classes.buttonsWrapper}>
                     <Button

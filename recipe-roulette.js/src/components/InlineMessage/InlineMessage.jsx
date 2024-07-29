@@ -23,7 +23,7 @@ export function InlineMessage({ error = null, loading = false, message = null })
             {message && (
                 <div className={`${classes.inlineMsg}`}>
                     {<InfoOutlinedIcon fontSize="small" />}
-                    {message.message}
+                    {message}
                 </div>
             )}
         </>
