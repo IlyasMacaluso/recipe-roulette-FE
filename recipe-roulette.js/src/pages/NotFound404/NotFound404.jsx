@@ -18,7 +18,7 @@ export function NotFound404() {
                 topImage={"notfound.svg"}
                 text="The page you're looking for "
                 hightlitedText="does not exist!"
-                buttons={[<Button label="Return to home" icon={<HomeOutlinedIcon />} link={"/"} height={"large"} />]}
+                buttons={[<Button key={"Return to home"} label="Return to home" icon={<HomeOutlinedIcon />} link={"/"} height={"large"} />]}
             />
         </div>
     )

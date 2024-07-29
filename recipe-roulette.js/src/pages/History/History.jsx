@@ -62,6 +62,7 @@ export function History() {
                     topImage={"searching.svg"}
                     buttons={[
                         <Button
+                            key={"Start Ingredients Shuffle"}
                             link={"roulette"}
                             style="primary"
                             label="Start Ingredients Shuffle"
@@ -78,6 +79,7 @@ export function History() {
                         topImage={"undraw_access_account_re_8spm.svg"}
                         buttons={[
                             <Button
+                                key={"Login or Signup"}
                                 action={() => setShowPopup(true)}
                                 style="primary"
                                 label="Login or Signup"

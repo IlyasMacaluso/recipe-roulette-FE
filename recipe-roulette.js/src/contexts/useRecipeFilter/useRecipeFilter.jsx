@@ -106,6 +106,16 @@ export const useRecipeFilter = (isAuthenticated) => {
     // Reset dei filtri recipeFilter
     const handleDeselectRecipeFilters = () => {
         setRecipeFilter(new RecipeFilter())
+
+        if (isAuthenticated) {
+            userData.id &&
+                handlePostRequest({
+                    url: "http://localhost:3000/api/preferences/set-preferences",
+                    payload: { newPreferences: new RecipeFilter(), userId: userData.id },
+                    mutationId: "filtersUpdate",
+                })
+        }
+
         setValue("recipeFilter", new RecipeFilter())
     }
 

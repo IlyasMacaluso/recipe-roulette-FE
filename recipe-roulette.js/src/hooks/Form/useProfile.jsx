@@ -1,90 +1,110 @@
 import { useState, useEffect } from "react"
 import { useLocalStorage } from "../useLocalStorage/useLocalStorage"
 import { useAuth } from "../Auth/useAuth"
+import { useForm } from "../useForm/useForm"
 
 export function useProfile() {
-    const [editing, setEditing] = useState(false)
-    const [avatar, setAvatar] = useState("src/assets/images/3d_avatar_26.png")
-    const [userData, setUserData] = useState({
+    const [isEditing, setIsEditing] = useState(false)
+
+    const { data, showText, setData, handleInputChange, handleShowText } = useForm({
         username: "",
         email: "",
         password: "",
         confirmPass: "",
+        avatar: "src/assets/images/3d_avatar_26.png",
     })
+
     const { getValue, setValue } = useLocalStorage()
     const { isAuthenticated } = useAuth()
 
     useEffect(() => {
-        const user = getValue("userData")
-        if (user) {
-            setUserData((prevData) => ({
-                ...prevData,
-                username: user.username,
-                email: user.email,
-            }))
-            setAvatar((prev) => user?.avatar || prev)
+        const userData = getValue("userData")
+
+        if (userData) {
+            const { username = null, email = null, avatar = null } = userData
+
+            if (!isEditing) {
+                setData((prev) => {
+                    return {
+                        ...prev,
+                        username: username || prev.username,
+                        email: email || prev.email,
+                        avatar: avatar || prev.avatar,
+                    }
+                })
+            }
         }
-    }, [isAuthenticated, editing])
-
-    const handleEditClick = () => setEditing(true)
-
-    const handleDiscardClick = () => {
-        const user = getValue("userData")
-
-        setUserData({
-            username: user.username,
-            email: user.email,
-            password: "",
-            confirmPass: "",
-        })
-        setAvatar((prev) => user?.avatar || prev)
-        setEditing(false)
-    }
-
-    const handleSaveClick = () => {
-        let localData = getValue("userData")
-        localData = {
-            ...localData,
-            username: userData.username !== "" ? userData.username : localData.username,
-            email: userData.email !== "" ? userData.email : localData.email,
-        }
-        setValue("userData", localData)
-        //funzione per aggiornare i dati del database
-
-        // if (userData.password === userData.confirmPass && userData.password !== "") {
-        //     localStorage.setItem("password", userData.password)
-        // }
-        setEditing(false)
-    }
+    }, [isAuthenticated, isEditing])
 
     const handleAvatarChange = (e) => {
         const file = e.target.files[0]
-        const reader = new FileReader()
-        reader.onloadend = () => {
-            setAvatar(reader.result)
-            localStorage.setItem("avatar", reader.result)
-        }
-        reader.readAsDataURL(file)
 
-        //funzione per aggiornare i dati del database
+        if (file) {
+            const filePath = URL.createObjectURL(file)
+
+            // Aggiorna data.avatar con il percorso del file
+            setData((prev) => ({ ...prev, avatar: filePath }))
+
+            //funzione per aggiornare i dati del database
+        }
     }
 
-    const handleSignupInput = (e) => {
-        const { name, value } = e.target
-        setUserData((prevData) => ({
-            ...prevData,
-            [name]: value,
-        }))
+    const handleSaveChanges = () => {
+        let userData = getValue("userData")
+
+        const { username = null, email = null, avatar = null } = userData
+
+        setData((prev) => {
+            let newData = {
+                ...prev,
+                username: prev.username !== "" ? prev.username : username,
+                email: prev.email !== "" ? prev.email : email,
+                avatar: prev.avatar || avatar,
+            }
+
+            userData = {
+                ...userData,
+                username: prev.username !== "" ? prev.username : username,
+                email: prev.email !== "" ? prev.email : email,
+                avatar: prev.avatar || avatar,
+            }
+            setValue("userData", userData)
+
+            return newData
+        })
+
+        //funzione per aggiornare i dati del database
+
+        setIsEditing(false)
+    }
+
+    const handleDiscardChanges = () => {
+        const userData = getValue("userData")
+
+        const { username = null, email = null, avatar = null } = userData
+
+        setData({
+            username: username,
+            email: email,
+            password: "",
+            confirmPass: "",
+            avatar: avatar || prev.avatar,
+        })
+        setIsEditing(false)
     }
 
     return {
-        editing,
-        avatar,
-        userData,
-        handleEditClick,
-        handleSaveClick,
+        data,
+        handleInputChange,
+
+        isEditing,
+        setIsEditing,
+
+        showText,
+        handleShowText,
+
+        handleSaveChanges,
         handleAvatarChange,
-        handleSignupInput,
-        handleDiscardClick,
+        handleDiscardChanges,
     }
 }

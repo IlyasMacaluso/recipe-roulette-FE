@@ -7,36 +7,40 @@ import { useLocationHook } from "../../hooks/useLocationHook"
 import classes from "./Settings.module.scss"
 
 export function Settings() {
+
     const {
-        editing,
-        avatar,
-        userData,
-        handleEditClick,
-        handleSaveClick,
+        data,
+        handleInputChange,
+
+        isEditing,
+        setIsEditing,
+
+        showText,
+        handleShowText,
+
+        handleSaveChanges,
         handleAvatarChange,
-        handleSignupInput,
-        handleDiscardClick,
+        handleDiscardChanges,
+
     } = useProfile()
 
     const { location } = useLocationHook()
     const { animate } = useAnimate(location)
 
-    const passError = userData.password !== userData.confirmPass ? "Passwords do not match" : ""
-
     return (
         <div className={`${classes.settingsPage} ${animate && classes.animateSettings}`}>
             <CardSetting
-                editing={editing}
-                avatar={avatar}
-                userData={userData}
+                isEditing={isEditing}
+                data={data}
                 handleAvatarChange={handleAvatarChange}
-                handleSignupInput={handleSignupInput}
-                handleSaveClick={handleSaveClick}
-                handleEditClick={handleEditClick}
-                handleDiscardClick={handleDiscardClick}
-                passError={passError}
+                handleInputChange={handleInputChange}
+                handleSaveChanges={handleSaveChanges}
+                setIsEditing={setIsEditing}
+                handleDiscardChanges={handleDiscardChanges}
+                showText={showText}
+                handleShowText={handleShowText}
             />
-            {!editing && <LinkBox />}
+            {!isEditing && <LinkBox />}
         </div>
     )
 }

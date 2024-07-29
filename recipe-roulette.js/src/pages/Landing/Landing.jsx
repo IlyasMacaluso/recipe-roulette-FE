@@ -19,8 +19,8 @@ export function Landing() {
                 hightlitedText="Recipe Roulette"
                 topImage={"undraw_ideas_flow_re_bmea.svg"}
                 buttons={[
-                    <Button style="primary" label="Start Ingredients Shuffle" height={"large"} icon={<LoopOutlinedIcon />} link="/roulette" />,
-                    <Button label="Support the Developers" icon={<VolunteerActivismOutlinedIcon fontSize="small" />} />,
+                    <Button key={"Start Ingredients Shuffle"} style="primary" label="Start Ingredients Shuffle" height={"large"} icon={<LoopOutlinedIcon />} link="/roulette" />,
+                    <Button key={"Support the Developers"} label="Support the Developers" icon={<VolunteerActivismOutlinedIcon fontSize="small" />} />,
                 ]}
             />
         </div>

@@ -1,7 +1,6 @@
 import { createContext, useContext, useEffect, useState } from "react"
 import { useLocation } from "@tanstack/react-router"
 import { useAuth } from "../hooks/Auth/useAuth"
-import { useFetchPreferences } from "../hooks/fetchPreferences/useFetchPreferences"
 import { useLocalStorage } from "../hooks/useLocalStorage/useLocalStorage"
 import { useRecipesUpdate } from "./useRecipeUpdate/useRecipesUpdate"
 import { useRecipeFilter } from "./useRecipeFilter/useRecipeFilter"

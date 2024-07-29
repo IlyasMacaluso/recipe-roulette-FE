@@ -59,6 +59,7 @@ export function Favorited() {
                                     icon={<RotateLeftOutlinedIcon fontSize="small" />}
                                     height={"large"}
                                     label="Reset Filters"
+                                    key={"Reset Filters"}
                                     action={() => {
                                         setInputValue("")
                                         handleDeselectRecipeFilters()
@@ -78,6 +79,7 @@ export function Favorited() {
                             icon={<LoopOutlinedIcon fontSize="small" />}
                             height="large"
                             style="primary"
+                            key={"Start Ingredients Shuffle"}
                             label="Start Ingredients Shuffle"
                             link={"/roulette"}
                         />,
@@ -92,6 +94,7 @@ export function Favorited() {
                         spacious={true}
                         buttons={[
                             <Button
+                                key={"Login or Signup"}
                                 icon={<LoginIcon fontSize="small" />}
                                 style="primary"
                                 height="large"
