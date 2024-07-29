@@ -1,17 +1,22 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { useCancelMutation } from "../useCancelMutation.jsx/useCancelMutation"
 import axios from "axios"
+import { useLocalStorage } from "../useLocalStorage/useLocalStorage"
 
 export function usePostRequest() {
     const { cancelMutation } = useCancelMutation()
+    const { getValue } = useLocalStorage()
     const queryClient = useQueryClient()
 
     const postRequest = async (data) => {
+        const userData = getValue("userData")
+
         try {
-            const url = data.url
-            const signal = data?.signal
-            const payload = data?.payload
-            const res = await axios.post(url, payload, { signal })
+            const { url = null, signal = null, payload = null } = data
+            const token = userData?.token
+            const headers = token ? { Authorization: `Bearer ${token}` } : undefined
+
+            const res = await axios.post(url, payload, { headers, signal })
 
             if (res.status !== 201) {
                 throw new Error(`Network error, ${res?.data.msg || "Bad request"}`)

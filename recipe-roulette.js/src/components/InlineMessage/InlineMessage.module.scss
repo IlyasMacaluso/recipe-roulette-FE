@@ -4,16 +4,21 @@
     display: flex;
     align-items: center;
     gap: 0.5rem;
-    outline: 2px solid $dark-gray;
-    padding: 0.5rem;
-    border-radius: 0.5rem;
+    outline: 1px solid $dark-gray;
+    padding: 0.5rem 0.75rem;
+    border-radius: .75rem;
     color: $dark-gray;
     font-family: $header-text;
-    font-weight: 500;
+    font-weight: 400;
     line-height: 120%;
 
     &.red {
-        color: $red;
-        outline-color: $red;
+        color: $dark-red;
+        outline-color: $dark-red;
+    }
+
+    &.green {
+        color: $dark-green;
+        outline-color: $dark-green;
     }
 }

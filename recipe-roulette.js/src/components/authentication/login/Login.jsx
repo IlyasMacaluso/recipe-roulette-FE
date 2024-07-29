@@ -33,7 +33,7 @@ export function Login({ setShowPopup = null, setChangeToSignup = null }) {
         const userData = getValue("userData")
         if (userData) {
             const { username, rememberMe } = userData
-            userData.rememberMe && setData((prev) => ({ ...prev, username: username, rememberMe: rememberMe }))
+            rememberMe && setData((prev) => ({ ...prev, username: username, rememberMe: rememberMe }))
         }
     }, [])
 

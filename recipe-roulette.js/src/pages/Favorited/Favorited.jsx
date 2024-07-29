@@ -15,12 +15,16 @@ import LoopOutlinedIcon from "@mui/icons-material/LoopOutlined"
 import RotateLeftOutlinedIcon from "@mui/icons-material/RotateLeftOutlined"
 import LoginIcon from "@mui/icons-material/Login"
 import classes from "./Favorite.module.scss"
+import { useLoginToSignup } from "../../hooks/loginToSignup/useLoginToSignup"
+import { Signup } from "../../components/authentication/signup/Signup"
 
 export function Favorited() {
+    const [showPopup, setShowPopup] = useState()
+
     const { recipes, inputValue, handleDeselectRecipeFilters, setInputValue, favoritedLoading, historyLoading, foodPrefLoading } =
         useRecipesContext()
     const { isAuthenticated } = useAuth()
-    const [showPopup, setShowPopup] = useState()
+    const { changeToSignup, setChangeToSignup } = useLoginToSignup()
 
     const { location } = useLocationHook()
     const { animate } = useAnimate(location)
@@ -52,7 +56,7 @@ export function Favorited() {
                             spacious={true}
                             buttons={[
                                 <Button
-                                    icon={<RotateLeftOutlinedIcon fontSize="small"/>}
+                                    icon={<RotateLeftOutlinedIcon fontSize="small" />}
                                     height={"large"}
                                     label="Reset Filters"
                                     action={() => {
@@ -99,7 +103,11 @@ export function Favorited() {
                     {showPopup &&
                         createPortal(
                             <Popup>
-                                <Login setShowPopup={setShowPopup} />
+                                {!changeToSignup ? (
+                                    <Login setChangeToSignup={setChangeToSignup} setShowPopup={setShowPopup} />
+                                ) : (
+                                    <Signup setChangeToSignup={setChangeToSignup} setShowPopup={setShowPopup} />
+                                )}
                             </Popup>,
                             document.getElementById("popup-root")
                         )}
