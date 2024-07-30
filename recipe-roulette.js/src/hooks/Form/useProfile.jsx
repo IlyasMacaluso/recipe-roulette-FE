@@ -2,6 +2,8 @@ import { useState, useEffect } from "react"
 import { useLocalStorage } from "../useLocalStorage/useLocalStorage"
 import { useAuth } from "../Auth/useAuth"
 import { useForm } from "../useForm/useForm"
+import { usePostRequest } from "../usePostRequest/usePostRequest"
+import { useImageToString } from "../imgToString/imgToString"
 
 export function useProfile() {
     const [isEditing, setIsEditing] = useState(false)
@@ -17,11 +19,13 @@ export function useProfile() {
         email: "",
         password: "",
         confirmPass: "",
-        avatar: "src/assets/images/3d_avatar_26.png",
+        avatar: "",
     })
 
     const { getValue, setValue } = useLocalStorage()
     const { isAuthenticated } = useAuth()
+    const { handlePostRequest } = usePostRequest()
+    const { imgToString } = useImageToString()
 
     useEffect(() => {
         const userData = getValue("userData")
@@ -30,28 +34,30 @@ export function useProfile() {
             const { username = null, email = null, avatar = null } = userData
 
             if (!isEditing) {
-                setData((prev) => {
-                    return {
-                        ...prev,
-                        username: username || prev.username,
-                        email: email || prev.email,
-                        avatar: avatar || prev.avatar,
-                    }
+
+                imgToString("src/assets/images/3d_avatar_26.png").then((base64Avatar) => {
+                    
+                    setData((prev) => {
+                        return {
+                            ...prev,
+                            username: username || prev.username,
+                            email: email || prev.email,
+                            avatar: avatar || base64Avatar,
+                        }
+                    })
                 })
             }
         }
     }, [isAuthenticated, isEditing])
 
     const handleAvatarChange = (e) => {
-        const file = e.target.files[0]
+        const avatar = e.target.files[0]
         let localData = getValue("userData")
 
-        console.log(file)
-
-        if (file) {
+        if (avatar) {
             const reader = new FileReader()
             reader.onloadend = () => {
-                const base64String = reader.result
+                const base64String = reader.result.split(",")[1]
 
                 setData((prev) => {
                     return {
@@ -66,12 +72,8 @@ export function useProfile() {
                 }
 
                 setValue("userData", localData)
-
-                console.log(base64String) // Verifica la stringa base64
-
-                // Funzione per aggiornare i dati del database
             }
-            reader.readAsDataURL(file) // Assicurati di chiamare readAsDataURL per leggere il file
+            reader.readAsDataURL(avatar) // Assicurati di chiamare readAsDataURL per leggere il file
         }
     }
 
@@ -96,6 +98,11 @@ export function useProfile() {
             }
             setValue("userData", userData)
 
+            handlePostRequest({
+                url: "http://localhost:3000/api/users/change-avatar",
+                payload: { avatar: prev.avatar, userId: userData.id },
+            })
+
             return newData
         })
 
@@ -109,12 +116,15 @@ export function useProfile() {
 
         const { username = null, email = null, avatar = null } = userData
 
-        setData({
-            username: username,
-            email: email,
-            password: "",
-            confirmPass: "",
-            avatar: avatar || prev.avatar,
+        setData((prev) => {
+            return {
+                ...prev,
+                username: username,
+                email: email,
+                password: "",
+                confirmPass: "",
+                avatar: avatar || prev.avatar,
+            }
         })
         setIsEditing(false)
     }

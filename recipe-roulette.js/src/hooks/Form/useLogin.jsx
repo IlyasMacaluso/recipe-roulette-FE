@@ -11,15 +11,21 @@ export function useLogin(setShowPopup) {
     const { postRequest } = usePostRequest()
     const queryClient = useQueryClient()
 
-
     const Login = useMutation({
         mutationFn: (variables) => postRequest({ url: "http://localhost:3000/api/users/login", payload: variables }),
         onSuccess: (data, variables) => {
-            const { id, username, email, token } = data
-            setValue("userData", { id, username, email, token, rememberMe: variables.rememberMe })
+            const { id, username, email, token, avatar } = data
+            
+            setValue("userData", { id, username, email, token, rememberMe: variables.rememberMe, avatar })
             setIsAuthenticated(true)
 
-            const keys = [["get-recipes-history"], ["get-food-preferences"], ["get-favorited-recipes"], ["ingredients"]]
+            const keys = [
+                ["get-recipes-history"],
+                ["get-food-preferences"],
+                ["get-favorited-recipes"],
+                ["blacklisted-ingredients"],
+                ["ingredients"],
+            ]
             keys.forEach((key) => queryClient.invalidateQueries(key))
 
             handleOpenSnackbar("You are now logged in!", 3000)

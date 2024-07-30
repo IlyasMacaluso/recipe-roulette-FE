@@ -24,7 +24,7 @@ export function CardSetting({
     handleShowText,
 }) {
     const { isAuthenticated } = useAuth()
-    const { handlePostRequest, error, loading } = usePostRequest()
+    const { error, loading } = usePostRequest()
 
     const {
         password = null,
@@ -63,8 +63,9 @@ export function CardSetting({
         <>
             {isEditing ? (
                 <div className={classes.editProfileSection}>
+                    
                     <section className={classes.profileImageSection}>
-                        <img src={avatar} alt="Profile" className={classes.profilePicture} />
+                        <img src={`data:${avatar.type};base64,${avatar}`} alt="Profile" className={classes.profilePicture} />
                         <div className={classes.editProfileImageButtonWrapper}>
                             <input
                                 type="file"
@@ -140,12 +141,10 @@ export function CardSetting({
                         </div>
                     </div>
                 </div>
-                
             ) : (
-
                 <div className={classes.profileSection}>
-                    <img src={avatar} alt="Profile" className={classes.profilePicture} />
-                    <h2 className={classes.profileName}>{username}</h2>
+                        <img src={`data:${avatar.type};base64,${avatar}`} alt="Profile" className={classes.profilePicture} />
+                        <h2 className={classes.profileName}>{username}</h2>
                     <p className={classes.profileEmail}>{email}</p>
 
                     <Button
@@ -155,7 +154,6 @@ export function CardSetting({
                         icon={<EditNoteIcon fontSize="small" />}
                     />
                 </div>
-
             )}
         </>
     )

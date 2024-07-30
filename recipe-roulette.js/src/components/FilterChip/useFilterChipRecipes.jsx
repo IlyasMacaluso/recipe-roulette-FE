@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react"
+import { useEffect, useState } from "react"
 import { useRecipesContext } from "../../contexts/RecipesContext"
 
 export function useFilterChipRecipes(label, filterType, numericValue) {

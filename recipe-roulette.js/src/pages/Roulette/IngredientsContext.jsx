@@ -40,7 +40,7 @@ export const IngredientsProvider = ({ children }) => {
         error: blacklistedError,
         isLoading: blacklistedLoading,
     } = useQuery({
-        queryKey: ["ingredients"],
+        queryKey: ["blacklisted-ingredients"],
         queryFn: async () => {
             const { id } = getValue("userData")
             const res = await getRequest(`http://localhost:3000/api/preferences/get-blacklisted-ingredients/${id}`)

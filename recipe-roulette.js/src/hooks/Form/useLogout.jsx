@@ -12,7 +12,11 @@ export function useLogout(setShowPopup) {
     const queryClient = useQueryClient()
 
     const Logout = useMutation({
-        mutationFn: () => postRequest({ url: "http://localhost:3000/api/users/logout", payload: getValue("userData") }),
+        mutationFn: () => {
+            const { username, email, token } = getValue("userData")
+            const user = {username, email, token}
+            postRequest({ url: "http://localhost:3000/api/users/logout", payload: user })
+        },
         onSuccess: () => {
             let newUserData = getValue("userData")
             newUserData = { ...newUserData, token: null }

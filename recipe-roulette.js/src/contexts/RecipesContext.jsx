@@ -98,8 +98,8 @@ export const RecipesProvider = ({ children }) => {
                     history: recipesHistory || [],
                 }
 
-                setRecipes(DBRecipes)
-                setValue("recipeFilter", DBFoodPref)
+                DBRecipes && setRecipes(DBRecipes)
+                DBFoodPref && setValue("recipeFilter", DBFoodPref)
 
                 DBFoodPref && setRecipeFilter(DBFoodPref)
                 DBRecipes && setValue("recipes", DBRecipes)
