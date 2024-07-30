@@ -19,7 +19,7 @@ export function useLogin(setShowPopup) {
             setValue("userData", { id, username, email, token, rememberMe: variables.rememberMe })
             setIsAuthenticated(true)
 
-            const keys = [["get-recipes-history"], ["get-food-preferences"], ["get-favorited-recipes"]]
+            const keys = [["get-recipes-history"], ["get-food-preferences"], ["get-favorited-recipes"], ["ingredients"]]
             keys.forEach((key) => queryClient.invalidateQueries(key))
 
             handleOpenSnackbar("You are now logged in!", 3000)
