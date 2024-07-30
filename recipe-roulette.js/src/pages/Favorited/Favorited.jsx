@@ -1,8 +1,10 @@
-import RecipeCard from "../../components/RecipeCard/RecipeCard"
 import { useAnimate } from "../../hooks/animatePages/useAnimate"
 import { useRecipesContext } from "../../contexts/RecipesContext"
 import { useMemo, useState } from "react"
 import { useAuth } from "../../hooks/Auth/useAuth"
+import { useLoginToSignup } from "../../hooks/loginToSignup/useLoginToSignup"
+
+import { RecipeCard } from "../../components/RecipeCard/RecipeCard"
 import { Popup } from "../../components/Pop-up/Popup"
 import { createPortal } from "react-dom"
 import { Login } from "../../components/authentication/login/Login"
@@ -10,13 +12,14 @@ import { useLocationHook } from "../../hooks/useLocationHook"
 import { Button } from "../../components/Buttons/Button/Button"
 import { Skeleton } from "@mui/material"
 import { Placeholder } from "../../components/Placeholder/Placeholder"
+import { Signup } from "../../components/authentication/signup/Signup"
 
 import LoopOutlinedIcon from "@mui/icons-material/LoopOutlined"
 import RotateLeftOutlinedIcon from "@mui/icons-material/RotateLeftOutlined"
 import LoginIcon from "@mui/icons-material/Login"
-import classes from "./Favorite.module.scss"
-import { useLoginToSignup } from "../../hooks/loginToSignup/useLoginToSignup"
-import { Signup } from "../../components/authentication/signup/Signup"
+
+import layout from "../../assets/scss/pageLayout/pageWScroll.module.scss"
+import transition from "../../assets/scss/pageLayout/pageTransition.module.scss"
 
 export function Favorited() {
     const [showPopup, setShowPopup] = useState()
@@ -34,7 +37,7 @@ export function Favorited() {
     }, [inputValue, recipes.filtered, recipes.favorited])
 
     return (
-        <div className={`${classes.favoritePage} ${animate && classes.animateFavorite}`}>
+        <div className={`${layout.scrollPage} ${animate ? transition.animationEnd : transition.animationStart}`}>
             {favoritedLoading || foodPrefLoading || historyLoading ? (
                 [...Array(3)].map(() => (
                     <Skeleton key={Math.random()} sx={{ bgcolor: "#c5e4c9" }} variant="rounded" width={"100%"} height={"280px"} />
@@ -42,7 +45,7 @@ export function Favorited() {
             ) : isAuthenticated && recipes?.favorited.length > 0 ? (
                 <>
                     {searchFavorites && searchFavorites.length > 0 ? (
-                        <section className={classes.recipesWrapper}>
+                        <section className={layout.recipesWrapper}>
                             {searchFavorites.map((recipe) => (
                                 <RecipeCard recipe={recipe} key={recipe.id + recipe.title} />
                             ))}
@@ -89,9 +92,8 @@ export function Favorited() {
                 <>
                     <Placeholder
                         topImage={"undraw_access_account_re_8spm.svg"}
-                        text="Your Favorited list is empty,  "
-                        hightlitedText="Favorite your first recipe!"
-                        spacious={true}
+                        text="You need to login,  "
+                        hightlitedText="to see add or see favorites!"
                         buttons={[
                             <Button
                                 key={"Login or Signup"}

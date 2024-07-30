@@ -1,9 +1,6 @@
-@use "../../assets/scss/" as *;
+@use "../variables" as *;
 
-.recipesResultsPage {
-    scale: 0.8;
-    transition: scale 0.25s cubic-bezier(0.08, 0.82, 0.17, 1);
-
+.scrollPage {
     display: flex;
     flex-direction: column;
     width: 100%;
@@ -17,12 +14,6 @@
     padding-bottom: 0;
     overflow: hidden;
     gap: 0.75rem;
-}
-.recipesResultsPage .search {
-    width: 100%;
-    box-sizing: border-box;
-    display: flex;
-    gap: 0.5rem;
 }
 
 .recipesWrapper::-webkit-scrollbar {
@@ -41,7 +32,10 @@
     overflow-y: scroll;
 }
 
-.animateFavorite {
-    scale: 1;
-    transition: scale 0.25s cubic-bezier(0.08, 0.82, 0.17, 1);
+.scrollPage .search {
+    position: relative;
+    width: 100%;
+    box-sizing: border-box;
+    display: flex;
+    gap: $size-8;
 }

@@ -1,14 +1,16 @@
-import RecipeCard from "../../components/RecipeCard/RecipeCard"
-import { useAnimate } from "../../hooks/animatePages/useAnimate"
+import { RecipeCard } from "../../components/RecipeCard/RecipeCard"
 
+import { useAnimate } from "../../hooks/animatePages/useAnimate"
 import { useRecipesContext } from "../../contexts/RecipesContext"
 import { useSnackbar } from "../../components/Snackbar/useSnackbar"
 import { useLocationHook } from "../../hooks/useLocationHook"
 
-import classes from "./RecipesResults.module.scss"
 import { BlocksShuffleThree } from "react-svg-spinners"
 import { useRecipesFetch } from "../../hooks/useRecipesFetch/useRecipesFetch"
 import { Placeholder } from "../../components/Placeholder/Placeholder"
+
+import layout from "../../assets/scss/pageLayout/pageWScroll.module.scss"
+import transition from "../../assets/scss/pageLayout/pageTransition.module.scss"
 
 export function RecipeResults() {
     const { recipes } = useRecipesContext()
@@ -19,9 +21,9 @@ export function RecipeResults() {
     const { animate } = useAnimate(location)
 
     return (
-        <div className={`${classes.recipesResultsPage} ${animate && classes.animateFavorite} `}>
+        <div className={`${layout.scrollPage} ${animate ? transition.animationEnd : transition.animationStart} `}>
             {!state.loading ? (
-                <section className={classes.recipesWrapper}>
+                <section className={layout.recipesWrapper}>
                     {recipes.results &&
                         recipes.results.map((recipe) => {
                             return (

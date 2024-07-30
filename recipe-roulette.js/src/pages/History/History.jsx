@@ -1,4 +1,4 @@
-import RecipeCard from "../../components/RecipeCard/RecipeCard"
+import { RecipeCard } from "../../components/RecipeCard/RecipeCard"
 import { useAnimate } from "../../hooks/animatePages/useAnimate"
 import { useRecipesContext } from "../../contexts/RecipesContext"
 import { useMemo, useState } from "react"
@@ -13,7 +13,9 @@ import { Button } from "../../components/Buttons/Button/Button"
 
 import LoopOutlinedIcon from "@mui/icons-material/LoopOutlined"
 import LoginIcon from "@mui/icons-material/Login"
-import classes from "../Favorited/Favorite.module.scss"
+
+import layout from "../../assets/scss/pageLayout/pageWScroll.module.scss"
+import transition from "../../assets/scss/pageLayout/pageTransition.module.scss"
 
 export function History() {
     const [showPopup, setShowPopup] = useState()
@@ -32,7 +34,7 @@ export function History() {
     }, [inputValue, recipes.history])
 
     return (
-        <div className={`${classes.favoritePage} ${animate && classes.animateFavorite}`}>
+        <div className={`${layout.scrollPage} ${animate ? transition.animationEnd : transition.animationStart}`}>
             {favoritedLoading || foodPrefLoading || historyLoading ? (
                 [...Array(3)].map(() => (
                     <Skeleton key={Math.random()} sx={{ bgcolor: "#c5e4c9" }} variant="rounded" width={"100%"} height={"280px"} />
@@ -40,7 +42,7 @@ export function History() {
             ) : isAuthenticated && recipes?.history.length > 0 ? (
                 <>
                     {searchHistory && searchHistory.length > 0 ? (
-                        <section className={classes.recipesWrapper}>
+                        <section className={layout.recipesWrapper}>
                             {searchHistory.map((recipe) => (
                                 <RecipeCard recipe={recipe} key={recipe.id + recipe.title} />
                             ))}

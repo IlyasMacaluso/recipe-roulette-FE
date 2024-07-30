@@ -12,23 +12,35 @@ import { Skeleton } from "@mui/material"
 import ManageSearchOutlinedIcon from "@mui/icons-material/ManageSearchOutlined"
 import AddIcon from "@mui/icons-material/Add"
 import LoopOutlinedIcon from "@mui/icons-material/LoopOutlined"
+
 import classes from "./Roulette.module.scss"
+
+import layout from "../../assets/scss/pageLayout/pageFH.module.scss"
+import transition from "../../assets/scss/pageLayout/pageTransition.module.scss"
 
 export function Roulette() {
     const { ingredients, shuffleIng, handleIngIncrement, ingredientsLoading, blacklistedLoading } = useManageIngredients()
     const { recipeFilter } = useRecipesContext()
-    const { isActive, setIsActive } = useButtonState(ingredients)
+    const { isActive } = useButtonState(ingredients)
     const { location } = useLocationHook()
     const { animate } = useAnimate(location)
     const { handleRecipesFetch } = useRecipesFetch()
     const { handleAnimation, animationState } = useShakeAnimation()
 
     return (
-        <div className={`${classes.discoveryPage} ${animate && classes.animateDiscovery}`}>
+        <div className={`${layout.pageFH} ${layout.noPadding} ${animate ? transition.animationEnd : transition.animationStart}`}>
             <div className={classes.contentWrapper}>
                 <div className={classes.ingredientsWrapper}>
                     {ingredientsLoading || blacklistedLoading
-                        ? [...Array(5)].map(() => <Skeleton className={classes.skeleton} key={Math.random()} sx={{ bgcolor: "#c5e4c9" }} variant="rounded" width={"100%"}/>)
+                        ? [...Array(5)].map(() => (
+                              <Skeleton
+                                  className={classes.skeleton}
+                                  key={Math.random()}
+                                  sx={{ bgcolor: "#c5e4c9" }}
+                                  variant="rounded"
+                                  width={"100%"}
+                              />
+                          ))
                         : ingredients?.displayed && ingredients?.displayed.map((ing) => <IngredientCard key={ing.id} ing={ing} />)}
                 </div>
             </div>

@@ -18,7 +18,6 @@ export const RecipesProvider = ({ children }) => {
         history: [],
         targetedRecipe: null,
     }) //stato delle ricette
-    
     const location = useLocation()
 
     const [inputValue, setInputValue] = useState("") // Valore dell'input che filtra i risultati
@@ -34,12 +33,12 @@ export const RecipesProvider = ({ children }) => {
 
     // funzioni per aggiornare le ricette
     const { handleRecipesUpdate, handleTargetedRecipe } = useRecipesUpdate(setRecipes)
-
     //fetch ricette preferite
     const {
         data: DBFAvorited,
         error: favoritedError,
         isLoading: favoritedLoading,
+        refetch: refetchFav,
     } = useQuery({
         queryKey: ["get-favorited-recipes"],
         queryFn: async () => {
@@ -54,6 +53,7 @@ export const RecipesProvider = ({ children }) => {
         data: DBFoodPref,
         error: foodPrefError,
         isLoading: foodPrefLoading,
+        refetch: refetchFoodPrefs,
     } = useQuery({
         queryKey: ["get-food-preferences"],
         queryFn: async () => {
@@ -68,6 +68,7 @@ export const RecipesProvider = ({ children }) => {
         data: recipesHistory,
         error: historyError,
         isLoading: historyLoading,
+        refetch: refetchHistory,
     } = useQuery({
         queryKey: ["get-recipes-history"],
         queryFn: async () => {
@@ -84,7 +85,7 @@ export const RecipesProvider = ({ children }) => {
         localRecipes?.favorited && setRecipes(localRecipes)
 
         localFilters && setRecipeFilter(localFilters)
-        localFilters && setValue("recipes", localRecipes)
+        localRecipes && setValue("recipes", localRecipes)
 
         if (isAuthenticated) {
             if (!favoritedLoading && !foodPrefLoading && !historyLoading) {
@@ -101,7 +102,7 @@ export const RecipesProvider = ({ children }) => {
                 setValue("recipeFilter", DBFoodPref)
 
                 DBFoodPref && setRecipeFilter(DBFoodPref)
-                DBFoodPref && setValue("recipes", DBRecipes)
+                DBRecipes && setValue("recipes", DBRecipes)
             }
         } else {
             // Se non si è autenticati, setta isFavorited:false (nella variabile di stato)
@@ -138,9 +139,11 @@ export const RecipesProvider = ({ children }) => {
         }
     }, [recipeFilter])
 
-    // Reset dell'inputValue quando si cambia pagina
+    // When the patch changes refetch data needed, and reset inputValue
     useEffect(() => {
-        setInputValue("")
+        ;(location.pathname === "history" || "/favorited") && setInputValue("")
+        location.pathname === "/favorited" && refetchFav()
+        location.pathname === "/history" && refetchHistory()
     }, [location.pathname])
 
     // Filtro i risultati quando viene modificato l'input

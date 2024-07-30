@@ -44,15 +44,13 @@ export const useRecipesUpdate = (setRecipes) => {
                         url: "http://localhost:3000/api/preferences/set-favorited-recipes",
                         payload: { recipe: updatedRecipe, userId: userData.id },
                         mutationId: mutationId,
-                        queryKey: [["get-favorited-recipes"], ["get-recipes-history"]],
                     })
 
                 userData.id &&
                     handlePostRequest({
                         url: "http://localhost:3000/api/preferences/update-recipes-history",
                         payload: { recipe: updatedRecipe, userId: userData.id },
-                        mutationId: mutationId,
-                        queryKey: [["get-favorited-recipes"], ["get-recipes-history"]],
+                        // mutationId: mutationId,
                     })
             }
 
@@ -81,7 +79,6 @@ export const useRecipesUpdate = (setRecipes) => {
                         url: "http://localhost:3000/api/preferences/update-recipes-history",
                         payload: { recipe, userId: userData.id },
                         mutationId: mutationId,
-                        queryKey: [["get-recipes-history"]],
                     })
             }
 

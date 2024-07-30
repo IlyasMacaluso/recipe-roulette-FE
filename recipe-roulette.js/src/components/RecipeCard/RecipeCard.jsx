@@ -3,7 +3,6 @@ import { useRecipeCard } from "./useRecipeCard"
 import { useRecipesContext } from "../../contexts/RecipesContext"
 import { FilterChip } from "../FilterChip/FilterChip"
 import { useAuth } from "../../hooks/Auth/useAuth"
-import { useLocalStorage } from "../../hooks/useLocalStorage/useLocalStorage"
 
 import FavoriteIcon from "@mui/icons-material/Favorite"
 import ExpandLessIcon from "@mui/icons-material/ExpandLess"
@@ -11,13 +10,12 @@ import Skeleton from "@mui/material/Skeleton"
 
 import classes from "./RecipeCard.module.scss"
 
-function RecipeCard({ isExpanded = false, recipe, handleClickLoginSnackBar = null }) {
+export function RecipeCard({ isExpanded = false, recipe, handleClickLoginSnackBar = null }) {
     const location = useLocation()
     const navigate = useNavigate()
 
     const { recipeAnimation } = useRecipesContext()
     const { isAuthenticated } = useAuth()
-    const { getValue } = useLocalStorage()
     const { title, attributes, is_gluten_free, is_vegetarian, is_vegan, ingQuantities, preparation } = recipe
     const { handleCardState, cardState, expandedCard, expandedIngredients, handleIngWrapperState, handleOpenRecipePage } = useRecipeCard(
         recipe,
@@ -26,7 +24,6 @@ function RecipeCard({ isExpanded = false, recipe, handleClickLoginSnackBar = nul
 
     const image =
         "https://news.mit.edu/sites/default/files/styles/news_article__image_gallery/public/images/202312/MIT_Food-Diabetes-01_0.jpg?itok=Mp8FVJkC"
-    const prevPath = localStorage.getItem("prevPath")
 
     return (
         <div
@@ -71,6 +68,7 @@ function RecipeCard({ isExpanded = false, recipe, handleClickLoginSnackBar = nul
 
             {expandedCard && (
                 <div className={classes.recipeBody}>
+                    {/* lista ingredienti */}
                     <ul
                         className={`${classes.ingredients} ${
                             expandedIngredients ? classes.ingredientsExpanded : classes.ingredientsCollapsed
@@ -80,6 +78,7 @@ function RecipeCard({ isExpanded = false, recipe, handleClickLoginSnackBar = nul
                             <h4>Ingredients</h4>
                             <ExpandLessIcon className={classes.ico} fontSize="small" />
                         </div>
+
                         <ul>
                             {ingQuantities.length > 0 &&
                                 ingQuantities.map((ingredient, index) => {
@@ -88,9 +87,11 @@ function RecipeCard({ isExpanded = false, recipe, handleClickLoginSnackBar = nul
                         </ul>
                     </ul>
 
+                    {/* Preparation instructions */}
                     <div className={classes.preparation}>
                         <h2>Preparation</h2>
                         {preparation.length > 0 && (
+                            // preparations steps (mapped from array)
                             <ol>
                                 {preparation.map((steps, index) => {
                                     return (
@@ -119,5 +120,3 @@ function RecipeCard({ isExpanded = false, recipe, handleClickLoginSnackBar = nul
         </div>
     )
 }
-
-export default RecipeCard

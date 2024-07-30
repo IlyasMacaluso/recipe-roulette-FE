@@ -5,15 +5,16 @@ import { useAnimate } from "../../hooks/animatePages/useAnimate"
 import { useLocationHook } from "../../hooks/useLocationHook"
 
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined"
-import cssAnimation from "../../assets/scss/pageLayout/pageTransition.module.scss"
-import pageStyle from "../../assets/scss/pageLayout/pageFH.module.scss"
+
+import transitions from "../../assets/scss/pageLayout/pageTransition.module.scss"
+import layouts from "../../assets/scss/pageLayout/pageFH.module.scss"
 
 export function NotFound404() {
     const { location } = useLocationHook()
     const { animate } = useAnimate(location)
 
     return (
-        <div className={`${pageStyle.pageFH} ${animate ? cssAnimation.animationEnd : cssAnimation.animationStart}`}>
+        <div className={`${layouts.pageFH} ${animate ? transitions.animationEnd : transitions.animationStart}`}>
             <Placeholder
                 topImage={"notfound.svg"}
                 text="The page you're looking for "
