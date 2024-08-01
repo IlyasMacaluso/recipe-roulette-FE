@@ -6,10 +6,10 @@ import DoneAllIcon from "@mui/icons-material/DoneAll"
 import EditNoteIcon from "@mui/icons-material/EditNote"
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined"
 import UploadIcon from "@mui/icons-material/Upload"
+import EditIcon from '@mui/icons-material/Edit';
 
 import classes from "./Settings.module.scss"
 import { InlineMessage } from "../../components/InlineMessage/InlineMessage.jsx"
-import { usePostRequest } from "../../hooks/usePostRequest/usePostRequest.jsx"
 import { useMemo } from "react"
 
 export function CardSetting({
@@ -22,13 +22,15 @@ export function CardSetting({
     handleDiscardChanges,
     showText,
     handleShowText,
+    loading,
+    error,
 }) {
     const { isAuthenticated } = useAuth()
-    const { error, loading } = usePostRequest()
 
     const {
-        password = null,
-        confirmPass = null,
+        newPassword = null,
+        confirmNewPass = null,
+        oldPassword = null,
         username = null,
         email = null,
         avatar = null,
@@ -37,9 +39,9 @@ export function CardSetting({
     }, [profileData])
 
     const message = useMemo(() => {
-        if (password && confirmPass) {
-            if (password.length >= 8 || confirmPass.length >= 8) {
-                if (password !== confirmPass) {
+        if (newPassword && confirmNewPass) {
+            if (newPassword.length >= 8 || confirmNewPass.length >= 8) {
+                if (newPassword !== confirmNewPass) {
                     return "Passwords do not match"
                 } else {
                     return null
@@ -63,7 +65,6 @@ export function CardSetting({
         <>
             {isEditing ? (
                 <div className={classes.editProfileSection}>
-                    
                     <section className={classes.profileImageSection}>
                         <img src={`data:${avatar.type};base64,${avatar}`} alt="Profile" className={classes.profilePicture} />
                         <div className={classes.editProfileImageButtonWrapper}>
@@ -85,51 +86,72 @@ export function CardSetting({
                         <section className={classes.formSection}>
                             <Input
                                 handleInputChange={handleInputChange}
-                                label="Edit username or email"
+                                label="Change username"
                                 name="username"
                                 placeholder="Username"
                                 value={username}
                             />
 
-                            <Input name="email" placeholder="Email" value={email} handleInputChange={handleInputChange} />
+                            <Input
+                                label="Change email"
+                                name="email"
+                                placeholder="Email"
+                                value={email}
+                                handleInputChange={handleInputChange}
+                            />
                         </section>
 
                         <section className={classes.formSection}>
+                            <h2 className={classes.title}>Change password</h2>
                             <Input
-                                name="password"
+                                name="oldPassword"
                                 type={showText ? "text" : "password"}
-                                placeholder={"Insert your password"}
+                                placeholder={"Insert old password"}
                                 handleInputChange={handleInputChange}
                                 hasIcons={true}
                                 handleShowText={handleShowText}
-                                error={password && confirmPass && password !== confirmPass}
-                                value={password}
-                                label="Change password"
+                                value={oldPassword}
+                                label="Old password"
                             />
 
                             <Input
-                                label="Password"
-                                name="confirmPass"
+                                name="newPassword"
+                                type={showText ? "text" : "password"}
+                                placeholder={"Insert new password"}
+                                handleInputChange={handleInputChange}
+                                hasIcons={true}
+                                handleShowText={handleShowText}
+                                error={newPassword && confirmNewPass && newPassword !== confirmNewPass}
+                                value={newPassword}
+                                label="New password"
+                            />
+
+                            <Input
+                                name="confirmNewPass"
                                 type={showText ? "text" : "password"}
                                 placeholder={"Confirm new password"}
                                 handleInputChange={handleInputChange}
                                 hasIcons={true}
                                 handleShowText={handleShowText}
-                                error={password && confirmPass && password !== confirmPass}
-                                value={confirmPass}
+                                error={newPassword && confirmNewPass && newPassword !== confirmNewPass}
+                                value={confirmNewPass}
+                                label="Confirm new password"
                             />
-
-                            <InlineMessage message={message && message} error={error} loading={loading} />
                         </section>
+
+                        <InlineMessage message={message && message} error={error} loading={loading} loadingMessage="Updating your informations" />
 
                         <div className={classes.bottomItems}>
                             <Button
-                                active={(!password && !confirmPass) || (password.length >= 8 && password === confirmPass)}
+                                active={
+                                    (!newPassword && !confirmNewPass) || (newPassword.length >= 8 && newPassword === confirmNewPass)
+                                }
                                 style="primary"
                                 width="fill"
                                 action={handleSaveChanges}
                                 label="Save Changes"
                                 icon={<DoneAllIcon fontSize="small" />}
+                                loading={loading}
                             />
 
                             <Button
@@ -143,8 +165,8 @@ export function CardSetting({
                 </div>
             ) : (
                 <div className={classes.profileSection}>
-                        <img src={`data:${avatar.type};base64,${avatar}`} alt="Profile" className={classes.profilePicture} />
-                        <h2 className={classes.profileName}>{username}</h2>
+                    <img src={`data:${avatar.type};base64,${avatar}`} alt="Profile" className={classes.profilePicture} />
+                    <h2 className={classes.profileName}>{username}</h2>
                     <p className={classes.profileEmail}>{email}</p>
 
                     <Button

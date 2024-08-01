@@ -1,11 +1,10 @@
 import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline"
 import CachedIcon from "@mui/icons-material/Cached"
-import CheckOutlinedIcon from "@mui/icons-material/CheckOutlined"
-import InfoOutlinedIcon from '@mui/icons-material/InfoOutlined';
+import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined"
 
 import classes from "./InlineMessage.module.scss"
 
-export function InlineMessage({ error = null, loading = false, message = null }) {
+export function InlineMessage({ error = false, loading = false, message = null, loadingMessage = "Loading..." }) {
     return (
         <>
             {error && (
@@ -17,7 +16,7 @@ export function InlineMessage({ error = null, loading = false, message = null })
             {loading && (
                 <div className={classes.inlineMsg}>
                     {<CachedIcon fontSize="small" />}
-                    Loading...
+                    {loadingMessage}
                 </div>
             )}
             {message && (

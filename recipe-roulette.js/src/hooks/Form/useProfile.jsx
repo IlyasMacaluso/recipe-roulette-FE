@@ -17,14 +17,15 @@ export function useProfile() {
     } = useForm({
         username: "",
         email: "",
-        password: "",
-        confirmPass: "",
+        oldPassword: "",
+        newPassword: "",
+        confirmNewPass: "",
         avatar: "",
     })
 
     const { getValue, setValue } = useLocalStorage()
     const { isAuthenticated } = useAuth()
-    const { handlePostRequest } = usePostRequest()
+    const { handlePostRequest, error, loading } = usePostRequest()
     const { imgToString } = useImageToString()
 
     useEffect(() => {
@@ -34,9 +35,7 @@ export function useProfile() {
             const { username = null, email = null, avatar = null } = userData
 
             if (!isEditing) {
-
                 imgToString("src/assets/images/3d_avatar_26.png").then((base64Avatar) => {
-                    
                     setData((prev) => {
                         return {
                             ...prev,
@@ -70,8 +69,6 @@ export function useProfile() {
                     ...localData,
                     avatar: base64String,
                 }
-
-                setValue("userData", localData)
             }
             reader.readAsDataURL(avatar) // Assicurati di chiamare readAsDataURL per leggere il file
         }
@@ -79,10 +76,15 @@ export function useProfile() {
 
     const handleSaveChanges = () => {
         let userData = getValue("userData")
-
         const { username = null, email = null, avatar = null } = userData
 
         setData((prev) => {
+            const usernameChanged = username !== prev.username
+            const emailChanged = email !== prev.email
+            const avatarChanged = avatar !== prev.avatar
+            const passwordChanged = prev.oldPassword && prev.newPassword && prev.confirmNewPass && prev.newPassword === prev.confirmNewPass
+            const userDataChanged = usernameChanged || emailChanged || avatarChanged || passwordChanged
+
             let newData = {
                 ...prev,
                 username: prev.username !== "" ? prev.username : username,
@@ -98,17 +100,23 @@ export function useProfile() {
             }
             setValue("userData", userData)
 
-            handlePostRequest({
-                url: "http://localhost:3000/api/users/change-avatar",
-                payload: { avatar: prev.avatar, userId: userData.id },
-            })
+            userDataChanged &&
+                handlePostRequest({
+                    url: "http://localhost:3000/api/users/change-user-data", //da creare funzione BE
+                    payload: {
+                        newUsername: usernameChanged ? prev.username : null,
+                        newEmail: emailChanged ? prev.email : null,
+                        newPassword: passwordChanged ? prev.newPassword : null,
+                        newAvatar: avatarChanged ? prev.avatar : null,
+                        userId: userData.id,
+                    },
+                    onSettled: () => setIsEditing(false),
+                })
+
+            !avatarChanged && !passwordChanged && !usernameChanged && !emailChanged && setIsEditing(false)
 
             return newData
         })
-
-        //funzione per aggiornare i dati del database
-
-        setIsEditing(false)
     }
 
     const handleDiscardChanges = () => {
@@ -121,8 +129,9 @@ export function useProfile() {
                 ...prev,
                 username: username,
                 email: email,
-                password: "",
-                confirmPass: "",
+                oldPassword: "",
+                newPassword: "",
+                confirmNewPass: "",
                 avatar: avatar || prev.avatar,
             }
         })
@@ -138,6 +147,9 @@ export function useProfile() {
 
         showText,
         handleShowText,
+
+        loading,
+        error,
 
         handleSaveChanges,
         handleAvatarChange,

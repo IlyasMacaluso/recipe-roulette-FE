@@ -7,7 +7,6 @@ import { useLocationHook } from "../../hooks/useLocationHook"
 import classes from "./Settings.module.scss"
 
 export function Settings() {
-
     const {
         profileData,
         handleInputChange,
@@ -18,10 +17,12 @@ export function Settings() {
         showText,
         handleShowText,
 
+        loading,
+        error,
+
         handleSaveChanges,
         handleAvatarChange,
         handleDiscardChanges,
-
     } = useProfile()
 
     const { location } = useLocationHook()
@@ -39,6 +40,8 @@ export function Settings() {
                 handleDiscardChanges={handleDiscardChanges}
                 showText={showText}
                 handleShowText={handleShowText}
+                loading={loading}
+                error={error}
             />
             {!isEditing && <LinkBox />}
         </div>

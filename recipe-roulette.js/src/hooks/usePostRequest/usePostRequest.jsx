@@ -10,7 +10,6 @@ export function usePostRequest() {
 
     const postRequest = async (data) => {
         const userData = getValue("userData")
-
         try {
             const { url = null, signal = null, payload = null } = data
             const token = userData?.token
@@ -19,7 +18,7 @@ export function usePostRequest() {
             const res = await axios.post(url, payload, { headers, signal })
 
             if (res.status !== 201) {
-                throw new Error(`Network error, ${res?.data.msg || "Bad request"}`)
+                throw new Error(`Network error, ${res.data.msg || "Something went wrong"} `)
             }
 
             return res.data
@@ -27,7 +26,7 @@ export function usePostRequest() {
             if (axios.isCancel(error)) {
                 console.log("request canceled", error.message)
             } else {
-                console.log(error)
+                // console.log(error)
                 throw new Error(error.response?.data.msg || "Something went wrong")
             }
         }
@@ -50,11 +49,17 @@ export function usePostRequest() {
             }
         },
         onError: (error) => {
-            console.error(error)
+            console.error(error.response.data.msg)
+        },
+        onSettled: (data, error, variables) => {
+            if (error) {
+                return
+            }
+            variables.onSettled && variables.onSettled()
         },
     })
 
-    const handlePostRequest = async ({ url, payload, mutationId = null, queryKey = null }, meta = null) => {
+    const handlePostRequest = async ({ url, payload, mutationId = null, queryKey = null, onSettled = null }, meta = null) => {
         mutationId && cancelMutation(mutationId)
         mutation.mutate(
             {
@@ -62,11 +67,12 @@ export function usePostRequest() {
                 payload, //data needed for the post request
                 mutationId, // needed to cancel previous requests
                 queryKey, //invalidate query onSuccess (re execute query with this id)
+                onSettled, //operations to execute on query success
                 signal: mutationId ? mutation?.context?.abortController.signal : null, // cancels previous requests with that mutationId
             },
             { meta } //scopeId (queue requests with same scopeId)
         )
     }
 
-    return { handlePostRequest, postRequest }
+    return { handlePostRequest, postRequest, loading: mutation.isPending, error: mutation.error }
 }

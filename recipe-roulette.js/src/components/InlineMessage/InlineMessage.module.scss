@@ -4,13 +4,14 @@
     display: flex;
     align-items: center;
     gap: 0.5rem;
-    outline: 1px solid $dark-gray;
+    outline: 1px solid $light-gray;
     padding: 0.5rem 0.75rem;
-    border-radius: .75rem;
-    color: $dark-gray;
+    border-radius: .25rem;
+    color: $darkish-gray;
     font-family: $header-text;
-    font-weight: 400;
+    font-weight: 500;
     line-height: 120%;
+    font-size: 14px;
 
     &.red {
         color: $dark-red;

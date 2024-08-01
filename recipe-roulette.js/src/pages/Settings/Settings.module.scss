@@ -28,8 +28,10 @@
     max-height: 100%;
     overflow-y: scroll;
     .title {
-        font-size: $text-size-24;
-        margin: $size-16 0;
+        font-size: $text-size-20;
+        font-family: $header-text;
+        margin: 0;
+        color: $dark-gray;
     }
     .profileSection {
         display: flex;
@@ -136,7 +138,7 @@
             width: 100%;
             display: flex;
             flex-direction: column;
-            gap: 24px;
+            gap: 2rem;
 
             .formSection {
                 display: flex;
