@@ -42,6 +42,8 @@ export function usePostRequest() {
         onSuccess: (data, variables) => {
             console.log(data)
 
+            variables.onSuccess && variables.onSuccess()
+
             if (variables?.queryKey) {
                 variables.queryKey.forEach((key) => {
                     queryClient.invalidateQueries({ queryKey: key })
@@ -51,15 +53,9 @@ export function usePostRequest() {
         onError: (error) => {
             console.error(error.response.data.msg)
         },
-        onSettled: (data, error, variables) => {
-            if (error) {
-                return
-            }
-            variables.onSettled && variables.onSettled()
-        },
     })
 
-    const handlePostRequest = async ({ url, payload, mutationId = null, queryKey = null, onSettled = null }, meta = null) => {
+    const handlePostRequest = async ({ url, payload, mutationId = null, queryKey = null, onSuccess = null }, meta = null) => {
         mutationId && cancelMutation(mutationId)
         mutation.mutate(
             {
@@ -67,7 +63,7 @@ export function usePostRequest() {
                 payload, //data needed for the post request
                 mutationId, // needed to cancel previous requests
                 queryKey, //invalidate query onSuccess (re execute query with this id)
-                onSettled, //operations to execute on query success
+                onSuccess, //operations to execute on query success
                 signal: mutationId ? mutation?.context?.abortController.signal : null, // cancels previous requests with that mutationId
             },
             { meta } //scopeId (queue requests with same scopeId)

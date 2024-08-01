@@ -34,7 +34,7 @@ export function useProfile() {
         if (userData) {
             const { username = null, email = null, avatar = null } = userData
 
-            if (!isEditing) {
+            !isEditing &&
                 imgToString("src/assets/images/3d_avatar_26.png").then((base64Avatar) => {
                     setData((prev) => {
                         return {
@@ -45,7 +45,7 @@ export function useProfile() {
                         }
                     })
                 })
-            }
+            //aggiorna la variabile di stato quando si passa a !isEditing (dopo aver aggiornato i dati, o dopo il login)
         }
     }, [isAuthenticated, isEditing])
 
@@ -75,30 +75,30 @@ export function useProfile() {
     }
 
     const handleSaveChanges = () => {
-        let userData = getValue("userData")
-        const { username = null, email = null, avatar = null } = userData
+        let localData = getValue("userData")
+        const { username = null, email = null, avatar = null } = localData
 
         setData((prev) => {
-            const usernameChanged = username !== prev.username
-            const emailChanged = email !== prev.email
+            const usernameChanged = username !== prev.username && prev.username !== ""
+            const emailChanged = email !== prev.email && prev.email !== ""
             const avatarChanged = avatar !== prev.avatar
-            const passwordChanged = prev.oldPassword && prev.newPassword && prev.confirmNewPass && prev.newPassword === prev.confirmNewPass
+            const passwordChanged = prev.oldPassword && prev.newPassword && prev.confirmNewPass && prev.newPassword === prev.confirmNewPass 
             const userDataChanged = usernameChanged || emailChanged || avatarChanged || passwordChanged
 
             let newData = {
-                ...prev,
-                username: prev.username !== "" ? prev.username : username,
-                email: prev.email !== "" ? prev.email : email,
-                avatar: prev.avatar || avatar,
+                ...prev, //passwords etc
+                username: usernameChanged ? prev.username : username,
+                email: emailChanged ? prev.email : email,
+                avatar: avatarChanged ? prev.avatar : avatar,
             }
 
-            userData = {
-                ...userData,
-                username: prev.username !== "" ? prev.username : username,
-                email: prev.email !== "" ? prev.email : email,
-                avatar: prev.avatar || avatar,
+            localData = {
+                ...localData, //token etc
+                username: usernameChanged ? prev.username : username,
+                email: emailChanged ? prev.email : email,
+                avatar: avatarChanged ? prev.avatar : avatar,
             }
-            setValue("userData", userData)
+            setValue("userData", localData)
 
             userDataChanged &&
                 handlePostRequest({
@@ -108,9 +108,9 @@ export function useProfile() {
                         newEmail: emailChanged ? prev.email : null,
                         newPassword: passwordChanged ? prev.newPassword : null,
                         newAvatar: avatarChanged ? prev.avatar : null,
-                        userId: userData.id,
+                        userId: localData.id,
                     },
-                    onSettled: () => setIsEditing(false),
+                    onSuccess: () => setIsEditing(false),
                 })
 
             !avatarChanged && !passwordChanged && !usernameChanged && !emailChanged && setIsEditing(false)
