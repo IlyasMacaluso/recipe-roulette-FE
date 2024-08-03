@@ -73,9 +73,7 @@ export function CardSetting({
         <>
             {isEditing ? (
                 <div className={classes.editProfileSection}>
-                    
                     <section className={classes.profileImageSection}>
-
                         <img className={classes.profilePicture} src={`data:${avatar.type};base64,${avatar}`} alt="Profile" />
                         <div className={classes.editProfileImageButtonWrapper}>
                             <input
@@ -88,7 +86,7 @@ export function CardSetting({
 
                             {/*edit image button */}
                             <label htmlFor="profileImageInput" className={classes.editProfileImageButtonLabel}>
-                                <EditIcon sx={{ fontSize: 18 }}/>
+                                <EditIcon sx={{ fontSize: 18 }} />
                             </label>
                         </div>
                     </section>
@@ -184,7 +182,15 @@ export function CardSetting({
                                     message={"Changes that you made may not be saved"}
                                     buttons={[
                                         <Button key={"button2"} label="Cancel" action={reset} />,
-                                        <Button key={"button1"} style={"primary"} label="Continue" action={proceed} />,
+                                        <Button
+                                            key={"button1"}
+                                            style={"primary"}
+                                            label="Continue"
+                                            action={() => {
+                                                proceed()
+                                                handleDiscardChanges()
+                                            }}
+                                        />,
                                     ]}
                                 />
                             </Popup>,

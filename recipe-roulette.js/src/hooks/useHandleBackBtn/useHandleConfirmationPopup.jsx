@@ -5,10 +5,9 @@ export const useHandleConfirmationPopup = (condition, status) => {
     const navigate = useNavigate()
     const handleBackButton = useCallback(
         (event) => {
-            console.log(status)
             if (condition) {
                 event.preventDefault()
-                navigate({ to: -1 })
+                navigate({ to: "/" })
             }
         },
         [condition, status, navigate]
