@@ -4,9 +4,11 @@ import { useAuth } from "../Auth/useAuth"
 import { useForm } from "../useForm/useForm"
 import { usePostRequest } from "../usePostRequest/usePostRequest"
 import { useImageToString } from "../imgToString/imgToString"
+import { useBlocker } from "@tanstack/react-router"
 
 export function useProfile() {
     const [isEditing, setIsEditing] = useState(false)
+    const [blockCondition, setBlockCondition] = useState(false)
 
     const {
         data: profileData,
@@ -27,6 +29,17 @@ export function useProfile() {
     const { isAuthenticated } = useAuth()
     const { handlePostRequest, error, loading } = usePostRequest()
     const { imgToString } = useImageToString()
+    const { proceed, reset, status } = useBlocker({
+        condition: blockCondition,
+    })
+
+    useEffect(() => {
+        if (isEditing) {
+            setBlockCondition(true)
+        } else {
+            setBlockCondition(false)
+        }
+    }, [isEditing])
 
     useEffect(() => {
         const userData = getValue("userData")
@@ -82,7 +95,7 @@ export function useProfile() {
             const usernameChanged = username !== prev.username && prev.username !== ""
             const emailChanged = email !== prev.email && prev.email !== ""
             const avatarChanged = avatar !== prev.avatar
-            const passwordChanged = prev.oldPassword && prev.newPassword && prev.confirmNewPass && prev.newPassword === prev.confirmNewPass 
+            const passwordChanged = prev.oldPassword && prev.newPassword && prev.confirmNewPass && prev.newPassword === prev.confirmNewPass
             const userDataChanged = usernameChanged || emailChanged || avatarChanged || passwordChanged
 
             let newData = {
@@ -150,6 +163,11 @@ export function useProfile() {
 
         loading,
         error,
+
+        status,
+        proceed,
+        reset,
+        setBlockCondition,
 
         handleSaveChanges,
         handleAvatarChange,

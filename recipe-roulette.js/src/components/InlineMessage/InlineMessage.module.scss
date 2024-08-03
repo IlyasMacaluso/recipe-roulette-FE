@@ -5,8 +5,9 @@
     align-items: center;
     gap: 0.5rem;
     outline: 1px solid $light-gray;
+    outline-offset: -2px;
     padding: 0.5rem 0.75rem;
-    border-radius: .25rem;
+    border-radius: 0.25rem;
     color: $darkish-gray;
     font-family: $header-text;
     font-weight: 500;

@@ -14,11 +14,23 @@
     align-items: start;
     gap: $size-24;
     padding: $size-16 $size-24;
+    color: $dark-gray;
 
-    header {
-        font-size: $text-size-20;
-        font-weight: 500;
-        font-family: $font-text;
+    .topItems{
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+        .header {
+            font-size: $text-size-20;
+            font-family: $header-text;
+            font-weight: 600;
+        }
+        .message {
+            font-size: $text-size-14;
+            font-family: $header-text;
+            font-weight: 500;
+            margin: 0;
+        }
     }
 
     .buttonsWrapper {
@@ -28,25 +40,5 @@
         justify-self: end;
         gap: $size-8;
         
-    }
-}
-
-.inlineMsg {
-    width: 100%;
-    box-sizing: border-box;
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    outline: 2px solid $dark-gray;
-    padding: 0.5rem;
-    border-radius: 0.5rem;
-    color: $dark-gray;
-    font-family: $header-text;
-    font-weight: 500;
-    line-height: 120%;
-
-    &.red {
-        color: $red;
-        outline-color: $red;
     }
 }

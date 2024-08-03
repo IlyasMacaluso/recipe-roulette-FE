@@ -5,14 +5,12 @@
     height: 18vh;
     object-fit: cover;
     border-radius: 50%;
-    outline: 1px solid $light-gray;
+    outline: 2px solid $light-gray;
     outline-offset: -2px;
+    background-color: $lightest-green;
 }
 
 .settingsPage {
-    scale: 0.8;
-    transition: scale 0.25s cubic-bezier(0.08, 0.82, 0.17, 1);
-
     background-color: white;
     margin: 0;
     padding: 0;
@@ -96,40 +94,47 @@
         width: 100%;
 
         .profileImageSection {
-            width: 100%;
+            padding: 1rem;
+            position: relative;
             display: flex;
             flex-direction: column;
             align-items: center;
             gap: 1rem;
-            margin-bottom: 1rem;
+            margin-bottom: 2rem;
 
             .editProfileImageButtonWrapper {
-                position: relative;
-                width: 100%;
+                position: absolute;
+                top: 1rem;
+                right: 0.75rem;
+
                 font-family: $header-text;
                 font-size: $text-size-14;
-                font-weight: 500;
-                max-height: 40px;
+                font-weight: 600;
 
+                height: 40px;
+                width: 40px;
+                box-sizing: border-box;
 
                 .editProfileImageButton {
                     display: none;
-                    width: 100%;
-
                 }
+
                 .editProfileImageButtonLabel {
                     display: flex;
+                    gap: 4px;
+                    height: 100%;
+                    width: 100%;
                     align-items: center;
                     justify-content: center;
-                    gap: 8px;
-                    height: 40px;
-                    background-color: white;
-                    border: 1px solid $light-gray;
+                    background-color: $lightest-green;
+                    border: 1px solid $light-desaturated-green;
                     border-radius: 2rem;
-                    color: $darkish-gray;
+                    color: $darkish-green;
                     cursor: pointer;
+
+                    padding: 0 0 0 2px;
                     box-sizing: border-box;
-                    max-height: 40px;
+                    box-shadow: 0 0 8px rgba($color: #333, $alpha: 0.2);
                 }
             }
         }
@@ -153,8 +158,4 @@
             }
         }
     }
-}
-.animateSettings {
-    scale: 1;
-    transition: scale 0.25s cubic-bezier(0.08, 0.82, 0.17, 1);
 }

@@ -16,11 +16,12 @@ import LoginIcon from "@mui/icons-material/Login"
 
 import layout from "../../assets/scss/pageLayout/pageWScroll.module.scss"
 import transition from "../../assets/scss/pageLayout/pageTransition.module.scss"
+import { InlineMessage } from "../../components/InlineMessage/InlineMessage"
 
 export function History() {
     const [showPopup, setShowPopup] = useState()
 
-    const { recipes, inputValue, historyLoading, favoritedLoading, foodPrefLoading } = useRecipesContext()
+    const { recipes, inputValue, historyLoading, favoritedLoading, foodPrefLoading, historyError } = useRecipesContext()
     const { isAuthenticated } = useAuth()
     const { location } = useLocationHook()
     const { animate } = useAnimate(location)
@@ -32,73 +33,80 @@ export function History() {
             return []
         }
     }, [inputValue, recipes.history])
-
-    return (
-        <div className={`${layout.scrollPage} ${animate ? transition.animationEnd : transition.animationStart}`}>
-            {favoritedLoading || foodPrefLoading || historyLoading ? (
-                [...Array(3)].map(() => (
-                    <Skeleton key={Math.random()} sx={{ bgcolor: "#c5e4c9" }} variant="rounded" width={"100%"} height={"280px"} />
-                ))
-            ) : isAuthenticated && recipes?.history.length > 0 ? (
-                <>
-                    {searchHistory && searchHistory.length > 0 ? (
-                        <section className={layout.recipesWrapper}>
-                            {searchHistory.map((recipe) => (
-                                <RecipeCard recipe={recipe} key={recipe.id + recipe.title} />
-                            ))}
-                        </section>
-                    ) : (
-                        <Placeholder
-                            text="Your search has  "
-                            hightlitedText="no matching results"
-                            highlightColor="#dd3e46"
-                            spacious={true}
-                            bottomImage={"searching.svg"}
-                        />
-                    )}
-                </>
-            ) : isAuthenticated ? (
-                <Placeholder
-                    text="Your History is empty! "
-                    hightlitedText=" Recipes will be stored here!"
-                    topImage={"searching.svg"}
-                    buttons={[
-                        <Button
-                            key={"Start Ingredients Shuffle"}
-                            link={"roulette"}
-                            style="primary"
-                            label="Start Ingredients Shuffle"
-                            icon={<LoopOutlinedIcon />}
-                            height={"large"}
-                        />,
-                    ]}
-                />
-            ) : (
-                <>
+    if (historyError) {
+        return (
+            <div className={`${layout.scrollPage} ${animate ? transition.animationEnd : transition.animationStart}`}>
+                <InlineMessage error={historyError} />
+            </div>
+        )
+    } else {
+        return (
+            <div className={`${layout.scrollPage} ${animate ? transition.animationEnd : transition.animationStart}`}>
+                {favoritedLoading || foodPrefLoading || historyLoading ? (
+                    [...Array(3)].map(() => (
+                        <Skeleton key={Math.random()} sx={{ bgcolor: "#c5e4c9" }} variant="rounded" width={"100%"} height={"280px"} />
+                    ))
+                ) : isAuthenticated && recipes?.history.length > 0 ? (
+                    <>
+                        {searchHistory && searchHistory.length > 0 ? (
+                            <section className={layout.recipesWrapper}>
+                                {searchHistory.map((recipe) => (
+                                    <RecipeCard recipe={recipe} key={recipe.id + recipe.title} />
+                                ))}
+                            </section>
+                        ) : (
+                            <Placeholder
+                                text="Your search has  "
+                                hightlitedText="no matching results"
+                                highlightColor="#dd3e46"
+                                spacious={true}
+                                bottomImage={"searching.svg"}
+                            />
+                        )}
+                    </>
+                ) : isAuthenticated ? (
                     <Placeholder
-                        text="You need to login "
-                        hightlitedText="To see your History!"
-                        topImage={"undraw_access_account_re_8spm.svg"}
+                        text="Your History is empty! "
+                        hightlitedText=" Recipes will be stored here!"
+                        topImage={"searching.svg"}
                         buttons={[
                             <Button
-                                key={"Login or Signup"}
-                                action={() => setShowPopup(true)}
+                                key={"Start Ingredients Shuffle"}
+                                link={"roulette"}
                                 style="primary"
-                                label="Login or Signup"
-                                icon={<LoginIcon />}
+                                label="Start Ingredients Shuffle"
+                                icon={<LoopOutlinedIcon />}
                                 height={"large"}
                             />,
                         ]}
                     />
-                    {showPopup &&
-                        createPortal(
-                            <Popup>
-                                <Login setShowPopup={setShowPopup} />
-                            </Popup>,
-                            document.getElementById("popup-root")
-                        )}
-                </>
-            )}
-        </div>
-    )
+                ) : (
+                    <>
+                        <Placeholder
+                            text="You need to login "
+                            hightlitedText="To see your History!"
+                            topImage={"undraw_access_account_re_8spm.svg"}
+                            buttons={[
+                                <Button
+                                    key={"Login or Signup"}
+                                    action={() => setShowPopup(true)}
+                                    style="primary"
+                                    label="Login or Signup"
+                                    icon={<LoginIcon />}
+                                    height={"large"}
+                                />,
+                            ]}
+                        />
+                        {showPopup &&
+                            createPortal(
+                                <Popup>
+                                    <Login setShowPopup={setShowPopup} />
+                                </Popup>,
+                                document.getElementById("popup-root")
+                            )}
+                    </>
+                )}
+            </div>
+        )
+    }
 }

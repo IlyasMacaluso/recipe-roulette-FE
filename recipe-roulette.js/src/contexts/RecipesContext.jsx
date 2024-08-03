@@ -191,9 +191,14 @@ export const RecipesProvider = ({ children }) => {
                 inputValue,
                 recipeAnimation,
                 recipeFilter,
+
                 favoritedLoading,
                 foodPrefLoading,
                 historyLoading,
+
+                favoritedError,
+                historyError,
+                
                 handleRecipesUpdate,
                 handleTargetedRecipe,
                 toggleRecipeFilter,

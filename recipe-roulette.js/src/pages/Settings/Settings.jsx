@@ -4,6 +4,7 @@ import { CardSetting } from "./CardSetting"
 import { LinkBox } from "./Linkbox"
 import { useLocationHook } from "../../hooks/useLocationHook"
 
+import transitions from "../../assets/scss/pageLayout/pageTransition.module.scss"
 import classes from "./Settings.module.scss"
 
 export function Settings() {
@@ -20,6 +21,11 @@ export function Settings() {
         loading,
         error,
 
+        status,
+        proceed,
+        reset,
+        setBlockCondition,
+
         handleSaveChanges,
         handleAvatarChange,
         handleDiscardChanges,
@@ -29,7 +35,7 @@ export function Settings() {
     const { animate } = useAnimate(location)
 
     return (
-        <div className={`${classes.settingsPage} ${animate && classes.animateSettings}`}>
+        <div className={`${classes.settingsPage} ${animate ? transitions.animationEnd : transitions.animationStart}`}>
             <CardSetting
                 isEditing={isEditing}
                 profileData={profileData}
@@ -42,6 +48,10 @@ export function Settings() {
                 handleShowText={handleShowText}
                 loading={loading}
                 error={error}
+                status={status}
+                proceed={proceed}
+                reset={reset}
+                setBlockCondition={setBlockCondition}
             />
             {!isEditing && <LinkBox />}
         </div>
