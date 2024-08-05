@@ -1,23 +1,23 @@
 @use "../../assets/scss/" as *;
 
 .snackbar {
-  z-index: 10 ;
   position: fixed;
+  z-index: 10 ;
 
   left: 50%;
   transform: translateX(-50%);
 
   width: 91%;
-  padding: 1rem 1rem;
+  padding: 1rem ;
   border-radius: 1rem;
   box-shadow: 0 0 10px rgba($color: $darkest-gray, $alpha: 0.2);
   box-sizing: border-box;
-  color: $darkish-gray;
-  background-color: $lightest-green;
-  border: 1px solid $light-gray;
 
+  color: $dark-green;
+  background-color: white;
+  border: 1px solid $light-desaturated-green;
 
-  font-family: $header-text;
+  font-family: $font-poppins;
   font-size: 14px;
   font-weight: 600;
 
@@ -27,7 +27,6 @@
 }
 .snackbar .leftItems {
   height: 100%;
-
   display: flex;
   align-items: center;
   gap: 0.5rem;
@@ -40,10 +39,7 @@
   align-items: center;
 }
 .snackbar .ico {
-  border: none;
-  background-color: transparent;
   padding-top: 2px;
-  color: $darkish-gray;
 }
 
 .snackbarInactive {
@@ -51,7 +47,7 @@
   transition: bottom 0.3s ease;
 }
 .snackbarActive {
-  bottom: 1rem;
+  bottom: 2rem;
   transition: bottom 0.3s ease;
 }
 

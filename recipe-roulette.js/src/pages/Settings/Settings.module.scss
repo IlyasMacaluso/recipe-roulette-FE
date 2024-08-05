@@ -1,161 +1,57 @@
 @use "../../assets/scss" as *;
 
-.profilePicture {
-    width: 18vh;
-    height: 18vh;
-    object-fit: cover;
-    border-radius: 50%;
-    outline: 2px solid $light-gray;
-    outline-offset: -2px;
-    background-color: $lightest-green;
-}
-
 .settingsPage {
     background-color: white;
     margin: 0;
-    padding: 0;
     display: flex;
     flex-direction: column;
     align-items: center;
     width: 100%;
     height: 100%;
     box-sizing: border-box;
-    padding: $size-20;
-    padding-top: 0;
+    padding: 0 $size-20;
     gap: 16px;
-    max-height: 100%;
-    overflow-y: scroll;
-    .title {
-        font-size: $text-size-20;
-        font-family: $header-text;
-        margin: 0;
-        color: $dark-gray;
-    }
-    .profileSection {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
+    overflow: hidden;
+
+    .bottomItems {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+
+        width: 100%;
+        padding: $size-20;
+        padding-top: 0.5rem;
         background-color: white;
-        border: 1px solid $light-desaturated-green;
-        color: #3c3838;
-        border-radius: $size-16;
-        width: 100%;
-        padding: $size-24;
+
         box-sizing: border-box;
-        gap: 0.5rem;
-        .profileName {
-            font-size: $text-size-20;
-            margin: 0;
-        }
-        .profileEmail {
-            font-size: $text-size-14;
-            color: #3c3838;
-            margin: 0;
-        }
-        button {
-            margin-top: 0.5rem;
-        }
-    }
-    .menuSection {
-        width: 100%;
         display: flex;
         flex-direction: column;
-        align-items: center;
-        box-sizing: border-box;
+        gap: 12px;
+    }
+
+    .linksWrapper {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
         gap: 1rem;
-        .menuItem {
-            width: 100%;
-            padding: $size-20 $size-24;
-            box-sizing: border-box;
+        .linkItem {
             display: flex;
             align-items: center;
             justify-content: space-between;
+            padding: $size-20 $size-24;
+            box-sizing: border-box;
+
             background-color: white;
             border: 1px solid $light-gray;
             border-radius: $size-16;
             cursor: pointer;
+
             font-size: $text-size-16;
-            font-family: $header-text;
+            font-family: $font-poppins;
+            color: #3c3838;
             font-weight: 600;
             text-decoration: none;
-            color: #3c3838;
             letter-spacing: 0.025rem;
-        }
-    }
-    .logoutButtonWrapper {
-        margin-top: auto;
-        width: 100%;
-    }
-    .editProfileSection {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        padding: 0;
-        width: 100%;
-
-        .profileImageSection {
-            padding: 1rem;
-            position: relative;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 1rem;
-            margin-bottom: .5rem;
-
-            .editProfileImageButtonWrapper {
-                position: absolute;
-                top: 1rem;
-                right: 0.75rem;
-
-                font-family: $header-text;
-                font-size: $text-size-14;
-                font-weight: 600;
-
-                height: 40px;
-                width: 40px;
-                box-sizing: border-box;
-
-                .editProfileImageButton {
-                    display: none;
-                }
-
-                .editProfileImageButtonLabel {
-                    display: flex;
-                    gap: 4px;
-                    height: 100%;
-                    width: 100%;
-                    align-items: center;
-                    justify-content: center;
-                    background-color: $lightest-green;
-                    border: 1px solid $light-desaturated-green;
-                    border-radius: 2rem;
-                    color: $darkish-green;
-                    cursor: pointer;
-
-                    padding: 0 0 0 2px;
-                    box-sizing: border-box;
-                    box-shadow: 0 0 8px rgba($color: #333, $alpha: 0.2);
-                }
-            }
-        }
-
-        .editForm {
-            width: 100%;
-            display: flex;
-            flex-direction: column;
-            gap: 2rem;
-
-            .formSection {
-                display: flex;
-                flex-direction: column;
-                gap: 12px;
-            }
-
-            .bottomItems {
-                display: flex;
-                flex-direction: column;
-                gap: 12px;
-            }
         }
     }
 }

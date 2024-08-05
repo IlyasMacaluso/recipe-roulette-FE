@@ -44,6 +44,10 @@ export function useProfile() {
     useEffect(() => {
         const userData = getValue("userData")
 
+        if (!isAuthenticated) {
+            setIsEditing(false)
+        }
+
         if (userData) {
             const { username = null, email = null, avatar = null } = userData
 
@@ -55,6 +59,9 @@ export function useProfile() {
                             username: username || prev.username,
                             email: email || prev.email,
                             avatar: avatar || base64Avatar,
+                            oldPassword: "",
+                            newPassword: "",
+                            confirmNewPass: "",
                         }
                     })
                 })
@@ -115,10 +122,11 @@ export function useProfile() {
 
             userDataChanged &&
                 handlePostRequest({
-                    url: "http://localhost:3000/api/users/change-user-data", //da creare funzione BE
+                    url: "http://localhost:3000/api/users/change-user-data",
                     payload: {
                         newUsername: usernameChanged ? prev.username : null,
                         newEmail: emailChanged ? prev.email : null,
+                        oldPassword: passwordChanged ? prev.oldPassword : null,
                         newPassword: passwordChanged ? prev.newPassword : null,
                         newAvatar: avatarChanged ? prev.avatar : null,
                         userId: localData.id,

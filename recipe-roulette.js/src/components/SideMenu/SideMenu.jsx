@@ -4,7 +4,6 @@ import { IcoButton } from "../Buttons/IcoButton/IcoButton"
 import { createPortal } from "react-dom"
 import { Popup } from "../Pop-up/Popup"
 import { useState } from "react"
-import { ValidationBox } from "../Validation Box/ValidationBox"
 import { Login } from "../authentication/login/Login"
 import { useLocation } from "@tanstack/react-router"
 import { useLoginToSignup } from "../../hooks/loginToSignup/useLoginToSignup"
@@ -20,6 +19,8 @@ import CloseIcon from "@mui/icons-material/Close"
 import HistoryIcon from "@mui/icons-material/History"
 
 import classes from "./SideMenu.module.scss"
+import { ConfirmPopup } from "../ConfirmPopup/ConfirmPopup"
+import { Button } from "../Buttons/Button/Button"
 
 export function SideMenu({ handleMenuToggle, menuState = false }) {
     const [showPopup, setShowPopup] = useState()
@@ -92,12 +93,21 @@ export function SideMenu({ handleMenuToggle, menuState = false }) {
                 createPortal(
                     <Popup>
                         {isAuthenticated ? (
-                            <ValidationBox
+                            <ConfirmPopup
+                                title={"Are you sure you want to logout?"}
                                 loading={loading}
                                 error={error}
-                                message="Confirm logout?"
-                                setShowPopup={setShowPopup}
-                                handleValidation={handleLogout}
+                                buttons={[
+                                    <Button key={"button2"} label="Cancel" action={() => setShowPopup(false)} />,
+                                    <Button
+                                        key={"button1"}
+                                        style={"primary"}
+                                        label="Logout"
+                                        action={() => {
+                                            handleLogout()
+                                        }}
+                                    />,
+                                ]}
                             />
                         ) : !changeToSignup ? (
                             <Login setChangeToSignup={setChangeToSignup} setShowPopup={setShowPopup} />

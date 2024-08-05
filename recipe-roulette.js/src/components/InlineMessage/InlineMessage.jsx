@@ -6,7 +6,14 @@ import classes from "./InlineMessage.module.scss"
 
 export function InlineMessage({ error = false, loading = false, message = null, loadingMessage = "Loading..." }) {
     return (
-        <>
+        <div className={classes.inlineMsgs}>
+            {message && (
+                <div className={`${classes.inlineMsg}`}>
+                    {<InfoOutlinedIcon fontSize="small" />}
+                    {message}
+                </div>
+            )}
+            
             {error && (
                 <div className={`${classes.inlineMsg} ${classes.red}`}>
                     <ErrorOutlineIcon fontSize="small" />
@@ -19,12 +26,6 @@ export function InlineMessage({ error = false, loading = false, message = null, 
                     {loadingMessage}
                 </div>
             )}
-            {message && (
-                <div className={`${classes.inlineMsg}`}>
-                    {<InfoOutlinedIcon fontSize="small" />}
-                    {message}
-                </div>
-            )}
-        </>
+        </div>
     )
 }

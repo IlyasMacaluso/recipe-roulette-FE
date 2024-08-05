@@ -48,7 +48,7 @@
         flex-direction: column;
         gap: 1rem;
         width: 100%;
-        font-family: $font-title;
+        font-family: $font-puritan;
         font-weight: bold;
         letter-spacing: 0.025rem;
         font-size: $text-size-16;
@@ -66,7 +66,7 @@
             padding-left: 0.25rem;
             font-size: $size-20;
             color: $dark-gray;
-            font-family: $font-title;
+            font-family: $font-puritan;
             line-height: 120%;
         }
     }
@@ -136,7 +136,7 @@
     font-size: $size-16;
 }
 .recipeCard .ingredients {
-    font-family: $header-text;
+    font-family: $font-poppins;
     padding: 0 1rem;
     box-sizing: border-box;
     border-radius: 1rem;

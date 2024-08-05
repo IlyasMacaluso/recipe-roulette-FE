@@ -1,22 +1,23 @@
-import { Button } from "../../components/Buttons/Button/Button"
-import { useAuth } from "../../hooks/Auth/useAuth"
-import { Input } from "../../components/Input/Input.jsx"
+import { Button } from "../Buttons/Button/Button.jsx"
+import { useAuth } from "../../hooks/Auth/useAuth.jsx"
+import { Input } from "../Input/Input.jsx"
+
+
+import { InlineMessage } from "../InlineMessage/InlineMessage.jsx"
+import { useMemo } from "react"
+import { createPortal } from "react-dom"
+import { Popup } from "../Pop-up/Popup.jsx"
+import { ConfirmPopup } from "../ConfirmPopup/ConfirmPopup.jsx"
+import { useHandleConfirmationPopup } from "../../hooks/useHandleBackBtn/useHandleConfirmationPopup.jsx"
 
 import DoneAllIcon from "@mui/icons-material/DoneAll"
 import EditNoteIcon from "@mui/icons-material/EditNote"
 import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined"
 import EditIcon from "@mui/icons-material/Edit"
 
-import { InlineMessage } from "../../components/InlineMessage/InlineMessage.jsx"
-import { useMemo } from "react"
-import { createPortal } from "react-dom"
-import { Popup } from "../../components/Pop-up/Popup.jsx"
-import { ConfirmationPopup } from "../../components/ConfirmationPopup/ConfirmationPopup.jsx"
-import { useHandleConfirmationPopup } from "../../hooks/useHandleBackBtn/useHandleConfirmationPopup.jsx"
+import classes from "./SettingsCard.module.scss"
 
-import classes from "./Settings.module.scss"
-
-export function CardSetting({
+export function SettingsCard({
     isEditing,
     profileData,
     setIsEditing,
@@ -31,7 +32,6 @@ export function CardSetting({
     status,
     reset,
     proceed,
-    setBlockCondition,
 }) {
     const { isAuthenticated } = useAuth()
     useHandleConfirmationPopup(isEditing, status)
@@ -63,7 +63,7 @@ export function CardSetting({
     if (!isAuthenticated) {
         return (
             <div className={classes.profileSection}>
-                <h2 className={classes.profileName}>Not Logged In</h2>
+                <h2 className={classes.title}>Not Logged In</h2>
                 <p className={classes.profileEmail}>Please log in to edit your profile</p>
             </div>
         )
@@ -72,26 +72,26 @@ export function CardSetting({
     return (
         <>
             {isEditing ? (
-                <div className={classes.editProfileSection}>
+                <div className={`${classes.profileSection} ${classes.editProfileSection}`}>
                     <section className={classes.profileImageSection}>
                         <img className={classes.profilePicture} src={`data:${avatar.type};base64,${avatar}`} alt="Profile" />
-                        <div className={classes.editProfileImageButtonWrapper}>
+                        <div className={classes.editButtonWrapper}>
                             <input
                                 type="file"
                                 accept="image/*"
                                 onChange={handleAvatarChange}
-                                className={classes.editProfileImageButton}
+                                className={classes.defaultEditBtn}
                                 id="profileImageInput"
                             />
 
                             {/*edit image button */}
-                            <label htmlFor="profileImageInput" className={classes.editProfileImageButtonLabel}>
+                            <label htmlFor="profileImageInput" className={classes.customEditBtn}>
                                 <EditIcon sx={{ fontSize: 18 }} />
                             </label>
                         </div>
                     </section>
 
-                    <div className={classes.editForm}>
+                    <div className={classes.formWrapper}>
                         <section className={classes.formSection}>
                             <Input
                                 handleInputChange={handleInputChange}
@@ -148,12 +148,16 @@ export function CardSetting({
                             />
                         </section>
 
-                        <InlineMessage
-                            message={message && message}
-                            error={error}
-                            loading={loading}
-                            loadingMessage="Updating your informations"
-                        />
+                        {error ||
+                            message ||
+                            (loading && (
+                                <InlineMessage
+                                    message={message && message}
+                                    error={error}
+                                    loading={loading}
+                                    loadingMessage="Updating your informations"
+                                />
+                            ))}
 
                         <div className={classes.bottomItems}>
                             <Button
@@ -177,7 +181,7 @@ export function CardSetting({
                     {status === "blocked" &&
                         createPortal(
                             <Popup>
-                                <ConfirmationPopup
+                                <ConfirmPopup
                                     title={"Are you sure you want to leave?"}
                                     message={"Changes that you made may not be saved"}
                                     buttons={[
@@ -200,7 +204,7 @@ export function CardSetting({
             ) : (
                 <div className={classes.profileSection}>
                     <img src={`data:${avatar.type};base64,${avatar}`} alt="Profile" className={classes.profilePicture} />
-                    <h2 className={classes.profileName}>{username}</h2>
+                    <h2 className={classes.title}>{username}</h2>
                     <p className={classes.profileEmail}>{email}</p>
 
                     <Button

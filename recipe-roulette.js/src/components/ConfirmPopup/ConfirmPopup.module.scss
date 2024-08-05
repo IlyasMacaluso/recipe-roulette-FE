@@ -1,6 +1,6 @@
 @use "../../assets/scss/" as *;
 
-.container {
+.confirmPopup {
     display: flex;
     flex-direction: column;
     background-color: $accent-color;
@@ -8,11 +8,10 @@
     border-radius: $size-16;
     width: calc(100vw - 3rem);
     max-width: 30rem;
-    font-size: $text-size-14;
-    border: 1px solid $light-gray;
     justify-content: start;
     align-items: start;
-    gap: $size-24;
+    gap: $size-16;
+    font-family: $font-poppins;
     padding: $size-16 $size-24;
     color: $dark-gray;
 
@@ -22,12 +21,10 @@
         gap: 8px;
         .header {
             font-size: $text-size-20;
-            font-family: $header-text;
             font-weight: 600;
         }
         .message {
             font-size: $text-size-14;
-            font-family: $header-text;
             font-weight: 500;
             margin: 0;
         }
@@ -35,10 +32,7 @@
 
     .buttonsWrapper {
         display: flex;
-        flex-direction: row;
         align-self: end;
-        justify-self: end;
         gap: $size-8;
-        
     }
 }
