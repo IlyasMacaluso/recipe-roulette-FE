@@ -22,14 +22,14 @@ export function RecipeResults() {
 
     return (
         <div className={`${layout.scrollPage} ${animate ? transition.animationEnd : transition.animationStart} `}>
-            {!state.loading ? (
+            {state.loading ? (
                 <section className={layout.recipesWrapper}>
                     {recipes.results &&
                         recipes.results.map((recipe) => {
                             return (
                                 <RecipeCard
                                     handleClickLoginSnackBar={handleClickLoginSnackBar}
-                                    key={recipe.id + recipe.title}
+                                    key={`${recipe.id}_${recipe.title}`}
                                     recipe={recipe}
                                 />
                             )
@@ -37,9 +37,12 @@ export function RecipeResults() {
                 </section>
             ) : (
                 <Placeholder
+                    topPadding={true}
                     text="Generating Your Recipes, "
+                    highlightColor={"#449a50"}
                     hightlitedText="This could take a few minutes"
-                    loadingAnimation={<BlocksShuffleThree color="#00a55b" width={"40%"} height={"40%"} />}
+                    topImage="healthy food-bro.svg"
+                    loadingAnimation={<BlocksShuffleThree color="#449a50" width={"40%"} height={"40%"} />}
                 />
             )}
         </div>

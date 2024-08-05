@@ -48,7 +48,7 @@ export function BaseSearch({ data = [], inputValue = "", setInputValue }) {
                     data.map((recipe) => (
                         <BaseSearchSuggestion
                             inputRef={inputRef}
-                            key={recipe.id}
+                            key={`${recipe.id}_${recipe.title}`}
                             id={recipe.id}
                             handleBlur={handleBlur}
                             setInputValue={setInputValue}
@@ -58,12 +58,12 @@ export function BaseSearch({ data = [], inputValue = "", setInputValue }) {
                     ))
                 ) : (
                     <Placeholder
-                    bottomImage={"searching.svg"}
-                    text="Your search has  "
-                    hightlitedText="no matching results"
-                    highlightColor="#dd3e46"
-                    spacious={true}
-                     />
+                        bottomImage={"Personal files-bro.svg"}
+                        text="Your search has  "
+                        hightlitedText="no matching results"
+                        highlightColor="#dd3e46"
+                        spacious={true}
+                    />
                 )}
             </div>
         </div>

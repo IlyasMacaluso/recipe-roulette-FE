@@ -16,9 +16,7 @@ export function NotFound404() {
     return (
         <div className={`${layouts.pageFH} ${animate ? transitions.animationEnd : transitions.animationStart}`}>
             <Placeholder
-                topImage={"notfound.svg"}
-                text="The page you're looking for "
-                hightlitedText="does not exist!"
+                topImage="404 Error with a cute animal-bro.svg"
                 buttons={[<Button key={"Return to home"} label="Return to home" icon={<HomeOutlinedIcon />} link={"/"} height={"large"} />]}
             />
         </div>

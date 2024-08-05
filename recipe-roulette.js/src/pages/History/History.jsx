@@ -12,6 +12,7 @@ import { Placeholder } from "../../components/Placeholder/Placeholder"
 import { Button } from "../../components/Buttons/Button/Button"
 
 import LoopOutlinedIcon from "@mui/icons-material/LoopOutlined"
+import RotateLeftOutlinedIcon from "@mui/icons-material/RotateLeftOutlined"
 import LoginIcon from "@mui/icons-material/Login"
 
 import layout from "../../assets/scss/pageLayout/pageWScroll.module.scss"
@@ -21,7 +22,7 @@ import { InlineMessage } from "../../components/InlineMessage/InlineMessage"
 export function History() {
     const [showPopup, setShowPopup] = useState()
 
-    const { recipes, inputValue, historyLoading, favoritedLoading, foodPrefLoading, historyError } = useRecipesContext()
+    const { recipes, inputValue, setInputValue, historyLoading, favoritedLoading, foodPrefLoading, historyError } = useRecipesContext()
     const { isAuthenticated } = useAuth()
     const { location } = useLocationHook()
     const { animate } = useAnimate(location)
@@ -51,7 +52,7 @@ export function History() {
                         {searchHistory && searchHistory.length > 0 ? (
                             <section className={layout.recipesWrapper}>
                                 {searchHistory.map((recipe) => (
-                                    <RecipeCard recipe={recipe} key={recipe.id + recipe.title} />
+                                    <RecipeCard recipe={recipe} key={`${recipe.id}_${recipe.title}`} />
                                 ))}
                             </section>
                         ) : (
@@ -59,8 +60,19 @@ export function History() {
                                 text="Your search has  "
                                 hightlitedText="no matching results"
                                 highlightColor="#dd3e46"
-                                spacious={true}
-                                bottomImage={"searching.svg"}
+                                bottomImage="Personal files-bro.svg"
+                                bottomPadding={true}
+                                buttons={[
+                                    <Button
+                                        icon={<RotateLeftOutlinedIcon fontSize="small" />}
+                                        height="large"
+                                        label="Reset Search"
+                                        key="Reset Search"
+                                        action={() => {
+                                            setInputValue("")
+                                        }}
+                                    />,
+                                ]}
                             />
                         )}
                     </>
@@ -68,15 +80,15 @@ export function History() {
                     <Placeholder
                         text="Your History is empty! "
                         hightlitedText=" Recipes will be stored here!"
-                        topImage={"searching.svg"}
+                        topImage="Add notes-bro.svg"
+                        bottomPadding={true}
                         buttons={[
                             <Button
-                                key={"Start Ingredients Shuffle"}
-                                link={"roulette"}
-                                style="primary"
+                                key="Start Ingredients Shuffle"
+                                link="roulette"
                                 label="Start Ingredients Shuffle"
                                 icon={<LoopOutlinedIcon />}
-                                height={"large"}
+                                height="large"
                             />,
                         ]}
                     />
@@ -85,7 +97,8 @@ export function History() {
                         <Placeholder
                             text="You need to login "
                             hightlitedText="To see your History!"
-                            topImage={"undraw_access_account_re_8spm.svg"}
+                            topImage="Mobile login-bro.svg"
+                            bottomPadding={true}
                             buttons={[
                                 <Button
                                     key={"Login or Signup"}

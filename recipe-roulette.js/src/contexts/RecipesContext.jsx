@@ -4,7 +4,7 @@ import { useAuth } from "../hooks/Auth/useAuth"
 import { useLocalStorage } from "../hooks/useLocalStorage/useLocalStorage"
 import { useRecipesUpdate } from "./useRecipeUpdate/useRecipesUpdate"
 import { useRecipeFilter } from "./useRecipeFilter/useRecipeFilter"
-import { useQuery } from "@tanstack/react-query"
+import { useQuery, useQueryClient } from "@tanstack/react-query"
 import { useGetRequest } from "../hooks/useGetRequest/useGetRequest"
 
 const RecipesContext = createContext()
@@ -26,6 +26,7 @@ export const RecipesProvider = ({ children }) => {
     const { isAuthenticated } = useAuth() // Stato di autenticazione
     const { getValue, setValue } = useLocalStorage()
     const { getRequest } = useGetRequest()
+    const queryClient = useQueryClient()
 
     // funzioni di gestione filtri ricetta
     const { recipeFilter, setRecipeFilter, toggleRecipeFilter, handlePreferencesToggle, handleDeselectRecipeFilters } =
@@ -129,7 +130,7 @@ export const RecipesProvider = ({ children }) => {
                 return prevRecipes // Se localRecipes non è definito, ritorna lo stato corrente senza modifiche
             })
         }
-    }, [isAuthenticated, favoritedLoading, historyLoading, recipesHistory, foodPrefLoading, location.pathname])
+    }, [isAuthenticated, favoritedLoading, historyLoading, DBFAvorited, recipesHistory, foodPrefLoading, location.pathname])
 
     // Animazione recipeCard
     useEffect(() => {
@@ -142,8 +143,15 @@ export const RecipesProvider = ({ children }) => {
     // When the patch changes refetch data needed, and reset inputValue
     useEffect(() => {
         ;(location.pathname === "history" || "/favorited") && setInputValue("")
-        location.pathname === "/favorited" && refetchFav()
-        location.pathname === "/history" && refetchHistory()
+    }, [location.pathname])
+
+    useEffect(() => {
+        if (location.pathname === "/history") {
+            queryClient.invalidateQueries({ queryKey: ["get-recipes-history"] })
+        }
+        if (location.pathname === "/favorited") {
+            queryClient.invalidateQueries({ queryKey: ["get-favorited-recipes"] })
+        }
     }, [location.pathname])
 
     // Filtro i risultati quando viene modificato l'input
@@ -198,7 +206,7 @@ export const RecipesProvider = ({ children }) => {
 
                 favoritedError,
                 historyError,
-                
+
                 handleRecipesUpdate,
                 handleTargetedRecipe,
                 toggleRecipeFilter,

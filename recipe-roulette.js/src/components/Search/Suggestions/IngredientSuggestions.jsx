@@ -53,11 +53,10 @@ export function IngredientSuggestions({ inputRef = null, setInputState, inputAct
                     })
             ) : (
                 <Placeholder
-                    bottomImage={"searching.svg"}
-                    text="Your search has  "
+                    bottomImage={"Personal files-bro.svg"}
+                    text="Your search has "
                     hightlitedText="no matching results"
                     highlightColor="#dd3e46"
-                    spacious={true}
                 />
             )}
         </div>

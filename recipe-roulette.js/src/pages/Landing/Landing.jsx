@@ -19,7 +19,7 @@ export function Landing() {
             <Placeholder
                 text="Reduce food wastes and get inspired by "
                 hightlitedText="Recipe Roulette"
-                topImage={"undraw_ideas_flow_re_bmea.svg"}
+                topImage="eating a variety of foods-bro.svg"
                 buttons={[
                     <Button
                         key={"Start Ingredients Shuffle"}

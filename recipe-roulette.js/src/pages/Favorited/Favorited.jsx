@@ -63,16 +63,15 @@ export function Favorited() {
                         {searchFavorites && searchFavorites.length > 0 ? (
                             <section className={layout.recipesWrapper}>
                                 {searchFavorites.map((recipe) => (
-                                    <RecipeCard recipe={recipe} key={recipe.id + recipe.title} />
+                                    <RecipeCard recipe={recipe} key={`${recipe.id}_${recipe.title}`} />
                                 ))}
                             </section>
                         ) : (
                             <Placeholder
-                                bottomImage={"searching.svg"}
+                                bottomImage="Personal files-bro.svg"
                                 text="Your search has  "
                                 hightlitedText="no matching results"
-                                highlightColor="#dd3e46"
-                                spacious={true}
+                                bottomPadding={true}
                                 buttons={[
                                     <Button
                                         icon={<RotateLeftOutlinedIcon fontSize="small" />}
@@ -90,9 +89,10 @@ export function Favorited() {
                     </>
                 ) : isAuthenticated ? (
                     <Placeholder
-                        topImage={"undraw_add_files_re_v09.svg"}
+                        topImage="Add notes-bro.svg"
                         text="Your Favorited list is empty!  "
                         hightlitedText="Favorite your first recipe!"
+                        bottomPadding={true}
                         buttons={[
                             <Button
                                 icon={<LoopOutlinedIcon fontSize="small" />}
@@ -107,7 +107,8 @@ export function Favorited() {
                 ) : (
                     <>
                         <Placeholder
-                            topImage={"undraw_access_account_re_8spm.svg"}
+                            topImage="Mobile login-bro.svg"
+                            bottomPadding={true}
                             text="You need to login,  "
                             hightlitedText="to see add or see favorites!"
                             buttons={[

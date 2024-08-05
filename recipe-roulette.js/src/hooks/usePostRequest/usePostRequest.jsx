@@ -62,7 +62,7 @@ export function usePostRequest() {
                 url,
                 payload, //data needed for the post request
                 mutationId, // needed to cancel previous requests
-                queryKey, //invalidate query onSuccess (re execute query with this id)
+                queryKey, //invalidate query onSuccess (re-fetch query with this id)
                 onSuccess, //operations to execute on query success
                 signal: mutationId ? mutation?.context?.abortController.signal : null, // cancels previous requests with that mutationId
             },

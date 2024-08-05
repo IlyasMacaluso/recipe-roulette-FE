@@ -21,7 +21,7 @@ export const useRecipesUpdate = (setRecipes) => {
             newResults = prev.results.map((rec) => (rec.id === recipe.id && rec.title === recipe.title ? updatedRecipe : rec))
             newHistory = prev.history.map((rec) => (rec.id === recipe.id && rec.title === recipe.title ? updatedRecipe : rec))
 
-            const isTargetedRecipe = prev?.targetedRecipe?.id + prev?.targetedRecipe?.title === recipe.id + recipe.title
+            const isTargetedRecipe = prev?.targetedRecipe?.id + prev?.targetedRecipe?.title === `${recipe.id}_${recipe.title}`
 
             const updatedRecipes = {
                 ...prev,
@@ -37,21 +37,23 @@ export const useRecipesUpdate = (setRecipes) => {
             if (isAuthenticated) {
                 const userData = getValue("userData")
                 setValue("recipes", updatedRecipes)
-                const mutationId = updatedRecipe.id + updatedRecipe.title
+                // const mutationId = updatedRecipe.id + updatedRecipe.title
 
-                userData.id &&
-                    handlePostRequest({
+                handlePostRequest(
+                    {
                         url: "http://localhost:3000/api/preferences/set-favorited-recipes",
                         payload: { recipe: updatedRecipe, userId: userData.id },
-                        mutationId: mutationId,
-                    })
+                    },
+                    { meta: { scopeId: "update-favorited-recipes" } }
+                )
 
-                userData.id &&
-                    handlePostRequest({
+                handlePostRequest(
+                    {
                         url: "http://localhost:3000/api/preferences/update-recipes-history",
                         payload: { recipe: updatedRecipe, userId: userData.id },
-                        // mutationId: mutationId,
-                    })
+                    },
+                    { meta: { scopeId: "update-recipes-history" } }
+                )
             }
 
             return updatedRecipes
@@ -72,7 +74,7 @@ export const useRecipesUpdate = (setRecipes) => {
                 setValue("recipes", updatedRecipes)
 
                 const userData = getValue("userData")
-                const mutationId = recipe.id + recipe.title
+                const mutationId = `${recipe.id}_${recipe.title}`
 
                 userData.id &&
                     handlePostRequest({
