@@ -48,23 +48,40 @@ export function useProfile() {
             setIsEditing(false)
         }
 
+        if (isEditing) {
+            return
+        }
+
         if (userData) {
             const { username = null, email = null, avatar = null } = userData
 
-            !isEditing &&
+            if (!avatar) {
                 imgToString("src/assets/images/3d_avatar_26.png").then((base64Avatar) => {
                     setData((prev) => {
                         return {
                             ...prev,
                             username: username || prev.username,
                             email: email || prev.email,
-                            avatar: avatar || base64Avatar,
+                            avatar: base64Avatar,
                             oldPassword: "",
                             newPassword: "",
                             confirmNewPass: "",
                         }
                     })
                 })
+            } else {
+                setData((prev) => {
+                    return {
+                        ...prev,
+                        username: username || prev.username,
+                        email: email || prev.email,
+                        avatar: avatar,
+                        oldPassword: "",
+                        newPassword: "",
+                        confirmNewPass: "",
+                    }
+                })
+            }
             //aggiorna la variabile di stato quando si passa a !isEditing (dopo aver aggiornato i dati, o dopo il login)
         }
     }, [isAuthenticated, isEditing])
@@ -120,7 +137,9 @@ export function useProfile() {
             }
             setValue("userData", localData)
 
-            userDataChanged &&
+            if (!userDataChanged) {
+                setIsEditing(false)
+            } else {
                 handlePostRequest({
                     url: "http://localhost:3000/api/users/change-user-data",
                     payload: {
@@ -133,8 +152,7 @@ export function useProfile() {
                     },
                     onSuccess: () => setIsEditing(false),
                 })
-
-            !avatarChanged && !passwordChanged && !usernameChanged && !emailChanged && setIsEditing(false)
+            }
 
             return newData
         })

@@ -2,7 +2,6 @@ import { Button } from "../Buttons/Button/Button.jsx"
 import { useAuth } from "../../hooks/Auth/useAuth.jsx"
 import { Input } from "../Input/Input.jsx"
 
-
 import { InlineMessage } from "../InlineMessage/InlineMessage.jsx"
 import { useMemo } from "react"
 import { createPortal } from "react-dom"
@@ -148,16 +147,14 @@ export function SettingsCard({
                             />
                         </section>
 
-                        {error ||
-                            message ||
-                            (loading && (
-                                <InlineMessage
-                                    message={message && message}
-                                    error={error}
-                                    loading={loading}
-                                    loadingMessage="Updating your informations"
-                                />
-                            ))}
+                        {(error || message || loading) && (
+                            <InlineMessage
+                                message={message && message}
+                                error={error}
+                                loading={loading}
+                                loadingMessage="Updating your informations"
+                            />
+                        )}
 
                         <div className={classes.bottomItems}>
                             <Button

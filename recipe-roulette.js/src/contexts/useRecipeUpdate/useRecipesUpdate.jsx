@@ -37,25 +37,22 @@ export const useRecipesUpdate = (setRecipes) => {
             if (isAuthenticated) {
                 const userData = getValue("userData")
                 setValue("recipes", updatedRecipes)
-                // const mutationId = updatedRecipe.id + updatedRecipe.title
+                const mutationId = `${recipe.id}_${recipe.title}`
 
-                handlePostRequest(
-                    {
-                        url: "http://localhost:3000/api/preferences/set-favorited-recipes",
-                        payload: { recipe: updatedRecipe, userId: userData.id },
-                    },
-                    { meta: { scopeId: "update-favorited-recipes" } }
-                )
+                handlePostRequest({
+                    url: "http://localhost:3000/api/preferences/set-favorited-recipes",
+                    payload: { recipe: updatedRecipe, userId: userData.id },
+                    mutationId: mutationId,
+                })
 
-                handlePostRequest(
-                    {
-                        url: "http://localhost:3000/api/preferences/update-recipes-history",
-                        payload: { recipe: updatedRecipe, userId: userData.id },
-                    },
-                    { meta: { scopeId: "update-recipes-history" } }
-                )
+                handlePostRequest({
+                    url: "http://localhost:3000/api/preferences/update-recipes-history",
+                    payload: { recipe: updatedRecipe, userId: userData.id },
+                    mutationId: mutationId,
+                })
             }
 
+            console.log(updatedRecipes);
             return updatedRecipes
         })
 

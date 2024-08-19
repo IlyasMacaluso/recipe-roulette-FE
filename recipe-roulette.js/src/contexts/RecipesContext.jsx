@@ -88,7 +88,9 @@ export const RecipesProvider = ({ children }) => {
         localFilters && setRecipeFilter(localFilters)
         localRecipes && setValue("recipes", localRecipes)
 
-        if (isAuthenticated) {
+        let isFirstTime = true
+
+        if (isAuthenticated && isFirstTime) {
             if (!favoritedLoading && !foodPrefLoading && !historyLoading) {
                 const DBRecipes = {
                     ...localRecipes,
@@ -104,6 +106,8 @@ export const RecipesProvider = ({ children }) => {
 
                 DBFoodPref && setRecipeFilter(DBFoodPref)
                 DBRecipes && setValue("recipes", DBRecipes)
+
+                isFirstTime = false
             }
         } else {
             // Se non si è autenticati, setta isFavorited:false (nella variabile di stato)
@@ -130,7 +134,7 @@ export const RecipesProvider = ({ children }) => {
                 return prevRecipes // Se localRecipes non è definito, ritorna lo stato corrente senza modifiche
             })
         }
-    }, [isAuthenticated, favoritedLoading, historyLoading, DBFAvorited, recipesHistory, foodPrefLoading, location.pathname])
+    }, [isAuthenticated, favoritedLoading, historyLoading, foodPrefLoading])
 
     // Animazione recipeCard
     useEffect(() => {
@@ -145,14 +149,15 @@ export const RecipesProvider = ({ children }) => {
         ;(location.pathname === "history" || "/favorited") && setInputValue("")
     }, [location.pathname])
 
-    useEffect(() => {
-        if (location.pathname === "/history") {
-            queryClient.invalidateQueries({ queryKey: ["get-recipes-history"] })
-        }
-        if (location.pathname === "/favorited") {
-            queryClient.invalidateQueries({ queryKey: ["get-favorited-recipes"] })
-        }
-    }, [location.pathname])
+    //invalido le query di cronologia e preferiti quando mi sposto nelle rispettive pagine per recuperare i dati aggiornati
+    // useEffect(() => {
+    //     if (location.pathname === "/history") {
+    //         queryClient.invalidateQueries({ queryKey: ["get-recipes-history"] })
+    //     }
+    //     if (location.pathname === "/favorited") {
+    //         queryClient.invalidateQueries({ queryKey: ["get-favorited-recipes"] })
+    //     }
+    // }, [location.pathname])
 
     // Filtro i risultati quando viene modificato l'input
     useEffect(() => {

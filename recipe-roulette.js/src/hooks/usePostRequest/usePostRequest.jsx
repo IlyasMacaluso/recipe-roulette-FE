@@ -26,7 +26,7 @@ export function usePostRequest() {
             if (axios.isCancel(error)) {
                 console.log("request canceled", error.message)
             } else {
-                // console.log(error)
+                console.log(error)
                 throw new Error(error.response?.data.msg || "Something went wrong")
             }
         }
@@ -40,9 +40,9 @@ export function usePostRequest() {
             return context
         },
         onSuccess: (data, variables) => {
-            console.log(data)
+            data && console.log(data)
 
-            variables.onSuccess && variables.onSuccess()
+            variables.onSuccess && variables.onSuccess() // se c'è un parametro onSuccess, esegui il suo contenuto
 
             if (variables?.queryKey) {
                 variables.queryKey.forEach((key) => {
@@ -50,12 +50,17 @@ export function usePostRequest() {
                 })
             }
         },
-        onError: (error) => {
+        onError: (error, variables) => {
             console.error(error.response.data.msg)
+
+            variables.onError && variables.onError() // se c'è un parametro onError, esegui il suo contenuto
         },
     })
 
-    const handlePostRequest = async ({ url, payload, mutationId = null, queryKey = null, onSuccess = null }, meta = null) => {
+    const handlePostRequest = async (
+        { url, payload, mutationId = null, queryKey = null, onSuccess = null, onError = null },
+        meta = null
+    ) => {
         mutationId && cancelMutation(mutationId)
         mutation.mutate(
             {
@@ -64,6 +69,7 @@ export function usePostRequest() {
                 mutationId, // needed to cancel previous requests
                 queryKey, //invalidate query onSuccess (re-fetch query with this id)
                 onSuccess, //operations to execute on query success
+                onError,
                 signal: mutationId ? mutation?.context?.abortController.signal : null, // cancels previous requests with that mutationId
             },
             { meta } //scopeId (queue requests with same scopeId)

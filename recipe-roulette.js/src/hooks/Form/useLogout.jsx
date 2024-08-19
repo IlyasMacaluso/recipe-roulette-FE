@@ -13,9 +13,9 @@ export function useLogout(setShowPopup) {
 
     const Logout = useMutation({
         mutationFn: () => {
-            const { username, email, token } = getValue("userData")
-            const user = {username, email, token}
-            postRequest({ url: "http://localhost:3000/api/users/logout", payload: user })
+            const { username, email, token, id } = getValue("userData")
+            const user = {username, email, token, id}
+            return postRequest({ url: "http://localhost:3000/api/users/logout", payload: user })
         },
         onSuccess: () => {
             let newUserData = getValue("userData")
@@ -31,8 +31,7 @@ export function useLogout(setShowPopup) {
             setTimeout(() => setShowPopup(false), 0)
         },
         onError: (error) => {
-            handleOpenSnackbar(error.message, 3500)
-            console.error("Login failed:", error.message)
+            console.error("Logout failed:", error.message)
         },
     })
 
