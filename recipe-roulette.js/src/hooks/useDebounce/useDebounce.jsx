@@ -1,13 +1,15 @@
-export function useDebounce() {
-    function debounce(func, wait) {
-        let timeout
-        return function (...args) {
-            clearTimeout(timeout)
-            timeout = setTimeout(() => {
-                func(...args)
-            }, wait)
-        }
-    }
+import { useEffect, useState } from "react"
 
-    return { debounce }
+export function useDebounce(value, delay = 350) {
+    const [debounceValue, setDebounceValue] = useState(false)
+
+    useEffect(() => {
+        const timeout = setTimeout(() => {
+            setDebounceValue(value)
+        }, delay)
+        
+        return () => clearTimeout(timeout)
+    }, [value, delay])
+
+    return { debounceValue }
 }

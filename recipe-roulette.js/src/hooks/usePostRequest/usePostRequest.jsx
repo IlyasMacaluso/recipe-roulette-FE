@@ -35,12 +35,14 @@ export function usePostRequest() {
     const mutation = useMutation({
         mutationFn: postRequest,
         onMutate: async (variables) => {
-            const abortController = new AbortController()
-            const context = { id: variables.mutationId, abortController, variables }
-            return context
+            if (variables.mutationId) {
+                const abortController = new AbortController()
+                const context = { id: variables.mutationId, abortController, variables }
+                return context
+            }
         },
         onSuccess: (data, variables) => {
-            data && console.log(data)
+            console.log(data)
 
             variables.onSuccess && variables.onSuccess() // se c'è un parametro onSuccess, esegui il suo contenuto
 
@@ -52,7 +54,6 @@ export function usePostRequest() {
         },
         onError: (error, variables) => {
             console.error(error.response.data.msg)
-
             variables.onError && variables.onError() // se c'è un parametro onError, esegui il suo contenuto
         },
     })

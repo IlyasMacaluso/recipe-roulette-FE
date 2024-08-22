@@ -33,7 +33,7 @@ export const RecipesProvider = ({ children }) => {
         useRecipeFilter(isAuthenticated)
 
     // funzioni per aggiornare le ricette
-    const { handleRecipesUpdate, handleTargetedRecipe } = useRecipesUpdate(setRecipes)
+    const { handleRecipesUpdate, handleTargetedRecipe } = useRecipesUpdate(recipes, setRecipes)
     //fetch ricette preferite
     const {
         data: DBFAvorited,

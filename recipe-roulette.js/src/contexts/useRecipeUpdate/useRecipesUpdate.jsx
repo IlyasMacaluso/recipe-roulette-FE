@@ -2,15 +2,39 @@ import { useAuth } from "../../hooks/Auth/useAuth"
 import { useLocalStorage } from "../../hooks/useLocalStorage/useLocalStorage"
 import { usePostRequest } from "../../hooks/usePostRequest/usePostRequest"
 import { useDebounce } from "../../hooks/useDebounce/useDebounce"
+import { useCallback, useEffect, useState } from "react"
 
-export const useRecipesUpdate = (setRecipes) => {
+export const useRecipesUpdate = (recipes, setRecipes) => {
+    const [currentRecipe, setCurrentRecipe] = useState(null)
     const { setValue, getValue } = useLocalStorage()
     const { handlePostRequest } = usePostRequest()
     const { isAuthenticated } = useAuth() // Stato di autenticazione
-    const { debounce } = useDebounce()
+    const { debounceValue } = useDebounce(currentRecipe)
+
+    useEffect(() => {
+        // Aggiornamento localStorage e DB se autenticati
+        if (isAuthenticated) {
+            const userData = getValue("userData")
+
+            if (currentRecipe) {
+                handlePostRequest({
+                    url: "http://localhost:3000/api/preferences/set-favorited-recipes",
+                    payload: { recipe: currentRecipe, userId: userData.id },
+                })
+
+                handlePostRequest({
+                    url: "http://localhost:3000/api/preferences/update-recipes-history",
+                    payload: { recipe: currentRecipe, userId: userData.id },
+                })
+            }
+        }
+    }, [debounceValue])
 
     const handleRecipesUpdate = (recipe, setRecipe) => {
         const updatedRecipe = { ...recipe, isFavorited: !recipe.isFavorited }
+
+        setCurrentRecipe(updatedRecipe)
+
         setRecipes((prev) => {
             let newFavorites
             let newResults
@@ -34,29 +58,10 @@ export const useRecipesUpdate = (setRecipes) => {
                 history: newHistory || [],
                 targetedRecipe: isTargetedRecipe ? updatedRecipe : prev.targetedRecipe,
             }
-
             // Aggiornamento localStorage e DB se autenticati
             if (isAuthenticated) {
-                const userData = getValue("userData")
                 setValue("recipes", updatedRecipes)
-                const mutationId = `${recipe.id}_${recipe.title}`
-
-                // const debounceUpdate = debounce(() => {
-                handlePostRequest({
-                    url: "http://localhost:3000/api/preferences/set-favorited-recipes",
-                    payload: { recipe: updatedRecipe, userId: userData.id },
-                    mutationId: mutationId + "fav",
-                })
-
-                handlePostRequest({
-                    url: "http://localhost:3000/api/preferences/update-recipes-history",
-                    payload: { recipe: updatedRecipe, userId: userData.id },
-                    mutationId: mutationId + "history",
-                })
-                // }, 1000)
-                // debounceUpdate()
             }
-
             return updatedRecipes
         })
 
