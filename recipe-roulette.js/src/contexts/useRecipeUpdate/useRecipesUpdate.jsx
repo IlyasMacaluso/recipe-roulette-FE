@@ -12,7 +12,7 @@ export const useRecipesUpdate = (recipes, setRecipes) => {
     const { debounceValue } = useDebounce(currentRecipe)
 
     useEffect(() => {
-        // Aggiornamento localStorage e DB se autenticati
+        //chiamata di rete quando cambia il valore di debounce (ricetta da aggiornare)
         if (isAuthenticated) {
             const userData = getValue("userData")
 
