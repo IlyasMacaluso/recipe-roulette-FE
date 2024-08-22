@@ -1,11 +1,13 @@
 import { useAuth } from "../../hooks/Auth/useAuth"
 import { useLocalStorage } from "../../hooks/useLocalStorage/useLocalStorage"
 import { usePostRequest } from "../../hooks/usePostRequest/usePostRequest"
+import { useDebounce } from "../../hooks/useDebounce/useDebounce"
 
 export const useRecipesUpdate = (setRecipes) => {
     const { setValue, getValue } = useLocalStorage()
     const { handlePostRequest } = usePostRequest()
     const { isAuthenticated } = useAuth() // Stato di autenticazione
+    const { debounce } = useDebounce()
 
     const handleRecipesUpdate = (recipe, setRecipe) => {
         const updatedRecipe = { ...recipe, isFavorited: !recipe.isFavorited }
@@ -39,20 +41,22 @@ export const useRecipesUpdate = (setRecipes) => {
                 setValue("recipes", updatedRecipes)
                 const mutationId = `${recipe.id}_${recipe.title}`
 
+                // const debounceUpdate = debounce(() => {
                 handlePostRequest({
                     url: "http://localhost:3000/api/preferences/set-favorited-recipes",
                     payload: { recipe: updatedRecipe, userId: userData.id },
-                    mutationId: mutationId,
+                    mutationId: mutationId + "fav",
                 })
 
                 handlePostRequest({
                     url: "http://localhost:3000/api/preferences/update-recipes-history",
                     payload: { recipe: updatedRecipe, userId: userData.id },
-                    mutationId: mutationId,
+                    mutationId: mutationId + "history",
                 })
+                // }, 1000)
+                // debounceUpdate()
             }
 
-            console.log(updatedRecipes);
             return updatedRecipes
         })
 
