@@ -1,6 +1,7 @@
 import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline"
 import CachedIcon from "@mui/icons-material/Cached"
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined"
+import { OneEightyRing } from "react-svg-spinners";
 
 import classes from "./InlineMessage.module.scss"
 
@@ -22,7 +23,7 @@ export function InlineMessage({ error = false, loading = false, message = null, 
             )}
             {loading && (
                 <div className={classes.inlineMsg}>
-                    {<CachedIcon fontSize="small" />}
+                    {<OneEightyRing height="20px" color="#4d5358" />}
                     {loadingMessage}
                 </div>
             )}

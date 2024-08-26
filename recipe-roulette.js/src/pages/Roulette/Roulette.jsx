@@ -7,19 +7,21 @@ import { useLocationHook } from "../../hooks/useLocationHook"
 import { useRecipesFetch } from "../../hooks/useRecipesFetch/useRecipesFetch"
 import { useShakeAnimation } from "../../hooks/useShakeAnimation/useShakeAnimation"
 import { useManageIngredients } from "./IngredientsContext"
-import { Skeleton } from "@mui/material"
+import { debounce, Skeleton } from "@mui/material"
+import { InlineMessage } from "../../components/InlineMessage/InlineMessage"
+import { useEffect, useState } from "react"
 
 import ManageSearchOutlinedIcon from "@mui/icons-material/ManageSearchOutlined"
 import AddIcon from "@mui/icons-material/Add"
 import LoopOutlinedIcon from "@mui/icons-material/LoopOutlined"
 
 import classes from "./Roulette.module.scss"
-
 import layout from "../../assets/scss/pageLayout/pageFH.module.scss"
 import transition from "../../assets/scss/pageLayout/pageTransition.module.scss"
-import { InlineMessage } from "../../components/InlineMessage/InlineMessage"
 
 export function Roulette() {
+    const [pageHeight, setPageHeight] = useState("100%")
+
     const { ingredients, shuffleIng, handleIngIncrement, ingredientsLoading, blacklistedLoading, ingredientsError } = useManageIngredients()
     const { recipeFilter } = useRecipesContext()
     const { isActive } = useButtonState(ingredients)
@@ -27,6 +29,14 @@ export function Roulette() {
     const { animate } = useAnimate(location)
     const { handleRecipesFetch } = useRecipesFetch()
     const { handleAnimation, animationState } = useShakeAnimation()
+
+    useEffect(() => {
+        const page = document.querySelector(`.${layout.pageFH}`)
+        if (page) {
+            const height = page.offsetHeight
+            setPageHeight(height)
+        }
+    }, [])
 
     if (ingredientsError) {
         return (
@@ -36,7 +46,12 @@ export function Roulette() {
         )
     } else {
         return (
-            <div className={`${layout.pageFH} ${layout.noPadding} ${animate ? transition.animationEnd : transition.animationStart}`}>
+            <div
+                style={{
+                    minHeight: `${pageHeight}px`,
+                }}
+                className={`${layout.pageFH} ${layout.noPadding} ${animate ? transition.animationEnd : transition.animationStart}`}
+            >
                 <div className={classes.contentWrapper}>
                     <div className={classes.ingredientsWrapper}>
                         {ingredientsLoading || blacklistedLoading

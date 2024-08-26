@@ -1,8 +1,10 @@
 import { useNavigate } from "@tanstack/react-router"
 import { useCallback, useEffect } from "react"
+import { useAuth } from "../Auth/useAuth"
 
 export const useHandleConfirmationPopup = (condition, status) => {
     const navigate = useNavigate()
+
     const handleBackButton = useCallback(
         (event) => {
             if (condition) {

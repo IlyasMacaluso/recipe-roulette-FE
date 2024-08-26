@@ -2,6 +2,7 @@ import { InlineMessage } from "../InlineMessage/InlineMessage"
 import classes from "./ConfirmPopup.module.scss"
 
 export function ConfirmPopup({ error, loading, title, message, buttons = null }) {
+    
     return (
         <div className={`${classes.confirmPopup}`}>
             <section className={classes.topItems}>

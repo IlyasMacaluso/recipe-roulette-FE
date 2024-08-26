@@ -30,10 +30,10 @@ export function SettingsCard({
     error,
     status,
     reset,
-    proceed,
 }) {
     const { isAuthenticated } = useAuth()
     useHandleConfirmationPopup(isEditing, status)
+    
     const {
         newPassword = null,
         confirmNewPass = null,
@@ -188,7 +188,7 @@ export function SettingsCard({
                                             style={"primary"}
                                             label="Continue"
                                             action={() => {
-                                                proceed()
+                                                reset()
                                                 handleDiscardChanges()
                                             }}
                                         />,

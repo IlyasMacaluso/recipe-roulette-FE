@@ -42,8 +42,8 @@ export function Sidebar({ sidebarState = false, handleSidebarToggle }) {
                     <div className={classes.blackListedWrapper}>
                         <h4>Add ingredeints to black list</h4>
                         <div className={classes.blackListed}>
-                            <IngredientSearch searchCriteria="is_blacklisted" />
-                            {ingredients?.blacklisted && (
+                            <IngredientSearch searchCriteria="is_blacklisted" sidebarState={sidebarState} />
+                            {ingredients?.blacklisted && ingredients?.blacklisted.length > 0 && (
                                 <div className={classes.filterChipWrapper}>
                                     {ingredients?.blacklisted
                                         .filter((ing) => ing.is_blacklisted)

@@ -40,7 +40,6 @@ export function Settings() {
         error,
 
         status,
-        proceed,
         reset,
         setBlockCondition,
 
@@ -70,7 +69,6 @@ export function Settings() {
                 loading={loading}
                 error={error}
                 status={status}
-                proceed={proceed}
                 reset={reset}
                 setBlockCondition={setBlockCondition}
             />
