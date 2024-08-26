@@ -27,7 +27,7 @@ export function SideMenu({ handleMenuToggle, menuState = false }) {
     const { isAuthenticated } = useAuth()
     const { loading, error, handleLogout } = useLogout(setShowPopup)
     const { changeToSignup, setChangeToSignup } = useLoginToSignup()
-    const { pathname } = useLocation()\
+    const { pathname } = useLocation()
 
     const navigationLinks = [
         {
