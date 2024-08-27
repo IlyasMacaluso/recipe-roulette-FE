@@ -18,7 +18,7 @@ export function Sidebar({ sidebarState = false, handleSidebarToggle }) {
     const { toggleRecipeFilter, recipeFilter, handleDeselectRecipeFilters } = useRecipesContext()
     const location = useLocation()
 
-    if (location.pathname !== "/favorited") {
+    if (location.pathname !== "/favorited" && location.pathname !== "/" ) {
         return (
             <div>
                 <div
