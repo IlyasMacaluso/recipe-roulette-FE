@@ -65,13 +65,13 @@ export function SideMenu({ handleMenuToggle, menuState = false }) {
     return (
         <div>
             <div
-                onClick={handleMenuToggle}
+                onClick={() => handleMenuToggle(false)}
                 className={`${classes.backgroundOverlay} ${menuState && classes.backgroundOverlayToggled}`}
             ></div>
             <div className={`${classes.sidebar} ${menuState && classes.sidebarToggled}`}>
                 <header>
                     <h4>Browse</h4>
-                    <IcoButton action={handleMenuToggle} icon={<CloseIcon />} style="transparent" />
+                    <IcoButton action={() => handleMenuToggle(false)} icon={<CloseIcon />} style="transparent" />
                 </header>
                 <section className={classes.links}>
                     {navigationLinks.map((item) => {
@@ -79,7 +79,7 @@ export function SideMenu({ handleMenuToggle, menuState = false }) {
                             <NavigationLink
                                 key={item.id}
                                 path={pathname}
-                                handleMenuToggle={handleMenuToggle}
+                                handleMenuToggle={()=>handleMenuToggle(false)}
                                 label={item.label}
                                 destination={item.destination}
                                 icon={item.icon}

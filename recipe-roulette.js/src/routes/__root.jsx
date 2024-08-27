@@ -19,7 +19,7 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools"
 export const Route = createRootRoute({
     component: () => {
         const { handleSidebarToggle, sidebarState } = useDiscoverySidebar()
-        const { handleMenuToggle, path, menuState } = useSideMenu()
+        const { handleMenuToggle, setMenuState, path, menuState } = useSideMenu()
         const { toggleSidebarRecipes, sideBarState } = useRecipesResultsSideBar()
 
         return (
@@ -30,7 +30,7 @@ export const Route = createRootRoute({
                             <RecipesFetchProvider>
                                 <SnackbarProvider>
                                     <SearchProvider>
-                                        <SideMenu handleMenuToggle={handleMenuToggle} menuState={menuState} path={path} />
+                                        <SideMenu handleMenuToggle={setMenuState} menuState={menuState} path={path} />
                                         <Header
                                             handleRecipesSidebarToggle={toggleSidebarRecipes}
                                             handleSidebarToggle={handleSidebarToggle}
