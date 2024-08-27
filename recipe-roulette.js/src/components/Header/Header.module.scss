@@ -56,3 +56,28 @@
         }
     }
 }
+
+@media screen and (min-width: 1120px) {
+    .header {
+        position: fixed;
+        top: 0;
+        box-sizing: border-box;
+        width: calc(100vw - 48px); /* 48px = padding left and right */
+        padding: 24px 0;
+    }
+
+    .header .topItem {
+        padding: 0;
+    }
+
+    .header > .globalActions {
+        padding: 0;
+    }
+
+    .header .topItem > button {
+        display: none;
+    }
+    .header .globalActions > button:last-child {
+        display: none;
+    }
+}

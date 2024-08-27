@@ -18,6 +18,7 @@ import LoopOutlinedIcon from "@mui/icons-material/LoopOutlined"
 import classes from "./Roulette.module.scss"
 import layout from "../../assets/scss/pageLayout/pageFH.module.scss"
 import transition from "../../assets/scss/pageLayout/pageTransition.module.scss"
+import { Placeholder } from "../../components/Placeholder/Placeholder"
 
 export function Roulette() {
     const [pageHeight, setPageHeight] = useState("100%")
@@ -40,8 +41,9 @@ export function Roulette() {
 
     if (ingredientsError) {
         return (
-            <div className={`${layout.scrollPage} ${layout.noPadding} ${animate ? transition.animationEnd : transition.animationStart}`}>
+            <div className={`${layout.pageFH} ${layout.noPadding}`}>
                 <InlineMessage error={ingredientsError} />
+                <Placeholder topImage={"Shrug-bro.svg"} text="Oops >.< something went wrong!" />
             </div>
         )
     } else {

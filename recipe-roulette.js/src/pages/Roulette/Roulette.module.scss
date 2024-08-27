@@ -38,6 +38,9 @@
         border-radius: 2rem;
         color: white;
         background: linear-gradient(87deg, rgba(0, 200, 99, 1) 0%, rgba(4, 171, 160, 1) 100%, rgba(0, 138, 165, 1) 100%);
+        &:focus {
+            outline: none;
+        }
     }
 }
 
@@ -71,5 +74,11 @@
     }
     to {
         transform: rotate(0deg);
+    }
+}
+
+@media screen and (min-width: 1120px) {
+    .bottomButtons {
+        padding-bottom: 0;
     }
 }

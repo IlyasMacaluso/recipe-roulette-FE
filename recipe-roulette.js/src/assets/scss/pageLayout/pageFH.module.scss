@@ -16,3 +16,10 @@
 .noPadding {
     padding: 0 $size-20;
 }
+
+@media screen and (min-width: 1120px) {
+    .pageFH {
+        padding: 0;
+        flex-grow: 1;
+    }
+}

@@ -30,10 +30,11 @@ export function SettingsCard({
     error,
     status,
     reset,
+    proceed,
 }) {
     const { isAuthenticated } = useAuth()
-    useHandleConfirmationPopup(isEditing, status)
-    
+    const { firstTime } = useHandleConfirmationPopup(isEditing, status)
+
     const {
         newPassword = null,
         confirmNewPass = null,
@@ -67,6 +68,7 @@ export function SettingsCard({
             </div>
         )
     }
+    console.log(firstTime);
 
     return (
         <>
@@ -187,8 +189,12 @@ export function SettingsCard({
                                             key={"button1"}
                                             style={"primary"}
                                             label="Continue"
-                                            action={() => {
-                                                reset()
+                                            action={() => {     
+                                                if(firstTime) {
+                                                    reset()
+                                                } else {
+                                                    proceed()
+                                                }
                                                 handleDiscardChanges()
                                             }}
                                         />,

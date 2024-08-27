@@ -34,5 +34,5 @@ export const useHandleBackButton = (condition, setCondition, setComponent, handl
         }
     }, [condition, firstTime, handleBackButton])
 
-    return { inputRef }
+    return { inputRef}
 }

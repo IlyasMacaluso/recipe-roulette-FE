@@ -111,3 +111,30 @@
     margin: 0.5rem 0;
     box-sizing: border-box;
 }
+
+@media screen and (min-width: 1120px) {
+    .backgroundOverlay {
+        display: none;
+    }
+    .sidebar,
+    .sidebarToggled {
+        position: initial;
+        transform: translateX(0);
+        width: 25vw;
+        max-width: none;
+        outline: 2px solid $lighter-gray;
+        border-radius: $size-24;
+        box-shadow: none;
+    }
+    .sidebar > header > button {
+        display: none;
+    }
+}
+
+@media screen and (min-width: 1440px) {
+    .sidebar,
+    .sidebarToggled {
+        width: 20vw;
+    }
+
+}

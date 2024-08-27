@@ -41,6 +41,7 @@ export function Settings() {
 
         status,
         reset,
+        proceed,
         setBlockCondition,
 
         handleSaveChanges,
@@ -70,12 +71,12 @@ export function Settings() {
                 error={error}
                 status={status}
                 reset={reset}
+                proceed={proceed}
                 setBlockCondition={setBlockCondition}
             />
 
             {!isEditing && (
                 <>
-                
                     <div className={classes.linksWrapper}>
                         <Link to="/food-preferences" className={classes.linkItem}>
                             Food Preferences

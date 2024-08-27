@@ -53,7 +53,7 @@
 
 .inactive {
     background-color: white;
-    border: 1px solid $light-gray;
+    border: 2px solid $lighter-gray;
     color: $dark-gray;
     padding: 0 0.75rem;
 }
@@ -66,5 +66,11 @@
     }
     .ico {
         color: $darkish-gray;
+    }
+}
+
+@media screen and (min-width: 1120px) {
+    .filterChip .label {
+        font-size: 13px;
     }
 }

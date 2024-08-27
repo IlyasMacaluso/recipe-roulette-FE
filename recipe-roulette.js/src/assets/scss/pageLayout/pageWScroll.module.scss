@@ -39,3 +39,22 @@
     display: flex;
     gap: $size-8;
 }
+@media screen and (min-width: 880px) {
+    .recipesWrapper {
+        flex-direction: row;
+        flex-wrap: wrap;
+    }
+}
+
+@media screen and (min-width: 1120px) {
+    .scrollPage {
+        padding: 0;
+    }
+}
+
+@media screen and (min-width: 1440px) {
+    .recipesWrapper {
+        flex-direction: row;
+        flex-wrap: wrap;
+    }
+}

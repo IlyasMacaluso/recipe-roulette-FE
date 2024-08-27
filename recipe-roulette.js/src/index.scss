@@ -20,3 +20,16 @@ body {
     box-sizing: border-box;
     height: 100%;
 }
+
+@media screen and (min-width: 1120px) {
+    .appContainer {
+        flex-direction: row;
+        gap: 20px;
+        padding:24px;
+        padding-top: 7.5rem;
+        box-sizing: border-box;
+        width:100%;
+        height: 100%;
+        margin: 0;
+    }
+}

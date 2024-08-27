@@ -29,6 +29,11 @@ export function useIngredientSearch(searchCriteria, sidebarState = false) {
         setSearchState(false)
 
         const input = document.querySelector(`.${styles.header} .${styles.globalActions} input`)
+        
+        if (!input) {
+            return
+        }
+
         if (sidebarState === true) {
             input.disabled = true
         } else {

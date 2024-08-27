@@ -38,6 +38,7 @@ export function History() {
         return (
             <div className={`${layout.scrollPage} ${animate ? transition.animationEnd : transition.animationStart}`}>
                 <InlineMessage error={historyError} />
+                <Placeholder topImage="Shrug-bro.svg" text="Oops >.< something went wrong!" />
             </div>
         )
     } else {

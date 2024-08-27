@@ -1,12 +1,16 @@
 import { IngredientSuggestionActive } from "./IngredientSuggestionActive"
 import { IngredientSuggestionInactive } from "./IngredientSuggestionInactive"
 import { useRecipesContext } from "../../../contexts/RecipesContext"
+import { Placeholder } from "../../Placeholder/Placeholder"
+import { InlineMessage } from "../../InlineMessage/InlineMessage"
 
 import classes from "./IngredientSuggestions.module.scss"
-import { Placeholder } from "../../Placeholder/Placeholder"
+import { useManageIngredients } from "../../../pages/Roulette/IngredientsContext"
+import { Skeleton } from "@mui/material"
 
 export function IngredientSuggestions({ inputRef = null, setInputState, inputActive, searchCriteria, suggestions }) {
     const { recipeFilter } = useRecipesContext()
+    const { ingredientsLoading, blacklistedLoading, ingredientsError } = useManageIngredients()
 
     const isIngredientActive = (ingredient) => {
         if (ingredient.is_selected || ingredient.is_blacklisted) {
@@ -23,42 +27,63 @@ export function IngredientSuggestions({ inputRef = null, setInputState, inputAct
         }
         return true
     }
-
-    return (
-        <div className={`${classes.suggestions} ${inputActive && classes.active}`}>
-            {suggestions && suggestions.length > 0 ? (
-                suggestions
-                    .sort((a, b) => (a.name === b.name ? 0 : a.name > b.name ? 1 : -1))
-                    .map((ingredient) => {
-                        if (isIngredientActive(ingredient)) {
-                            return (
-                                <IngredientSuggestionActive
-                                    inputRef={inputRef}
-                                    setInputState={setInputState}
-                                    ing={ingredient}
-                                    prop={searchCriteria}
-                                    key={ingredient.id}
-                                />
-                            )
-                        } else {
-                            return (
-                                <IngredientSuggestionInactive
-                                    inputRef={inputRef}
-                                    setInputState={setInputState}
-                                    ing={ingredient}
-                                    key={ingredient.id}
-                                />
-                            )
-                        }
-                    })
-            ) : (
-                <Placeholder
-                    bottomImage={"Personal files-bro.svg"}
-                    text="Your search has "
-                    hightlitedText="no matching results"
-                    highlightColor="#dd3e46"
-                />
-            )}
-        </div>
-    )
+    if (ingredientsError) {
+        return (
+            <div className={`${classes.suggestions} ${inputActive && classes.active}`}>
+                <InlineMessage error={ingredientsError} />
+                <Placeholder topImage="Shrug-bro.svg" text="Oops >.< something went wrong!" />
+            </div>
+        )
+    } else {
+        return (
+            <div className={`${classes.suggestions} ${inputActive && classes.active}`}>
+                {ingredientsLoading || blacklistedLoading ? (
+                    <>
+                        {[...Array(20)].map(() => (
+                            <Skeleton
+                                className={classes.skeleton}
+                                key={Math.random()}
+                                sx={{ bgcolor: "#c5e4c9" }}
+                                variant="rounded"
+                                width={"100%"}
+                                height={"36px"}
+                            />
+                        ))}
+                    </>
+                ) : suggestions && suggestions.length > 0 ? (
+                    suggestions
+                        .sort((a, b) => (a.name === b.name ? 0 : a.name > b.name ? 1 : -1))
+                        .map((ingredient) => {
+                            if (isIngredientActive(ingredient)) {
+                                return (
+                                    <IngredientSuggestionActive
+                                        inputRef={inputRef}
+                                        setInputState={setInputState}
+                                        ing={ingredient}
+                                        prop={searchCriteria}
+                                        key={ingredient.id}
+                                    />
+                                )
+                            } else {
+                                return (
+                                    <IngredientSuggestionInactive
+                                        inputRef={inputRef}
+                                        setInputState={setInputState}
+                                        ing={ingredient}
+                                        key={ingredient.id}
+                                    />
+                                )
+                            }
+                        })
+                ) : (
+                    <Placeholder
+                        bottomImage={"Personal files-bro.svg"}
+                        text="Your search has "
+                        hightlitedText="no matching results"
+                        highlightColor="#dd3e46"
+                    />
+                )}
+            </div>
+        )
+    }
 }

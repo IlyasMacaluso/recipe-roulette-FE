@@ -6,6 +6,8 @@
 
     height: 100%;
     width: 100%;
+
+    top: 0;
     left: 0;
     transform: translateX(100%);
 
@@ -38,7 +40,7 @@
         display: flex;
         align-items: center;
         justify-content: space-between;
-        border-bottom: 1px solid $light-gray;
+        border-bottom: 2px solid $lighter-gray;
         h2 {
             color: $dark-gray;
             font-family: $font-poppins;
@@ -71,7 +73,7 @@
     height: calc(100% - 60px);
     padding-bottom: 2rem;
     overflow-y: scroll;
-    .filterSection {
+    .section {
         padding: 0 $size-16;
         .switchesWrapper {
             display: flex;
@@ -81,7 +83,7 @@
     }
 }
 
-.filterSection h4 {
+.section h4 {
     margin-bottom: 8px;
 }
 
@@ -123,4 +125,34 @@ h4 {
     font-family: $font-poppins;
     font-size: $text-size-14;
     margin: 0;
+}
+
+@media screen and (min-width: 1120px) {
+    .backgroundOverlay,
+    .backgroundOverlayToggled {
+        display: none;
+    }
+    .sidebar,
+    .sidebarToggled {
+        position: initial;
+        opacity: 1;
+        transform: translateX(0);
+        width: 25vw;
+        max-width: none;
+        outline: 2px solid $lighter-gray;
+        border-radius: $size-24;
+        overflow: hidden;
+    }
+
+    .sidebar > header > .rightItems > button:last-child {
+        display: none;
+    }
+}
+
+@media screen and (min-width: 1440px) {
+    .sidebar,
+    .sidebarToggled {
+        width: 20vw;
+    }
+
 }

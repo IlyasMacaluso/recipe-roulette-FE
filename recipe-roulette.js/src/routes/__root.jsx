@@ -14,15 +14,14 @@ import { SideMenu } from "../components/SideMenu/SideMenu"
 import { Sidebar } from "../components/Sidebar/Sidebar"
 import { SideBarRecipes } from "../components/Sidebar/SideBarRecipes"
 import { Snackbar } from "../components/Snackbar/Snackbar"
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
-
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools"
 
 export const Route = createRootRoute({
     component: () => {
         const { handleSidebarToggle, sidebarState } = useDiscoverySidebar()
         const { handleMenuToggle, path, menuState } = useSideMenu()
         const { toggleSidebarRecipes, sideBarState } = useRecipesResultsSideBar()
-        
+
         return (
             <div className="appContainer">
                 <AuthProvider>
@@ -32,8 +31,6 @@ export const Route = createRootRoute({
                                 <SnackbarProvider>
                                     <SearchProvider>
                                         <SideMenu handleMenuToggle={handleMenuToggle} menuState={menuState} path={path} />
-                                        <SideBarRecipes state={sideBarState} toggleSidebarRecipes={toggleSidebarRecipes} />
-                                        <Sidebar sidebarState={sidebarState} handleSidebarToggle={handleSidebarToggle} />
                                         <Header
                                             handleRecipesSidebarToggle={toggleSidebarRecipes}
                                             handleSidebarToggle={handleSidebarToggle}
@@ -41,8 +38,12 @@ export const Route = createRootRoute({
                                         />
                                         <Snackbar />
                                         <Outlet />
-                                        <TanStackRouterDevtools />
-                                        <ReactQueryDevtools />
+                                        <SideBarRecipes state={sideBarState} toggleSidebarRecipes={toggleSidebarRecipes} />
+                                        <Sidebar sidebarState={sidebarState} handleSidebarToggle={handleSidebarToggle} />
+                                        <>
+                                            <TanStackRouterDevtools />
+                                            <ReactQueryDevtools />
+                                        </>
                                     </SearchProvider>
                                 </SnackbarProvider>
                             </RecipesFetchProvider>

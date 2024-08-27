@@ -49,6 +49,8 @@ export function Favorited() {
         return (
             <div className={`${layout.scrollPage} ${animate ? transition.animationEnd : transition.animationStart}`}>
                 <InlineMessage error={favoritedError} />
+                <Placeholder topImage={"Shrug-bro.svg"} text="Oops >.< something went wrong!" />
+
             </div>
         )
     } else {
