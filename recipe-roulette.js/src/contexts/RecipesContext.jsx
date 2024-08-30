@@ -203,7 +203,6 @@ export const RecipesProvider = ({ children }) => {
         setRecipes((prevRecipes) => {
             const newFilteredFavorites = filterRecipes(prevRecipes.favorited)
             const newFilteredHistory = filterRecipes(prevRecipes.history)
-            console.log("fav:", newFilteredFavorites, "history:", newFilteredHistory)
             return {
                 ...prevRecipes,
                 filteredFavorites: newFilteredFavorites,

@@ -33,7 +33,9 @@ export function Roulette() {
 
     useEffect(() => {
         const page = document.querySelector(`.${layout.pageFH}`)
-        if (page) {
+        const width = window.innerWidth;
+        
+        if (page && width < 1120) {
             const height = page.offsetHeight
             setPageHeight(height)
         }

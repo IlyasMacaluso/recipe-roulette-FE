@@ -47,7 +47,6 @@ export function useTestPost(ingredients, setIngredients, url) {
         setTimeout(() => {
             clearInterval(intervalId)
             setIngredients((prev) => {
-                console.log(prev.blacklisted)
                 return prev
             })
         }, 3000)
