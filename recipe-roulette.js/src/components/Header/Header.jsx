@@ -1,5 +1,5 @@
 import { useLocation, useNavigate } from "@tanstack/react-router"
-import { useState, useEffect } from "react"
+import { useState, useEffect, useMemo } from "react"
 import { useRecipesContext } from "../../contexts/RecipesContext"
 
 import ArrowBackIcon from "@mui/icons-material/ArrowBack"
@@ -17,7 +17,7 @@ import { useAuth } from "../../hooks/Auth/useAuth"
 
 export function Header({ handleMenuToggle, handleSidebarToggle, handleRecipesSidebarToggle }) {
     const [title, setTitle] = useState("/")
-    const { recipes, setRecipes, setInputValue, inputValue } = useRecipesContext()
+    const { recipes, setRecipes, setInputValue, inputValue, recipeFilter } = useRecipesContext()
     const { handleDeselectAll } = useManageIngredients()
     const { isAuthenticated } = useAuth()
 
@@ -86,6 +86,14 @@ export function Header({ handleMenuToggle, handleSidebarToggle, handleRecipesSid
         }
     }, [])
 
+    const searchHistory = useMemo(() => {
+        return recipes.filteredHistory.filter((rec) => rec.title.toLowerCase().includes(inputValue.toLowerCase()))
+    }, [inputValue, recipes.filteredHistory, recipes.history, recipeFilter])
+
+    const searchFavorites = useMemo(() => {
+        return recipes.filteredFavorites.filter((rec) => rec.title.toLowerCase().includes(inputValue.toLowerCase()))
+    }, [inputValue, recipes.filteredFavorites, recipes.favorited, recipeFilter])
+
     return (
         location.pathname !== "/login" &&
         location.pathname !== "/signup" && (
@@ -119,16 +127,16 @@ export function Header({ handleMenuToggle, handleSidebarToggle, handleRecipesSid
 
                     <IcoButton action={handleMenuToggle} icon={<MenuOpenIcon />} style="transparent" />
                 </div>
-                {location.pathname === "/favorited" && isAuthenticated && recipes?.favorited.length > 0 && (
+                {location.pathname === "/favorited" && isAuthenticated && recipes?.favorited && recipes?.favorited.length > 0 && (
                     <section className={classes.globalActions}>
-                        <BaseSearch data={recipes.searchFavorites} inputValue={inputValue} setInputValue={setInputValue} />
+                        <BaseSearch data={searchFavorites} inputValue={inputValue} setInputValue={setInputValue} />
                         <IcoButton action={handleRecipesSidebarToggle} label="Filters" icon={<FilterListIcon fontSize="small" />} />
                     </section>
                 )}
-                {location.pathname === "/history" && isAuthenticated && recipes.history.length > 0 && (
+                {location.pathname === "/history" && isAuthenticated && recipes?.history && recipes?.history.length > 0 && (
                     <section className={classes.globalActions}>
                         <BaseSearch
-                            data={recipes.searchHistory}
+                            data={searchHistory}
                             inputValue={inputValue}
                             setInputValue={setInputValue}
                         />

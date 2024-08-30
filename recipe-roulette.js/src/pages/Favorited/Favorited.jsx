@@ -34,7 +34,7 @@ export function Favorited() {
         historyLoading,
         foodPrefLoading,
         favoritedError,
-        setRecipes
+        recipeFilter,
     } = useRecipesContext()
     const { isAuthenticated } = useAuth()
     const { changeToSignup, setChangeToSignup } = useLoginToSignup()
@@ -43,17 +43,14 @@ export function Favorited() {
     const { animate } = useAnimate(location)
 
     const searchFavorites = useMemo(() => {
-        const searchedRecipes = recipes.filteredFavorites.filter((recipe) => recipe.title.toLowerCase().includes(inputValue.toLowerCase()))
-        setRecipes(prev => ({...prev, searchFavorites: searchedRecipes}))
-        return searchedRecipes
-    }, [inputValue, recipes.filteredFavorites, recipes.favorited])
+        return recipes.filteredFavorites.filter((rec) => rec.title.toLowerCase().includes(inputValue.toLowerCase()))
+    }, [inputValue, recipes.filteredFavorites, recipes.favorited, recipeFilter])
 
     if (favoritedError) {
         return (
             <div className={`${layout.scrollPage} ${animate ? transition.animationEnd : transition.animationStart}`}>
                 <InlineMessage error={favoritedError} />
                 <Placeholder topImage={"Shrug-bro.svg"} text="Oops >.< something went wrong!" />
-
             </div>
         )
     } else {

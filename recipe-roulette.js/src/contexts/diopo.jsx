@@ -163,13 +163,13 @@ export const RecipesProvider = ({ children }) => {
             let newSearchFavorite
             let newSearchHistory
 
-            if (prevRecipes.filteredFavorites.length > 0 ) {
+            if (prevRecipes.filteredFavorites.length > 0 && location.pathname === "/favorited") {
                 newSearchFavorite = prevRecipes.filteredFavorites.filter((rec) =>
                     rec.title.toLowerCase().includes(inputValue.toLowerCase())
                 )
             }
 
-            if (prevRecipes.filteredHistory.length > 0) {
+            if (prevRecipes.filteredHistory.length > 0 && location.pathname === "/history") {
                 newSearchHistory = prevRecipes.filteredHistory.filter((rec) => rec.title.toLowerCase().includes(inputValue.toLowerCase()))
             }
 
@@ -179,7 +179,7 @@ export const RecipesProvider = ({ children }) => {
                 searchHistory: newSearchHistory ? newSearchHistory : prevRecipes.searchHistory,
             }
         })
-    }, [inputValue, favoritedLoading, historyLoading, foodPrefLoading, recipes.filteredFavorites, recipes.filteredHistory])
+    }, [inputValue, favoritedLoading, historyLoading, foodPrefLoading, recipeFilter, recipes.filteredFavorites, recipes.filteredHistory])
 
     // Aggiorno le ricette visualizzate quando vengono modificati i filtri o aggiunti preferiti
     useEffect(() => {
@@ -203,7 +203,6 @@ export const RecipesProvider = ({ children }) => {
         setRecipes((prevRecipes) => {
             const newFilteredFavorites = filterRecipes(prevRecipes.favorited)
             const newFilteredHistory = filterRecipes(prevRecipes.history)
-            console.log("fav:", newFilteredFavorites, "history:", newFilteredHistory)
             return {
                 ...prevRecipes,
                 filteredFavorites: newFilteredFavorites,

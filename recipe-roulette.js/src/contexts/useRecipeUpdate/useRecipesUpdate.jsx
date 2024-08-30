@@ -56,6 +56,8 @@ export const useRecipesUpdate = (recipes, setRecipes) => {
                 searchFavorites: newFavorites || [],
                 favorited: newFavorites || [],
                 history: newHistory || [],
+                filteredHistory: newHistory || [],
+                searchHistory: newHistory || [],
                 targetedRecipe: isTargetedRecipe ? updatedRecipe : prev.targetedRecipe,
             }
             // Aggiornamento localStorage e DB se autenticati

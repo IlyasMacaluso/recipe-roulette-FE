@@ -102,3 +102,9 @@
         box-shadow: 0 0 20px rgba($color: #000000, $alpha: 0.1);
     }
 }
+
+@media screen and (min-width: 1440px) {
+    header .positionFixed {
+        width: calc(60vw - 84px);
+    }
+}

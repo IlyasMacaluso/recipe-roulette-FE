@@ -22,21 +22,15 @@ import { InlineMessage } from "../../components/InlineMessage/InlineMessage"
 export function History() {
     const [showPopup, setShowPopup] = useState()
 
-    const { recipes, inputValue, setInputValue, historyLoading, favoritedLoading, foodPrefLoading, historyError, recipeFilter, setRecipes } =
+    const { recipes, setInputValue, historyLoading, favoritedLoading, foodPrefLoading, historyError, recipeFilter, inputValue } =
         useRecipesContext()
     const { isAuthenticated } = useAuth()
     const { location } = useLocationHook()
     const { animate } = useAnimate(location)
 
     const searchHistory = useMemo(() => {
-        if (!historyLoading && !foodPrefLoading && !favoritedLoading) {
-            const historySearched = recipes.filteredHistory.filter((recipe) => recipe.title.toLowerCase().includes(inputValue.toLowerCase()))
-            setRecipes(prev => ({...prev, searchHistory: historySearched}))
-            return historySearched
-        } else {
-            return []
-        }
-    }, [inputValue, recipes.filteredHistory, recipes.history])
+        return recipes.filteredHistory.filter((rec) => rec.title.toLowerCase().includes(inputValue.toLowerCase()))
+    }, [inputValue, recipes.filteredHistory, recipes.history, recipeFilter])
 
     if (historyError) {
         return (
