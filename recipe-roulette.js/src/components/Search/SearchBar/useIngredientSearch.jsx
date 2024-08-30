@@ -96,7 +96,7 @@ export function useIngredientSearch(searchCriteria, sidebarState = false) {
     //     // const selectedIngs = ingredients?.displayed.filter((ing) => ing.is_selected)
 
     //     // // Filtra gli ingredienti nel database che corrispondono alla ricerca corrente
-    //     // const isInDatabase = ingredients?.filtered.filter(
+    //     // const isInDatabase = ingredients?.filteredFavorites.filter(
     //     //     (ing) => ing.name.toUpperCase().includes(inputValues.current.toUpperCase()) && !ing.is_selected && !ing.is_blacklisted
     //     // )
 

@@ -12,7 +12,7 @@ const IngredientsContext = createContext()
 export const IngredientsProvider = ({ children }) => {
     const [ingredients, setIngredients] = useState({
         all: [],
-        filtered: [],
+        filteredFavorites: [],
         displayed: [],
         blacklisted: [],
     })
@@ -74,7 +74,7 @@ export const IngredientsProvider = ({ children }) => {
                     return {
                         ...prev,
                         all: all,
-                        filtered: all,
+                        filteredFavorites: all,
                         displayed: displayed,
                         blacklisted: DBBlacklisted || [],
                     }
@@ -96,7 +96,7 @@ export const IngredientsProvider = ({ children }) => {
                 recipeFilter.is_vegetarian && filterIngredients("is_vegetarian")
                 recipeFilter.is_vegan && filterIngredients("is_vegan")
 
-                const updatedIngredients = { ...prev, filtered: filtering }
+                const updatedIngredients = { ...prev, filteredFavorites: filtering }
                 setValue("ingredients", updatedIngredients)
                 return updatedIngredients
             }

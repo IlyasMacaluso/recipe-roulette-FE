@@ -13,9 +13,11 @@ export const RecipesProvider = ({ children }) => {
     const [recipes, setRecipes] = useState({
         results: [],
         favorited: [],
-        filtered: [],
-        searched: [],
+        filteredFavorites: [],
+        searchFavorites: [],
         history: [],
+        filteredHistory: [],
+        searchedHistory: [],
         targetedRecipe: null,
     }) //stato delle ricette
     const location = useLocation()
@@ -26,7 +28,6 @@ export const RecipesProvider = ({ children }) => {
     const { isAuthenticated } = useAuth() // Stato di autenticazione
     const { getValue, setValue } = useLocalStorage()
     const { getRequest } = useGetRequest()
-    const queryClient = useQueryClient()
 
     // funzioni di gestione filtri ricetta
     const { recipeFilter, setRecipeFilter, toggleRecipeFilter, handlePreferencesToggle, handleDeselectRecipeFilters } =
@@ -96,9 +97,11 @@ export const RecipesProvider = ({ children }) => {
                     ...localRecipes,
                     results: localRecipes?.results || [],
                     favorited: DBFAvorited || [],
-                    filtered: DBFAvorited || [],
-                    searched: DBFAvorited || [],
+                    filteredFavorites: DBFAvorited || [],
+                    searchFavorites: DBFAvorited || [],
                     history: recipesHistory || [],
+                    filteredHistory: recipesHistory || [],
+                    searchedHistory: recipesHistory || [],
                 }
 
                 DBRecipes && setRecipes(DBRecipes)
@@ -123,11 +126,13 @@ export const RecipesProvider = ({ children }) => {
                     return {
                         ...prevRecipes,
                         results: resetRecipeList(localRecipes.results) || [],
-                        filtered: [],
                         targetedRecipe: localRecipes.targetedRecipe ? { ...prevRecipes.targetedRecipe, isFavorited: false } : null,
-                        favorited: [],
-                        searched: [],
-                        history: [],
+                        favorited: localRecipes.favorited,
+                        filteredFavorites: localRecipes.favorited,
+                        searchFavorites: localRecipes.favorited,
+                        history: localRecipes.history,
+                        filteredHistory: localRecipes.history,
+                        searchedHistory: localRecipes.history,
                     }
                 }
 
@@ -149,23 +154,15 @@ export const RecipesProvider = ({ children }) => {
         ;(location.pathname === "history" || "/favorited") && setInputValue("")
     }, [location.pathname])
 
-    //invalido le query di cronologia e preferiti quando mi sposto nelle rispettive pagine per recuperare i dati aggiornati
-    // useEffect(() => {
-    //     if (location.pathname === "/history") {
-    //         queryClient.invalidateQueries({ queryKey: ["get-recipes-history"] })
-    //     }
-    //     if (location.pathname === "/favorited") {
-    //         queryClient.invalidateQueries({ queryKey: ["get-favorited-recipes"] })
-    //     }
-    // }, [location.pathname])
-
     // Filtro i risultati quando viene modificato l'input
     useEffect(() => {
         setRecipes((prevRecipes) => {
-            if (prevRecipes.filtered && prevRecipes.filtered.length > 0) {
-                const newFiltered = prevRecipes.filtered.filter((rec) => rec.title.toLowerCase().includes(inputValue.toLowerCase()))
+            if (prevRecipes.filteredFavorites && prevRecipes.filteredFavorites.length > 0) {
+                const newFiltered = prevRecipes.filteredFavorites.filter((rec) =>
+                    rec.title.toLowerCase().includes(inputValue.toLowerCase())
+                )
 
-                return { ...prevRecipes, searched: newFiltered }
+                return { ...prevRecipes, searchFavorites: newFiltered }
             }
             return prevRecipes
         })
@@ -192,10 +189,35 @@ export const RecipesProvider = ({ children }) => {
             // Ritorna il nuovo stato di recipes aggiornato, mantenendo inalterate le altre proprietà
             return {
                 ...prevRecipes,
-                filtered: updatedFiltered,
+                filteredFavorites: updatedFiltered,
             }
         })
     }, [recipeFilter, recipes.favorited, favoritedLoading, historyLoading, foodPrefLoading])
+
+    useEffect(() => {
+        if (favoritedLoading || foodPrefLoading || historyLoading) return // Wait until data is loaded
+        setRecipes((prevRecipes) => {
+            // Copia delle ricette originali per lavorarci in modo sicuro
+            const updatedFiltered = prevRecipes.history.filter((rec) => {
+                return (
+                    rec.caloricApport <= recipeFilter.caloricApport &&
+                    rec.preparationTime <= recipeFilter.preparationTime &&
+                    (recipeFilter.is_gluten_free ? rec.is_gluten_free : true) &&
+                    (recipeFilter.is_vegetarian ? rec.is_vegetarian : true) &&
+                    (recipeFilter.is_vegan ? rec.is_vegan : true) &&
+                    (recipeFilter.cuisineEthnicity.includes("all") ||
+                        recipeFilter.cuisineEthnicity.includes(rec.cuisineEthnicity.toLowerCase())) &&
+                    (recipeFilter.difficulty === "all" || recipeFilter.difficulty.toLowerCase() === rec.difficulty.toLowerCase())
+                )
+            })
+
+            // Ritorna il nuovo stato di recipes aggiornato, mantenendo inalterate le altre proprietà
+            return {
+                ...prevRecipes,
+                filteredHistory: updatedFiltered,
+            }
+        })
+    }, [recipeFilter, recipes.history, favoritedLoading, historyLoading, foodPrefLoading])
 
     return (
         <RecipesContext.Provider

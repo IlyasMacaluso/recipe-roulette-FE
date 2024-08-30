@@ -41,8 +41,8 @@ export const Route = createRootRoute({
                                         <SideBarRecipes state={sideBarState} toggleSidebarRecipes={toggleSidebarRecipes} />
                                         <Sidebar sidebarState={sidebarState} handleSidebarToggle={handleSidebarToggle} />
                                         <>
-                                            <TanStackRouterDevtools />
-                                            <ReactQueryDevtools />
+                                            {/* <TanStackRouterDevtools />
+                                            <ReactQueryDevtools /> */}
                                         </>
                                     </SearchProvider>
                                 </SnackbarProvider>

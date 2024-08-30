@@ -3,9 +3,7 @@ import { useState, useEffect } from "react"
 import { useRecipesContext } from "../../contexts/RecipesContext"
 
 import ArrowBackIcon from "@mui/icons-material/ArrowBack"
-import TuneIcon from "@mui/icons-material/Tune"
 import LockResetIcon from "@mui/icons-material/LockReset"
-import TuneOutlinedIcon from "@mui/icons-material/TuneOutlined"
 import MenuOpenIcon from "@mui/icons-material/MenuOpen"
 import FilterListIcon from "@mui/icons-material/FilterList"
 
@@ -123,14 +121,14 @@ export function Header({ handleMenuToggle, handleSidebarToggle, handleRecipesSid
                 </div>
                 {location.pathname === "/favorited" && isAuthenticated && recipes?.favorited.length > 0 && (
                     <section className={classes.globalActions}>
-                        <BaseSearch data={recipes.searched} inputValue={inputValue} setInputValue={setInputValue} />
+                        <BaseSearch data={recipes.searchFavorites} inputValue={inputValue} setInputValue={setInputValue} />
                         <IcoButton action={handleRecipesSidebarToggle} label="Filters" icon={<FilterListIcon fontSize="small" />} />
                     </section>
                 )}
                 {location.pathname === "/history" && isAuthenticated && recipes.history.length > 0 && (
                     <section className={classes.globalActions}>
                         <BaseSearch
-                            data={recipes.history.filter((rec) => rec.title.toLowerCase().includes(inputValue.toLowerCase()))}
+                            data={recipes.searchHistory}
                             inputValue={inputValue}
                             setInputValue={setInputValue}
                         />

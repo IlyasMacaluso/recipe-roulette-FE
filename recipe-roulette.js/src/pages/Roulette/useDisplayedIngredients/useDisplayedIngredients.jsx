@@ -6,7 +6,7 @@ export const useDisplayedIngredients = (ingredients, setIngredients) => {
     const generateIngredients = () => {
         setIngredients((prev) => {
             // Filtra gli ingredienti per ottenere gli id degli ingredienti non selezionati e non in blacklist
-            const ingredientIds = prev?.filtered.filter((ing) => !ing.is_selected && !ing.is_blacklisted).map((item) => item.id)
+            const ingredientIds = prev?.filteredFavorites.filter((ing) => !ing.is_selected && !ing.is_blacklisted).map((item) => item.id)
 
             // Genera 5 ID casuali senza duplicati
             const randomIds = []
@@ -18,7 +18,7 @@ export const useDisplayedIngredients = (ingredients, setIngredients) => {
             }
 
             // Filtra gli ingredienti per ottenere gli ingredienti corrispondenti agli ID casuali generati
-            const randomIngs = prev?.filtered.filter((item) => randomIds.includes(item.id))
+            const randomIngs = prev?.filteredFavorites.filter((item) => randomIds.includes(item.id))
 
             // Crea il nuovo stato degli ingredienti
             const newIngredients = { ...prev, displayed: randomIngs }
@@ -33,7 +33,7 @@ export const useDisplayedIngredients = (ingredients, setIngredients) => {
     const shuffleIng = () => {
         setIngredients((prev) => {
             const newData = []
-            let availableIngs = prev?.filtered.filter((item) => !item.is_selected && !item.is_blacklisted)
+            let availableIngs = prev?.filteredFavorites.filter((item) => !item.is_selected && !item.is_blacklisted)
 
             prev?.displayed.forEach((ingredient) => {
                 if (!ingredient.is_selected) {
@@ -65,7 +65,7 @@ export const useDisplayedIngredients = (ingredients, setIngredients) => {
     const handleIngIncrement = () => {
         setIngredients((prev) => {
             const currentDisplayed = [...prev?.displayed]
-            const currentFiltered = [...prev?.filtered]
+            const currentFiltered = [...prev?.filteredFavorites]
 
             // Filtraggio degli ingredienti disponibili che non sono selezionati o in blacklist
             let availableIngs = currentFiltered.filter((ingredient) => !ingredient.is_selected && !ingredient.is_blacklisted)

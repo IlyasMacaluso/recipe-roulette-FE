@@ -1,5 +1,4 @@
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
-import "react-material-symbols/outlined"
 
 import App from "./App"
 

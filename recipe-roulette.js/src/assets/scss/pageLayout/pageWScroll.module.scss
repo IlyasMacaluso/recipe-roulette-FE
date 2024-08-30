@@ -48,7 +48,13 @@
 
 @media screen and (min-width: 1120px) {
     .scrollPage {
-        padding: 0;
+        padding: 24px;
+        padding-bottom: 0;
+        outline: 2px solid $lighter-gray;
+        border-radius: 1rem;
+    }
+    .recipesWrapper {
+        padding-top: 6rem;
     }
 }
 

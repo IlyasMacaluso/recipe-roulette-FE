@@ -19,7 +19,10 @@
 
 @media screen and (min-width: 1120px) {
     .pageFH {
-        padding: 0;
         flex-grow: 1;
+        padding: 24px;
+        padding-top: 6rem;
+        outline: 2px solid $lighter-gray;
+        border-radius: 1rem;
     }
 }

@@ -18,7 +18,7 @@ export function SideBarRecipes({ state, toggleSidebarRecipes }) {
         e.stopPropagation()
     }
 
-    if (location.pathname === "/favorited") {
+    if (location.pathname === "/favorited" || location.pathname === "/history") {
         return (
             <div>
                 <div

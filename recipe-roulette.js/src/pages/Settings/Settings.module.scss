@@ -1,57 +1,62 @@
 @use "../../assets/scss" as *;
 
-.settingsPage {
-    background-color: white;
-    margin: 0;
+.pageContent {
     display: flex;
     flex-direction: column;
-    align-items: center;
+    flex-grow: 1;
+    padding: 24px;
+    padding-top: 4rem;
+    gap: 1.5rem;
+    justify-content: flex-start;
+    outline: 2px solid $lighter-gray;
+    border-radius: 1rem;
+}
+
+.bottomItems {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+
     width: 100%;
-    height: 100%;
+    padding: $size-20;
+    padding-top: 0.5rem;
+    background-color: white;
+
     box-sizing: border-box;
-    padding: 0 $size-20;
-    gap: 16px;
-    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
 
-    .bottomItems {
-        position: fixed;
-        bottom: 0;
-        left: 0;
-
-        width: 100%;
-        padding: $size-20;
-        padding-top: 0.5rem;
-        background-color: white;
-
+.linksWrapper {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: 1rem;
+    .linkItem {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: $size-20 $size-24;
         box-sizing: border-box;
-        display: flex;
-        flex-direction: column;
-        gap: 12px;
+
+        background-color: white;
+        border: 2px solid $lighter-gray;
+        border-radius: $size-16;
+        cursor: pointer;
+
+        font-size: $text-size-16;
+        font-family: $font-poppins;
+        color: #3c3838;
+        font-weight: 600;
+        text-decoration: none;
+        letter-spacing: 0.025rem;
     }
+}
 
-    .linksWrapper {
-        display: flex;
-        flex-direction: column;
-        width: 100%;
-        gap: 1rem;
-        .linkItem {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: $size-20 $size-24;
-            box-sizing: border-box;
-
-            background-color: white;
-            border: 2px solid $lighter-gray;
-            border-radius: $size-16;
-            cursor: pointer;
-
-            font-size: $text-size-16;
-            font-family: $font-poppins;
-            color: #3c3838;
-            font-weight: 600;
-            text-decoration: none;
-            letter-spacing: 0.025rem;
-        }
+@media screen and (min-width: 1120px) {
+    .settingsPage {
+        padding: 0;
+        margin-top: 3rem;
     }
 }

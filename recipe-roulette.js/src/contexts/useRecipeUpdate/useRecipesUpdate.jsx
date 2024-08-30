@@ -52,8 +52,8 @@ export const useRecipesUpdate = (recipes, setRecipes) => {
             const updatedRecipes = {
                 ...prev,
                 results: newResults,
-                filtered: newFavorites || [],
-                searched: newFavorites || [],
+                filteredFavorites: newFavorites || [],
+                searchFavorites: newFavorites || [],
                 favorited: newFavorites || [],
                 history: newHistory || [],
                 targetedRecipe: isTargetedRecipe ? updatedRecipe : prev.targetedRecipe,

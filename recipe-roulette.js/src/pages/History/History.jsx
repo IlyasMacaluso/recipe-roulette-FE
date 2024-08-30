@@ -22,18 +22,22 @@ import { InlineMessage } from "../../components/InlineMessage/InlineMessage"
 export function History() {
     const [showPopup, setShowPopup] = useState()
 
-    const { recipes, inputValue, setInputValue, historyLoading, favoritedLoading, foodPrefLoading, historyError } = useRecipesContext()
+    const { recipes, inputValue, setInputValue, historyLoading, favoritedLoading, foodPrefLoading, historyError, recipeFilter, setRecipes } =
+        useRecipesContext()
     const { isAuthenticated } = useAuth()
     const { location } = useLocationHook()
     const { animate } = useAnimate(location)
 
     const searchHistory = useMemo(() => {
         if (!historyLoading && !foodPrefLoading && !favoritedLoading) {
-            return recipes?.history.filter((recipe) => recipe.title.toLowerCase().includes(inputValue.toLowerCase()))
+            const historySearched = recipes.filteredHistory.filter((recipe) => recipe.title.toLowerCase().includes(inputValue.toLowerCase()))
+            setRecipes(prev => ({...prev, searchHistory: historySearched}))
+            return historySearched
         } else {
             return []
         }
-    }, [inputValue, recipes.history])
+    }, [inputValue, recipes.filteredHistory, recipes.history])
+
     if (historyError) {
         return (
             <div className={`${layout.scrollPage} ${animate ? transition.animationEnd : transition.animationStart}`}>

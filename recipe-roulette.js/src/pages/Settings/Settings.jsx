@@ -21,6 +21,8 @@ import LoginIcon from "@mui/icons-material/Login"
 import NavigateNextIcon from "@mui/icons-material/NavigateNext"
 
 import classes from "./Settings.module.scss"
+import layout from "../../assets/scss/pageLayout/pageWScroll.module.scss"
+
 import { Link } from "@tanstack/react-router"
 
 export function Settings() {
@@ -56,7 +58,7 @@ export function Settings() {
     const { animate } = useAnimate(location)
 
     return (
-        <div className={`${classes.settingsPage} ${animate ? transitions.animationEnd : transitions.animationStart}`}>
+        <div className={`${layout.pageWscroll} ${classes.pageContent} ${animate ? transitions.animationEnd : transitions.animationStart}`}>
             <SettingsCard
                 isEditing={isEditing}
                 profileData={profileData}

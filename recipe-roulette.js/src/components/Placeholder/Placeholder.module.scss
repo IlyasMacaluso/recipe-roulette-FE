@@ -83,6 +83,7 @@
     flex-grow: 1;
     width: 100%;
 
+    align-items: center;
     justify-content: space-evenly;
 
     img {
@@ -122,4 +123,11 @@
 
 .spaceBetween {
     justify-content: space-between;
+}
+
+
+@media screen and (min-width: 1120px) {
+    .centerItems {
+        padding-top: 6rem;
+    }
 }

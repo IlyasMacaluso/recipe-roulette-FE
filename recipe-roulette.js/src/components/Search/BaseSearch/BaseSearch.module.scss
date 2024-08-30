@@ -82,3 +82,14 @@
     padding-bottom: 3rem;
     box-sizing: border-box;
 }
+@media screen and (min-width: 1120px) {
+    header .baseSearchActive {
+        width: calc(50vw - 84px);
+        height: calc(100vh - 2.9rem);
+        border-radius: 1rem;
+        left: 50%;
+        transform: translateX(-50%);
+        overflow: hidden;
+        box-shadow: 0 0 20px rgba($color: #000000, $alpha: 0.1);
+    }
+}

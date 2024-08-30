@@ -34,6 +34,7 @@ export function Favorited() {
         historyLoading,
         foodPrefLoading,
         favoritedError,
+        setRecipes
     } = useRecipesContext()
     const { isAuthenticated } = useAuth()
     const { changeToSignup, setChangeToSignup } = useLoginToSignup()
@@ -42,8 +43,10 @@ export function Favorited() {
     const { animate } = useAnimate(location)
 
     const searchFavorites = useMemo(() => {
-        return recipes.filtered.filter((recipe) => recipe.title.toLowerCase().includes(inputValue.toLowerCase()))
-    }, [inputValue, recipes.filtered, recipes.favorited])
+        const searchedRecipes = recipes.filteredFavorites.filter((recipe) => recipe.title.toLowerCase().includes(inputValue.toLowerCase()))
+        setRecipes(prev => ({...prev, searchFavorites: searchedRecipes}))
+        return searchedRecipes
+    }, [inputValue, recipes.filteredFavorites, recipes.favorited])
 
     if (favoritedError) {
         return (

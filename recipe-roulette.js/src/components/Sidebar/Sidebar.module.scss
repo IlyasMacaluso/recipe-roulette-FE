@@ -147,6 +147,10 @@ h4 {
     .sidebar > header > .rightItems > button:last-child {
         display: none;
     }
+    .sidebar header h2{
+        font-size: $text-size-16;
+        letter-spacing: 0.05rem;
+    }
 }
 
 @media screen and (min-width: 1440px) {
