@@ -30,7 +30,7 @@ export function useIngredientCard(ing) {
         if (cardState.is_blacklisted && !cardState.is_selected) {
             handleOpenSnackbar("The ingredient is blacklisted!")
         } else if (!ingredients?.filteredFavorites.find((ing) => ing.id === cardState.id) && !cardState.is_selected) {
-            handleOpenSnackbar("You have filteredFavorites this type of ingredeints!")
+            handleOpenSnackbar("You have filtered this type of ingredeints!")
         } else {
             handleIngUpdate("is_selected", cardState)
         }
