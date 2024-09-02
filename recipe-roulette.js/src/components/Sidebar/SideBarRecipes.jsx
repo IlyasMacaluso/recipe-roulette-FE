@@ -20,7 +20,7 @@ export function SideBarRecipes({ state, toggleSidebarRecipes }) {
 
     if (location.pathname === "/favorited" || location.pathname === "/history") {
         return (
-            <div>
+            <>
                 <div
                     onClick={toggleSidebarRecipes}
                     className={`${classes.backgroundOverlay} ${state && classes.backgroundOverlayToggled}`}
@@ -114,7 +114,7 @@ export function SideBarRecipes({ state, toggleSidebarRecipes }) {
                         </div>
                     </section>
                 </div>
-            </div>
+            </>
         )
     }
 }

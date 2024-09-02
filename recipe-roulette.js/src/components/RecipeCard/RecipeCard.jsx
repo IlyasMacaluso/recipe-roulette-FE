@@ -3,16 +3,17 @@ import { useRecipeCard } from "./useRecipeCard"
 import { useRecipesContext } from "../../contexts/RecipesContext"
 import { FilterChip } from "../FilterChip/FilterChip"
 import { useAuth } from "../../hooks/Auth/useAuth"
-
 import FavoriteIcon from "@mui/icons-material/Favorite"
 import ExpandLessIcon from "@mui/icons-material/ExpandLess"
 import Skeleton from "@mui/material/Skeleton"
 
 import classes from "./RecipeCard.module.scss"
+import { useImagesContext } from "../../contexts/imagesContext/ImageContext"
 
 export function RecipeCard({ isExpanded = false, recipe, handleClickLoginSnackBar = null }) {
     const location = useLocation()
     const navigate = useNavigate()
+    const cardImage = useImagesContext()
 
     const { recipeAnimation } = useRecipesContext()
     const { isAuthenticated } = useAuth()
@@ -21,9 +22,6 @@ export function RecipeCard({ isExpanded = false, recipe, handleClickLoginSnackBa
         recipe,
         isExpanded
     )
-
-    const image =
-        "https://news.mit.edu/sites/default/files/styles/news_article__image_gallery/public/images/202312/MIT_Food-Diabetes-01_0.jpg?itok=Mp8FVJkC"
 
     return (
         <div
@@ -47,10 +45,10 @@ export function RecipeCard({ isExpanded = false, recipe, handleClickLoginSnackBa
                     <FavoriteIcon stroke={"#3C3838"} strokeWidth={"1px"} />
                 </div>
 
-                {!image ? (
+                {!cardImage ? (
                     <Skeleton className={classes.skeleton} sx={{ bgcolor: "#C5E4C9" }} variant="rectangular" height={"100%"} />
                 ) : (
-                    <img src={image} alt="" />
+                    <img src={cardImage} alt="" />
                 )}
             </div>
 

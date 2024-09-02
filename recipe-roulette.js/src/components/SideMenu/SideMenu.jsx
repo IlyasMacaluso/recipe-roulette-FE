@@ -63,7 +63,7 @@ export function SideMenu({ handleMenuToggle, menuState = false }) {
     ]
 
     return (
-        <div>
+        <>
             <div
                 onClick={() => handleMenuToggle(false)}
                 className={`${classes.backgroundOverlay} ${menuState && classes.backgroundOverlayToggled}`}
@@ -117,6 +117,6 @@ export function SideMenu({ handleMenuToggle, menuState = false }) {
                     </Popup>,
                     document.getElementById("popup-root")
                 )}
-        </div>
+        </>
     )
 }

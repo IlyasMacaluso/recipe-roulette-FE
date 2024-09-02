@@ -66,7 +66,7 @@
         left: 50%;
         transform: translateX(-50%);
         box-sizing: border-box;
-        width: calc(50vw - 128px); /* 96px = padding left and right + gaps */
+        width: calc(40vw - 48px); /* 96px = padding left and right + gaps */
         padding: 24px 0;
         padding-bottom: 0;
     }
@@ -89,6 +89,7 @@
 
 @media screen and (min-width: 1440px) {
     .header {
-        width: calc(60vw - 128px); /* 48px = padding left and right */
+        width: calc(50vw - 64px); /* 48px = padding left and right */
+        max-width: calc(0.5 * 1440px - 64px );
     }
 }

@@ -64,7 +64,7 @@ export function Favorited() {
                     <>
                         {searchFavorites && searchFavorites.length > 0 ? (
                             <section className={layout.recipesWrapper}>
-                                {searchFavorites.map((recipe) => (
+                                {searchFavorites.map((recipe, index) => (
                                     <RecipeCard recipe={recipe} key={`${recipe.id}_${recipe.title}`} />
                                 ))}
                             </section>

@@ -20,7 +20,7 @@ export function Sidebar({ sidebarState = false, handleSidebarToggle }) {
 
     if (location.pathname === "/roulette" ) {
         return (
-            <div>
+            <>
                 <div
                     onClick={handleSidebarToggle}
                     className={`${classes.backgroundOverlay} ${sidebarState && classes.backgroundOverlayToggled}`}
@@ -144,7 +144,7 @@ export function Sidebar({ sidebarState = false, handleSidebarToggle }) {
                     </section>
                     <footer></footer>
                 </div>
-            </div>
+            </>
         )
     }
 }

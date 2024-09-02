@@ -93,7 +93,7 @@
 
 @media screen and (min-width: 1120px) {
     header .positionFixed {
-        width: calc(50vw - 84px);
+        width: calc(40vw);
         height: calc(100vh - 2.9rem);
         border-radius: 1rem;
         left: 50%;
@@ -105,6 +105,7 @@
 
 @media screen and (min-width: 1440px) {
     header .positionFixed {
-        width: calc(60vw - 84px);
+        width: calc(50vw - 16px);
+        max-width: calc(0.5 * 1440px - 16px) ;
     }
 }

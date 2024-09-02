@@ -132,12 +132,32 @@ h4 {
     .backgroundOverlayToggled {
         display: none;
     }
+
+
+    ::-webkit-scrollbar {
+        width: 8px;
+    }
+    ::-webkit-scrollbar-track {
+        background: transparent;
+      }
+      
+      /* Handle */
+      ::-webkit-scrollbar-thumb {
+        background: $light-gray;
+        border-radius: 8px;
+      }
+      
+      /* Handle on hover */
+      ::-webkit-scrollbar-thumb:hover {
+        background: $medium-gray;
+      }
+
     .sidebar,
     .sidebarToggled {
         position: initial;
         opacity: 1;
         transform: translateX(0);
-        width: 25vw;
+        flex: 1.5 1 0;
         max-width: none;
         outline: 2px solid $lighter-gray;
         border-radius: $size-24;
@@ -151,12 +171,4 @@ h4 {
         font-size: $text-size-16;
         letter-spacing: 0.05rem;
     }
-}
-
-@media screen and (min-width: 1440px) {
-    .sidebar,
-    .sidebarToggled {
-        width: 20vw;
-    }
-
 }

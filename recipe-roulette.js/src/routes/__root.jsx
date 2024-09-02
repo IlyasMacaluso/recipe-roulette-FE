@@ -1,5 +1,4 @@
 import { Outlet, createRootRoute, createRouter } from "@tanstack/react-router"
-import { TanStackRouterDevtools } from "@tanstack/router-devtools"
 import { IngredientsProvider } from "../pages/Roulette/IngredientsContext"
 import { RecipesProvider } from "../contexts/RecipesContext"
 import { AuthProvider } from "../components/authentication/AuthContext"
@@ -14,7 +13,10 @@ import { SideMenu } from "../components/SideMenu/SideMenu"
 import { Sidebar } from "../components/Sidebar/Sidebar"
 import { SideBarRecipes } from "../components/Sidebar/SideBarRecipes"
 import { Snackbar } from "../components/Snackbar/Snackbar"
+
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools"
+import { TanStackRouterDevtools } from "@tanstack/router-devtools"
+import { ImageProvider } from "../contexts/imagesContext/ImageContext"
 
 export const Route = createRootRoute({
     component: () => {
@@ -30,16 +32,18 @@ export const Route = createRootRoute({
                             <RecipesFetchProvider>
                                 <SnackbarProvider>
                                     <SearchProvider>
-                                        <SideMenu handleMenuToggle={setMenuState} menuState={menuState} path={path} />
-                                        <Header
-                                            handleRecipesSidebarToggle={toggleSidebarRecipes}
-                                            handleSidebarToggle={handleSidebarToggle}
-                                            handleMenuToggle={handleMenuToggle}
-                                        />
-                                        <Snackbar />
-                                        <Outlet />
-                                        <SideBarRecipes state={sideBarState} toggleSidebarRecipes={toggleSidebarRecipes} />
-                                        <Sidebar sidebarState={sidebarState} handleSidebarToggle={handleSidebarToggle} />
+                                        <ImageProvider>
+                                            <SideMenu handleMenuToggle={setMenuState} menuState={menuState} path={path} />
+                                            <Header
+                                                handleRecipesSidebarToggle={toggleSidebarRecipes}
+                                                handleSidebarToggle={handleSidebarToggle}
+                                                handleMenuToggle={handleMenuToggle}
+                                            />
+                                            <Snackbar />
+                                            <Outlet />
+                                            <SideBarRecipes state={sideBarState} toggleSidebarRecipes={toggleSidebarRecipes} />
+                                            <Sidebar sidebarState={sidebarState} handleSidebarToggle={handleSidebarToggle} />
+                                        </ImageProvider>
                                         <>
                                             {/* <TanStackRouterDevtools />
                                             <ReactQueryDevtools /> */}
