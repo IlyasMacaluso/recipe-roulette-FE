@@ -44,10 +44,12 @@ export const RecipesProvider = ({ children }) => {
     } = useQuery({
         queryKey: ["get-favorited-recipes"],
         queryFn: async () => {
-            const { id } = getValue("userData")
+            const { id = null } = getValue("userData")
+            if (!id) return
             const res = await getRequest(`http://localhost:3000/api/preferences/get-favorited-recipes/${id}`)
             return res
         },
+        enabled: isAuthenticated,
     })
 
     //fetch preferenze dietetiche
@@ -59,10 +61,12 @@ export const RecipesProvider = ({ children }) => {
     } = useQuery({
         queryKey: ["get-food-preferences"],
         queryFn: async () => {
-            const { id } = getValue("userData")
+            const { id = null } = getValue("userData")
+            if (!id) return
             const res = await getRequest(`http://localhost:3000/api/preferences/get-preferences/${id}`)
             return res
         },
+        enabled: isAuthenticated,
     })
 
     //fetch cronologia ricette
@@ -74,10 +78,12 @@ export const RecipesProvider = ({ children }) => {
     } = useQuery({
         queryKey: ["get-recipes-history"],
         queryFn: async () => {
-            const { id } = getValue("userData")
+            const { id = null } = getValue("userData")
+            if (!id) return
             const res = await getRequest(`http://localhost:3000/api/preferences/get-recipes-history/${id}`)
             return res
         },
+        enabled: isAuthenticated,
     })
 
     useEffect(() => {
@@ -163,7 +169,7 @@ export const RecipesProvider = ({ children }) => {
             let newSearchFavorite
             let newSearchHistory
 
-            if (prevRecipes.filteredFavorites.length > 0 ) {
+            if (prevRecipes.filteredFavorites.length > 0) {
                 newSearchFavorite = prevRecipes.filteredFavorites.filter((rec) =>
                     rec.title.toLowerCase().includes(inputValue.toLowerCase())
                 )

@@ -22,7 +22,7 @@ import { InlineMessage } from "../../components/InlineMessage/InlineMessage"
 export function History() {
     const [showPopup, setShowPopup] = useState()
 
-    const { recipes, setInputValue, historyLoading, favoritedLoading, foodPrefLoading, historyError, recipeFilter, inputValue } =
+    const { handleDeselectRecipeFilters, recipes, setInputValue, historyLoading, favoritedLoading, foodPrefLoading, historyError, recipeFilter, inputValue } =
         useRecipesContext()
     const { isAuthenticated } = useAuth()
     const { location } = useLocationHook()
@@ -68,6 +68,7 @@ export function History() {
                                         label="Reset Search"
                                         key="Reset Search"
                                         action={() => {
+                                            handleDeselectRecipeFilters()
                                             setInputValue("")
                                         }}
                                     />,
