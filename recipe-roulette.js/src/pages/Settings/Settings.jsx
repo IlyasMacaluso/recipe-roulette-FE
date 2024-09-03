@@ -58,7 +58,7 @@ export function Settings() {
     const { animate } = useAnimate(location)
 
     return (
-        <div className={`${layout.pageWscroll} ${classes.pageContent} ${animate ? transitions.animationEnd : transitions.animationStart}`}>
+        <div className={`${layout.scrollPage}  ${layout.padding24} ${classes.pageContent} ${animate ? transitions.animationEnd : transitions.animationStart}`}>
             <SettingsCard
                 isEditing={isEditing}
                 profileData={profileData}

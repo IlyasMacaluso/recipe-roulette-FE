@@ -16,6 +16,7 @@
     font-family: $font-poppins;
     font-weight: 500;
     color: $dark-gray;
+    
 
     .profilePicture {
         width: 18vh;
@@ -128,5 +129,11 @@
         button {
             margin: 0;
         }
+    }
+}
+
+@media screen and (min-width: 1120px) {
+    .editProfileSection {
+        outline: none;
     }
 }

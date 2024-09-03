@@ -92,7 +92,6 @@
 }
 
 @media screen and (min-width: 1120px) {
-
     .positionFixed {
         position: absolute;
         top: 0;
@@ -105,11 +104,4 @@
         box-shadow: 0 0 20px rgba($color: #000000, $alpha: 0.1);
     }
 
-}
-
-@media screen and (min-width: 1440px) {
-    header .positionFixed {
-        width: calc(52vw - 16px);
-        max-width: calc(0.52 * 1440px - 16px) ;
-    }
 }
