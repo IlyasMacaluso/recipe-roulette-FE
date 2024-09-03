@@ -17,7 +17,6 @@ export const ImageProvider = ({ children }) => {
     }, []); // Eseguito solo al montaggio del componente
 
     useEffect(() => {
-        console.log("i run")
         if(cardImage) return
         const randomIndex = Math.floor(Math.random() * imageArray.length).toFixed(0)
         const newImage = imageArray[randomIndex]
