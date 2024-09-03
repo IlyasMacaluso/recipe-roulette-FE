@@ -29,7 +29,7 @@ export function useIngredientSearch(searchCriteria, sidebarState = false) {
         setSearchState(false)
 
         const input = document.querySelector(`.${styles.header} .${styles.globalActions} input`)
-        
+
         if (!input) {
             return
         }
@@ -59,7 +59,7 @@ export function useIngredientSearch(searchCriteria, sidebarState = false) {
     }
     const handleBlur = (inputRef, setState) => {
         setInputValues((prev) => ({ ...prev, current: "" }))
-        inputRef.current.blur()
+        inputRef && inputRef.current.blur()
         setState?.setCondition && setState.setCondition(false)
         setState?.setComponent && setState.setComponent(false)
     }
@@ -71,8 +71,8 @@ export function useIngredientSearch(searchCriteria, sidebarState = false) {
     }
 
     const handleSuggestionClick = (prop, cardState, setCardState) => {
-        setInputValues((prev) => ({ ...prev, current: cardState.label }))
         const selectedIngs = ingredients?.displayed.filter((ing) => ing.is_selected)
+        setInputValues((prev) => ({ ...prev, current: "" }))
         if (prop === "is_blacklisted") {
             //gestisce click per aggiungere rimuovere elementi alla blacklist
             handleIngUpdate(prop, cardState, setCardState)
@@ -147,7 +147,6 @@ export function useIngredientSearch(searchCriteria, sidebarState = false) {
     const handlePressEnter = (e, inputRef, setState) => {
         if (e.key === "Enter") {
             e.preventDefault()
-            e.target.blur()
         } else if (e.key === "Escape") {
             handleBlur(inputRef, setState)
         }

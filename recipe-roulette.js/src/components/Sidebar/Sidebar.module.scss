@@ -133,6 +133,25 @@ h4 {
         display: none;
     }
 
+    .sidebar,
+    .sidebarToggled {
+        position: initial;
+        opacity: 1;
+        transform: translateX(0);
+        flex: 1.5 1 50px;
+        max-width: none;
+        outline: 2px solid $lighter-gray;
+        border-radius: $size-24;
+        overflow: hidden;
+    }
+
+    .sidebar > header > .rightItems > button:last-child {
+        display: none;
+    }
+    .sidebar header h2{
+        font-size: $text-size-16;
+        letter-spacing: 0.05rem;
+    }
 
     ::-webkit-scrollbar {
         width: 8px;
@@ -151,24 +170,4 @@ h4 {
       ::-webkit-scrollbar-thumb:hover {
         background: $medium-gray;
       }
-
-    .sidebar,
-    .sidebarToggled {
-        position: initial;
-        opacity: 1;
-        transform: translateX(0);
-        flex: 1.5 1 0;
-        max-width: none;
-        outline: 2px solid $lighter-gray;
-        border-radius: $size-24;
-        overflow: hidden;
-    }
-
-    .sidebar > header > .rightItems > button:last-child {
-        display: none;
-    }
-    .sidebar header h2{
-        font-size: $text-size-16;
-        letter-spacing: 0.05rem;
-    }
 }

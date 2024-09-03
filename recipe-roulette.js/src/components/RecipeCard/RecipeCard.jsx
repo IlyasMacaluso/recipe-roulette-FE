@@ -6,9 +6,9 @@ import { useAuth } from "../../hooks/Auth/useAuth"
 import FavoriteIcon from "@mui/icons-material/Favorite"
 import ExpandLessIcon from "@mui/icons-material/ExpandLess"
 import Skeleton from "@mui/material/Skeleton"
+import { useImagesContext } from "../../contexts/imagesContext/ImageContext"
 
 import classes from "./RecipeCard.module.scss"
-import { useImagesContext } from "../../contexts/imagesContext/ImageContext"
 
 export function RecipeCard({ isExpanded = false, recipe, handleClickLoginSnackBar = null }) {
     const location = useLocation()
@@ -58,7 +58,6 @@ export function RecipeCard({ isExpanded = false, recipe, handleClickLoginSnackBa
                     {is_vegan && <FilterChip label={"Vegan"} />}
                     {is_vegetarian && <FilterChip label={"Vegetarian"} />}
                     {is_gluten_free && <FilterChip label={"GlutenFree"} />}
-
                     {attributes && attributes.length > 0 && attributes.map((chip, index) => <FilterChip key={index} label={chip} />)}
                 </section>
                 {!expandedCard && <p className={classes.title}>{title}</p>}

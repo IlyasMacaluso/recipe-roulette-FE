@@ -50,9 +50,9 @@ export function History() {
                     <>
                         {searchHistory && searchHistory.length > 0 ? (
                             <section className={layout.recipesWrapper}>
-                                {searchHistory.map((recipe) => (
-                                    <RecipeCard recipe={recipe} key={`${recipe.id}_${recipe.title}`} />
-                                ))}
+                                    {searchHistory.map((recipe) => (
+                                        <RecipeCard recipe={recipe} key={`${recipe.id}_${recipe.title}`} />
+                                    ))}
                             </section>
                         ) : (
                             <Placeholder

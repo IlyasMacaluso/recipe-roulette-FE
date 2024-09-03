@@ -23,6 +23,7 @@ export const Route = createRootRoute({
         const { handleSidebarToggle, sidebarState } = useDiscoverySidebar()
         const { handleMenuToggle, setMenuState, path, menuState } = useSideMenu()
         const { toggleSidebarRecipes, sideBarState } = useRecipesResultsSideBar()
+        const headerActions = { handleMenuToggle, handleSidebarToggle, toggleSidebarRecipes }
 
         return (
             <div className="appContainer">
@@ -34,13 +35,15 @@ export const Route = createRootRoute({
                                     <SearchProvider>
                                         <ImageProvider>
                                             <SideMenu handleMenuToggle={setMenuState} menuState={menuState} path={path} />
-                                            <Header
-                                                handleRecipesSidebarToggle={toggleSidebarRecipes}
-                                                handleSidebarToggle={handleSidebarToggle}
-                                                handleMenuToggle={handleMenuToggle}
-                                            />
-                                            <Snackbar />
-                                            <Outlet />
+                                            <div className="centerContent">
+                                                <Header
+                                                    handleRecipesSidebarToggle={toggleSidebarRecipes}
+                                                    handleSidebarToggle={handleSidebarToggle}
+                                                    handleMenuToggle={handleMenuToggle}
+                                                />
+                                                <Outlet />
+                                                <Snackbar />
+                                            </div>
                                             <SideBarRecipes state={sideBarState} toggleSidebarRecipes={toggleSidebarRecipes} />
                                             <Sidebar sidebarState={sidebarState} handleSidebarToggle={handleSidebarToggle} />
                                         </ImageProvider>

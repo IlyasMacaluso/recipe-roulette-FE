@@ -12,6 +12,7 @@
     box-sizing: border-box;
     min-height: fit-content;
     background-color: white;
+    border-radius: $size-24 $size-24 0 0;
     .globalActions {
         z-index: 11;
         top: 58px;
@@ -60,15 +61,12 @@
 
 @media screen and (min-width: 1120px) {
     .header {
-        position: fixed;
-        z-index: 12;
-        top: 1.5rem;
-        left: 50%;
-        transform: translateX(-50%);
+        position: initial;
+        height: fit-content;
         box-sizing: border-box;
-        width: calc(40vw - 48px); /* 96px = padding left and right + gaps */
-        padding: 24px 0;
-        padding-bottom: 0;
+        width: 100%;
+        padding: $size-24;
+        padding-bottom: $size-16;
     }
 
     .header .topItem {
@@ -84,12 +82,5 @@
     }
     .header .globalActions > button:last-child {
         display: none;
-    }
-}
-
-@media screen and (min-width: 1440px) {
-    .header {
-        width: calc(50vw - 64px); /* 48px = padding left and right */
-        max-width: calc(0.5 * 1440px - 64px );
     }
 }

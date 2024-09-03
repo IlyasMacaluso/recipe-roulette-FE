@@ -1,15 +1,12 @@
-import { useAuth } from "../../hooks/Auth/useAuth"
+// components
 import { NavigationLink } from "./NavigationLink/NavigationLink"
 import { IcoButton } from "../Buttons/IcoButton/IcoButton"
 import { createPortal } from "react-dom"
 import { Popup } from "../Pop-up/Popup"
-import { useState } from "react"
 import { Login } from "../authentication/login/Login"
-import { useLocation } from "@tanstack/react-router"
-import { useLoginToSignup } from "../../hooks/loginToSignup/useLoginToSignup"
 import { Signup } from "../authentication/signup/Signup"
-import { useLogout } from "../../hooks/Form/useLogout"
-
+import { ConfirmPopup } from "../ConfirmPopup/ConfirmPopup"
+import { Button } from "../Buttons/Button/Button"
 import BookmarksOutlinedIcon from "@mui/icons-material/BookmarksOutlined"
 import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined"
 import LoginOutlinedIcon from "@mui/icons-material/LoginOutlined"
@@ -18,9 +15,15 @@ import LogoutIcon from "@mui/icons-material/Logout"
 import CloseIcon from "@mui/icons-material/Close"
 import HistoryIcon from "@mui/icons-material/History"
 
+// hooks
+import { useState } from "react"
+import { useLogout } from "../../hooks/Form/useLogout"
+import { useLocation } from "@tanstack/react-router"
+import { useLoginToSignup } from "../../hooks/loginToSignup/useLoginToSignup"
+import { useAuth } from "../../hooks/Auth/useAuth"
+
+// CSS
 import classes from "./SideMenu.module.scss"
-import { ConfirmPopup } from "../ConfirmPopup/ConfirmPopup"
-import { Button } from "../Buttons/Button/Button"
 
 export function SideMenu({ handleMenuToggle, menuState = false }) {
     const [showPopup, setShowPopup] = useState()
@@ -64,15 +67,19 @@ export function SideMenu({ handleMenuToggle, menuState = false }) {
 
     return (
         <>
+
             <div
                 onClick={() => handleMenuToggle(false)}
                 className={`${classes.backgroundOverlay} ${menuState && classes.backgroundOverlayToggled}`}
             ></div>
+
             <div className={`${classes.sidebar} ${menuState && classes.sidebarToggled}`}>
+
                 <header>
                     <h4>Browse</h4>
                     <IcoButton action={() => handleMenuToggle(false)} icon={<CloseIcon />} style="transparent" />
                 </header>
+
                 <section className={classes.links}>
                     {navigationLinks.map((item) => {
                         return (
@@ -88,7 +95,9 @@ export function SideMenu({ handleMenuToggle, menuState = false }) {
                         )
                     })}
                 </section>
+
             </div>
+
             {showPopup &&
                 createPortal(
                     <Popup>
@@ -117,6 +126,7 @@ export function SideMenu({ handleMenuToggle, menuState = false }) {
                     </Popup>,
                     document.getElementById("popup-root")
                 )}
+                
         </>
     )
 }

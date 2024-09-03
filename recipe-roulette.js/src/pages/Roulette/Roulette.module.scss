@@ -79,10 +79,11 @@
 
 @media screen and (min-width: 1120px) {
     .contentWrapper {
-        margin-top: 1.25rem;
+        margin-top: $size-8;
     }
 
     .bottomButtons {
+        padding-top: $size-16;
         padding-bottom: 0;
     }
 }

@@ -120,8 +120,8 @@
     .sidebarToggled {
         position: initial;
         transform: translateX(0);
-        flex: 1.5 1 0;
-        max-width: none;
+        flex: 1.5 1 50px;
+        max-width: calc(27.4vw);
         outline: 2px solid $lighter-gray;
         border-radius: $size-24;
         box-shadow: none;
@@ -131,4 +131,9 @@
     }
 }
 
-
+@media screen and (min-width: 1440px) {
+    .sidebar,
+    .sidebarToggled {
+        max-width: calc(0.235 * 1440px)
+    }
+}

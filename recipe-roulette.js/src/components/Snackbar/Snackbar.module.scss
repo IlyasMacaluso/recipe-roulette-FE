@@ -63,15 +63,10 @@
 
 @media screen and (min-width: 1120px) {
     .snackbar {
-        width: calc(50vw - 128px); /* 96px = padding left and right + gaps */
+        position: absolute;
+        width: calc(100% - 48px)
     }
     .snackbarActive {
-        bottom: 3rem;
-    }
-}
-
-@media screen and (min-width: 1440px) {
-    .snackbar {
-        width: calc(60vw - 128px); /* 48px = padding left and right */
+        bottom: $size-24;
     }
 }

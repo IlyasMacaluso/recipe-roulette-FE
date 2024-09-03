@@ -12,8 +12,14 @@ export function AuthProvider({ children }) {
     useEffect(() => {
         try {
             const userData = getValue("userData")
+            
+            if (!userData) {
+                setIsAuthenticated(false)
+                return
+            }
 
-            const { id = null, token = null } = userData
+            const id = userData.id
+            const token = userData.token
 
             if (!userData?.token) {
                 setIsAuthenticated(false)

@@ -8,7 +8,7 @@ import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined"
 
 import classes from "./IngredientSearch.module.scss"
 
-export function IngredientSearch({searchCriteria = "is_blacklisted", sidebarState = false }) {
+export function IngredientSearch({ searchCriteria = "is_blacklisted", sidebarState = false }) {
     const {
         suggestions,
         inputValues,
@@ -20,14 +20,13 @@ export function IngredientSearch({searchCriteria = "is_blacklisted", sidebarStat
         handleBlur,
         setSearchState,
         setFixedPosition,
+        setInputValues,
     } = useIngredientSearch(searchCriteria, sidebarState)
-    
+
     const { inputRef } = useHandleBackButton(searchState, setSearchState, setFixedPosition, handleBlur)
 
     return (
-        <div
-            className={`${fixedPosition && classes.positionFixed} ${classes.search}`}
-        >
+        <div className={`${fixedPosition && classes.positionFixed} ${classes.search}`}>
             <div className={`${classes.searchBar} ${searchState ? classes.inputActive : classes.inputInactive}`}>
                 <input
                     ref={inputRef}
@@ -37,6 +36,7 @@ export function IngredientSearch({searchCriteria = "is_blacklisted", sidebarStat
                     placeholder={`${searchCriteria === "is_selected" ? "Add an ingredient" : "Blacklist an ingredient"}`}
                     name="search"
                     type="text"
+                    onBlur={() => setInputValues((prev) => ({ ...prev, current: "" }))}
                     onKeyUp={(e) => handlePressEnter(e, inputRef, { setCondition: setSearchState, setComponent: setFixedPosition })}
                     onChange={handleInputChange}
                     value={inputValues.current}
