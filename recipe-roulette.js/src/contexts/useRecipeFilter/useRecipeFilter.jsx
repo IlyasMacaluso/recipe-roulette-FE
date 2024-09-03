@@ -1,7 +1,8 @@
-import { useMemo, useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 import { useLocalStorage } from "../../hooks/useLocalStorage/useLocalStorage"
 import { useFetchPreferences } from "../../hooks/fetchPreferences/useFetchPreferences"
 import { usePostRequest } from "../../hooks/usePostRequest/usePostRequest"
+import { useDebounce } from "../../hooks/useDebounce/useDebounce"
 
 // Costruttore per creare i filtri delle ricette
 function RecipeFilter({
@@ -35,12 +36,25 @@ function RecipeFilter({
 }
 export const useRecipeFilter = (isAuthenticated) => {
     const [recipeFilter, setRecipeFilter] = useState(new RecipeFilter())
+    const [updatedFilter, setUpdatedFilter] = useState(null)
     const { setValue, getValue } = useLocalStorage()
     const { handlePostRequest } = usePostRequest()
+    const { debounceValue } = useDebounce(updatedFilter)
 
-    const userData = useMemo(() => {
-        return getValue("userData")
-    }, [isAuthenticated])
+    useEffect(() => {
+        //chiamata di rete quando cambia il valore di debounce (ricetta da aggiornare)
+        if (isAuthenticated) {
+            const userData = getValue("userData")
+
+            if (updatedFilter) {
+                handlePostRequest({
+                    url: "http://localhost:3000/api/preferences/set-preferences",
+                    payload: { newPreferences: updatedFilter, userId: userData.id },
+                    mutationId: "filtersToggleUpdate", //mutationId
+                })
+            }
+        }
+    }, [debounceValue])
 
     // Gestione delle proprietà booleane di recipeFilter
     const toggleRecipeFilter = (prop) => {
@@ -48,14 +62,9 @@ export const useRecipeFilter = (isAuthenticated) => {
             const newState = !prevFilters[prop]
             const updatedFilters = { ...prevFilters, [prop]: newState }
             setValue("recipeFilter", updatedFilters) // Aggiorna il valore nel local storage o dove necessario
-            if (isAuthenticated) {
-                userData.id &&
-                    handlePostRequest({
-                        url: "http://localhost:3000/api/preferences/set-preferences",
-                        payload: { newPreferences: updatedFilters, userId: userData.id },
-                        mutationId: "filtersToggleUpdate", //mutationId
-                    })
-            }
+            
+            setUpdatedFilter(updatedFilters) // post request triggher
+
             return updatedFilters // Ritorna il nuovo stato aggiornato
         })
     }
@@ -90,15 +99,11 @@ export const useRecipeFilter = (isAuthenticated) => {
                 }
                 updatedFilters = { ...updatedFilters, cuisineEthnicity: updatedEthnicity }
             }
-            if (isAuthenticated) {
-                userData.id &&
-                    handlePostRequest({
-                        url: "http://localhost:3000/api/preferences/set-preferences",
-                        payload: { newPreferences: updatedFilters, userId: userData.id },
-                        mutationId: "filtersUpdate",
-                    })
-            }
+
             setValue("recipeFilter", updatedFilters) // Aggiorna il valore nel local storage o dove necessario
+            
+            setUpdatedFilter(updatedFilters) // post request triggher
+
             return updatedFilters // Ritorna il nuovo stato aggiornato
         })
     }
@@ -107,15 +112,7 @@ export const useRecipeFilter = (isAuthenticated) => {
     const handleDeselectRecipeFilters = () => {
         setRecipeFilter(new RecipeFilter())
 
-        if (isAuthenticated) {
-            userData.id &&
-                handlePostRequest({
-                    url: "http://localhost:3000/api/preferences/set-preferences",
-                    payload: { newPreferences: new RecipeFilter(), userId: userData.id },
-                    mutationId: "filtersUpdate",
-                })
-        }
-
+        setUpdatedFilter(new RecipeFilter()) // post request triggher
         setValue("recipeFilter", new RecipeFilter())
     }
 
