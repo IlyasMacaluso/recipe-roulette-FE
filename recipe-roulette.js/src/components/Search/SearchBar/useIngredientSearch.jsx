@@ -58,7 +58,10 @@ export function useIngredientSearch(searchCriteria, sidebarState = false) {
         setSearchState(true)
     }
     const handleBlur = (inputRef, setState) => {
-        setInputValues((prev) => ({ ...prev, current: "" }))
+        if (location.pathname !== "/history" && location.pathname !== "/favorited") {
+            setInputValues((prev) => ({ ...prev, current: "" }))
+        }
+        
         inputRef && inputRef.current.blur()
         setState?.setCondition && setState.setCondition(false)
         setState?.setComponent && setState.setComponent(false)
@@ -144,9 +147,10 @@ export function useIngredientSearch(searchCriteria, sidebarState = false) {
     //     // }
     // }
 
-    const handlePressEnter = (e, inputRef, setState) => {
+    const handlePressEnter = (e, inputRef, setState, blur = false) => {
         if (e.key === "Enter") {
             e.preventDefault()
+            blur && handleBlur(inputRef, setState)
         } else if (e.key === "Escape") {
             handleBlur(inputRef, setState)
         }

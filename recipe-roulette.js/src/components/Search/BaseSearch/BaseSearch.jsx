@@ -19,7 +19,12 @@ export function BaseSearch({ data = [], inputValue = "", setInputValue }) {
                     ref={inputRef}
                     autoComplete="off"
                     className={classes.input}
-                    onKeyDown={(e) => handlePressEnter(e, inputRef, { setCondition: setSearchState, setComponent: setFixedPosition })}
+                    onKeyDown={(e) => {
+                        handlePressEnter(e, inputRef, { setCondition: setSearchState, setComponent: setFixedPosition }, true)
+                        if (e.key === "Escape") {
+                            setInputValue("")
+                        }
+                    }}
                     onClick={handleInputActivation}
                     onChange={(e) => setInputValue(e.target.value)}
                     value={inputValue}
