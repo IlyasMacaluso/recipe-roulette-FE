@@ -85,7 +85,7 @@
 
 /* animazione icona favorite */
 .notFav {
-    color: white;
+    color: $lighter-gray;
     scale: 1;
     transition: scale 0.25s cubic-bezier(0.68, -0.55, 0.27, 1.55);
 }

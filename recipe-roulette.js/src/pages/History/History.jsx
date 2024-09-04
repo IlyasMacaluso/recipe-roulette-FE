@@ -10,14 +10,18 @@ import { useLocationHook } from "../../hooks/useLocationHook"
 import { Skeleton } from "@mui/material"
 import { Placeholder } from "../../components/Placeholder/Placeholder"
 import { Button } from "../../components/Buttons/Button/Button"
+import { InlineMessage } from "../../components/InlineMessage/InlineMessage"
 
 import LoopOutlinedIcon from "@mui/icons-material/LoopOutlined"
 import RotateLeftOutlinedIcon from "@mui/icons-material/RotateLeftOutlined"
 import LoginIcon from "@mui/icons-material/Login"
 
+import loginImage from "../../assets/images/Mobile login-bro.svg"
+import addNoteImage from "../../assets/images/Add notes-bro.svg"
+import shrugImage from "../../assets/images/Shrug-bro.svg"
+
 import layout from "../../assets/scss/pageLayout/pageWScroll.module.scss"
 import transition from "../../assets/scss/pageLayout/pageTransition.module.scss"
-import { InlineMessage } from "../../components/InlineMessage/InlineMessage"
 
 export function History() {
     const [showPopup, setShowPopup] = useState()
@@ -36,7 +40,7 @@ export function History() {
         return (
             <div className={`${layout.scrollPage} ${animate ? transition.animationEnd : transition.animationStart}`}>
                 <InlineMessage error={historyError} />
-                <Placeholder topImage="Shrug-bro.svg" text="Oops >.< something went wrong!" />
+                <Placeholder topImage={shrugImage} text="Oops >.< something went wrong!" />
             </div>
         )
     } else {
@@ -59,7 +63,7 @@ export function History() {
                                 text="Your search has  "
                                 hightlitedText="no matching results"
                                 highlightColor="#dd3e46"
-                                bottomImage="Personal files-bro.svg"
+                                topImage={shrugImage}
                                 bottomPadding={true}
                                 buttons={[
                                     <Button
@@ -80,7 +84,7 @@ export function History() {
                     <Placeholder
                         text="Your History is empty! "
                         hightlitedText=" Recipes will be stored here!"
-                        topImage="Add notes-bro.svg"
+                        topImage={addNoteImage}
                         bottomPadding={true}
                         buttons={[
                             <Button
@@ -97,7 +101,7 @@ export function History() {
                         <Placeholder
                             text="You need to login "
                             hightlitedText="To see your History!"
-                            topImage="Mobile login-bro.svg"
+                            topImage={loginImage}
                             bottomPadding={true}
                             buttons={[
                                 <Button

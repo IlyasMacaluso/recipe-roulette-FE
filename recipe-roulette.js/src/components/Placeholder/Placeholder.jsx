@@ -20,7 +20,7 @@ export function Placeholder({
                 ${topPadding && classes.topPadding}`}
         >
             <div className={`${classes.centerItems} ${spaceBetween && classes.spaceBetween}`}>
-                {topImage && <img src={`../src/assets/images/${topImage}`} alt="" />}
+                {topImage && <img src={topImage} alt="" />}
 
                 {loadingAnimation && loadingAnimation}
 
@@ -31,7 +31,7 @@ export function Placeholder({
                     </h2>
                 )}
 
-                {bottomImage && <img src={`../src/assets/images/${bottomImage}`} alt="" />}
+                {bottomImage && <img src={bottomImage} alt="" />}
             </div>
 
             <div className={classes.buttonsWrapper}>{buttons.length > 0 && buttons.map((button) => button)}</div>

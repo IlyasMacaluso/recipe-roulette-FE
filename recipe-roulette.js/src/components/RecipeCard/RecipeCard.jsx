@@ -3,10 +3,10 @@ import { useRecipeCard } from "./useRecipeCard"
 import { useRecipesContext } from "../../contexts/RecipesContext"
 import { FilterChip } from "../FilterChip/FilterChip"
 import { useAuth } from "../../hooks/Auth/useAuth"
+import { useImagesContext } from "../../contexts/imagesContext/ImageContext"
 import FavoriteIcon from "@mui/icons-material/Favorite"
 import ExpandLessIcon from "@mui/icons-material/ExpandLess"
 import Skeleton from "@mui/material/Skeleton"
-import { useImagesContext } from "../../contexts/imagesContext/ImageContext"
 
 import classes from "./RecipeCard.module.scss"
 

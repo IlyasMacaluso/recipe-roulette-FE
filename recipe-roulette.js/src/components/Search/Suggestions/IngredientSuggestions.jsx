@@ -4,9 +4,10 @@ import { useRecipesContext } from "../../../contexts/RecipesContext"
 import { Placeholder } from "../../Placeholder/Placeholder"
 import { InlineMessage } from "../../InlineMessage/InlineMessage"
 
-import classes from "./IngredientSuggestions.module.scss"
 import { useManageIngredients } from "../../../pages/Roulette/IngredientsContext"
 import { Skeleton } from "@mui/material"
+import placeholderImage from "../../../assets/images/Shrug-bro.svg"
+import classes from "./IngredientSuggestions.module.scss"
 
 export function IngredientSuggestions({ inputRef = null, setInputState, inputActive, searchCriteria, suggestions }) {
     const { recipeFilter } = useRecipesContext()
@@ -31,7 +32,7 @@ export function IngredientSuggestions({ inputRef = null, setInputState, inputAct
         return (
             <div className={`${classes.suggestions} ${inputActive && classes.active}`}>
                 <InlineMessage error={ingredientsError} />
-                <Placeholder topImage="Shrug-bro.svg" text="Oops >.< something went wrong!" />
+                <Placeholder topImage={placeholderImage} text="Oops >.< something went wrong!" />
             </div>
         )
     } else {
@@ -77,7 +78,7 @@ export function IngredientSuggestions({ inputRef = null, setInputState, inputAct
                         })
                 ) : (
                     <Placeholder
-                        bottomImage={"Personal files-bro.svg"}
+                        topImage={placeholderImage}
                         text="Your search has "
                         hightlitedText="no matching results"
                         highlightColor="#dd3e46"

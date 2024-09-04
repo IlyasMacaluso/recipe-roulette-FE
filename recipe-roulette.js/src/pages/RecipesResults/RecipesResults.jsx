@@ -9,6 +9,8 @@ import { BlocksShuffleThree } from "react-svg-spinners"
 import { useRecipesFetch } from "../../hooks/useRecipesFetch/useRecipesFetch"
 import { Placeholder } from "../../components/Placeholder/Placeholder"
 
+import loadingImage from "../../assets/images/healthy food-bro.svg"
+
 import layout from "../../assets/scss/pageLayout/pageWScroll.module.scss"
 import transition from "../../assets/scss/pageLayout/pageTransition.module.scss"
 
@@ -38,11 +40,12 @@ export function RecipeResults() {
             ) : (
                 <Placeholder
                     topPadding={true}
+                    bottomPadding={true}
                     text="Generating Your Recipes, "
                     highlightColor={"#449a50"}
                     hightlitedText="This could take a few minutes"
-                    topImage="healthy food-bro.svg"
-                    loadingAnimation={<BlocksShuffleThree color="#449a50" width={"40%"} height={"40%"} />}
+                    topImage={loadingImage}
+                    loadingAnimation={<BlocksShuffleThree color="#449a50" width={"20%"} height={"20%"} />}
                 />
             )}
         </div>

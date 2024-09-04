@@ -13,14 +13,18 @@ import { Button } from "../../components/Buttons/Button/Button"
 import { Skeleton } from "@mui/material"
 import { Placeholder } from "../../components/Placeholder/Placeholder"
 import { Signup } from "../../components/authentication/signup/Signup"
+import { InlineMessage } from "../../components/InlineMessage/InlineMessage"
 
 import LoopOutlinedIcon from "@mui/icons-material/LoopOutlined"
 import RotateLeftOutlinedIcon from "@mui/icons-material/RotateLeftOutlined"
 import LoginIcon from "@mui/icons-material/Login"
 
+import loginImage from "../../assets/images/Mobile login-bro.svg"
+import addNoteImage from "../../assets/images/Add notes-bro.svg"
+import shrugImage from "../../assets/images/Shrug-bro.svg"
+
 import layout from "../../assets/scss/pageLayout/pageWScroll.module.scss"
 import transition from "../../assets/scss/pageLayout/pageTransition.module.scss"
-import { InlineMessage } from "../../components/InlineMessage/InlineMessage"
 
 export function Favorited() {
     const [showPopup, setShowPopup] = useState()
@@ -50,7 +54,7 @@ export function Favorited() {
         return (
             <div className={`${layout.scrollPage} ${animate ? transition.animationEnd : transition.animationStart}`}>
                 <InlineMessage error={favoritedError} />
-                <Placeholder topImage={"Shrug-bro.svg"} text="Oops >.< something went wrong!" />
+                <Placeholder topImage={shrugImage} text="Oops >.< something went wrong!" />
             </div>
         )
     } else {
@@ -70,7 +74,7 @@ export function Favorited() {
                             </section>
                         ) : (
                             <Placeholder
-                                bottomImage="Personal files-bro.svg"
+                                bottomImage={shrugImage}
                                 text="Your search has  "
                                 hightlitedText="no matching results"
                                 bottomPadding={true}
@@ -91,7 +95,7 @@ export function Favorited() {
                     </>
                 ) : isAuthenticated ? (
                     <Placeholder
-                        topImage="Add notes-bro.svg"
+                        topImage={addNoteImage}
                         text="Your Favorited list is empty!  "
                         hightlitedText="Favorite your first recipe!"
                         bottomPadding={true}
@@ -109,7 +113,7 @@ export function Favorited() {
                 ) : (
                     <>
                         <Placeholder
-                            topImage="Mobile login-bro.svg"
+                            topImage={loginImage}
                             bottomPadding={true}
                             text="You need to login,  "
                             hightlitedText="to see add or see favorites!"
