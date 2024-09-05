@@ -47,23 +47,37 @@
         }
     }
     .bottomItems {
-        border-radius: 0 0 1rem 1rem;
-        flex-grow: 1;
         display: flex;
-        box-sizing: border-box;
         flex-direction: column;
+        flex-grow: 1;
+
         gap: 1rem;
-        width: 100%;
+        box-sizing: border-box;
+        min-height: fit-content;
         font-weight: bold;
+
+        border-radius: 0 0 1rem 1rem;
         letter-spacing: 0.025rem;
         font-size: $text-size-16;
         line-height: 120%;
         padding: 1rem 0.75rem;
-        min-height: fit-content;
         .chipsWrapper {
             display: flex;
-            flex-wrap: wrap;
+            white-space: nowrap;
+            width: 100%;
             gap: $size-8;
+            min-width: none;
+            overflow-x: scroll;
+            &::-webkit-scrollbar {
+                display: none;
+            }
+            > div {
+                background-color: $lightest-green;
+                border: 1px solid $light-desaturated-green;
+                > p {
+                    color: $dark-green;
+                }
+            }
         }
         .title {
             margin: 0;
@@ -76,6 +90,7 @@
         }
     }
 }
+
 .reciperCard:active {
     background-color: $lighter-gray;
 }
@@ -241,6 +256,7 @@
 @media screen and (min-width: 880px) {
     .recipeCard {
         flex-grow: 1;
+        width: 0;
         flex-basis: 300px;
         & .topItems {
             & img {
@@ -250,10 +266,24 @@
         }
     }
     .recipeCardExpanded {
+        width: 100%;
         flex-basis: 100%;
         overflow-y: scroll;
     }
+    
+    .recipeCard .bottomItems .chipsWrapper {
+        padding-bottom: $size-8;
+        &::-webkit-scrollbar {
+            display: initial;
+            height: 8px;
+        }
+        &::-webkit-scrollbar-thumb {
+            background-color: $light-gray;
+            border-radius: 4px;
+        }
+    }
 }
+
 @media screen and (min-width: 1120px) {
     .recipeCard > .topItems {
         & img {

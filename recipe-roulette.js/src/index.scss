@@ -12,6 +12,10 @@ body {
     overflow: hidden;
     -webkit-tap-highlight-color: transparent;
 }
+#popup-root {
+    -webkit-tap-highlight-color: transparent;
+}
+
 .appContainer {
     display: flex;
     flex-direction: column;

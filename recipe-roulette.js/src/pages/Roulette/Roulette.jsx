@@ -10,6 +10,7 @@ import { useManageIngredients } from "./IngredientsContext"
 import { Skeleton } from "@mui/material"
 import { InlineMessage } from "../../components/InlineMessage/InlineMessage"
 import { Placeholder } from "../../components/Placeholder/Placeholder"
+import { Tutorial } from "../../components/tutorial/Tutorial"
 
 import ManageSearchOutlinedIcon from "@mui/icons-material/ManageSearchOutlined"
 import AddIcon from "@mui/icons-material/Add"
@@ -20,6 +21,10 @@ import shrugImage from "../../assets/images/Shrug-bro.svg"
 import classes from "./Roulette.module.scss"
 import layout from "../../assets/scss/pageLayout/pageFH.module.scss"
 import transition from "../../assets/scss/pageLayout/pageTransition.module.scss"
+import { useTutorial } from "../../hooks/useTutorial/useTutorial"
+import { createPortal } from "react-dom"
+import { useLocalStorage } from "../../hooks/useLocalStorage/useLocalStorage"
+import { useMemo } from "react"
 
 export function Roulette() {
     const { ingredients, shuffleIng, handleIngIncrement, ingredientsLoading, blacklistedLoading, ingredientsError } = useManageIngredients()
@@ -29,8 +34,28 @@ export function Roulette() {
     const { animate } = useAnimate(location)
     const { handleRecipesFetch } = useRecipesFetch()
     const { handleAnimation, animationState } = useShakeAnimation()
+    const { getValue } = useLocalStorage()
 
-    if (ingredientsError) {
+    const showTutorialAgain = getValue("showTutorial")
+    const { showTutorial, setShowTutorial, tutorialStep, setTutorialStep, rememberShowTutorial, setRememberShowTutorial } =
+        useTutorial(showTutorialAgain)
+
+    if (showTutorial) {
+        return (
+            <>
+                {createPortal(
+                    <Tutorial
+                        tutorialStep={tutorialStep}
+                        setShowTutorial={setShowTutorial}
+                        rememberShowTutorial={rememberShowTutorial}
+                        setRememberShowTutorial={setRememberShowTutorial}
+                        setTutorialStep={setTutorialStep}
+                    />,
+                    document.getElementById("popup-root")
+                )}
+            </>
+        )
+    } else if (ingredientsError) {
         return (
             <div className={`${layout.pageFH} ${layout.noPadding}`}>
                 <InlineMessage error={ingredientsError} />
