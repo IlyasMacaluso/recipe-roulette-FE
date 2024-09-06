@@ -26,9 +26,9 @@
     p {
         padding-left: 0.5rem;
         align-content: center;
-        font-family: "Puritan";
-        font-weight: 400;
-        font-size: 18px;
+        font-family: "Metropolitan";
+        font-weight: 500;
+        font-size: $text-size-16;
         color: $dark-gray;
         transition:
             font-size 0.3s ease,
