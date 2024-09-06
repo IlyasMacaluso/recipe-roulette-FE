@@ -37,24 +37,10 @@ export function Roulette() {
     const { getValue } = useLocalStorage()
 
     const showTutorialAgain = getValue("showTutorial")
-    const { showTutorial, setShowTutorial, tutorialStep, setTutorialStep, rememberShowTutorial, setRememberShowTutorial } =
-        useTutorial(showTutorialAgain)
+    const { showTutorial, setShowTutorial} = useTutorial(showTutorialAgain)
 
     if (showTutorial) {
-        return (
-            <>
-                {createPortal(
-                    <Tutorial
-                        tutorialStep={tutorialStep}
-                        setShowTutorial={setShowTutorial}
-                        rememberShowTutorial={rememberShowTutorial}
-                        setRememberShowTutorial={setRememberShowTutorial}
-                        setTutorialStep={setTutorialStep}
-                    />,
-                    document.getElementById("popup-root")
-                )}
-            </>
-        )
+        return <>{createPortal(<Tutorial setShowTutorial={setShowTutorial} checkbox={true} />, document.getElementById("popup-root"))}</>
     } else if (ingredientsError) {
         return (
             <div className={`${layout.pageFH} ${layout.noPadding}`}>
@@ -86,7 +72,7 @@ export function Roulette() {
                         active={isActive}
                         action={() => handleIngIncrement()}
                         label="Item"
-                        icon={<AddIcon fontSize="small" />}
+                        iconLeft={<AddIcon fontSize="small" />}
                         size={18}
                         iconWheight={600}
                     />
@@ -119,7 +105,7 @@ export function Roulette() {
                             )
                         }}
                         label="Recipes"
-                        icon={<ManageSearchOutlinedIcon fontSize="small" />}
+                        iconLeft={<ManageSearchOutlinedIcon fontSize="small" />}
                         size={20}
                     />
                 </div>

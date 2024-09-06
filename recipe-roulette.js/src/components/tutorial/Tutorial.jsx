@@ -1,6 +1,12 @@
+import { useEffect, useState } from "react"
+
 import { IcoButton } from "../Buttons/IcoButton/IcoButton"
 import { Button } from "../Buttons/Button/Button"
+
 import CloseIcon from "@mui/icons-material/Close"
+import NavigateBeforeIcon from "@mui/icons-material/NavigateBefore"
+import NavigateNextIcon from "@mui/icons-material/NavigateNext"
+import SkipNextIcon from "@mui/icons-material/SkipNext"
 
 import step1Img from "../../assets/images/tutorial/Appreciation-bro.svg"
 import step2Img from "../../assets/images/tutorial/Bullet journal-bro.svg"
@@ -9,22 +15,26 @@ import step4Img from "../../assets/images/tutorial/Hamburger-bro.svg"
 import step5Img from "../../assets/images/tutorial/healthy food-bro.svg"
 import step6Img from "../../assets/images/tutorial/Notes-bro.svg"
 
-import styles from "./Tutorial.module.scss"
 import { useLocalStorage } from "../../hooks/useLocalStorage/useLocalStorage"
+import { useTutorial } from "../../hooks/useTutorial/useTutorial"
 
-export function Tutorial({
-    setShowTutorial = null,
-    tutorialStep = null,
-    setTutorialStep = null,
-    rememberShowTutorial = false,
-    setRememberShowTutorial = null,
-}) {
-    console.log(tutorialStep)
+import styles from "./Tutorial.module.scss"
+import animations from "../../assets/scss/pageLayout/pageTransition.module.scss"
+
+export function Tutorial({ setShowTutorial = null, checkbox = false }) {
     const { setValue } = useLocalStorage()
+    const { tutorialStep, setTutorialStep, rememberShowTutorial, setRememberShowTutorial } = useTutorial()
+    const [animate, setAnimate] = useState(false)
+
+    useEffect(() => {
+        setTimeout(() => {
+            setAnimate(true)
+        }, 0)
+    }, [])
 
     return (
         <div className={styles.bgOverlay}>
-            <div className={styles.tutorial}>
+            <div className={`${styles.tutorial} ${animate ? animations.animationEnd : animations.animationStart}`}>
                 <header>
                     <h2>Tutorial</h2>
                     <div className={styles.rightItems}>
@@ -87,19 +97,35 @@ export function Tutorial({
                 </section>
 
                 <section className={styles.bottomItems}>
-                    <div>
-                        <label htmlFor="rememberShowTutorial"> Don't show this again </label>
-                        <input
-                            id="rememberShowTutorial"
-                            type="checkbox"
-                            value={rememberShowTutorial}
-                            onClick={() => setRememberShowTutorial((b) => !b)}
-                        />
-                    </div>
+                    {checkbox && (
+                        <div className={styles.rememberMe}>
+                            <label htmlFor="rememberShowTutorial"> Don't show this again </label>
+                            <input
+                                className={styles.checkbox}
+                                id="rememberShowTutorial"
+                                type="checkbox"
+                                value={rememberShowTutorial}
+                                onClick={() => setRememberShowTutorial((b) => !b)}
+                            />
+                        </div>
+                    )}
+
                     <div className={styles.navigationButtonsWrapper}>
-                        {tutorialStep !== 1 && <Button action={() => setTutorialStep((prev) => prev - 1)} label="Previous" />}
+                        {tutorialStep !== 1 && (
+                            <Button
+                                iconLeft={<NavigateBeforeIcon fontSize="small" />}
+                                action={() => setTutorialStep((prev) => prev - 1)}
+                                label="Previous"
+                            />
+                        )}
                         {tutorialStep !== 6 && (
-                            <Button action={() => setTutorialStep((prev) => prev + 1)} style="primary" width="fill" label="Next" />
+                            <Button
+                                iconRight={<NavigateNextIcon fontSize="small" />}
+                                action={() => setTutorialStep((prev) => prev + 1)}
+                                style="primary"
+                                width="fill"
+                                label="Next"
+                            />
                         )}
                         {tutorialStep === 6 && (
                             <Button
@@ -116,6 +142,7 @@ export function Tutorial({
                         )}
                     </div>
                     <Button
+                        iconLeft={<SkipNextIcon fontSize="small" />}
                         action={() => {
                             if (rememberShowTutorial) {
                                 setValue("showTutorial", false)

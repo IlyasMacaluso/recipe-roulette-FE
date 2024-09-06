@@ -59,8 +59,8 @@ p {
     .tutorialStep {
         display: flex;
         flex-direction: column;
-        padding: 24px;
-        gap: 24px;
+        padding: $size-16 $size-24;
+        gap: $size-16;
         flex-grow: 1;
         .stepBody {
             display: flex;
@@ -81,10 +81,28 @@ p {
         display: flex;
         flex-direction: column;
         padding: $size-24;
+        padding-top: $size-16;
         gap: $size-16;
+        .rememberMe {
+            display: flex;
+            align-items: center;
+            gap: $size-8;
+            padding: $size-8;
+            & .checkbox {
+                width: 20px;
+                height: 20px;
+                margin: 0;
+            }
+        }
         .navigationButtonsWrapper {
             display: flex;
             gap: $size-16;
         }
+    }
+}
+
+@media screen and (min-width: 880px) {
+    .tutorial .navigationButtonsWrapper > button {
+        padding: 0 24px;
     }
 }

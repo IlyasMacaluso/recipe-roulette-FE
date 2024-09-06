@@ -164,7 +164,7 @@ export function SettingsCard({
                                 width="fill"
                                 action={handleSaveChanges}
                                 label="Save Changes"
-                                icon={<DoneAllIcon fontSize="small" />}
+                                iconLeft={<DoneAllIcon fontSize="small" />}
                                 loading={loading}
                             />
 
@@ -172,7 +172,7 @@ export function SettingsCard({
                                 width="fill"
                                 action={handleDiscardChanges}
                                 label="Discard Changes"
-                                icon={<DeleteOutlineOutlinedIcon fontSize="small" />}
+                                iconLeft={<DeleteOutlineOutlinedIcon fontSize="small" />}
                             />
                         </div>
                     </div>
@@ -213,7 +213,7 @@ export function SettingsCard({
                         width="fill"
                         action={() => setIsEditing(true)}
                         label="Edit Information"
-                        icon={<EditNoteIcon fontSize="small" />}
+                        iconLeft={<EditNoteIcon fontSize="small" />}
                     />
                 </div>
             )}

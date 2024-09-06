@@ -89,7 +89,7 @@ export function SideMenu({ handleMenuToggle, menuState = false }) {
                                 handleMenuToggle={()=>handleMenuToggle(false)}
                                 label={item.label}
                                 destination={item.destination}
-                                icon={item.icon}
+                                iconLeft={item.icon}
                                 action={item?.action || null}
                             />
                         )

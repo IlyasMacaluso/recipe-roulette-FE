@@ -4,20 +4,23 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 0.5rem;
+    gap: $size-4;
     padding: 0 1rem;
-    font-size: 14px;
     min-width: max-content;
     height: $height-40;
     color: $darkish-green;
-    font-weight: 600;
-    font-family: $font-poppins;
     border: 1px solid $light-desaturated-green;
     border-radius: 1.5rem;
     background-color: $lightest-green;
     transition:
         color 0.4s ease,
         background-color 0.4s ease;
+}
+.button > .p {
+    font-size: $text-size-14;
+    font-weight: 600;
+    font-family: $font-poppins;
+    line-height: 100%;
 }
 .button:active {
     background-color: $light-green;
@@ -75,4 +78,14 @@ button:hover {
 
 .cta {
     height: 80px;
+}
+
+.iconRight {
+    padding-left: $size-16;
+    padding-right: $size-12;
+}
+
+.iconLeft {
+    padding-right: $size-16;
+    padding-left: $size-12;
 }

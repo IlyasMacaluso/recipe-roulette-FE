@@ -119,7 +119,7 @@ export function Signup({ setShowPopup = null, setChangeToSignup = null }) {
                         width="fill"
                         type="submit"
                         label="Sign up"
-                        icon={<EditNoteIcon fontSize="small" />}
+                        iconLeft={<EditNoteIcon fontSize="small" />}
                         active={username && password && confirmPass && email && termsAndConditions && confirmPass === password}
                         prevPath={location.pathname}
                     />
@@ -128,7 +128,7 @@ export function Signup({ setShowPopup = null, setChangeToSignup = null }) {
                         action={() => setShowPopup && setShowPopup(false)}
                         prevPath={location.pathname}
                         label="Skip"
-                        icon={<StartIcon fontSize="small" />}
+                        iconLeft={<StartIcon fontSize="small" />}
                     />
                 </div>
                 <div className={classes.loginToSignup}>

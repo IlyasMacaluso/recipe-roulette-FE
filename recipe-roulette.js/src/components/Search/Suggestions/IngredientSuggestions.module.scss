@@ -21,8 +21,11 @@
     transition:
         opacity 0.65s cubic-bezier(0.08, 0.82, 0.17, 1),
         padding 0.65s cubic-bezier(0.08, 0.82, 0.17, 1);
+
     .activeSuggestion {
         color: $dark-gray;
+        background-color: white;
+        transition: background-color 0.3s ease;
     }
     .inactiveSuggestion {
         color: rgb(198, 198, 198);
@@ -30,9 +33,11 @@
 }
 .activeSuggestion:hover {
     background-color: $light-green;
+    transition: background-color 0.3s ease;
 }
 .activeSuggestion:active {
     background-color: $light-green;
+    transition: background-color 0.3s ease;
 }
 .active {
     opacity: 1;

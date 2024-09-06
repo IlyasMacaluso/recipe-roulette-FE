@@ -31,7 +31,7 @@ export function Sidebar({ sidebarState = false, handleSidebarToggle }) {
                         <div className={classes.rightItems}>
                             <Button
                                 label="Reset All"
-                                icon={<RotateLeftOutlinedIcon fontSize="small" />}
+                                iconLeft={<RotateLeftOutlinedIcon fontSize="small" />}
                                 size={18}
                                 action={() => {
                                     handleDeselectRecipeFilters()

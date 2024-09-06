@@ -8,8 +8,6 @@
     background-color: white;
     border-radius: $size-16;
     box-sizing: border-box;
-    // outline: 2px solid $lighter-gray;
-    // outline-offset: -2px;
     text-decoration: none;
     color: inherit;
     min-height: max-content;
@@ -20,7 +18,6 @@
         position: relative;
         width: 100%;
         min-height: 12rem;
-
         border-radius: 1rem 1rem 0 0;
         overflow: hidden;
         border-bottom: 2px solid $lighter-gray;
@@ -51,14 +48,13 @@
         flex-direction: column;
         flex-grow: 1;
 
-        gap: 1rem;
+        gap: $size-12;
         box-sizing: border-box;
         min-height: fit-content;
         font-weight: bold;
 
         border-radius: 0 0 1rem 1rem;
         letter-spacing: 0.025rem;
-        font-size: $text-size-16;
         line-height: 120%;
         padding: 1rem 0.75rem;
         .chipsWrapper {
@@ -67,7 +63,7 @@
             width: 100%;
             gap: $size-8;
             min-width: none;
-            overflow-x: scroll;
+            overflow-x: auto;
             &::-webkit-scrollbar {
                 display: none;
             }
@@ -83,9 +79,10 @@
             margin: 0;
             padding: 0;
             padding-left: 0.25rem;
-            font-size: $size-20;
-            color: $dark-gray;
+            font-size: $text-size-16;
             font-family: $font-poppins;
+            font-weight: 600;
+            color: $dark-gray;
             line-height: 120%;
         }
     }
@@ -127,13 +124,11 @@
     padding: 0 1px;
     padding-bottom: 2rem;
     overflow-y: scroll;
-    .recipeBody {
-        display: flex;
-        flex-direction: column;
-        gap: 16px;
-    }
+
     .topItems {
-        background-color: $medium-green;
+        background-color: $lightest-green;
+        outline: 2px solid $light-desaturated-green;
+        outline-offset: -2px;
         padding: 24px 0;
         border-radius: 1rem;
         min-height: 25vh;
@@ -143,17 +138,21 @@
             border-radius: 1rem;
         }
     }
+
+    .recipeBody {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+    }
+
     .bottomItems {
         flex-grow: 0;
         padding: 0;
         padding-top: 1rem;
     }
-
-    .topItems {
-        outline: none;
-    }
 }
-.recipeCardExpanded:hover {
+
+.recipeCardExpanded > .recipeCardExpanded:hover {
     box-shadow: none;
 }
 .recipeCardExpanded:active {
@@ -270,16 +269,19 @@
         flex-basis: 100%;
         overflow-y: scroll;
     }
-    
+
     .recipeCard .bottomItems .chipsWrapper {
-        padding-bottom: $size-8;
+        padding-bottom: $size-12;
         &::-webkit-scrollbar {
             display: initial;
-            height: 8px;
+            height: 12px;
         }
         &::-webkit-scrollbar-thumb {
-            background-color: $light-gray;
             border-radius: 4px;
+            background-color: $light-gray;
+            &:hover {
+                background-color: $medium-gray;
+            }
         }
     }
 }

@@ -34,7 +34,7 @@ export function SideBarRecipes({ state, toggleSidebarRecipes }) {
                                 action={() => {
                                     handleDeselectRecipeFilters()
                                 }}
-                                icon={<RotateLeftOutlinedIcon className={classes.ico} fontSize="small" />}
+                                iconLeft={<RotateLeftOutlinedIcon className={classes.ico} fontSize="small" />}
                             />
                             <IcoButton action={toggleSidebarRecipes} style="transparent" icon={<CloseIcon fontSize="small" />} />
                         </div>

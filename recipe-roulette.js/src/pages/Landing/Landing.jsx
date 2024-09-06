@@ -28,13 +28,13 @@ export function Landing() {
                         style="primary"
                         label="Start Ingredients Shuffle"
                         height={"large"}
-                        icon={<LoopOutlinedIcon />}
+                        iconLeft={<LoopOutlinedIcon />}
                         link="/roulette"
                     />,
                     <Button
                         key={"Support the Developers"}
                         label="Support the Developers"
-                        icon={<VolunteerActivismOutlinedIcon fontSize="small" />}
+                        iconLeft={<VolunteerActivismOutlinedIcon fontSize="small" />}
                     />,
                 ]}
             />

@@ -24,6 +24,8 @@ import classes from "./Settings.module.scss"
 import layout from "../../assets/scss/pageLayout/pageWScroll.module.scss"
 
 import { Link } from "@tanstack/react-router"
+import { useTutorial } from "../../hooks/useTutorial/useTutorial"
+import { Tutorial } from "../../components/tutorial/Tutorial"
 
 export function Settings() {
     const [showPopup, setShowPopup] = useState(false)
@@ -56,80 +58,98 @@ export function Settings() {
     const { changeToSignup, setChangeToSignup } = useLoginToSignup()
     const { location } = useLocationHook()
     const { animate } = useAnimate(location)
+    const { showTutorial, setShowTutorial } = useTutorial(false)
 
-    return (
-        <div className={`${layout.scrollPage}  ${layout.padding24} ${classes.pageContent} ${animate ? transitions.animationEnd : transitions.animationStart}`}>
-            <SettingsCard
-                isEditing={isEditing}
-                profileData={profileData}
-                handleAvatarChange={handleAvatarChange}
-                handleInputChange={handleInputChange}
-                handleSaveChanges={handleSaveChanges}
-                setIsEditing={setIsEditing}
-                handleDiscardChanges={handleDiscardChanges}
-                showText={showText}
-                handleShowText={handleShowText}
-                loading={loading}
-                error={error}
-                status={status}
-                reset={reset}
-                proceed={proceed}
-                setBlockCondition={setBlockCondition}
-            />
+    if (showTutorial) {
+        return <>{createPortal(<Tutorial setShowTutorial={setShowTutorial} />, document.getElementById("popup-root"))}</>
+    } else {
+        return (
+            <div
+                className={`${layout.scrollPage}  ${layout.padding24} ${classes.pageContent} ${animate ? transitions.animationEnd : transitions.animationStart}`}
+            >
+                <SettingsCard
+                    isEditing={isEditing}
+                    profileData={profileData}
+                    handleAvatarChange={handleAvatarChange}
+                    handleInputChange={handleInputChange}
+                    handleSaveChanges={handleSaveChanges}
+                    setIsEditing={setIsEditing}
+                    handleDiscardChanges={handleDiscardChanges}
+                    showText={showText}
+                    handleShowText={handleShowText}
+                    loading={loading}
+                    error={error}
+                    status={status}
+                    reset={reset}
+                    proceed={proceed}
+                    setBlockCondition={setBlockCondition}
+                />
 
-            {!isEditing && (
-                <>
-                    <div className={classes.linksWrapper}>
-                        <Link to="/food-preferences" className={classes.linkItem}>
-                            Food Preferences
-                            <NavigateNextIcon fontSize="medium" />
-                        </Link>
+                {!isEditing && (
+                    <>
 
-                        <Link to="/feedback-&-support" className={classes.linkItem}>
-                            Feedback & Support
-                            <NavigateNextIcon fontSize="medium" />
-                        </Link>
-                    </div>
+                        <div className={classes.linksWrapper}>
+                            <Link to="/food-preferences" className={classes.linkItem}>
+                                Food Preferences
+                                <NavigateNextIcon fontSize="medium" />
+                            </Link>
 
-                    <div className={classes.bottomItems}>
-                        {isAuthenticated ? (
-                            <Button label="Logout" width="fill" action={() => setShowPopup(true)} icon={<LogoutIcon fontSize="small" />} />
-                        ) : (
-                            <Button
-                                type="submit"
-                                style="primary"
-                                label="Login"
-                                width="fill"
-                                icon={<LoginIcon fontSize="small" />}
-                                action={() => setShowPopup(true)}
-                            />
-                        )}
-                    </div>
+                            <Link to="/feedback-&-support" className={classes.linkItem}>
+                                Feedback & Support
+                                <NavigateNextIcon fontSize="medium" />
+                            </Link>
 
-                    {/* popup a comparsa */}
-                    {showPopup &&
-                        createPortal(
-                            <Popup>
-                                {isAuthenticated ? (
-                                    <ConfirmPopup
-                                        title={"Are you sure you want to logout?"}
-                                        loading={popupLoading}
-                                        error={popupError}
-                                        buttons={[
-                                            <Button key="button2" label="Cancel" action={() => setShowPopup(false)} />,
-                                            <Button key="button1" style="primary" label="Logout" action={() => handleLogout()} />,
-                                        ]}
-                                    />
-                                ) : !changeToSignup ? (
-                                    <Login setChangeToSignup={setChangeToSignup} setShowPopup={setShowPopup} />
-                                ) : (
-                                    <Signup setChangeToSignup={setChangeToSignup} setShowPopup={setShowPopup} />
-                                )}
-                            </Popup>,
-                            document.getElementById("popup-root")
-                        )}
-                </>
-            )}
-        </div>
-    )
+                            <Link className={classes.linkItem} onClick={() => setShowTutorial(true)}>
+                                Show Tutorial
+                                <NavigateNextIcon fontSize="medium" />
+                            </Link>
+                        </div>
+
+                        <div className={classes.bottomItems}>
+                            {isAuthenticated ? (
+                                <Button
+                                    label="Logout"
+                                    width="fill"
+                                    action={() => setShowPopup(true)}
+                                    iconLeft={<LogoutIcon fontSize="small" />}
+                                />
+                            ) : (
+                                <Button
+                                    type="submit"
+                                    style="primary"
+                                    label="Login"
+                                    width="fill"
+                                    iconLeft={<LoginIcon fontSize="small" />}
+                                    action={() => setShowPopup(true)}
+                                />
+                            )}
+                        </div>
+
+                        {/* popup a comparsa */}
+                        {showPopup &&
+                            createPortal(
+                                <Popup>
+                                    {isAuthenticated ? (
+                                        <ConfirmPopup
+                                            title={"Are you sure you want to logout?"}
+                                            loading={popupLoading}
+                                            error={popupError}
+                                            buttons={[
+                                                <Button key="button2" label="Cancel" action={() => setShowPopup(false)} />,
+                                                <Button key="button1" style="primary" label="Logout" action={() => handleLogout()} />,
+                                            ]}
+                                        />
+                                    ) : !changeToSignup ? (
+                                        <Login setChangeToSignup={setChangeToSignup} setShowPopup={setShowPopup} />
+                                    ) : (
+                                        <Signup setChangeToSignup={setChangeToSignup} setShowPopup={setShowPopup} />
+                                    )}
+                                </Popup>,
+                                document.getElementById("popup-root")
+                            )}
+                    </>
+                )}
+            </div>
+        )
+    }
 }

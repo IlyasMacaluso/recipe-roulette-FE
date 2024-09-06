@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react"
 import { useLocation } from  "@tanstack/react-router"
 
-export function useAnimate(destination) {
+export function useAnimate() {
     const location = useLocation()
     const [animate, setAnimate] = useState(false)
 
     useEffect(() => {
-        destination === location.pathname ? setAnimate(true) : setAnimate(false)
+        setAnimate(true)
     }, [location])
 
     return { animate, setAnimate }

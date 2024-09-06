@@ -67,7 +67,7 @@ export function History() {
                                 bottomPadding={true}
                                 buttons={[
                                     <Button
-                                        icon={<RotateLeftOutlinedIcon fontSize="small" />}
+                                        iconLeft={<RotateLeftOutlinedIcon fontSize="small" />}
                                         height="large"
                                         label="Reset Search"
                                         key="Reset Search"
@@ -91,7 +91,7 @@ export function History() {
                                 key="Start Ingredients Shuffle"
                                 link="roulette"
                                 label="Start Ingredients Shuffle"
-                                icon={<LoopOutlinedIcon />}
+                                iconLeft={<LoopOutlinedIcon />}
                                 height="large"
                             />,
                         ]}
@@ -109,7 +109,7 @@ export function History() {
                                     action={() => setShowPopup(true)}
                                     style="primary"
                                     label="Login or Signup"
-                                    icon={<LoginIcon />}
+                                    iconLeft={<LoginIcon />}
                                     height={"large"}
                                 />,
                             ]}

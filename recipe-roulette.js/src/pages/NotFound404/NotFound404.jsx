@@ -19,7 +19,7 @@ export function NotFound404() {
         <div className={`${layouts.pageFH} ${animate ? transitions.animationEnd : transitions.animationStart}`}>
             <Placeholder
                 topImage={notFountImage}
-                buttons={[<Button key={"Return to home"} label="Return to home" icon={<HomeOutlinedIcon />} link={"/"} height={"large"} />]}
+                buttons={[<Button key={"Return to home"} label="Return to home" iconLeft={<HomeOutlinedIcon />} link={"/"} height={"large"} />]}
             />
         </div>
     )

@@ -10,16 +10,13 @@
     border-radius: $size-8;
     border: 1px solid $light-desaturated-green;
     background-color: $lightest-green;
-    font-family: $font-text;
     .label {
         color: $darkish-gray;
-        font-size: $text-size-14;
+        font-size: $text-size-12;
+        font-family: "Metropolitan";
         width: max-content;
         margin: 0;
         font-weight: 500;
-        line-height: 100%;
-        vertical-align: middle;
-        text-align: center;
     }
     .ico {
         color: $darkish-gray;

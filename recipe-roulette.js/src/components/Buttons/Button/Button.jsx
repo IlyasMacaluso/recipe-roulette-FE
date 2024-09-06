@@ -6,7 +6,8 @@ export function Button({
     width = "fitContent",
     height = null,
     label = "label",
-    icon = null,
+    iconLeft = null,
+    iconRight = null,
     action,
     active = true,
     prevPath = null,
@@ -39,13 +40,16 @@ export function Button({
                 active && handleOnClick()
             }}
             className={`${classes.button} ${!active && classes.disabled} 
+                ${iconLeft && classes.iconLeft}
+                ${iconRight && classes.iconRight}
                 ${width === "fill" && classes.wideButton}
                 ${style === "primary" && classes.primaryColor}
                 ${height === "large" && classes.cta}
                 ${style === "transparent" && classes.transparent}`}
         >
-            {icon}
-            {label}
+            {iconLeft}
+            <p className={classes.p}>{label}</p>
+            {iconRight}
         </button>
     )
 }

@@ -80,7 +80,7 @@ export function Favorited() {
                                 bottomPadding={true}
                                 buttons={[
                                     <Button
-                                        icon={<RotateLeftOutlinedIcon fontSize="small" />}
+                                        iconLeft={<RotateLeftOutlinedIcon fontSize="small" />}
                                         height={"large"}
                                         label="Reset Filters"
                                         key={"Reset Filters"}
@@ -101,7 +101,7 @@ export function Favorited() {
                         bottomPadding={true}
                         buttons={[
                             <Button
-                                icon={<LoopOutlinedIcon fontSize="small" />}
+                                iconLeft={<LoopOutlinedIcon fontSize="small" />}
                                 height="large"
                                 style="primary"
                                 key={"Start Ingredients Shuffle"}
@@ -120,7 +120,7 @@ export function Favorited() {
                             buttons={[
                                 <Button
                                     key={"Login or Signup"}
-                                    icon={<LoginIcon fontSize="small" />}
+                                    iconLeft={<LoginIcon fontSize="small" />}
                                     style="primary"
                                     height="large"
                                     label="Login or Signup"
