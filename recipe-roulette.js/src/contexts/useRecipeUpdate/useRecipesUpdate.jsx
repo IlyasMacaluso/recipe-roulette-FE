@@ -5,35 +5,67 @@ import { useDebounce } from "../../hooks/useDebounce/useDebounce"
 import { useCallback, useEffect, useState } from "react"
 
 export const useRecipesUpdate = (recipes, setRecipes) => {
-    const [currentRecipe, setCurrentRecipe] = useState(null)
+    const [updatedRec, setUpdatedRec] = useState({ previous: null, current: null })
     const { setValue, getValue } = useLocalStorage()
     const { handlePostRequest } = usePostRequest()
     const { isAuthenticated } = useAuth() // Stato di autenticazione
-    const { debounceValue } = useDebounce(currentRecipe)
+    const { debounceValue } = useDebounce(updatedRec.current)
 
     useEffect(() => {
         //chiamata di rete quando cambia il valore di debounce (ricetta da aggiornare)
         if (isAuthenticated) {
             const userData = getValue("userData")
 
-            if (currentRecipe) {
+            if (!updatedRec.current) {
+                return
+            }
+
+            handlePostRequest({
+                url: "http://localhost:3000/api/preferences/set-favorited-recipes",
+                payload: { recipe: updatedRec.current, userId: userData.id },
+            })
+
+            handlePostRequest({
+                url: "http://localhost:3000/api/preferences/update-recipes-history",
+                payload: { recipe: updatedRec.current, userId: userData.id },
+            })
+        }
+    }, [debounceValue])
+
+    useEffect(() => {
+        //chiamata di rete quando cambia il updatedRec.previous (durante l'attesa del valore di debounce,)
+        if (isAuthenticated) {
+            const userData = getValue("userData")
+
+            const prevRecId = `${updatedRec.previous?.id}_${updatedRec.previous?.title}`
+            const currentRecId = `${updatedRec.current?.id}_${updatedRec.current?.title}`
+
+            //se la ricetta precedente è la stessa (quindi è stata modificata la prop isFavorited), non aggiornare adesso
+            if (!updatedRec.previous || prevRecId === currentRecId) {
+                return
+            }
+
+            // attende 300ms per aggiornare
                 handlePostRequest({
                     url: "http://localhost:3000/api/preferences/set-favorited-recipes",
-                    payload: { recipe: currentRecipe, userId: userData.id },
+                    payload: { recipe: updatedRec.previous, userId: userData.id },
                 })
 
                 handlePostRequest({
                     url: "http://localhost:3000/api/preferences/update-recipes-history",
-                    payload: { recipe: currentRecipe, userId: userData.id },
+                    payload: { recipe: updatedRec.previous, userId: userData.id },
                 })
-            }
         }
-    }, [debounceValue])
+    }, [updatedRec.previous])
 
     const handleRecipesUpdate = (recipe, setRecipe) => {
         const updatedRecipe = { ...recipe, isFavorited: !recipe.isFavorited }
 
-        setCurrentRecipe(updatedRecipe)
+        if (!updatedRec.current) {
+            setUpdatedRec((prev) => ({ ...prev, current: updatedRecipe }))
+        } else {
+            setUpdatedRec((prev) => ({ previous: prev.current, current: updatedRecipe }))
+        }
 
         setRecipes((prev) => {
             let newFavorites

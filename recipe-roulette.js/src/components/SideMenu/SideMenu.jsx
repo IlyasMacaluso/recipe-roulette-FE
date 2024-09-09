@@ -7,6 +7,7 @@ import { Login } from "../authentication/login/Login"
 import { Signup } from "../authentication/signup/Signup"
 import { ConfirmPopup } from "../ConfirmPopup/ConfirmPopup"
 import { Button } from "../Buttons/Button/Button"
+
 import BookmarksOutlinedIcon from "@mui/icons-material/BookmarksOutlined"
 import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined"
 import LoginOutlinedIcon from "@mui/icons-material/LoginOutlined"
@@ -89,7 +90,7 @@ export function SideMenu({ handleMenuToggle, menuState = false }) {
                                 handleMenuToggle={()=>handleMenuToggle(false)}
                                 label={item.label}
                                 destination={item.destination}
-                                iconLeft={item.icon}
+                                icon={item.icon}
                                 action={item?.action || null}
                             />
                         )

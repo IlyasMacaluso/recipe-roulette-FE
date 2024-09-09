@@ -7,6 +7,7 @@ import CloseIcon from "@mui/icons-material/Close"
 import NavigateBeforeIcon from "@mui/icons-material/NavigateBefore"
 import NavigateNextIcon from "@mui/icons-material/NavigateNext"
 import SkipNextIcon from "@mui/icons-material/SkipNext"
+import DoneAllIcon from '@mui/icons-material/DoneAll';
 
 import step1Img from "../../assets/images/tutorial/Appreciation-bro.svg"
 import step2Img from "../../assets/images/tutorial/Bullet journal-bro.svg"
@@ -90,7 +91,7 @@ export function Tutorial({ setShowTutorial = null, checkbox = false }) {
                     {tutorialStep === 6 && (
                         <div className={styles.stepBody}>
                             <h2>Step 6</h2>
-                            <p>Tap "Generate Recipes" to create recipes with those ingredients! </p>
+                            <p>Tap "Generate Recipes" to create recipes with ingredients and preferences you selected! </p>
                             <img src={step6Img} alt="" />
                         </div>
                     )}
@@ -113,22 +114,23 @@ export function Tutorial({ setShowTutorial = null, checkbox = false }) {
                     <div className={styles.navigationButtonsWrapper}>
                         {tutorialStep !== 1 && (
                             <Button
+                                label="Previous"
                                 iconLeft={<NavigateBeforeIcon fontSize="small" />}
                                 action={() => setTutorialStep((prev) => prev - 1)}
-                                label="Previous"
                             />
                         )}
                         {tutorialStep !== 6 && (
                             <Button
+                                label="Next"
                                 iconRight={<NavigateNextIcon fontSize="small" />}
                                 action={() => setTutorialStep((prev) => prev + 1)}
                                 style="primary"
                                 width="fill"
-                                label="Next"
                             />
                         )}
                         {tutorialStep === 6 && (
                             <Button
+                                label="Done!"
                                 action={() => {
                                     if (rememberShowTutorial) {
                                         setValue("showTutorial", false)
@@ -137,7 +139,7 @@ export function Tutorial({ setShowTutorial = null, checkbox = false }) {
                                 }}
                                 style="primary"
                                 width="fill"
-                                label="Get started!"
+                                iconLeft={<DoneAllIcon fontSize="small" />}
                             />
                         )}
                     </div>
