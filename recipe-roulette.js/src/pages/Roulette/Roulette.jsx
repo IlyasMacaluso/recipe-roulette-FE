@@ -28,7 +28,7 @@ import { useMemo } from "react"
 
 export function Roulette() {
     const { ingredients, shuffleIng, handleIngIncrement, ingredientsLoading, blacklistedLoading, ingredientsError } = useManageIngredients()
-    const { recipeFilter } = useRecipesContext()
+    const { recipePreferences } = useRecipesContext()
     const { isActive } = useButtonState(ingredients)
     const { location } = useLocationHook()
     const { animate } = useAnimate(location)
@@ -95,13 +95,13 @@ export function Roulette() {
                             const ingNames = ingredients?.displayed.map((ing) => ing.name)
                             handleRecipesFetch(
                                 ingNames,
-                                recipeFilter.preparationTime,
-                                recipeFilter.caloricApport,
-                                recipeFilter.cuisineEthnicity,
-                                recipeFilter.is_vegetarian,
-                                recipeFilter.is_vegan,
-                                recipeFilter.is_gluten_free,
-                                recipeFilter.difficulty
+                                recipePreferences.preparationTime,
+                                recipePreferences.caloricApport,
+                                recipePreferences.cuisineEthnicity,
+                                recipePreferences.is_vegetarian,
+                                recipePreferences.is_vegan,
+                                recipePreferences.is_gluten_free,
+                                recipePreferences.difficulty
                             )
                         }}
                         label="Recipes"

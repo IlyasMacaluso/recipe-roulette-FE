@@ -1,5 +1,6 @@
 import { Switch } from "../Switch/Switch"
 import { FilterChipRecipes } from "../FilterChip/FilterChipRecipes"
+import { filterChipsArray } from "../../assets/arrays/filterChipsArray.js"
 
 import CloseIcon from "@mui/icons-material/Close"
 import RotateLeftOutlinedIcon from "@mui/icons-material/RotateLeftOutlined"
@@ -7,13 +8,15 @@ import RotateLeftOutlinedIcon from "@mui/icons-material/RotateLeftOutlined"
 import { Button } from "../Buttons/Button/Button"
 import { useRecipesContext } from "../../contexts/RecipesContext"
 import { IcoButton } from "../Buttons/IcoButton/IcoButton"
-
-import classes from "../Sidebar/Sidebar.module.scss"
 import { useLocation } from "@tanstack/react-router"
 
+import classes from "../Sidebar/Sidebar.module.scss"
+
 export function SideBarRecipes({ state, toggleSidebarRecipes }) {
-    const { toggleRecipeFilter, recipeFilter, handleDeselectRecipeFilters } = useRecipesContext()
+    const { handleRecipeFilters, recipeFilters, handleDeselectRecipeFilters, setRecipeFilters } = useRecipesContext()
+    const { cuisineEthnicityChips, difficultyChips, prepTimeChips, caloricApportChips } = filterChipsArray()
     const location = useLocation()
+
     function handleSidebarClick(e) {
         e.stopPropagation()
     }
@@ -32,7 +35,7 @@ export function SideBarRecipes({ state, toggleSidebarRecipes }) {
                             <Button
                                 label="Reset All"
                                 action={() => {
-                                    handleDeselectRecipeFilters()
+                                    handleDeselectRecipeFilters({ filters: "recipeFilters", setFilters: setRecipeFilters })
                                 }}
                                 iconLeft={<RotateLeftOutlinedIcon className={classes.ico} fontSize="small" />}
                             />
@@ -41,13 +44,25 @@ export function SideBarRecipes({ state, toggleSidebarRecipes }) {
                     </header>
 
                     <section className={classes.sidebarBody}>
+                        
                         <div className={classes.section}>
                             <h4>Preparation Time</h4>
                             <div className={classes.filterChipWrapper}>
-                                <FilterChipRecipes filterType={"preparationTime"} label="All" />
-                                <FilterChipRecipes filterType={"preparationTime"} numericValue={30} label="30m or less" />
-                                <FilterChipRecipes filterType={"preparationTime"} numericValue={45} label="45m or less" />
-                                <FilterChipRecipes filterType={"preparationTime"} numericValue={60} label="60m or less" />
+                                {
+                                    // prepTime chips =====================================================================
+                                    prepTimeChips &&
+                                        prepTimeChips.map((chip, index) => {
+                                            return (
+                                                <FilterChipRecipes
+                                                    key={index}
+                                                    filters="recipeFilters"
+                                                    filterType={"preparationTime"}
+                                                    propValue={chip.propValue}
+                                                    label={chip.label}
+                                                />
+                                            )
+                                        })
+                                }
                             </div>
                         </div>
 
@@ -55,61 +70,101 @@ export function SideBarRecipes({ state, toggleSidebarRecipes }) {
                             <h4>Preferences</h4>
                             <div className={classes.switchesWrapper}>
                                 <Switch
-                                    state={recipeFilter.is_gluten_free}
+                                    state={recipeFilters.is_gluten_free}
                                     action={() => {
-                                        toggleRecipeFilter("is_gluten_free")
+                                        handleRecipeFilters({
+                                            filters: "recipeFilters", // preferences (used to generate recipes) / filters (used to filter recipe arrays)
+                                            setFilters: setRecipeFilters,
+                                            propToUpdate: "is_gluten_free",
+                                        })
                                     }}
                                     label={"Gluten free"}
                                 />
                                 <Switch
-                                    state={recipeFilter.is_vegetarian}
+                                    state={recipeFilters.is_vegetarian}
                                     action={() => {
-                                        toggleRecipeFilter("is_vegetarian")
+                                        handleRecipeFilters({
+                                            filters: "recipeFilters", // preferences (used to generate recipes) / filters (used to filter recipe arrays)
+                                            setFilters: setRecipeFilters,
+                                            propToUpdate: "is_vegetarian",
+                                        })
                                     }}
                                     label={"Vegetarian"}
                                 />
                                 <Switch
-                                    state={recipeFilter.is_vegan}
+                                    state={recipeFilters.is_vegan}
                                     action={() => {
-                                        toggleRecipeFilter("is_vegan")
+                                        handleRecipeFilters({
+                                            filters: "recipeFilters", // preferences (used to generate recipes) / filters (used to filter recipe arrays)
+                                            setFilters: setRecipeFilters,
+                                            propToUpdate: "is_vegan",
+                                        })
                                     }}
                                     label={"Vegan"}
                                 />
                             </div>
                         </div>
+
                         <div className={classes.section}>
                             <h4>Cousine Etnicity</h4>
                             <div className={classes.filterChipWrapper}>
-                                <FilterChipRecipes filterType={"cuisineEthnicity"} label="All" />
-                                <FilterChipRecipes filterType={"cuisineEthnicity"} label="Italian" />
-                                <FilterChipRecipes filterType={"cuisineEthnicity"} label="French" />
-                                <FilterChipRecipes filterType={"cuisineEthnicity"} label="Chinese" />
-                                <FilterChipRecipes filterType={"cuisineEthnicity"} label="Japanese" />
-                                <FilterChipRecipes filterType={"cuisineEthnicity"} label="Indian" />
-                                <FilterChipRecipes filterType={"cuisineEthnicity"} label="Greek" />
-                                <FilterChipRecipes filterType={"cuisineEthnicity"} label="Spanish" />
-                                <FilterChipRecipes filterType={"cuisineEthnicity"} label="Mexican" />
-                                <FilterChipRecipes filterType={"cuisineEthnicity"} label="Thai" />
-                                <FilterChipRecipes filterType={"cuisineEthnicity"} label="Middle Eastern" />
+                                {
+                                    // cuisineEthnicity chips =====================================================================
+                                    cuisineEthnicityChips &&
+                                        cuisineEthnicityChips.map((chip, index) => {
+                                            return (
+                                                <FilterChipRecipes
+                                                    key={index}
+                                                    filters="recipeFilters"
+                                                    filterType={"cuisineEthnicity"}
+                                                    propValue={chip.propValue}
+                                                    label={chip.label}
+                                                />
+                                            )
+                                        })
+                                }
                             </div>
                         </div>
+
                         <div className={classes.section}>
                             <h4>Caloric Apport</h4>
                             <div className={classes.filterChipWrapper}>
-                                <FilterChipRecipes filterType={"caloricApport"} label="All" />
-                                <FilterChipRecipes numericValue={250} filterType={"caloricApport"} label="250 kcal or less" />
-                                <FilterChipRecipes numericValue={350} filterType={"caloricApport"} label="350 kcal of less" />
-                                <FilterChipRecipes numericValue={550} filterType={"caloricApport"} label="550 kcal or less" />
+                                {
+                                    // caloricApport chips =====================================================================
+                                    caloricApportChips &&
+                                        caloricApportChips.map((chip, index) => {
+                                            return (
+                                                <FilterChipRecipes
+                                                    key={index}
+                                                    filters="recipeFilters"
+                                                    propValue={chip.propValue}
+                                                    filterType={"caloricApport"}
+                                                    label={chip.label}
+                                                />
+                                            )
+                                        })
+                                }
                             </div>
                         </div>
 
                         <div className={classes.section}>
                             <h4>Difficulty</h4>
                             <div className={classes.filterChipWrapper}>
-                                <FilterChipRecipes numericValue={"all"} filterType={"difficulty"} label="All" />
-                                <FilterChipRecipes numericValue={"easy"} filterType={"difficulty"} label="Easy" />
-                                <FilterChipRecipes numericValue={"medium"} filterType={"difficulty"} label="Medium" />
-                                <FilterChipRecipes numericValue={"hard"} filterType={"difficulty"} label="Hard" />
+                                {
+                                    // recipe difficulty chips =====================================================================
+                                    difficultyChips &&
+                                        difficultyChips.map((chip, index) => {
+                                            return (
+                                                <FilterChipRecipes
+                                                    key={index}
+                                                    filters="recipeFilters"
+                                                    propValue={chip.propValue}
+                                                    filterType={"difficulty"}
+                                                    label={chip.label}
+                                                />
+                                            )
+                                        })
+                                }
                             </div>
                         </div>
                     </section>

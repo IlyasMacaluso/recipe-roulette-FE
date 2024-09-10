@@ -25,6 +25,7 @@ export const useIngredientUpdate = (ingredients, setIngredients) => {
 
             // Inizializza newDisplayed con gli ingredienti visualizzati aggiornati
             let newDisplayed = updatedDisplayedIngs
+            
             // Filtra gli ingredienti nella blacklist
             const newBlacklisted = updatedIngs.filter((item) => item.is_blacklisted)
 

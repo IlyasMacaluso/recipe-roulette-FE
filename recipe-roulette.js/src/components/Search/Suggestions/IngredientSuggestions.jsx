@@ -10,20 +10,20 @@ import placeholderImage from "../../../assets/images/Shrug-bro.svg"
 import classes from "./IngredientSuggestions.module.scss"
 
 export function IngredientSuggestions({ inputRef = null, setInputState, inputActive, searchCriteria, suggestions }) {
-    const { recipeFilter } = useRecipesContext()
+    const { recipePreferences } = useRecipesContext()
     const { ingredientsLoading, blacklistedLoading, ingredientsError } = useManageIngredients()
 
     const isIngredientActive = (ingredient) => {
         if (ingredient.is_selected || ingredient.is_blacklisted) {
             return false
         }
-        if (recipeFilter.is_vegetarian && !ingredient.is_vegetarian) {
+        if (recipePreferences.is_vegetarian && !ingredient.is_vegetarian) {
             return false
         }
-        if (recipeFilter.is_gluten_free && !ingredient.is_gluten_free) {
+        if (recipePreferences.is_gluten_free && !ingredient.is_gluten_free) {
             return false
         }
-        if (recipeFilter.is_vegan && !ingredient.is_vegan) {
+        if (recipePreferences.is_vegan && !ingredient.is_vegan) {
             return false
         }
         return true

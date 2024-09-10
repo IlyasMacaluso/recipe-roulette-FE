@@ -18,7 +18,7 @@ export const IngredientsProvider = ({ children }) => {
     })
 
     const { isAuthenticated } = useAuth()
-    const { recipeFilter } = useRecipesContext()
+    const { recipePreferences } = useRecipesContext()
     const { setValue, getValue } = useLocalStorage()
     const { handleIngUpdate, handleDeselectAll } = useIngredientUpdate(ingredients, setIngredients)
     const { handleIngDecrement, handleIngIncrement, shuffleIng, generateIngredients } = useDisplayedIngredients(ingredients, setIngredients)
@@ -92,16 +92,16 @@ export const IngredientsProvider = ({ children }) => {
                 let filtering = prev?.all.filter((ing) => !ing.is_blacklisted)
                 const filterIngredients = (prop) => (filtering = filtering.filter((item) => item[prop]))
 
-                recipeFilter.is_gluten_free && filterIngredients("is_gluten_free")
-                recipeFilter.is_vegetarian && filterIngredients("is_vegetarian")
-                recipeFilter.is_vegan && filterIngredients("is_vegan")
+                recipePreferences.is_gluten_free && filterIngredients("is_gluten_free")
+                recipePreferences.is_vegetarian && filterIngredients("is_vegetarian")
+                recipePreferences.is_vegan && filterIngredients("is_vegan")
 
                 const updatedIngredients = { ...prev, filteredFavorites: filtering }
                 setValue("ingredients", updatedIngredients)
                 return updatedIngredients
             }
         })
-    }, [recipeFilter, ingredients?.all])
+    }, [recipePreferences, ingredients?.all])
 
     return (
         <IngredientsContext.Provider

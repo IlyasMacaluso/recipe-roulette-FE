@@ -17,7 +17,7 @@ import { useAuth } from "../../hooks/Auth/useAuth"
 
 export function Header({ handleMenuToggle, handleSidebarToggle, handleRecipesSidebarToggle }) {
     const [title, setTitle] = useState("/")
-    const { recipes, setRecipes, setInputValue, inputValue, recipeFilter } = useRecipesContext()
+    const { recipes, setRecipes, setInputValue, inputValue, recipeFilters } = useRecipesContext()
     const { handleDeselectAll } = useManageIngredients()
     const { isAuthenticated } = useAuth()
 
@@ -88,11 +88,11 @@ export function Header({ handleMenuToggle, handleSidebarToggle, handleRecipesSid
 
     const searchHistory = useMemo(() => {
         return recipes.filteredHistory.filter((rec) => rec.title.toLowerCase().includes(inputValue.toLowerCase()))
-    }, [inputValue, recipes.filteredHistory, recipes.history, recipeFilter])
+    }, [inputValue, recipes.filteredHistory, recipes.history, recipeFilters])
 
     const searchFavorites = useMemo(() => {
         return recipes.filteredFavorites.filter((rec) => rec.title.toLowerCase().includes(inputValue.toLowerCase()))
-    }, [inputValue, recipes.filteredFavorites, recipes.favorited, recipeFilter])
+    }, [inputValue, recipes.filteredFavorites, recipes.favorited, recipeFilters])
 
     return (
         location.pathname !== "/login" &&
@@ -135,11 +135,8 @@ export function Header({ handleMenuToggle, handleSidebarToggle, handleRecipesSid
                 )}
                 {location.pathname === "/history" && isAuthenticated && recipes?.history && recipes?.history.length > 0 && (
                     <section className={classes.globalActions}>
-                        <BaseSearch
-                            data={searchHistory}
-                            inputValue={inputValue}
-                            setInputValue={setInputValue}
-                        />
+                        <BaseSearch data={searchHistory} inputValue={inputValue} setInputValue={setInputValue} />
+                        <IcoButton action={handleRecipesSidebarToggle} label="Filters" icon={<FilterListIcon fontSize="small" />} />
                     </section>
                 )}
                 {location.pathname === "/roulette" && (

@@ -1,21 +1,25 @@
 import { useEffect, useState } from "react"
 import { useRecipesContext } from "../../contexts/RecipesContext"
 
-export function useFilterChipRecipes(label, filterType, numericValue) {
+export function useFilterChipRecipes(filters, filterType, propValue) {
     const [selectedState, setSelectedState] = useState(false)
-    const { recipeFilter } = useRecipesContext()
+    const { recipePreferences, recipeFilters } = useRecipesContext()
 
     useEffect(() => {
         setSelectedState((prevSelectedState) => {
             if (filterType === "cuisineEthnicity") {
-                return recipeFilter.cuisineEthnicity.some((cuisine) => cuisine.toLowerCase() === label.toLowerCase());
+                return filters === "recipePreferences"
+                    ? recipePreferences.cuisineEthnicity.some((cuisine) => cuisine === propValue)
+                    : recipeFilters.cuisineEthnicity.some((cuisine) => cuisine === propValue)
             } else if (filterType === "caloricApport" || filterType === "preparationTime" || filterType === "difficulty") {
-                return recipeFilter[filterType] === numericValue;
+                return filters === "recipePreferences"
+                    ? recipePreferences[filterType] === propValue
+                    : recipeFilters[filterType] === propValue
+            } else {
+                return prevSelectedState // Ritorna lo stato precedente se nessuna delle condizioni è verificata
             }
-            return prevSelectedState; // Ritorna lo stato precedente se nessuna delle condizioni è verificata
-        });
-    }, [recipeFilter])
-    
+        })
+    }, [recipePreferences, recipeFilters])
 
     return {
         selectedState,

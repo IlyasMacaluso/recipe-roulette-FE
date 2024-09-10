@@ -26,15 +26,25 @@ import transition from "../../assets/scss/pageLayout/pageTransition.module.scss"
 export function History() {
     const [showPopup, setShowPopup] = useState()
 
-    const { handleDeselectRecipeFilters, recipes, setInputValue, historyLoading, favoritedLoading, foodPrefLoading, historyError, recipeFilter, inputValue } =
-        useRecipesContext()
+    const {
+        handleDeselectRecipeFilters,
+        recipes,
+        setInputValue,
+        historyLoading,
+        favoritedLoading,
+        foodPrefLoading,
+        historyError,
+        recipeFilters,
+        inputValue,
+        setRecipeFilters,
+    } = useRecipesContext()
     const { isAuthenticated } = useAuth()
     const { location } = useLocationHook()
     const { animate } = useAnimate(location)
 
     const searchHistory = useMemo(() => {
         return recipes.filteredHistory.filter((rec) => rec.title.toLowerCase().includes(inputValue.toLowerCase()))
-    }, [inputValue, recipes.filteredHistory, recipes.history, recipeFilter])
+    }, [inputValue, recipes.filteredHistory, recipes.history, recipeFilters])
 
     if (historyError) {
         return (
@@ -54,16 +64,15 @@ export function History() {
                     <>
                         {searchHistory && searchHistory.length > 0 ? (
                             <section className={layout.recipesWrapper}>
-                                    {searchHistory.map((recipe) => (
-                                        <RecipeCard recipe={recipe} key={`${recipe.id}_${recipe.title}`} />
-                                    ))}
+                                {searchHistory.map((recipe) => (
+                                    <RecipeCard recipe={recipe} key={`${recipe.id}_${recipe.title}`} />
+                                ))}
                             </section>
                         ) : (
                             <Placeholder
                                 text="Your search has  "
                                 hightlitedText="no matching results"
-                                highlightColor="#dd3e46"
-                                topImage={shrugImage}
+                                bottomImage={shrugImage}
                                 bottomPadding={true}
                                 buttons={[
                                     <Button
@@ -72,7 +81,7 @@ export function History() {
                                         label="Reset Search"
                                         key="Reset Search"
                                         action={() => {
-                                            handleDeselectRecipeFilters()
+                                            handleDeselectRecipeFilters({ filters: "recipeFilters", setFilters: setRecipeFilters })
                                             setInputValue("")
                                         }}
                                     />,

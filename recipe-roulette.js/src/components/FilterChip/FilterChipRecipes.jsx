@@ -1,21 +1,23 @@
 import { useFilterChipRecipes } from "./useFilterChipRecipes"
-
-import CheckOutlinedIcon from "@mui/icons-material/CheckOutlined"
-
-import classes from "./FilterChip.module.scss"
 import { useRecipesContext } from "../../contexts/RecipesContext"
 
-export function FilterChipRecipes({ numericValue = 9999, filterType = null, label }) {
-    const { handlePreferencesToggle } = useRecipesContext()
-    const { selectedState } = useFilterChipRecipes(label, filterType, numericValue)
+import CheckOutlinedIcon from "@mui/icons-material/CheckOutlined"
+import classes from "./FilterChip.module.scss"
+
+export function FilterChipRecipes({ filters = "recipePreferences", propValue = 9999, filterType = null, label }) {
+    const { handleRecipeFilters, setRecipePreferences, setRecipeFilters } = useRecipesContext()
+    const { selectedState } = useFilterChipRecipes(filters, filterType, propValue)
 
     return (
         <div
             onClick={() => {
-                filterType === "cuisineEthnicity" && handlePreferencesToggle(filterType, label.toLowerCase(), selectedState)
-                filterType === "caloricApport"  && handlePreferencesToggle(filterType, numericValue, selectedState)
-                filterType === "preparationTime" && handlePreferencesToggle(filterType, numericValue, selectedState)
-                filterType === "difficulty" && handlePreferencesToggle(filterType, numericValue, selectedState)
+                handleRecipeFilters({
+                    filters: filters, // preferences (used to generate recipes) / filters (used to filter recipe arrays)
+                    setFilters: filters === "recipePreferences" ? setRecipePreferences : setRecipeFilters,
+                    propToUpdate: filterType,
+                    propValue: propValue,
+                    isPropSelected: selectedState,
+                })
             }}
             className={`${classes.filterChip} ${selectedState ? classes.active : classes.inactive}`}
         >

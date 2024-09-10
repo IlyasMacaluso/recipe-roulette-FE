@@ -1,6 +1,6 @@
 @use "../../../assets/scss/" as *;
 
-.suggestion {
+.suggestionWrapper {
     display: flex;
     align-items: center;
     padding: 1rem;
@@ -9,10 +9,14 @@
     border-bottom: 2px solid $lighter-gray;
     padding: 0 1.5rem;
     background-color: white;
-    font-family: $font-poppins;
     font-size: 14px;
-} 
-.suggestion:hover{
+}
+
+.suggestion {
+    font-size: $text-size-14;
+    font-family: $font-poppins;
+}
+.suggestionWrapper:hover {
     cursor: pointer;
     background-color: $lightest-green;
 }

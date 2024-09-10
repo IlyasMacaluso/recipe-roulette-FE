@@ -5,7 +5,6 @@ import { AuthProvider } from "../components/authentication/AuthContext"
 import { RecipesFetchProvider } from "../hooks/useRecipesFetch/useRecipesFetch"
 import { SnackbarProvider } from "../components/Snackbar/useSnackbar"
 import { Header } from "../components/Header/Header"
-import { SearchProvider } from "../contexts/InputStateContext"
 import { useDiscoverySidebar } from "../hooks/DiscoverySidebar/useDiscoverySidebar"
 import { useSideMenu } from "../hooks/SideMenu/useSideMenu"
 import { useRecipesResultsSideBar } from "../hooks/RecipesResultsSideBar/useRecipesResultsSideBar"
@@ -32,7 +31,6 @@ export const Route = createRootRoute({
                         <IngredientsProvider>
                             <RecipesFetchProvider>
                                 <SnackbarProvider>
-                                    <SearchProvider>
                                         <ImageProvider>
                                             <SideMenu handleMenuToggle={setMenuState} menuState={menuState} path={path} />
                                             <div className="centerContent">
@@ -51,7 +49,6 @@ export const Route = createRootRoute({
                                             {/* <TanStackRouterDevtools />
                                             <ReactQueryDevtools /> */}
                                         </>
-                                    </SearchProvider>
                                 </SnackbarProvider>
                             </RecipesFetchProvider>
                         </IngredientsProvider>

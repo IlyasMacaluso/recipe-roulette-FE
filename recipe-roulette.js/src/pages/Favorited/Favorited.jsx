@@ -28,7 +28,6 @@ import transition from "../../assets/scss/pageLayout/pageTransition.module.scss"
 
 export function Favorited() {
     const [showPopup, setShowPopup] = useState()
-
     const {
         recipes,
         inputValue,
@@ -38,7 +37,8 @@ export function Favorited() {
         historyLoading,
         foodPrefLoading,
         favoritedError,
-        recipeFilter,
+        recipeFilters,
+        setRecipeFilters
     } = useRecipesContext()
     const { isAuthenticated } = useAuth()
     const { changeToSignup, setChangeToSignup } = useLoginToSignup()
@@ -48,7 +48,7 @@ export function Favorited() {
 
     const searchFavorites = useMemo(() => {
         return recipes.filteredFavorites.filter((rec) => rec.title.toLowerCase().includes(inputValue.toLowerCase()))
-    }, [inputValue, recipes.filteredFavorites, recipes.favorited, recipeFilter])
+    }, [inputValue, recipes.filteredFavorites, recipes.favorited, recipeFilters])
 
     if (favoritedError) {
         return (
@@ -86,7 +86,8 @@ export function Favorited() {
                                         key={"Reset Filters"}
                                         action={() => {
                                             setInputValue("")
-                                            handleDeselectRecipeFilters()
+                                            handleDeselectRecipeFilters({ filters: "recipeFilters", setFilters: setRecipeFilters })
+
                                         }}
                                     />,
                                 ]}

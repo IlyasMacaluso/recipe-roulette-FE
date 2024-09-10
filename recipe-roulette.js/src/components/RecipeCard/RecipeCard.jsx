@@ -55,9 +55,9 @@ export function RecipeCard({ isExpanded = false, recipe, handleClickLoginSnackBa
             {/* bottomItems */}
             <div className={classes.bottomItems}>
                 <section className={classes.chipsWrapper}>
-                    {is_vegan && <FilterChip label={"Vegan"} />}
+                    {/* {is_vegan && <FilterChip label={"Vegan"} />}
                     {is_vegetarian && <FilterChip label={"Vegetarian"} />}
-                    {is_gluten_free && <FilterChip label={"GlutenFree"} />}
+                    {is_gluten_free && <FilterChip label={"GlutenFree"} />} */}
                     {attributes && attributes.length > 0 && attributes.map((chip, index) => <FilterChip key={index} label={chip} />)}
                 </section>
                 {!expandedCard && <p className={classes.title}>{title}</p>}

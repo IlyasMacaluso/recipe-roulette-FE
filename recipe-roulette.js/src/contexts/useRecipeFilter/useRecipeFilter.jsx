@@ -1,6 +1,5 @@
-import { useEffect, useMemo, useState } from "react"
+import { useEffect, useState } from "react"
 import { useLocalStorage } from "../../hooks/useLocalStorage/useLocalStorage"
-import { useFetchPreferences } from "../../hooks/fetchPreferences/useFetchPreferences"
 import { usePostRequest } from "../../hooks/usePostRequest/usePostRequest"
 import { useDebounce } from "../../hooks/useDebounce/useDebounce"
 
@@ -35,8 +34,10 @@ function RecipeFilter({
     this.difficulty = difficulty
 }
 export const useRecipeFilter = (isAuthenticated) => {
-    const [recipeFilter, setRecipeFilter] = useState(new RecipeFilter())
+    const [recipePreferences, setRecipePreferences] = useState(new RecipeFilter())
+    const [recipeFilters, setRecipeFilters] = useState(new RecipeFilter())
     const [updatedFilter, setUpdatedFilter] = useState(null)
+
     const { setValue, getValue } = useLocalStorage()
     const { handlePostRequest } = usePostRequest()
     const { debounceValue } = useDebounce(updatedFilter)
@@ -56,71 +57,73 @@ export const useRecipeFilter = (isAuthenticated) => {
         }
     }, [debounceValue])
 
-    // Gestione delle proprietà booleane di recipeFilter
-    const toggleRecipeFilter = (prop) => {
-        setRecipeFilter((prevFilters) => {
-            const newState = !prevFilters[prop]
-            const updatedFilters = { ...prevFilters, [prop]: newState }
-            setValue("recipeFilter", updatedFilters) // Aggiorna il valore nel local storage o dove necessario
-            
-            setUpdatedFilter(updatedFilters) // post request triggher
-
-            return updatedFilters // Ritorna il nuovo stato aggiornato
-        })
-    }
-
-    // Gestione delle proprietà non booleane di recipeFilter
-    const handlePreferencesToggle = (filterType, value, selectedState) => {
-        setRecipeFilter((prevFilters) => {
+    // Gestione delle proprietà non booleane di recipePreferences
+    const handleRecipeFilters = ({ filters, setFilters, propToUpdate, propValue, isPropSelected }) => {
+        if (!setFilters || !propToUpdate || !filters) return
+        
+        setFilters((prevFilters) => {
             let updatedFilters = { ...prevFilters }
 
-            // Gestione del filtro "caloricApport", "preparationTime" e "difficulty"
-            if (filterType === "caloricApport" || filterType === "preparationTime" || filterType === "difficulty") {
-                const newValue = !selectedState ? value : filterType === "difficulty" ? "all" : 9999
-                updatedFilters = { ...updatedFilters, [filterType]: newValue }
-            }
+            if (propToUpdate === "is_vegetarian" || propToUpdate === "is_vegan" || propToUpdate === "is_gluten_free") {
+                // aggiornamento prop booleane
+                const newState = !prevFilters[propToUpdate]
+                updatedFilters = { ...prevFilters, [propToUpdate]: newState }
+            } else {
+                // aggiornamento prop non booleane
+                if(!propValue) return
 
-            // Gestione del filtro "cuisineEthnicity"
-            if (filterType === "cuisineEthnicity") {
-                let updatedEthnicity = [...prevFilters.cuisineEthnicity]
-                const alreadyThere = updatedEthnicity.find((cuisine) => cuisine.toLowerCase() === value)
+                // -> "caloricApport", "preparationTime" e "difficulty"
+                if (propToUpdate === "caloricApport" || propToUpdate === "preparationTime" || propToUpdate === "difficulty") {
+                    const newValue = !isPropSelected ? propValue : propToUpdate === "difficulty" ? "all" : 9999
+                    updatedFilters = { ...updatedFilters, [propToUpdate]: newValue }
+                }
 
-                if (value === "all") {
-                    updatedEthnicity = prevFilters.cuisineEthnicity.includes("all") ? [] : new RecipeFilter().cuisineEthnicity
-                } else {
-                    if (alreadyThere) {
-                        updatedEthnicity = updatedEthnicity.filter((item) => item !== value.toLowerCase() && item !== "all")
+                // -> "cuisineEthnicity"
+                if (propToUpdate === "cuisineEthnicity") {
+                    let updatedEthnicity = [...prevFilters.cuisineEthnicity]
+                    const isAlreadyThere = updatedEthnicity.find((cuisine) => cuisine === propValue)
+
+                    if (propValue === "all") {
+                        updatedEthnicity = prevFilters.cuisineEthnicity.includes("all") ? [] : new RecipeFilter().cuisineEthnicity
                     } else {
-                        updatedEthnicity.push(value.toLowerCase())
-                        if (updatedEthnicity.length === 10) {
-                            updatedEthnicity.push("all")
+                        if (isAlreadyThere) {
+                            updatedEthnicity = updatedEthnicity.filter((item) => item !== propValue && item !== "all")
+                        } else {
+                            updatedEthnicity.push(propValue)
+                            if (updatedEthnicity.length === 10) {
+                                updatedEthnicity.push("all")
+                            }
                         }
                     }
+                    updatedFilters = { ...updatedFilters, cuisineEthnicity: updatedEthnicity }
                 }
-                updatedFilters = { ...updatedFilters, cuisineEthnicity: updatedEthnicity }
             }
 
-            setValue("recipeFilter", updatedFilters) // Aggiorna il valore nel local storage o dove necessario
-            
-            setUpdatedFilter(updatedFilters) // post request triggher
+            if (filters === "recipePreferences") {
+                setValue("recipePreferences", updatedFilters) // Aggiorna il valore nel local storage
+                setUpdatedFilter(updatedFilters) // post request triggher quando si modificano le preferences
+            }
 
             return updatedFilters // Ritorna il nuovo stato aggiornato
         })
     }
 
-    // Reset dei filtri recipeFilter
-    const handleDeselectRecipeFilters = () => {
-        setRecipeFilter(new RecipeFilter())
+    // Reset dei filtri recipePreferences
+    const handleDeselectRecipeFilters = ({ filters, setFilters }) => {
+        setFilters(new RecipeFilter())
 
-        setUpdatedFilter(new RecipeFilter()) // post request triggher
-        setValue("recipeFilter", new RecipeFilter())
+        if (filters === "recipePreferences") {
+            setUpdatedFilter(new RecipeFilter()) // post request triggher
+            setValue("recipePreferences", new RecipeFilter())
+        }
     }
 
     return {
-        recipeFilter,
-        setRecipeFilter,
-        toggleRecipeFilter,
-        handlePreferencesToggle,
+        recipePreferences,
+        setRecipePreferences,
+        recipeFilters,
+        setRecipeFilters,
+        handleRecipeFilters,
         handleDeselectRecipeFilters,
     }
 }

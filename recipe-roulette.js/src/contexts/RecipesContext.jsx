@@ -4,7 +4,7 @@ import { useAuth } from "../hooks/Auth/useAuth"
 import { useLocalStorage } from "../hooks/useLocalStorage/useLocalStorage"
 import { useRecipesUpdate } from "./useRecipeUpdate/useRecipesUpdate"
 import { useRecipeFilter } from "./useRecipeFilter/useRecipeFilter"
-import { useQuery, useQueryClient } from "@tanstack/react-query"
+import { useQuery } from "@tanstack/react-query"
 import { useGetRequest } from "../hooks/useGetRequest/useGetRequest"
 
 const RecipesContext = createContext()
@@ -30,7 +30,7 @@ export const RecipesProvider = ({ children }) => {
     const { getRequest } = useGetRequest()
 
     // funzioni di gestione filtri ricetta
-    const { recipeFilter, setRecipeFilter, toggleRecipeFilter, handlePreferencesToggle, handleDeselectRecipeFilters } =
+    const { recipePreferences, setRecipePreferences, handleRecipeFilters, handleDeselectRecipeFilters, recipeFilters, setRecipeFilters } =
         useRecipeFilter(isAuthenticated)
 
     // funzioni per aggiornare le ricette
@@ -88,11 +88,11 @@ export const RecipesProvider = ({ children }) => {
 
     useEffect(() => {
         const localRecipes = getValue("recipes")
-        const localFilters = getValue("recipeFilter")
+        const localFilters = getValue("recipePreferences")
 
         localRecipes?.favorited && setRecipes(localRecipes)
 
-        localFilters && setRecipeFilter(localFilters)
+        localFilters && setRecipePreferences(localFilters)
         localRecipes && setValue("recipes", localRecipes)
 
         let isFirstTime = true
@@ -111,9 +111,9 @@ export const RecipesProvider = ({ children }) => {
                 }
 
                 DBRecipes && setRecipes(DBRecipes)
-                DBFoodPref && setValue("recipeFilter", DBFoodPref)
+                DBFoodPref && setValue("recipePreferences", DBFoodPref)
 
-                DBFoodPref && setRecipeFilter(DBFoodPref)
+                DBFoodPref && setRecipePreferences(DBFoodPref)
                 DBRecipes && setValue("recipes", DBRecipes)
 
                 isFirstTime = false
@@ -154,7 +154,7 @@ export const RecipesProvider = ({ children }) => {
             recipeAnimation && setTimeout(() => setRecipeAnimation(false), 0) // Se è già in corso, resetta
             setTimeout(() => setRecipeAnimation(true), 300)
         }
-    }, [recipeFilter])
+    }, [recipeFilters])
 
     // When the patch changes refetch data needed, and reset inputValue
     useEffect(() => {
@@ -194,14 +194,14 @@ export const RecipesProvider = ({ children }) => {
         const filterRecipes = (array) => {
             return array.filter((rec) => {
                 return (
-                    rec.caloricApport <= recipeFilter.caloricApport &&
-                    rec.preparationTime <= recipeFilter.preparationTime &&
-                    (recipeFilter.is_gluten_free ? rec.is_gluten_free : true) &&
-                    (recipeFilter.is_vegetarian ? rec.is_vegetarian : true) &&
-                    (recipeFilter.is_vegan ? rec.is_vegan : true) &&
-                    (recipeFilter.cuisineEthnicity.includes("all") ||
-                        recipeFilter.cuisineEthnicity.includes(rec.cuisineEthnicity.toLowerCase())) &&
-                    (recipeFilter.difficulty === "all" || recipeFilter.difficulty.toLowerCase() === rec.difficulty.toLowerCase())
+                    rec.caloricApport <= recipeFilters.caloricApport &&
+                    rec.preparationTime <= recipeFilters.preparationTime &&
+                    (recipeFilters.is_gluten_free ? rec.is_gluten_free : true) &&
+                    (recipeFilters.is_vegetarian ? rec.is_vegetarian : true) &&
+                    (recipeFilters.is_vegan ? rec.is_vegan : true) &&
+                    (recipeFilters.cuisineEthnicity.includes("all") ||
+                        recipeFilters.cuisineEthnicity.includes(rec.cuisineEthnicity.toLowerCase())) &&
+                    (recipeFilters.difficulty === "all" || recipeFilters.difficulty.toLowerCase() === rec.difficulty.toLowerCase())
                 )
             })
         }
@@ -215,7 +215,7 @@ export const RecipesProvider = ({ children }) => {
                 filteredHistory: newFilteredHistory,
             }
         })
-    }, [recipeFilter, recipes.favorited, recipes.history, favoritedLoading, historyLoading, foodPrefLoading])
+    }, [recipeFilters, recipes.favorited, recipes.history, favoritedLoading, historyLoading, foodPrefLoading])
 
     return (
         <RecipesContext.Provider
@@ -223,7 +223,6 @@ export const RecipesProvider = ({ children }) => {
                 recipes,
                 inputValue,
                 recipeAnimation,
-                recipeFilter,
 
                 favoritedLoading,
                 foodPrefLoading,
@@ -232,11 +231,16 @@ export const RecipesProvider = ({ children }) => {
                 favoritedError,
                 historyError,
 
+                recipePreferences,
+                setRecipePreferences,
+
+                recipeFilters,
+                setRecipeFilters,
+
                 handleRecipesUpdate,
                 handleTargetedRecipe,
-                toggleRecipeFilter,
                 setInputValue,
-                handlePreferencesToggle,
+                handleRecipeFilters,
                 handleDeselectRecipeFilters,
                 setRecipes,
             }}

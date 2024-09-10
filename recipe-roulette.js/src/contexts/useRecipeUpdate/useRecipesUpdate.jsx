@@ -2,7 +2,7 @@ import { useAuth } from "../../hooks/Auth/useAuth"
 import { useLocalStorage } from "../../hooks/useLocalStorage/useLocalStorage"
 import { usePostRequest } from "../../hooks/usePostRequest/usePostRequest"
 import { useDebounce } from "../../hooks/useDebounce/useDebounce"
-import { useCallback, useEffect, useState } from "react"
+import { useEffect, useState } from "react"
 
 export const useRecipesUpdate = (recipes, setRecipes) => {
     const [updatedRec, setUpdatedRec] = useState({ previous: null, current: null })
@@ -45,16 +45,15 @@ export const useRecipesUpdate = (recipes, setRecipes) => {
                 return
             }
 
-            // attende 300ms per aggiornare
-                handlePostRequest({
-                    url: "http://localhost:3000/api/preferences/set-favorited-recipes",
-                    payload: { recipe: updatedRec.previous, userId: userData.id },
-                })
+            handlePostRequest({
+                url: "http://localhost:3000/api/preferences/set-favorited-recipes",
+                payload: { recipe: updatedRec.previous, userId: userData.id },
+            })
 
-                handlePostRequest({
-                    url: "http://localhost:3000/api/preferences/update-recipes-history",
-                    payload: { recipe: updatedRec.previous, userId: userData.id },
-                })
+            handlePostRequest({
+                url: "http://localhost:3000/api/preferences/update-recipes-history",
+                payload: { recipe: updatedRec.previous, userId: userData.id },
+            })
         }
     }, [updatedRec.previous])
 
