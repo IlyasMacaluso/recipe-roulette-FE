@@ -11,12 +11,12 @@
     border: 1px solid $light-desaturated-green;
     background-color: $lightest-green;
     .label {
-        color: $darkish-gray;
+        color: $medium-gray;
         font-size: $text-size-12;
         font-family: "Metropolitan";
         width: max-content;
         margin: 0;
-        font-weight: 500;
+        font-weight: 600;
     }
     .ico {
         color: $darkish-gray;
@@ -50,7 +50,7 @@
 
 .inactive {
     background-color: white;
-    border: 2px solid $lighter-gray;
+    border: 1px solid $lighter-gray;
     color: $dark-gray;
     padding: 0 0.75rem;
 }

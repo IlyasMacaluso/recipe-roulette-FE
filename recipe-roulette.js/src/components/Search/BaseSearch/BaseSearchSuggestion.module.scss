@@ -1,18 +1,19 @@
 @use "../../../assets/scss/" as *;
 
 .suggestionWrapper {
+    box-sizing: border-box;
     display: flex;
     align-items: center;
-    padding: 1rem;
-    height: 3.5rem;
     min-height: 3.5rem;
-    border-bottom: 2px solid $lighter-gray;
+    border-bottom: 1px solid $lighter-gray;
     padding: 0 1.5rem;
     background-color: white;
     font-size: 14px;
+    padding: $size-8 $size-16;
 }
 
 .suggestion {
+    color: $dark-gray;
     font-size: $text-size-14;
     font-family: $font-poppins;
 }

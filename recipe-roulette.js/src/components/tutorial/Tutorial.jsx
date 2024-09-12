@@ -51,7 +51,7 @@ export function Tutorial({ setShowTutorial = null, checkbox = false }) {
                     {tutorialStep === 1 && (
                         <div className={styles.stepBody}>
                             <h2>Step 1</h2>
-                            <p>Tap "Shuffle" to swap ingredients with new random ones</p>
+                            <p className={styles.text}>Tap "Shuffle" to swap ingredients with new random ones</p>
                             <img src={step1Img} alt="" />
                         </div>
                     )}
@@ -59,7 +59,7 @@ export function Tutorial({ setShowTutorial = null, checkbox = false }) {
                     {tutorialStep === 2 && (
                         <div className={styles.stepBody}>
                             <h2>Step 2</h2>
-                            <p>Add or remove ingredients to your liking</p>
+                            <p className={styles.text}>Add or remove ingredients to your liking</p>
                             <img src={step2Img} alt="" />
                         </div>
                     )}
@@ -67,7 +67,7 @@ export function Tutorial({ setShowTutorial = null, checkbox = false }) {
                     {tutorialStep === 3 && (
                         <div className={styles.stepBody}>
                             <h2>Step 3</h2>
-                            <p>Lock ingredients you want to keep</p>
+                            <p className={styles.text}>Lock ingredients you want to keep</p>
                             <img src={step3Img} alt="" />
                         </div>
                     )}
@@ -75,7 +75,7 @@ export function Tutorial({ setShowTutorial = null, checkbox = false }) {
                     {tutorialStep === 4 && (
                         <div className={styles.stepBody}>
                             <h2>Step 4</h2>
-                            <p>Keep doing that until the ingredients you see on the screen satisfy you</p>
+                            <p className={styles.text}>Keep doing that until the ingredients you see on the screen satisfy you</p>
                             <img src={step4Img} alt="" />
                         </div>
                     )}
@@ -83,7 +83,7 @@ export function Tutorial({ setShowTutorial = null, checkbox = false }) {
                     {tutorialStep === 5 && (
                         <div className={styles.stepBody}>
                             <h2>Step 5</h2>
-                            <p>Use filters to customise your results to your liking</p>
+                            <p className={styles.text}>Use filters to customise your results to your liking</p>
                             <img src={step5Img} alt="" />
                         </div>
                     )}
@@ -91,7 +91,7 @@ export function Tutorial({ setShowTutorial = null, checkbox = false }) {
                     {tutorialStep === 6 && (
                         <div className={styles.stepBody}>
                             <h2>Step 6</h2>
-                            <p>Tap "Generate Recipes" to create recipes with ingredients and preferences you selected! </p>
+                            <p className={styles.text}>Tap "Generate Recipes" to create recipes with ingredients and preferences you selected! </p>
                             <img src={step6Img} alt="" />
                         </div>
                     )}

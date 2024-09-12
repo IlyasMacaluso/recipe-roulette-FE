@@ -15,8 +15,10 @@ label {
     font-weight: 500;
     font-size: $text-size-16;
 }
-p {
-    font-family: $font-text;
+.text {
+    font-size: $text-size-14;
+    color: $dark-gray;
+    font-weight: 500;
 }
 .bgOverlay {
     display: flex;
@@ -45,7 +47,7 @@ p {
         display: flex;
         align-items: center;
         justify-content: space-between;
-        border-bottom: 2px solid $lighter-gray;
+        border-bottom: 1px solid $lighter-gray;
         .rightItems {
             display: flex;
             align-items: center;

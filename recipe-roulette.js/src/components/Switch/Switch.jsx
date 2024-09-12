@@ -11,7 +11,7 @@ export function Switch({ state = false, action = null, label }) {
             <div onClick={handleSwitch} className={`${classes.switch} ${state && classes.select}`}>
                 <div className={`${classes.selection} ${state ? classes.select : classes.unselect}`}></div>
             </div>
-            {label && <p> {label}</p>}
+            {label && <p className={classes.label}> {label}</p>}
         </div>
     )
 }

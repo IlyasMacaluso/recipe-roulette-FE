@@ -40,7 +40,7 @@
         display: flex;
         align-items: center;
         justify-content: space-between;
-        border-bottom: 2px solid $lighter-gray;
+        border-bottom: 1px solid $lighter-gray;
         h2 {
             color: $dark-gray;
             font-family: $font-poppins;
@@ -69,11 +69,14 @@
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
-    height: calc(100% - 60px);
-    padding-bottom: 2rem;
+    height: 100%;
+    padding-bottom: 6rem;
     overflow-y: scroll;
     .section {
+        display: flex;
+        flex-direction: column;
         padding: 0 $size-16;
+        gap: $size-8;
         .switchesWrapper {
             display: flex;
             flex-direction: column;
@@ -82,21 +85,30 @@
     }
 }
 
+.blackListedWrapper h4,
 .section h4 {
-    margin-bottom: 8px;
+    font-size: $text-size-16;
 }
 
 .blackListedWrapper {
     display: flex;
     flex-direction: column;
-    gap: 0.75rem;
+    gap: $size-8;
     padding: 0 $size-16;
     box-sizing: border-box;
 
+    h4 {
+        padding: 0 $size-4;
+    }
+
     .blackListed {
-        gap: 1rem;
+        gap: $size-12;
         display: flex;
         flex-direction: column;
+
+        .filterChipWrapper {
+            padding: 0 $size-4;
+        }
     }
 }
 
@@ -126,6 +138,22 @@ h4 {
     margin: 0;
 }
 
+.removeBgOverlay {
+    display: none;
+    z-index: 0;
+}
+
+.positionUnfixed {
+    position: unset;
+    z-index: initial;
+    max-width: none;
+    width: 100%;
+}
+
+::-webkit-scrollbar {
+    display: none;
+}
+
 @media screen and (min-width: 1120px) {
     .backgroundOverlay,
     .backgroundOverlayToggled {
@@ -140,7 +168,7 @@ h4 {
         transform: translateX(0);
         flex: 1.5 1 50px;
         max-width: none;
-        outline: 2px solid $lighter-gray;
+        outline: 1px solid $lighter-gray;
         border-radius: $size-24;
         overflow: hidden;
     }
@@ -148,7 +176,7 @@ h4 {
     .sidebar > header > .rightItems > button:last-child {
         display: none;
     }
-    .sidebar header h2{
+    .sidebar header h2 {
         font-size: $text-size-16;
         letter-spacing: 0.05rem;
     }
@@ -158,16 +186,16 @@ h4 {
     }
     ::-webkit-scrollbar-track {
         background: transparent;
-      }
-      
-      /* Handle */
-      ::-webkit-scrollbar-thumb {
+    }
+
+    /* Handle */
+    ::-webkit-scrollbar-thumb {
         background: $light-gray;
         border-radius: 8px;
-      }
-      
-      /* Handle on hover */
-      ::-webkit-scrollbar-thumb:hover {
+    }
+
+    /* Handle on hover */
+    ::-webkit-scrollbar-thumb:hover {
         background: $medium-gray;
-      }
+    }
 }

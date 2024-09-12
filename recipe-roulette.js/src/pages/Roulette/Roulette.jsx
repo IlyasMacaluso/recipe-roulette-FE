@@ -43,14 +43,14 @@ export function Roulette() {
         return <>{createPortal(<Tutorial setShowTutorial={setShowTutorial} checkbox={true} />, document.getElementById("popup-root"))}</>
     } else if (ingredientsError) {
         return (
-            <div className={`${layout.pageFH} ${layout.noPadding}`}>
+            <div className={`${layout.pageFH} ${layout.noVerticalPadding}`}>
                 <InlineMessage error={ingredientsError} />
                 <Placeholder topImage={shrugImage} text="Oops >.< something went wrong!" />
             </div>
         )
     } else {
         return (
-            <div className={`${layout.pageFH} ${layout.noPadding} ${animate ? transition.animationEnd : transition.animationStart}`}>
+            <div className={`${layout.pageFH} ${layout.noVerticalPadding} ${animate ? transition.animationEnd : transition.animationStart}`}>
                 <div className={classes.contentWrapper}>
                     <div className={classes.ingredientsWrapper}>
                         {ingredientsLoading || blacklistedLoading

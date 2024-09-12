@@ -5,7 +5,7 @@ import { useSnackbar } from "../../Snackbar/useSnackbar"
 import classes from "./IngredientSearch.module.scss"
 import styles from "../../Header/Header.module.scss"
 
-export function useIngredientSearch(searchCriteria, sidebarState = false) {
+export function useIngredientSearch(searchCriteria, preferencesSidebar = false) {
     const { ingredients, handleDeselectAll, handleIngUpdate } = useManageIngredients()
     const { handleOpenSnackbar } = useSnackbar()
 
@@ -34,12 +34,12 @@ export function useIngredientSearch(searchCriteria, sidebarState = false) {
             return
         }
 
-        if (sidebarState === true) {
+        if (preferencesSidebar === true) {
             input.disabled = true
         } else {
             input.disabled = false
         }
-    }, [sidebarState])
+    }, [preferencesSidebar])
 
     // aggiornamento dei suggerimenti
     useEffect(() => {

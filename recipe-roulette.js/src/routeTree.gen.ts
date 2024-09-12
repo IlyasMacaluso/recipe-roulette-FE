@@ -11,7 +11,6 @@
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
-import { Route as SettingsImport } from './routes/settings'
 import { Route as RouletteImport } from './routes/roulette'
 import { Route as RecipeResultsImport } from './routes/recipe-results'
 import { Route as RecipeImport } from './routes/recipe'
@@ -19,13 +18,10 @@ import { Route as NotFoundImport } from './routes/not-found'
 import { Route as HistoryImport } from './routes/history'
 import { Route as FavoritedImport } from './routes/favorited'
 import { Route as IndexImport } from './routes/index'
+import { Route as settingsSettingsImport } from './routes/(settings)/settings'
+import { Route as settingsfoodPreferencesSettingsFoodPreferencesImport } from './routes/(settings)/(foodPreferences)/settings.food-preferences'
 
 // Create/Update Routes
-
-const SettingsRoute = SettingsImport.update({
-  path: '/settings',
-  getParentRoute: () => rootRoute,
-} as any)
 
 const RouletteRoute = RouletteImport.update({
   path: '/roulette',
@@ -61,6 +57,17 @@ const IndexRoute = IndexImport.update({
   path: '/',
   getParentRoute: () => rootRoute,
 } as any)
+
+const settingsSettingsRoute = settingsSettingsImport.update({
+  path: '/settings',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const settingsfoodPreferencesSettingsFoodPreferencesRoute =
+  settingsfoodPreferencesSettingsFoodPreferencesImport.update({
+    path: '/settings/food-preferences',
+    getParentRoute: () => rootRoute,
+  } as any)
 
 // Populate the FileRoutesByPath interface
 
@@ -115,11 +122,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof RouletteImport
       parentRoute: typeof rootRoute
     }
-    '/settings': {
+    '/(settings)/settings': {
       id: '/settings'
       path: '/settings'
       fullPath: '/settings'
-      preLoaderRoute: typeof SettingsImport
+      preLoaderRoute: typeof settingsSettingsImport
+      parentRoute: typeof rootRoute
+    }
+    '/(settings)/(foodPreferences)/settings/food-preferences': {
+      id: '/settings/food-preferences'
+      path: '/settings/food-preferences'
+      fullPath: '/settings/food-preferences'
+      preLoaderRoute: typeof settingsfoodPreferencesSettingsFoodPreferencesImport
       parentRoute: typeof rootRoute
     }
   }
@@ -135,7 +149,8 @@ export const routeTree = rootRoute.addChildren({
   RecipeRoute,
   RecipeResultsRoute,
   RouletteRoute,
-  SettingsRoute,
+  settingsSettingsRoute,
+  settingsfoodPreferencesSettingsFoodPreferencesRoute,
 })
 
 /* prettier-ignore-end */
@@ -153,7 +168,8 @@ export const routeTree = rootRoute.addChildren({
         "/recipe",
         "/recipe-results",
         "/roulette",
-        "/settings"
+        "/settings",
+        "/settings/food-preferences"
       ]
     },
     "/": {
@@ -178,7 +194,10 @@ export const routeTree = rootRoute.addChildren({
       "filePath": "roulette.jsx"
     },
     "/settings": {
-      "filePath": "settings.jsx"
+      "filePath": "(settings)/settings.jsx"
+    },
+    "/settings/food-preferences": {
+      "filePath": "(settings)/(foodPreferences)/settings.food-preferences.jsx"
     }
   }
 }

@@ -5,11 +5,10 @@
     flex-direction: column;
     flex-grow: 1;
     max-height: 100%;
-    padding: $size-24;
-    padding-top: 0;
-    gap: 1.5rem;
+    gap: 1rem;
     justify-content: flex-start;
-    border-radius: 1rem;
+    padding-bottom: 6rem;
+    overflow-y: scroll;
 }
 
 .bottomItems {
@@ -41,16 +40,24 @@
         box-sizing: border-box;
 
         background-color: white;
-        border: 2px solid $lighter-gray;
+        border: 1px solid $lighter-gray;
         border-radius: $size-16;
         cursor: pointer;
 
-        font-size: $text-size-16;
-        font-family: $font-poppins;
         color: #3c3838;
         font-weight: 600;
         text-decoration: none;
         letter-spacing: 0.025rem;
+        & .leftItems {
+            display: flex;
+            gap: $size-12;
+            align-items: center;
+            & .label {
+                font-size: $text-size-16;
+                font-family: $font-metropolitan;
+                font-weight: 600;
+            }
+        }
     }
 }
 

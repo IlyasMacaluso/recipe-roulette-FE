@@ -1,14 +1,14 @@
 import { useState } from "react"
 
 export function useDiscoverySidebar() {
-    const [sidebarState, setsidebarState] = useState(false)
+    const [preferencesSidebar, setsidebarState] = useState(false)
 
-    function handleSidebarToggle() {
+    function setPreferencesSidebar() {
         setsidebarState((b) => !b)
     }
 
     return {
-        sidebarState,
-        handleSidebarToggle,
+        preferencesSidebar,
+        setPreferencesSidebar,
     }
 }

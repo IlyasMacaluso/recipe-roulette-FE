@@ -9,7 +9,7 @@
 
     background-color: white;
     border-radius: $size-16;
-    border: 1px solid $light-desaturated-green;
+    border: 1px solid $lighter-gray;
     padding: $size-24;
     box-sizing: border-box;
 
@@ -23,7 +23,7 @@
         height: 18vh;
         object-fit: cover;
         border-radius: 50%;
-        outline: 2px solid $light-gray;
+        outline: 1px solid $light-gray;
         outline-offset: -2px;
         background-color: $lightest-green;
     }
@@ -44,7 +44,7 @@
     padding: 0;
     border: none;
     overflow-y: scroll;
-    padding-bottom: 9rem;
+    padding-bottom: 4rem;
     &::-webkit-scrollbar {
         display: none;
     }

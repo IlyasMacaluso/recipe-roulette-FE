@@ -14,8 +14,15 @@
     overflow: hidden;
 }
 
-.noPadding {
+.noVerticalPadding {
     padding: 0 $size-20;
+}
+
+noHorizontalPadding {
+    padding: $size-20 0;
+}
+.noPadding {
+    padding: 0;
 }
 
 @media screen and (min-width: 1120px) {

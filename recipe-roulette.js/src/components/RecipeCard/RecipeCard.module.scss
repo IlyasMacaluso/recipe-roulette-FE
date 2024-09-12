@@ -20,7 +20,7 @@
         min-height: 12rem;
         border-radius: 1rem 1rem 0 0;
         overflow: hidden;
-        border-bottom: 2px solid $lighter-gray;
+        border-bottom: 1px solid $lighter-gray;
         box-sizing: border-box;
         padding: 12px 0;
 
@@ -127,7 +127,7 @@
 
     .topItems {
         background-color: $lightest-green;
-        outline: 2px solid $light-desaturated-green;
+        outline: 1px solid $light-desaturated-green;
         outline-offset: -2px;
         padding: 24px 0;
         border-radius: 1rem;
@@ -174,7 +174,7 @@
     padding: 0 1rem;
     box-sizing: border-box;
     border-radius: 1rem;
-    outline: 2px solid $lighter-gray;
+    outline: 1px solid $lighter-gray;
 }
 .recipeCard .ingredients > ul {
     list-style: initial;

@@ -17,7 +17,7 @@ export function Recipe() {
     const { animate } = useAnimate(location)
 
     return (
-        <div className={`${layout.pageFH} ${layout.noPadding} ${animate ? transition.animationEnd : transition.animationStart}`}>
+        <div className={`${layout.pageFH} ${layout.noVerticalPadding} ${animate ? transition.animationEnd : transition.animationStart}`}>
             {recipes.targetedRecipe && (
                 <RecipeCard isExpanded={true} handleClickLoginSnackBar={handleClickLoginSnackBar} recipe={recipes.targetedRecipe} />
             )}

@@ -70,7 +70,7 @@
 .inputInactive {
     background-color: white;
     border-radius: $size-24;
-    outline: 2px solid $lighter-gray;
+    outline: 1px solid $lighter-gray;
     outline-offset: -2px;
     transition: border-radius 1s cubic-bezier(0.08, 0.82, 0.17, 1);
 }

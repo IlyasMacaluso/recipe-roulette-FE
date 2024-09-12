@@ -8,7 +8,7 @@ import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined"
 
 import classes from "./IngredientSearch.module.scss"
 
-export function IngredientSearch({ searchCriteria = "is_blacklisted", sidebarState = false }) {
+export function IngredientSearch({ searchCriteria = "is_blacklisted", preferencesSidebar = false }) {
     const {
         suggestions,
         inputValues,
@@ -21,7 +21,7 @@ export function IngredientSearch({ searchCriteria = "is_blacklisted", sidebarSta
         setSearchState,
         setFixedPosition,
         setInputValues,
-    } = useIngredientSearch(searchCriteria, sidebarState)
+    } = useIngredientSearch(searchCriteria, preferencesSidebar)
 
     const { inputRef } = useHandleBackButton(searchState, setSearchState, setFixedPosition, handleBlur)
 
