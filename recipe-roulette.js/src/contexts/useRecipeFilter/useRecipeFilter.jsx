@@ -39,28 +39,40 @@ export const useRecipeFilter = (isAuthenticated) => {
     const [updatedFilter, setUpdatedFilter] = useState(null)
 
     const { setValue, getValue } = useLocalStorage()
-    const { handlePostRequest } = usePostRequest()
+    const { handlePostRequest, loading: preferencesUpdateLoading, error: preferencesUpdateError } = usePostRequest()
     const { debounceValue } = useDebounce(updatedFilter)
 
-    useEffect(() => {
-        //chiamata di rete quando cambia il valore di debounce (ricetta da aggiornare)
+    // useEffect(() => {
+    //     //chiamata di rete quando cambia il valore di debounce (ricetta da aggiornare)
+    //     if (isAuthenticated) {
+    //         const userData = getValue("userData")
+
+    //         if (updatedFilter) {
+    //             handlePostRequest({
+    //                 url: "http://localhost:3000/api/preferences/set-preferences",
+    //                 payload: { newPreferences: updatedFilter, userId: userData.id },
+    //                 mutationId: "filtersToggleUpdate", //mutationId
+    //             })
+    //         }
+    //     }
+    // }, [debounceValue])
+
+    const updateDBFilters = () => {
         if (isAuthenticated) {
             const userData = getValue("userData")
 
-            if (updatedFilter) {
-                handlePostRequest({
-                    url: "http://localhost:3000/api/preferences/set-preferences",
-                    payload: { newPreferences: updatedFilter, userId: userData.id },
-                    mutationId: "filtersToggleUpdate", //mutationId
-                })
-            }
+            handlePostRequest({
+                url: "http://localhost:3000/api/preferences/set-preferences",
+                payload: { newPreferences: recipePreferences, userId: userData.id },
+                mutationId: "filtersToggleUpdate", //mutationId
+            })
         }
-    }, [debounceValue])
+    }
 
     // Gestione delle proprietà non booleane di recipePreferences
-    const handleRecipeFilters = ({ filters, setFilters, propToUpdate, propValue, isPropSelected }) => {
+    const updateFilters = ({ filters, setFilters, propToUpdate, propValue, isPropSelected }) => {
         if (!setFilters || !propToUpdate || !filters) return
-        
+
         setFilters((prevFilters) => {
             let updatedFilters = { ...prevFilters }
 
@@ -70,7 +82,7 @@ export const useRecipeFilter = (isAuthenticated) => {
                 updatedFilters = { ...prevFilters, [propToUpdate]: newState }
             } else {
                 // aggiornamento prop non booleane
-                if(!propValue) return
+                if (!propValue) return
 
                 // -> "caloricApport", "preparationTime" e "difficulty"
                 if (propToUpdate === "caloricApport" || propToUpdate === "preparationTime" || propToUpdate === "difficulty") {
@@ -109,7 +121,7 @@ export const useRecipeFilter = (isAuthenticated) => {
     }
 
     // Reset dei filtri recipePreferences
-    const handleDeselectRecipeFilters = ({ filters, setFilters }) => {
+    const deselectFilters = ({ filters, setFilters }) => {
         setFilters(new RecipeFilter())
 
         if (filters === "recipePreferences") {
@@ -122,8 +134,13 @@ export const useRecipeFilter = (isAuthenticated) => {
         recipePreferences,
         setRecipePreferences,
         recipeFilters,
+
+        preferencesUpdateLoading,
+        preferencesUpdateError,
+
         setRecipeFilters,
-        handleRecipeFilters,
-        handleDeselectRecipeFilters,
+        updateFilters,
+        deselectFilters,
+        updateDBFilters,
     }
 }

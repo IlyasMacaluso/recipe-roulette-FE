@@ -20,7 +20,8 @@ export const IngredientsProvider = ({ children }) => {
     const { isAuthenticated } = useAuth()
     const { recipePreferences } = useRecipesContext()
     const { setValue, getValue } = useLocalStorage()
-    const { handleIngUpdate, handleDeselectAll } = useIngredientUpdate(ingredients, setIngredients)
+    
+    const { handleIngUpdate, deselectIngredients } = useIngredientUpdate(ingredients, setIngredients)
     const { handleIngDecrement, handleIngIncrement, shuffleIng, generateIngredients } = useDisplayedIngredients(ingredients, setIngredients)
     const { getRequest } = useGetRequest()
 
@@ -111,7 +112,7 @@ export const IngredientsProvider = ({ children }) => {
                 shuffleIng,
                 handleIngUpdate,
                 generateIngredients,
-                handleDeselectAll,
+                deselectIngredients,
                 setIngredients,
                 ingredients,
                 ingredientsLoading,

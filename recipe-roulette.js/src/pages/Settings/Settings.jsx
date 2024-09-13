@@ -19,7 +19,6 @@ import transitions from "../../assets/scss/pageLayout/pageTransition.module.scss
 import LogoutIcon from "@mui/icons-material/Logout"
 import LoginIcon from "@mui/icons-material/Login"
 import NavigateNextIcon from "@mui/icons-material/NavigateNext"
-import RestaurantIcon from "@mui/icons-material/Restaurant"
 import BugReportIcon from "@mui/icons-material/BugReport"
 import RestaurantMenuIcon from "@mui/icons-material/RestaurantMenu"
 import FactCheckIcon from "@mui/icons-material/FactCheck"

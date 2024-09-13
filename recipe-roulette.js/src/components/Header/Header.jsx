@@ -14,11 +14,13 @@ import { BaseSearch } from "../Search/BaseSearch/BaseSearch"
 
 import classes from "./Header.module.scss"
 import { useAuth } from "../../hooks/Auth/useAuth"
+import { Button } from "../Buttons/Button/Button"
+import { RotateLeftOutlined } from "@mui/icons-material"
 
 export function Header({ handleMenuToggle, setPreferencesSidebar, handleRecipesSidebarToggle }) {
     const [title, setTitle] = useState("/")
     const { recipes, setRecipes, setInputValue, inputValue, recipeFilters } = useRecipesContext()
-    const { handleDeselectAll } = useManageIngredients()
+    const { deselectIngredients } = useManageIngredients()
     const { isAuthenticated } = useAuth()
 
     const navigate = useNavigate()
@@ -118,9 +120,6 @@ export function Header({ handleMenuToggle, setPreferencesSidebar, handleRecipesS
                             style="transparent"
                         />
                     ) : null}
-                    {location.pathname === "/settings/food-preferences" && (
-                        <IcoButton link="/settings" icon={<ArrowBackIcon fontSize="small" />} style="transparent" />
-                    )}
                     <h1>{title}</h1>
                 </div>
 
@@ -142,7 +141,7 @@ export function Header({ handleMenuToggle, setPreferencesSidebar, handleRecipesS
             {location.pathname === "/roulette" && (
                 <div className={classes.globalActions}>
                     <IngredientSearch searchCriteria="is_selected" />
-                    <IcoButton action={() => handleDeselectAll("is_selected")} icon={<LockResetIcon fontSize={"small"} />} />
+                    <IcoButton action={() => deselectIngredients("is_selected")} icon={<LockResetIcon fontSize={"small"} />} />
                     <IcoButton
                         action={() => setPreferencesSidebar && setPreferencesSidebar()}
                         icon={<FilterListIcon fontSize={"small"} />}

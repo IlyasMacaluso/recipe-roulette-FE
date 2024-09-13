@@ -13,18 +13,21 @@ export const useRecipesUpdate = (recipes, setRecipes) => {
 
     useEffect(() => {
         //chiamata di rete quando cambia il valore di debounce (ricetta da aggiornare)
+
+        if (!updatedRec.current) {
+            return
+        }
+
         if (isAuthenticated) {
             const userData = getValue("userData")
 
-            if (!updatedRec.current) {
-                return
-            }
-
+            //favorited
             handlePostRequest({
                 url: "http://localhost:3000/api/preferences/set-favorited-recipes",
                 payload: { recipe: updatedRec.current, userId: userData.id },
             })
 
+            //history
             handlePostRequest({
                 url: "http://localhost:3000/api/preferences/update-recipes-history",
                 payload: { recipe: updatedRec.current, userId: userData.id },
@@ -34,6 +37,11 @@ export const useRecipesUpdate = (recipes, setRecipes) => {
 
     useEffect(() => {
         //chiamata di rete quando cambia il updatedRec.previous (durante l'attesa del valore di debounce,)
+
+        if (!updatedRec.previous) {
+            return
+        }
+
         if (isAuthenticated) {
             const userData = getValue("userData")
 
@@ -45,11 +53,13 @@ export const useRecipesUpdate = (recipes, setRecipes) => {
                 return
             }
 
+            //favorited
             handlePostRequest({
                 url: "http://localhost:3000/api/preferences/set-favorited-recipes",
                 payload: { recipe: updatedRec.previous, userId: userData.id },
             })
 
+            //history
             handlePostRequest({
                 url: "http://localhost:3000/api/preferences/update-recipes-history",
                 payload: { recipe: updatedRec.previous, userId: userData.id },

@@ -90,6 +90,9 @@
     font-size: $text-size-16;
 }
 
+.skeleton {
+    display: flex;
+}
 .blackListedWrapper {
     display: flex;
     flex-direction: column;
@@ -138,6 +141,10 @@ h4 {
     margin: 0;
 }
 
+::-webkit-scrollbar {
+    display: none;
+}
+
 .removeBgOverlay {
     display: none;
     z-index: 0;
@@ -150,10 +157,36 @@ h4 {
     width: 100%;
 }
 
-::-webkit-scrollbar {
-    display: none;
+.positionUnfixed .sidebarBody {
+    padding-bottom: 8rem;
 }
 
+.footer {
+    position: absolute;
+    
+    display: flex;
+    flex-direction: column;
+    gap: $size-12;
+
+    box-sizing: border-box;
+    padding: $size-16;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100%;
+    background-color: white;
+    border-top: 1px solid $lighter-gray;
+    .buttonsWrapper {
+        display: flex;
+        gap: $size-12;
+        > :first-child {
+            flex: 1 1 0;
+        }
+        > :last-child {
+            flex: 2 1 0;
+        }
+    }
+}
 @media screen and (min-width: 1120px) {
     .backgroundOverlay,
     .backgroundOverlayToggled {
@@ -169,7 +202,7 @@ h4 {
         flex: 1.5 1 50px;
         max-width: none;
         outline: 1px solid $lighter-gray;
-        border-radius: $size-24;
+        border-radius: $size-16;
         overflow: hidden;
     }
 
@@ -181,6 +214,11 @@ h4 {
         letter-spacing: 0.05rem;
     }
 
+    .footer {
+        padding-left: $size-24;
+        padding-right: $size-24;
+        padding-bottom: $size-24;
+    }
     ::-webkit-scrollbar {
         width: 8px;
     }
@@ -197,5 +235,9 @@ h4 {
     /* Handle on hover */
     ::-webkit-scrollbar-thumb:hover {
         background: $medium-gray;
+    }
+
+    .noOutline {
+        outline: none;
     }
 }

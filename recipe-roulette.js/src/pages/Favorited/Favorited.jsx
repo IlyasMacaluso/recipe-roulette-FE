@@ -31,7 +31,7 @@ export function Favorited() {
     const {
         recipes,
         inputValue,
-        handleDeselectRecipeFilters,
+        deselectFilters,
         setInputValue,
         favoritedLoading,
         historyLoading,
@@ -86,7 +86,7 @@ export function Favorited() {
                                         key={"Reset Filters"}
                                         action={() => {
                                             setInputValue("")
-                                            handleDeselectRecipeFilters({ filters: "recipeFilters", setFilters: setRecipeFilters })
+                                            deselectFilters({ filters: "recipeFilters", setFilters: setRecipeFilters })
 
                                         }}
                                     />,

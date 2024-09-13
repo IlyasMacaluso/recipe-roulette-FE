@@ -6,7 +6,7 @@ import classes from "./IngredientSearch.module.scss"
 import styles from "../../Header/Header.module.scss"
 
 export function useIngredientSearch(searchCriteria, preferencesSidebar = false) {
-    const { ingredients, handleDeselectAll, handleIngUpdate } = useManageIngredients()
+    const { ingredients, deselectIngredients, handleIngUpdate } = useManageIngredients()
     const { handleOpenSnackbar } = useSnackbar()
 
     const [fixedPosition, setFixedPosition] = useState(false)
@@ -157,7 +157,7 @@ export function useIngredientSearch(searchCriteria, preferencesSidebar = false) 
     }
 
     const handleReset = (prop, cardState, setCardState) => {
-        handleDeselectAll(prop, cardState, setCardState)
+        deselectIngredients(prop, cardState, setCardState)
     }
 
     return {

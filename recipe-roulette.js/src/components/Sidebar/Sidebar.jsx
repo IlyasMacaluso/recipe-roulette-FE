@@ -1,3 +1,4 @@
+import { useEffect, useMemo } from "react"
 import { useManageIngredients } from "../../pages/Roulette/IngredientsContext"
 import { FilterChip } from "../FilterChip/FilterChip"
 import { Switch } from "../Switch/Switch"
@@ -6,32 +7,52 @@ import { Button } from "../Buttons/Button/Button"
 import { IcoButton } from "../Buttons/IcoButton/IcoButton"
 import { FilterChipRecipes } from "../FilterChip/FilterChipRecipes"
 import { useRecipesContext } from "../../contexts/RecipesContext"
-import { useLocation } from "@tanstack/react-router"
 import { filterChipsArray } from "../../assets/arrays/filterChipsArray.js"
+import { InlineMessage } from "../InlineMessage/InlineMessage.jsx"
 
 import CloseIcon from "@mui/icons-material/Close"
 import RotateLeftOutlinedIcon from "@mui/icons-material/RotateLeftOutlined"
+import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined"
+import DoneAllOutlinedIcon from "@mui/icons-material/DoneAllOutlined"
+
+import { useNavigate } from "@tanstack/react-router"
+import { Snackbar } from "../Snackbar/Snackbar.jsx"
+import { useSnackbar } from "../Snackbar/useSnackbar.jsx"
+import { useLocationHook } from "../../hooks/useLocationHook.jsx"
+import { useAnimate } from "../../hooks/animatePages/useAnimate.jsx"
 
 import classes from "./Sidebar.module.scss"
-import { useMemo } from "react"
-import { InlineMessage } from "../InlineMessage/InlineMessage.jsx"
+import animation from "../../assets/scss/pageLayout/pageTransition.module.scss"
+import { Skeleton } from "@mui/material"
 
 export function Sidebar({
     removeBgOverlay = false,
     positionUnfixed = false,
+    showBlacklist = false,
 
     filtersName = "recipeFilters",
-
-    showBlacklist = false,
 
     sidebarState = false,
     setSidebarState,
 }) {
-    const { handleDeselectAll, ingredients } = useManageIngredients()
-    const { handleRecipeFilters, handleDeselectRecipeFilters, setRecipeFilters, setRecipePreferences, recipeFilters, recipePreferences } =
-        useRecipesContext()
+    const { deselectIngredients, ingredients, blacklistedLoading } = useManageIngredients()
+    const {
+        updateFilters,
+        updateDBFilters,
+        deselectFilters,
+        setRecipeFilters,
+        setRecipePreferences,
+        recipeFilters,
+        recipePreferences,
+        preferencesUpdateLoading,
+        preferencesUpdateError,
+    } = useRecipesContext()
     const { cuisineEthnicityChips, difficultyChips, prepTimeChips, caloricApportChips } = filterChipsArray()
-    const location = useLocation()
+    const { handleOpenSnackbar } = useSnackbar()
+
+    const { location } = useLocationHook()
+    const { animate } = useAnimate(location)
+    const navigate = useNavigate()
 
     const filters = useMemo(() => {
         if (filtersName === "recipeFilters") {
@@ -43,30 +64,17 @@ export function Sidebar({
 
     const setFilters = filtersName === "recipeFilters" ? setRecipeFilters : setRecipePreferences
 
-    if (filtersName === "recipePreferences" && location.pathname !== "/roulette" && location.pathname !== "/settings/food-preferences") {
-        return
-    }
-
-    if (filtersName === "recipeFilters" && location.pathname === "/roulette") {
-        return
-    }
-
-    if (
-        location.pathname !== "/favorited" &&
-        location.pathname !== "/history" &&
-        location.pathname !== "/roulette" &&
-        location.pathname !== "/settings/food-preferences"
-    ) {
-        return
-    }
-
     return (
         <>
             <div
                 onClick={setSidebarState}
                 className={`${classes.backgroundOverlay} ${removeBgOverlay && classes.removeBgOverlay} ${sidebarState && classes.backgroundOverlayToggled}`}
             ></div>
-            <div className={`${classes.sidebar} ${positionUnfixed && classes.positionUnfixed} ${sidebarState && classes.sidebarToggled}`}>
+            <div
+                className={`
+                    ${positionUnfixed ? (animate ? animation.animationEnd : animation.animationStart) : animation.animationEnd}
+                    ${classes.sidebar} ${positionUnfixed && classes.noOutline} ${positionUnfixed && classes.positionUnfixed} ${sidebarState && classes.sidebarToggled}`}
+            >
                 {!positionUnfixed && (
                     <header>
                         <h2>Filters</h2>
@@ -76,8 +84,8 @@ export function Sidebar({
                                 iconLeft={<RotateLeftOutlinedIcon fontSize="small" />}
                                 size={18}
                                 action={() => {
-                                    handleDeselectRecipeFilters({ filters: filtersName, setFilters: setFilters })
-                                    handleDeselectAll("is_blacklisted")
+                                    deselectFilters({ filters: filtersName, setFilters: setFilters })
+                                    deselectIngredients("is_blacklisted")
                                 }}
                             />
                             <IcoButton action={setSidebarState} style="transparent" icon={<CloseIcon fontSize="small" />} />
@@ -88,9 +96,7 @@ export function Sidebar({
                 <section className={classes.sidebarBody}>
                     {positionUnfixed && (
                         <div className={classes.section}>
-                            <InlineMessage
-                                message={"Note: Preferences you set here will be used as defaults for all generated recipes"}
-                            />
+                            <InlineMessage message={"Note: Preferences you set here will be used as defaults for all generated recipes"} />
                         </div>
                     )}
 
@@ -99,27 +105,43 @@ export function Sidebar({
                             <h4>Blacklist ingredients</h4>
                             <div className={classes.blackListed}>
                                 <IngredientSearch searchCriteria="is_blacklisted" sidebarState={sidebarState} />
-                                {
-                                    // blacklisted ingredients =====================================================================
-                                    ingredients?.blacklisted && ingredients?.blacklisted.length > 0 && (
-                                        <div className={classes.filterChipWrapper}>
-                                            {ingredients?.blacklisted
-                                                // .sort((a, b) => (a.name === b.name ? 0 : a.name > b.name ? 1 : -1))
-                                                .map((ing) => {
-                                                    return (
-                                                        <FilterChip
-                                                            key={ing.id}
-                                                            id={ing.id}
-                                                            label={ing.name}
-                                                            bg_color={ing.bg_color}
-                                                            is_blacklisted={ing.is_blacklisted}
-                                                            is_selected={ing.is_selected}
-                                                        />
-                                                    )
-                                                })}
-                                        </div>
-                                    )
-                                }
+
+                                {/* // blacklisted ingredients ===================================================================== */}
+
+                                {blacklistedLoading && (
+                                    // loading skeleton
+                                    <div className={classes.filterChipWrapper}>
+                                        {
+                                            [...Array(3)].map(() => (
+                                                <Skeleton
+                                                    className={classes.skeleton}
+                                                    key={Math.random()}
+                                                    sx={{ bgcolor: "#c5e4c9" }}
+                                                    variant="rounded"
+                                                    width={"25%"}
+                                                    height={"32px"}
+                                                />
+                                            ))}
+                                    </div>
+                                )}
+                                {!blacklistedLoading && ingredients?.blacklisted && ingredients?.blacklisted.length > 0 && (
+                                    // blacklisted ingredients
+                                    <div className={classes.filterChipWrapper}>
+                                        {ingredients?.blacklisted.map((ing) => {
+                                            return (
+                                                <FilterChip
+                                                    key={ing.id}
+                                                    id={ing.id}
+                                                    label={ing.name}
+                                                    bg_color={ing.bg_color}
+                                                    is_blacklisted={ing.is_blacklisted}
+                                                    is_selected={ing.is_selected}
+                                                />
+                                            )
+                                        })}
+                                    </div>
+                                )}
+
                             </div>
                         </div>
                     )}
@@ -151,7 +173,7 @@ export function Sidebar({
                             <Switch
                                 state={filters.is_gluten_free}
                                 action={() => {
-                                    handleRecipeFilters({
+                                    updateFilters({
                                         filters: filtersName,
                                         setFilters: setFilters,
                                         propToUpdate: "is_gluten_free",
@@ -163,7 +185,7 @@ export function Sidebar({
                             <Switch
                                 state={filters.is_vegetarian}
                                 action={() => {
-                                    handleRecipeFilters({
+                                    updateFilters({
                                         filters: filtersName,
                                         setFilters: setFilters,
                                         propToUpdate: "is_vegetarian",
@@ -175,7 +197,7 @@ export function Sidebar({
                             <Switch
                                 state={filters.is_vegan}
                                 action={() => {
-                                    handleRecipeFilters({
+                                    updateFilters({
                                         filters: filtersName,
                                         setFilters: setFilters,
                                         propToUpdate: "is_vegan",
@@ -249,8 +271,40 @@ export function Sidebar({
                         </div>
                     </div>
                 </section>
-                <footer></footer>
+
+                {positionUnfixed && (
+                    <footer className={classes.footer}>
+                        <InlineMessage loading={preferencesUpdateLoading} error={preferencesUpdateError} />
+                        <div className={classes.buttonsWrapper}>
+                            <Button
+                                label="Discard"
+                                iconLeft={<DeleteOutlineOutlinedIcon fontSize="small" />}
+                                action={() => {
+                                    navigate({ to: "/settings" })
+                                }}
+                            />
+                            <Button
+                                label="Save"
+                                iconLeft={<DoneAllOutlinedIcon fontSize="small" />}
+                                style="primary"
+                                action={() => {
+                                    updateDBFilters()
+
+                                    const intervalId = setInterval(() => {
+                                        if (!preferencesUpdateLoading && !preferencesUpdateError) {
+                                            handleOpenSnackbar("Your preferences were successfully updated")
+                                            navigate({ to: "/settings" })
+
+                                            clearInterval(intervalId)
+                                        }
+                                    }, 350) // Controllo ogni 350ms (c'è il debounce di 300)
+                                }}
+                            />
+                        </div>
+                    </footer>
+                )}
             </div>
+            <Snackbar />
         </>
     )
 }

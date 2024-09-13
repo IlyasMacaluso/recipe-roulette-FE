@@ -2,7 +2,6 @@ import { Sidebar } from "../../../components/Sidebar/Sidebar"
 
 import layout from "../../../assets/scss/pageLayout/pageFH.module.scss"
 import styles from "./FoodPreferences.module.scss"
-import { InlineMessage } from "../../../components/InlineMessage/InlineMessage"
 
 export function FoodPreferences() {
     return (

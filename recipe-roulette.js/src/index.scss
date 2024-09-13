@@ -5,7 +5,10 @@ body {
     margin: 0;
     box-sizing: border-box;
     height: 100svh;
+    width: 100vw;
+    overflow: hidden;
 }
+
 #root {
     height: 100%;
     box-sizing: border-box;
@@ -23,6 +26,7 @@ body {
     padding: 0;
     box-sizing: border-box;
     height: 100%;
+    overflow: hidden;
     .centerContent {
         display: flex;
         flex-direction: column;

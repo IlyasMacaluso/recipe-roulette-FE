@@ -30,8 +30,18 @@ export const RecipesProvider = ({ children }) => {
     const { getRequest } = useGetRequest()
 
     // funzioni di gestione filtri ricetta
-    const { recipePreferences, setRecipePreferences, handleRecipeFilters, handleDeselectRecipeFilters, recipeFilters, setRecipeFilters } =
-        useRecipeFilter(isAuthenticated)
+    const {
+        recipePreferences,
+        setRecipePreferences,
+        updateFilters,
+        deselectFilters,
+        updateDBFilters,
+
+        recipeFilters,
+        setRecipeFilters,
+        preferencesUpdateLoading,
+        preferencesUpdateError,
+    } = useRecipeFilter(isAuthenticated)
 
     // funzioni per aggiornare le ricette
     const { handleRecipesUpdate, handleTargetedRecipe } = useRecipesUpdate(recipes, setRecipes)
@@ -227,9 +237,11 @@ export const RecipesProvider = ({ children }) => {
                 favoritedLoading,
                 foodPrefLoading,
                 historyLoading,
+                preferencesUpdateLoading,
 
                 favoritedError,
                 historyError,
+                preferencesUpdateError,
 
                 recipePreferences,
                 setRecipePreferences,
@@ -240,8 +252,9 @@ export const RecipesProvider = ({ children }) => {
                 handleRecipesUpdate,
                 handleTargetedRecipe,
                 setInputValue,
-                handleRecipeFilters,
-                handleDeselectRecipeFilters,
+                updateFilters,
+                updateDBFilters,
+                deselectFilters,
                 setRecipes,
             }}
         >

@@ -1,4 +1,4 @@
-import { Outlet, createRootRoute, createRouter } from "@tanstack/react-router"
+import { Outlet, createRootRoute, createRouter, useLocation } from "@tanstack/react-router"
 import { IngredientsProvider } from "../pages/Roulette/IngredientsContext"
 import { RecipesProvider, useRecipesContext } from "../contexts/RecipesContext"
 import { AuthProvider } from "../components/authentication/AuthContext"
@@ -22,6 +22,7 @@ export const Route = createRootRoute({
         const { handleMenuToggle, setMenuState, path, menuState } = useSideMenu()
         const { setFiltersSidebar, filtersSidebar } = useRecipesResultsSideBar()
         const headerActions = { handleMenuToggle, setPreferencesSidebar, setFiltersSidebar }
+        const { pathname } = useLocation()
 
         return (
             <div className="appContainer">
@@ -42,20 +43,26 @@ export const Route = createRootRoute({
                                             <Outlet />
                                             <Snackbar />
                                         </div>
+                                        {pathname === "/settings/food-preferences" ? null : (
+                                            <>
+                                                {pathname === "/roulette" && (
+                                                    <Sidebar
+                                                        showBlacklist={true}
+                                                        filtersName="recipePreferences"
+                                                        sidebarState={preferencesSidebar}
+                                                        setSidebarState={setPreferencesSidebar}
+                                                    />
+                                                )}
 
-                                        <Sidebar
-                                            showBlacklist={true}
-                                            filtersName="recipePreferences"
-                                            sidebarState={preferencesSidebar}
-                                            setSidebarState={setPreferencesSidebar}
-                                        />
-
-                                        <Sidebar
-                                            filtersName="recipeFilters"
-                                            sidebarState={filtersSidebar}
-                                            setSidebarState={setFiltersSidebar}
-                                        />
-
+                                                {(pathname === "/favorited" || pathname === "/history") && (
+                                                    <Sidebar
+                                                        filtersName="recipeFilters"
+                                                        sidebarState={filtersSidebar}
+                                                        setSidebarState={setFiltersSidebar}
+                                                    />
+                                                )}
+                                            </>
+                                        )}
                                     </ImageProvider>
                                     <>
                                         {/* <TanStackRouterDevtools />

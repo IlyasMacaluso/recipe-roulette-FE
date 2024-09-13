@@ -63,8 +63,13 @@
 
 @media screen and (min-width: 1120px) {
     .pageContent {
-        padding: $size-24;
+        padding: 0;
         margin-top: 0;
         outline: none;
+    }
+    .bottomItems {
+        padding-left:  $size-24;
+        padding-right: $size-24;
+        padding-bottom: $size-24;
     }
 }

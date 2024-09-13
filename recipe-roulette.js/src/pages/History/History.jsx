@@ -27,7 +27,7 @@ export function History() {
     const [showPopup, setShowPopup] = useState()
 
     const {
-        handleDeselectRecipeFilters,
+        deselectFilters,
         recipes,
         setInputValue,
         historyLoading,
@@ -81,7 +81,7 @@ export function History() {
                                         label="Reset Search"
                                         key="Reset Search"
                                         action={() => {
-                                            handleDeselectRecipeFilters({ filters: "recipeFilters", setFilters: setRecipeFilters })
+                                            deselectFilters({ filters: "recipeFilters", setFilters: setRecipeFilters })
                                             setInputValue("")
                                         }}
                                     />,
