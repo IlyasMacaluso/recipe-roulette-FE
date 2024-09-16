@@ -37,6 +37,7 @@ export const useRecipeFilter = (isAuthenticated) => {
     const [recipePreferences, setRecipePreferences] = useState(new RecipeFilter())
     const [recipeFilters, setRecipeFilters] = useState(new RecipeFilter())
     const [updatedFilter, setUpdatedFilter] = useState(null)
+    const [discardPrefChanges, setDiscardChanges] = useState(null)
 
     const { setValue, getValue } = useLocalStorage()
     const { handlePostRequest, loading: preferencesUpdateLoading, error: preferencesUpdateError } = usePostRequest()
@@ -44,6 +45,9 @@ export const useRecipeFilter = (isAuthenticated) => {
 
     // useEffect(() => {
     //     //chiamata di rete quando cambia il valore di debounce (ricetta da aggiornare)
+    // if(!updatedFilter) {
+    //     return
+    // }
     //     if (isAuthenticated) {
     //         const userData = getValue("userData")
 
@@ -58,6 +62,9 @@ export const useRecipeFilter = (isAuthenticated) => {
     // }, [debounceValue])
 
     const updateDBFilters = () => {
+        if (!updatedFilter) {
+            return
+        }
         if (isAuthenticated) {
             const userData = getValue("userData")
 
@@ -134,11 +141,13 @@ export const useRecipeFilter = (isAuthenticated) => {
         recipePreferences,
         setRecipePreferences,
         recipeFilters,
+        setRecipeFilters,
+        discardPrefChanges,
+        setDiscardChanges,
 
         preferencesUpdateLoading,
         preferencesUpdateError,
 
-        setRecipeFilters,
         updateFilters,
         deselectFilters,
         updateDBFilters,

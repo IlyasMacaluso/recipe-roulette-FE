@@ -33,12 +33,15 @@ export const RecipesProvider = ({ children }) => {
     const {
         recipePreferences,
         setRecipePreferences,
+        recipeFilters,
+        setRecipeFilters,
+        discardPrefChanges,
+        setDiscardChanges,
+
         updateFilters,
         deselectFilters,
         updateDBFilters,
-
-        recipeFilters,
-        setRecipeFilters,
+        
         preferencesUpdateLoading,
         preferencesUpdateError,
     } = useRecipeFilter(isAuthenticated)
@@ -248,6 +251,9 @@ export const RecipesProvider = ({ children }) => {
 
                 recipeFilters,
                 setRecipeFilters,
+
+                discardPrefChanges,
+                setDiscardChanges,
 
                 handleRecipesUpdate,
                 handleTargetedRecipe,

@@ -6,14 +6,32 @@ import { useDebounce } from "../../../hooks/useDebounce/useDebounce"
 
 export const useIngredientUpdate = (ingredients, setIngredients) => {
     const [blacklistedIngredients, setBlacklistedIngredients] = useState(null)
+    const [discardBLChanges, setDiscardBLChanges] = useState(null)
     const { setValue, getValue } = useLocalStorage()
-    const { handlePostRequest } = usePostRequest()
+    const { handlePostRequest, error: blacklistUpdateErr, loading: blacklistUpdateLoading } = usePostRequest()
     const { isAuthenticated } = useAuth()
     const { debounceValue } = useDebounce(blacklistedIngredients)
 
-    useEffect(() => {
-        //chiamata di rete quando cambia il valore di debounce (ricetta da aggiornare)
+    // useEffect(() => {
+    //     //chiamata di rete quando cambia il valore di debounce (ricetta da aggiornare)
 
+    //     if (!blacklistedIngredients) {
+    //         return
+    //     }
+
+    //     if (isAuthenticated) {
+    //         const userData = getValue("userData")
+
+    //         userData.id &&
+    //             handlePostRequest({
+    //                 url: "http://localhost:3000/api/preferences/set-blacklisted-ingredients",
+    //                 payload: { newBlacklist: blacklistedIngredients, userId: userData.id },
+    //                 mutationId: "blacklistUpdate",
+    //             })
+    //     }
+    // }, [debounceValue])
+
+    const updateDBBlacklist = () => {
         if (!blacklistedIngredients) {
             return
         }
@@ -28,7 +46,7 @@ export const useIngredientUpdate = (ingredients, setIngredients) => {
                     mutationId: "blacklistUpdate",
                 })
         }
-    }, [debounceValue])
+    }
 
     const handleIngUpdate = (prop, cardState) => {
         setIngredients((prev) => {
@@ -114,5 +132,5 @@ export const useIngredientUpdate = (ingredients, setIngredients) => {
         })
     }
 
-    return { handleIngUpdate, deselectIngredients }
+    return { handleIngUpdate, deselectIngredients, updateDBBlacklist, blacklistUpdateErr, blacklistUpdateLoading, discardBLChanges, setDiscardBLChanges }
 }

@@ -21,7 +21,10 @@ export const IngredientsProvider = ({ children }) => {
     const { recipePreferences } = useRecipesContext()
     const { setValue, getValue } = useLocalStorage()
 
-    const { handleIngUpdate, deselectIngredients } = useIngredientUpdate(ingredients, setIngredients)
+    const { handleIngUpdate, deselectIngredients, updateDBBlacklist, blacklistUpdateErr, blacklistUpdateLoading, discardBLChanges, setDiscardBLChanges } = useIngredientUpdate(
+        ingredients,
+        setIngredients
+    )
     const { handleIngDecrement, handleIngIncrement, shuffleIng, generateIngredients } = useDisplayedIngredients(ingredients, setIngredients)
     const { getRequest } = useGetRequest()
 
@@ -118,10 +121,16 @@ export const IngredientsProvider = ({ children }) => {
                 generateIngredients,
                 deselectIngredients,
                 setIngredients,
+                updateDBBlacklist,
+                blacklistUpdateErr,
+                blacklistUpdateLoading,
                 ingredients,
                 ingredientsLoading,
                 blacklistedLoading,
                 ingredientsError,
+
+                discardBLChanges,
+                setDiscardBLChanges,
             }}
         >
             {children}

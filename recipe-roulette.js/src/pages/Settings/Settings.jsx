@@ -29,6 +29,7 @@ import layout from "../../assets/scss/pageLayout/pageWScroll.module.scss"
 import { Link } from "@tanstack/react-router"
 import { useTutorial } from "../../hooks/useTutorial/useTutorial"
 import { Tutorial } from "../../components/tutorial/Tutorial"
+import { useRecipesContext } from "../../contexts/RecipesContext"
 
 export function Settings() {
     const [showPopup, setShowPopup] = useState(false)

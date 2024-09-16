@@ -30,12 +30,22 @@ export function Sidebar({
     positionUnfixed = false,
     showBlacklist = false,
 
+    discardPrefChanges = null,
+    discardBLChanges = null,
     filtersName = "recipeFilters",
 
     sidebarState = false,
     setSidebarState,
 }) {
-    const { deselectIngredients, ingredients, blacklistedLoading } = useManageIngredients()
+    const {
+        deselectIngredients,
+        ingredients,
+        blacklistedLoading,
+        updateDBBlacklist,
+        blacklistUpdateErr,
+        blacklistUpdateLoading,
+        setIngredients,
+    } = useManageIngredients()
     const {
         updateFilters,
         updateDBFilters,
@@ -47,6 +57,7 @@ export function Sidebar({
         preferencesUpdateLoading,
         preferencesUpdateError,
     } = useRecipesContext()
+
     const { cuisineEthnicityChips, difficultyChips, prepTimeChips, caloricApportChips } = filterChipsArray()
     const { handleOpenSnackbar } = useSnackbar()
 
@@ -111,17 +122,16 @@ export function Sidebar({
                                 {blacklistedLoading && (
                                     // loading skeleton
                                     <div className={classes.filterChipWrapper}>
-                                        {
-                                            [...Array(3)].map(() => (
-                                                <Skeleton
-                                                    className={classes.skeleton}
-                                                    key={Math.random()}
-                                                    sx={{ bgcolor: "#c5e4c9" }}
-                                                    variant="rounded"
-                                                    width={"25%"}
-                                                    height={"32px"}
-                                                />
-                                            ))}
+                                        {[...Array(3)].map(() => (
+                                            <Skeleton
+                                                className={classes.skeleton}
+                                                key={Math.random()}
+                                                sx={{ bgcolor: "#c5e4c9" }}
+                                                variant="rounded"
+                                                width={"25%"}
+                                                height={"32px"}
+                                            />
+                                        ))}
                                     </div>
                                 )}
                                 {!blacklistedLoading && ingredients?.blacklisted && ingredients?.blacklisted.length > 0 && (
@@ -141,7 +151,6 @@ export function Sidebar({
                                         })}
                                     </div>
                                 )}
-
                             </div>
                         </div>
                     )}
@@ -272,37 +281,58 @@ export function Sidebar({
                     </div>
                 </section>
 
-                {positionUnfixed && (
-                    <footer className={classes.footer}>
-                        <InlineMessage loading={preferencesUpdateLoading} error={preferencesUpdateError} />
-                        <div className={classes.buttonsWrapper}>
-                            <Button
-                                label="Discard"
-                                iconLeft={<DeleteOutlineOutlinedIcon fontSize="small" />}
-                                action={() => {
-                                    navigate({ to: "/settings" })
-                                }}
-                            />
-                            <Button
-                                label="Save"
-                                iconLeft={<DoneAllOutlinedIcon fontSize="small" />}
-                                style="primary"
-                                action={() => {
-                                    updateDBFilters()
+                {
+                    //footer visible only in FoodPreferences
+                    positionUnfixed && (
+                        <footer className={classes.footer}>
+                            <InlineMessage loading={preferencesUpdateLoading} error={preferencesUpdateError} />
+                            <div className={classes.buttonsWrapper}>
+                                <Button
+                                    label="Discard"
+                                    iconLeft={<DeleteOutlineOutlinedIcon fontSize="small" />}
+                                    action={() => {
+                                        setRecipePreferences(discardPrefChanges)
+                                        setIngredients((prev) => {
+                                            const blIDs = discardBLChanges?.map((ing) => ing.id)
+                                            return {
+                                                ...prev,
+                                                all: prev.all?.map((ing) => ({
+                                                    ...ing,
+                                                    is_blacklisted: blIDs?.some((id) => id === ing.id),
+                                                })),
+                                                blacklisted: discardBLChanges,
+                                            }
+                                        })
 
-                                    const intervalId = setInterval(() => {
-                                        if (!preferencesUpdateLoading && !preferencesUpdateError) {
-                                            handleOpenSnackbar("Your preferences were successfully updated")
-                                            navigate({ to: "/settings" })
+                                        handleOpenSnackbar("Your changes were discarded")
+                                        navigate({ to: "/settings" })
+                                    }}
+                                />
+                                <Button
+                                    label="Save"
+                                    iconLeft={<DoneAllOutlinedIcon fontSize="small" />}
+                                    style="primary"
+                                    action={() => {
+                                        updateDBFilters()
+                                        updateDBBlacklist()
 
-                                            clearInterval(intervalId)
-                                        }
-                                    }, 350) // Controllo ogni 350ms (c'è il debounce di 300)
-                                }}
-                            />
-                        </div>
-                    </footer>
-                )}
+                                        const intervalId = setInterval(() => {
+                                            if (
+                                                (!preferencesUpdateLoading && !preferencesUpdateError && !blacklistUpdateErr,
+                                                !blacklistUpdateLoading)
+                                            ) {
+                                                handleOpenSnackbar("Your preferences were successfully updated")
+                                                navigate({ to: "/settings" })
+
+                                                clearInterval(intervalId)
+                                            }
+                                        }, 350) // Controllo ogni 350ms (c'è il debounce di 300)
+                                    }}
+                                />
+                            </div>
+                        </footer>
+                    )
+                }
             </div>
             <Snackbar />
         </>
