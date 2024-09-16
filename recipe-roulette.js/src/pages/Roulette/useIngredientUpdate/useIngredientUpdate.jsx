@@ -118,7 +118,7 @@ export const useIngredientUpdate = (ingredients, setIngredients) => {
         setIngredients((prev) => {
             const newIngredients = mapArray(prev?.all)
             let newDisplayed = mapArray(prev.displayed)
-            let newBlacklisted = []
+            let newBlacklisted = prop === "is_blacklisted" ? [] : prev.blacklisted
 
             setBlacklistedIngredients(newBlacklisted)
 
@@ -132,5 +132,13 @@ export const useIngredientUpdate = (ingredients, setIngredients) => {
         })
     }
 
-    return { handleIngUpdate, deselectIngredients, updateDBBlacklist, blacklistUpdateErr, blacklistUpdateLoading, discardBLChanges, setDiscardBLChanges }
+    return {
+        handleIngUpdate,
+        deselectIngredients,
+        updateDBBlacklist,
+        blacklistUpdateErr,
+        blacklistUpdateLoading,
+        discardBLChanges,
+        setDiscardBLChanges,
+    }
 }

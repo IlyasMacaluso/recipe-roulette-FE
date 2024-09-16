@@ -83,7 +83,7 @@ export function Sidebar({
             ></div>
             <div
                 className={`
-                    ${positionUnfixed ? (animate ? animation.animationEnd : animation.animationStart) : animation.animationEnd}
+                    ${positionUnfixed ? (animate ? animation.animationEnd : animation.animationStart) : null}
                     ${classes.sidebar} ${positionUnfixed && classes.noOutline} ${positionUnfixed && classes.positionUnfixed} ${sidebarState && classes.sidebarToggled}`}
             >
                 {!positionUnfixed && (
@@ -106,8 +106,19 @@ export function Sidebar({
 
                 <section className={classes.sidebarBody}>
                     {positionUnfixed && (
-                        <div className={classes.section}>
-                            <InlineMessage message={"Note: Preferences you set here will be used as defaults for all generated recipes"} />
+                        <div className={`${classes.section} ${classes.rowSection}`}>
+
+                            <InlineMessage message={"Preferences you set here will be used as defaults for all generated recipes"} />
+
+                            <Button
+                                label="Reset All Preferences"
+                                iconLeft={<RotateLeftOutlinedIcon fontSize="small" />}
+                                action={() => {
+                                    deselectFilters({ filters: filtersName, setFilters: setFilters })
+                                    deselectIngredients("is_blacklisted")
+                                }}
+                            />
+                        
                         </div>
                     )}
 
@@ -116,7 +127,6 @@ export function Sidebar({
                             <h4>Blacklist ingredients</h4>
                             <div className={classes.blackListed}>
                                 <IngredientSearch searchCriteria="is_blacklisted" sidebarState={sidebarState} />
-
                                 {/* // blacklisted ingredients ===================================================================== */}
 
                                 {blacklistedLoading && (
@@ -285,7 +295,14 @@ export function Sidebar({
                     //footer visible only in FoodPreferences
                     positionUnfixed && (
                         <footer className={classes.footer}>
-                            <InlineMessage loading={preferencesUpdateLoading} error={preferencesUpdateError} />
+
+                            {(preferencesUpdateLoading || blacklistUpdateLoading || blacklistUpdateErr || preferencesUpdateError) && (
+                                <InlineMessage
+                                    loading={preferencesUpdateLoading || blacklistUpdateLoading}
+                                    error={preferencesUpdateError || blacklistUpdateErr}
+                                />
+                            )}
+                            
                             <div className={classes.buttonsWrapper}>
                                 <Button
                                     label="Discard"
@@ -334,7 +351,6 @@ export function Sidebar({
                     )
                 }
             </div>
-            <Snackbar />
         </>
     )
 }

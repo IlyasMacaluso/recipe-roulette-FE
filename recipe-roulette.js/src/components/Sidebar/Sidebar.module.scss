@@ -77,11 +77,16 @@
         flex-direction: column;
         padding: 0 $size-16;
         gap: $size-8;
+
         .switchesWrapper {
             display: flex;
             flex-direction: column;
             gap: 0.75rem;
         }
+    }
+
+    .rowSection {
+        gap: $size-12;
     }
 }
 
@@ -160,7 +165,7 @@ h4 {
 
 .footer {
     position: absolute;
-    
+
     display: flex;
     flex-direction: column;
     gap: $size-12;
@@ -212,9 +217,7 @@ h4 {
     }
 
     .footer {
-        padding-left: $size-24;
-        padding-right: $size-24;
-        padding-bottom: $size-24;
+        padding: $size-24;
     }
     ::-webkit-scrollbar {
         width: 8px;
