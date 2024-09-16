@@ -1,18 +1,23 @@
 @use "../../../assets/scss/" as *;
 
-.suggestion {
+.suggestionWrapper {
+    box-sizing: border-box;
     display: flex;
     align-items: center;
-    padding: 1rem;
-    height: 3.5rem;
     min-height: 3.5rem;
-    border-bottom: 1px solid $light-gray;
+    border-bottom: 1px solid $lighter-gray;
     padding: 0 1.5rem;
     background-color: white;
-    font-family: $header-text;
     font-size: 14px;
-} 
-.suggestion:hover{
+    padding: $size-8 $size-16;
+}
+
+.suggestion {
+    color: $dark-gray;
+    font-size: $text-size-14;
+    font-family: $font-poppins;
+}
+.suggestionWrapper:hover {
     cursor: pointer;
     background-color: $lightest-green;
 }

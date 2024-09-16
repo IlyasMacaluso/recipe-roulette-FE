@@ -1,14 +1,14 @@
 import React from "react"
 import { useIngredientSearch } from "./useIngredientSearch"
 import { IngredientSuggestions } from "../Suggestions/IngredientSuggestions"
+import { useHandleBackButton } from "../../../hooks/useHandleBackBtn/useHandleBackBtn"
 
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined"
 import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined"
 
 import classes from "./IngredientSearch.module.scss"
-import { useHandleBackButton } from "../../../hooks/useHandleBackBtn/useHandleBackBtn"
 
-export function IngredientSearch({searchCriteria = "is_blacklisted" }) {
+export function IngredientSearch({ searchCriteria = "is_blacklisted", preferencesSidebar = false }) {
     const {
         suggestions,
         inputValues,
@@ -20,14 +20,13 @@ export function IngredientSearch({searchCriteria = "is_blacklisted" }) {
         handleBlur,
         setSearchState,
         setFixedPosition,
-    } = useIngredientSearch(searchCriteria)
-    
+        setInputValues,
+    } = useIngredientSearch(searchCriteria, preferencesSidebar)
+
     const { inputRef } = useHandleBackButton(searchState, setSearchState, setFixedPosition, handleBlur)
 
     return (
-        <div
-            className={`${fixedPosition && classes.positionFixed} ${classes.search}`}
-        >
+        <div className={`${fixedPosition && classes.positionFixed} ${classes.search}`}>
             <div className={`${classes.searchBar} ${searchState ? classes.inputActive : classes.inputInactive}`}>
                 <input
                     ref={inputRef}
@@ -37,7 +36,8 @@ export function IngredientSearch({searchCriteria = "is_blacklisted" }) {
                     placeholder={`${searchCriteria === "is_selected" ? "Add an ingredient" : "Blacklist an ingredient"}`}
                     name="search"
                     type="text"
-                    onKeyDown={(e) => handlePressEnter(e, inputRef, { setCondition: setSearchState, setComponent: setFixedPosition })}
+                    onBlur={() => setInputValues((prev) => ({ ...prev, current: "" }))}
+                    onKeyUp={(e) => handlePressEnter(e, inputRef, { setCondition: setSearchState, setComponent: setFixedPosition })}
                     onChange={handleInputChange}
                     value={inputValues.current}
                 />

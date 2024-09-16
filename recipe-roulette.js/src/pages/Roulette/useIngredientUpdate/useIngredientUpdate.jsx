@@ -1,11 +1,34 @@
+import { useEffect, useState } from "react"
 import { useAuth } from "../../../hooks/Auth/useAuth"
 import { useLocalStorage } from "../../../hooks/useLocalStorage/useLocalStorage"
 import { usePostRequest } from "../../../hooks/usePostRequest/usePostRequest"
+import { useDebounce } from "../../../hooks/useDebounce/useDebounce"
 
 export const useIngredientUpdate = (ingredients, setIngredients) => {
+    const [blacklistedIngredients, setBlacklistedIngredients] = useState(null)
     const { setValue, getValue } = useLocalStorage()
     const { handlePostRequest } = usePostRequest()
     const { isAuthenticated } = useAuth()
+    const { debounceValue } = useDebounce(blacklistedIngredients)
+
+    useEffect(() => {
+        //chiamata di rete quando cambia il valore di debounce (ricetta da aggiornare)
+
+        if (!blacklistedIngredients) {
+            return
+        }
+
+        if (isAuthenticated) {
+            const userData = getValue("userData")
+
+            userData.id &&
+                handlePostRequest({
+                    url: "http://localhost:3000/api/preferences/set-blacklisted-ingredients",
+                    payload: { newBlacklist: blacklistedIngredients, userId: userData.id },
+                    mutationId: "blacklistUpdate",
+                })
+        }
+    }, [debounceValue])
 
     const handleIngUpdate = (prop, cardState) => {
         setIngredients((prev) => {
@@ -25,6 +48,7 @@ export const useIngredientUpdate = (ingredients, setIngredients) => {
 
             // Inizializza newDisplayed con gli ingredienti visualizzati aggiornati
             let newDisplayed = updatedDisplayedIngs
+
             // Filtra gli ingredienti nella blacklist
             const newBlacklisted = updatedIngs.filter((item) => item.is_blacklisted)
 
@@ -59,32 +83,17 @@ export const useIngredientUpdate = (ingredients, setIngredients) => {
                 blacklisted: newBlacklisted,
             }
 
-            const awaitUpdate = () => {
-                if (prop === "is_blacklisted" && isAuthenticated) {
-                    //se l'utente è autenticato e sta modificando la prop is_blacklisted di un ingrediente, aggiorno il db
-                    const userData = getValue("userData")
-                    userData.id &&
-                        handlePostRequest(
-                            {
-                                url: "http://localhost:3000/api/preferences/set-blacklisted-ingredients",
-                                payload: { newBlacklist: newBlacklisted, userId: userData.id },
-                                mutationId: "blacklistUpdate",
-                            },
-                            { meta: { scope: { id: "blacklistUpdate" } } }
-                        )
-                }
-            }
+            setBlacklistedIngredients(newBlacklisted)
 
             // Aggiorna il valore degli ingredienti
             setValue("ingredients", newIngredients)
-            awaitUpdate()
 
             return newIngredients
         })
     }
 
     //Nota: deleseziona anche gli elementi blacklistati!!
-    const handleDeselectAll = (prop) => {
+    const deselectIngredients = (prop) => {
         // Funzione per mappare l'array e impostare il valore della proprietà a false
         const mapArray = (array) => array && array.length > 0 && array.map((item) => ({ ...item, [prop]: false }))
 
@@ -93,19 +102,7 @@ export const useIngredientUpdate = (ingredients, setIngredients) => {
             let newDisplayed = mapArray(prev.displayed)
             let newBlacklisted = []
 
-            if (isAuthenticated) {
-                //se l'utente è autenticato e sta modificando la prop is_blacklisted di un ingrediente, aggiorno il db
-                const userData = getValue("userData")
-                userData.id &&
-                    handlePostRequest(
-                        {
-                            url: "http://localhost:3000/api/preferences/set-blacklisted-ingredients",
-                            payload: { newBlacklist: newBlacklisted, userId: userData.id },
-                            mutationId: "blacklistUpdate",
-                        },
-                        { meta: { scope: { id: "blacklistUpdate" } } } //scopeId
-                    )
-            }
+            setBlacklistedIngredients(newBlacklisted)
 
             // Ritorna il nuovo stato degli ingredienti
             return {
@@ -117,5 +114,5 @@ export const useIngredientUpdate = (ingredients, setIngredients) => {
         })
     }
 
-    return { handleIngUpdate, handleDeselectAll }
+    return { handleIngUpdate, deselectIngredients }
 }

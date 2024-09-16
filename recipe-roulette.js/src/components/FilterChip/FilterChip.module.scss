@@ -10,16 +10,13 @@
     border-radius: $size-8;
     border: 1px solid $light-desaturated-green;
     background-color: $lightest-green;
-    font-family: $font-text;
     .label {
-        color: $darkish-gray;
-        font-size: $text-size-14;
-
+        color: $medium-gray;
+        font-size: $text-size-12;
+        font-family: "Metropolitan";
+        width: max-content;
         margin: 0;
-        font-weight: 500;
-        line-height: 100%;
-        vertical-align: middle;
-        text-align: center;
+        font-weight: 600;
     }
     .ico {
         color: $darkish-gray;
@@ -53,7 +50,7 @@
 
 .inactive {
     background-color: white;
-    border: 1px solid $light-gray;
+    border: 1px solid $lighter-gray;
     color: $dark-gray;
     padding: 0 0.75rem;
 }
@@ -66,5 +63,11 @@
     }
     .ico {
         color: $darkish-gray;
+    }
+}
+
+@media screen and (min-width: 1120px) {
+    .filterChip .label {
+        font-size: 13px;
     }
 }

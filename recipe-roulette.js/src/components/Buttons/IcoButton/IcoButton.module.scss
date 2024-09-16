@@ -25,6 +25,7 @@ button:active {
     border: none;
     background-color: none;
     color: $dark-gray;
+    background-color: transparent;
 }
 .disabled {
     background-color: $lighter-gray;

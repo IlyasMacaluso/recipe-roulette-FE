@@ -32,7 +32,6 @@ export const RecipesFetchProvider = ({ children }) => {
                 })
 
                 const parsedData = JSON.parse(response.data)
-                console.log(parsedData)
 
                 setRecipes((prev) => {
                     const updatedRecipes = {

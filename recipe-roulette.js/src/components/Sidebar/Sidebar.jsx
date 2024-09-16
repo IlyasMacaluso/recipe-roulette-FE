@@ -1,3 +1,4 @@
+import { useEffect, useMemo } from "react"
 import { useManageIngredients } from "../../pages/Roulette/IngredientsContext"
 import { FilterChip } from "../FilterChip/FilterChip"
 import { Switch } from "../Switch/Switch"
@@ -6,49 +7,127 @@ import { Button } from "../Buttons/Button/Button"
 import { IcoButton } from "../Buttons/IcoButton/IcoButton"
 import { FilterChipRecipes } from "../FilterChip/FilterChipRecipes"
 import { useRecipesContext } from "../../contexts/RecipesContext"
+import { filterChipsArray } from "../../assets/arrays/filterChipsArray.js"
+import { InlineMessage } from "../InlineMessage/InlineMessage.jsx"
 
 import CloseIcon from "@mui/icons-material/Close"
 import RotateLeftOutlinedIcon from "@mui/icons-material/RotateLeftOutlined"
+import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined"
+import DoneAllOutlinedIcon from "@mui/icons-material/DoneAllOutlined"
+
+import { useNavigate } from "@tanstack/react-router"
+import { Snackbar } from "../Snackbar/Snackbar.jsx"
+import { useSnackbar } from "../Snackbar/useSnackbar.jsx"
+import { useLocationHook } from "../../hooks/useLocationHook.jsx"
+import { useAnimate } from "../../hooks/animatePages/useAnimate.jsx"
 
 import classes from "./Sidebar.module.scss"
+import animation from "../../assets/scss/pageLayout/pageTransition.module.scss"
+import { Skeleton } from "@mui/material"
 
-export function Sidebar({ sidebarState = false, handleSidebarToggle }) {
-    const { handleDeselectAll, ingredients } = useManageIngredients()
-    const { toggleRecipeFilter, recipeFilter, handleDeselectRecipeFilters } = useRecipesContext()
+export function Sidebar({
+    removeBgOverlay = false,
+    positionUnfixed = false,
+    showBlacklist = false,
+
+    filtersName = "recipeFilters",
+
+    sidebarState = false,
+    setSidebarState,
+}) {
+    const { deselectIngredients, ingredients, blacklistedLoading } = useManageIngredients()
+    const {
+        updateFilters,
+        updateDBFilters,
+        deselectFilters,
+        setRecipeFilters,
+        setRecipePreferences,
+        recipeFilters,
+        recipePreferences,
+        preferencesUpdateLoading,
+        preferencesUpdateError,
+    } = useRecipesContext()
+    const { cuisineEthnicityChips, difficultyChips, prepTimeChips, caloricApportChips } = filterChipsArray()
+    const { handleOpenSnackbar } = useSnackbar()
+
+    const { location } = useLocationHook()
+    const { animate } = useAnimate(location)
+    const navigate = useNavigate()
+
+    const filters = useMemo(() => {
+        if (filtersName === "recipeFilters") {
+            return recipeFilters
+        } else {
+            return recipePreferences
+        }
+    }, [filtersName, recipeFilters, recipePreferences])
+
+    const setFilters = filtersName === "recipeFilters" ? setRecipeFilters : setRecipePreferences
 
     return (
-        <div>
+        <>
             <div
-                onClick={handleSidebarToggle}
-                className={`${classes.backgroundOverlay} ${sidebarState && classes.backgroundOverlayToggled}`}
+                onClick={setSidebarState}
+                className={`${classes.backgroundOverlay} ${removeBgOverlay && classes.removeBgOverlay} ${sidebarState && classes.backgroundOverlayToggled}`}
             ></div>
-            <div className={`${classes.sidebar} ${sidebarState && classes.sidebarToggled}`}>
-                <header>
-                    <h2>Filters</h2>
-                    <div className={classes.rightItems}>
-                        <Button
-                            label="Reset All"
-                            icon={<RotateLeftOutlinedIcon fontSize="small" />}
-                            size={18}
-                            action={() => {
-                                handleDeselectRecipeFilters()
-                                handleDeselectAll("is_blacklisted")
-                            }}
-                        />
-                        <IcoButton action={handleSidebarToggle} style="transparent" icon={<CloseIcon fontSize="small" />} />
-                    </div>
-                </header>
+            <div
+                className={`
+                    ${positionUnfixed ? (animate ? animation.animationEnd : animation.animationStart) : animation.animationEnd}
+                    ${classes.sidebar} ${positionUnfixed && classes.noOutline} ${positionUnfixed && classes.positionUnfixed} ${sidebarState && classes.sidebarToggled}`}
+            >
+                {!positionUnfixed && (
+                    <header>
+                        <h2>Filters</h2>
+                        <div className={classes.rightItems}>
+                            <Button
+                                label="Reset All"
+                                iconLeft={<RotateLeftOutlinedIcon fontSize="small" />}
+                                size={18}
+                                action={() => {
+                                    deselectFilters({ filters: filtersName, setFilters: setFilters })
+                                    deselectIngredients("is_blacklisted")
+                                }}
+                            />
+                            <IcoButton action={setSidebarState} style="transparent" icon={<CloseIcon fontSize="small" />} />
+                        </div>
+                    </header>
+                )}
+
                 <section className={classes.sidebarBody}>
-                    <div className={classes.blackListedWrapper}>
-                        <h4>Add ingredeints to black list</h4>
-                        <div className={classes.blackListed}>
-                            <IngredientSearch searchCriteria="is_blacklisted" />
-                            {ingredients?.blacklisted && (
-                                <div className={classes.filterChipWrapper}>
-                                    {ingredients?.blacklisted
-                                        .filter((ing) => ing.is_blacklisted)
-                                        .sort((a, b) => (a.name === b.name ? 0 : a.name > b.name ? 1 : -1))
-                                        .map((ing) => {
+                    {positionUnfixed && (
+                        <div className={classes.section}>
+                            <InlineMessage message={"Note: Preferences you set here will be used as defaults for all generated recipes"} />
+                        </div>
+                    )}
+
+                    {showBlacklist && (
+                        <div className={classes.blackListedWrapper}>
+                            <h4>Blacklist ingredients</h4>
+                            <div className={classes.blackListed}>
+                                <IngredientSearch searchCriteria="is_blacklisted" sidebarState={sidebarState} />
+
+                                {/* // blacklisted ingredients ===================================================================== */}
+
+                                {blacklistedLoading && (
+                                    // loading skeleton
+                                    <div className={classes.filterChipWrapper}>
+                                        {
+                                            [...Array(3)].map(() => (
+                                                <Skeleton
+                                                    className={classes.skeleton}
+                                                    key={Math.random()}
+                                                    sx={{ bgcolor: "#c5e4c9" }}
+                                                    variant="rounded"
+                                                    width={"25%"}
+                                                    height={"32px"}
+                                                />
+                                            ))}
+                                    </div>
+                                )}
+                                {!blacklistedLoading && ingredients?.blacklisted && ingredients?.blacklisted.length > 0 && (
+                                    // blacklisted ingredients
+                                    <div className={classes.filterChipWrapper}>
+                                        {ingredients?.blacklisted.map((ing) => {
                                             return (
                                                 <FilterChip
                                                     key={ing.id}
@@ -60,87 +139,172 @@ export function Sidebar({ sidebarState = false, handleSidebarToggle }) {
                                                 />
                                             )
                                         })}
-                                </div>
-                            )}
+                                    </div>
+                                )}
+
+                            </div>
+                        </div>
+                    )}
+
+                    <div className={classes.section}>
+                        <h4>Preparation Time</h4>
+                        <div className={classes.filterChipWrapper}>
+                            {
+                                // prepTime chips =====================================================================
+                                prepTimeChips &&
+                                    prepTimeChips.map((chip, index) => {
+                                        return (
+                                            <FilterChipRecipes
+                                                filters={filtersName}
+                                                key={index}
+                                                filterType={"preparationTime"}
+                                                propValue={chip.propValue}
+                                                label={chip.label}
+                                            />
+                                        )
+                                    })
+                            }
                         </div>
                     </div>
-                    <div className={classes.filterSection}>
+
+                    <div className={classes.section}>
                         <h4>Preferences</h4>
                         <div className={classes.switchesWrapper}>
-                            {/* filtra gli ingredienti, inoltre imposta recipeFilter in modo che il fitro 
-                            venga passato anche alla richiesta di fetch */}
                             <Switch
-                                state={recipeFilter.is_gluten_free}
+                                state={filters.is_gluten_free}
                                 action={() => {
-                                    toggleRecipeFilter("is_gluten_free")
+                                    updateFilters({
+                                        filters: filtersName,
+                                        setFilters: setFilters,
+                                        propToUpdate: "is_gluten_free",
+                                    })
                                 }}
                                 label={"Gluten free"}
                             />
+
                             <Switch
-                                state={recipeFilter.is_vegetarian}
+                                state={filters.is_vegetarian}
                                 action={() => {
-                                    toggleRecipeFilter("is_vegetarian")
+                                    updateFilters({
+                                        filters: filtersName,
+                                        setFilters: setFilters,
+                                        propToUpdate: "is_vegetarian",
+                                    })
                                 }}
                                 label={"Vegetarian"}
                             />
+
                             <Switch
-                                state={recipeFilter.is_vegan}
+                                state={filters.is_vegan}
                                 action={() => {
-                                    toggleRecipeFilter("is_vegan")
+                                    updateFilters({
+                                        filters: filtersName,
+                                        setFilters: setFilters,
+                                        propToUpdate: "is_vegan",
+                                    })
                                 }}
                                 label={"Vegan"}
                             />
                         </div>
                     </div>
-                    <div className={classes.filterSection}>
-                        <h4>Preparation Time</h4>
-                        <div className={classes.filterChipWrapper}>
-                            <FilterChipRecipes filterType={"preparationTime"} label="All" />
-                            <FilterChipRecipes filterType={"preparationTime"} numericValue={30} label="30m or less" />
-                            <FilterChipRecipes filterType={"preparationTime"} numericValue={45} label="45m or less" />
-                            <FilterChipRecipes filterType={"preparationTime"} numericValue={60} label="60m or less" />
-                        </div>
-                    </div>
 
-                    <div className={classes.filterSection}>
+                    <div className={classes.section}>
                         <h4>Cousine Etnicity</h4>
                         <div className={classes.filterChipWrapper}>
-                            <FilterChipRecipes filterType={"cuisineEthnicity"} label="All" />
-                            <FilterChipRecipes filterType={"cuisineEthnicity"} label="Italian" />
-                            <FilterChipRecipes filterType={"cuisineEthnicity"} label="French" />
-                            <FilterChipRecipes filterType={"cuisineEthnicity"} label="Chinese" />
-                            <FilterChipRecipes filterType={"cuisineEthnicity"} label="Japanese" />
-                            <FilterChipRecipes filterType={"cuisineEthnicity"} label="Indian" />
-                            <FilterChipRecipes filterType={"cuisineEthnicity"} label="Greek" />
-                            <FilterChipRecipes filterType={"cuisineEthnicity"} label="Spanish" />
-                            <FilterChipRecipes filterType={"cuisineEthnicity"} label="Mexican" />
-                            <FilterChipRecipes filterType={"cuisineEthnicity"} label="Thai" />
-                            <FilterChipRecipes filterType={"cuisineEthnicity"} label="Middle Eastern" />
+                            {
+                                // cuisineEthnicity chips =====================================================================
+                                cuisineEthnicityChips &&
+                                    cuisineEthnicityChips.map((chip, index) => {
+                                        return (
+                                            <FilterChipRecipes
+                                                filters={filtersName}
+                                                key={index}
+                                                propValue={chip.propValue}
+                                                filterType={"cuisineEthnicity"}
+                                                label={chip.label}
+                                            />
+                                        )
+                                    })
+                            }
                         </div>
                     </div>
 
-                    <div className={classes.filterSection}>
+                    <div className={classes.section}>
                         <h4>Caloric Apport</h4>
                         <div className={classes.filterChipWrapper}>
-                            <FilterChipRecipes filterType={"caloricApport"} label="All" />
-                            <FilterChipRecipes numericValue={350} filterType={"caloricApport"} label="350 kcal or less" />
-                            <FilterChipRecipes numericValue={450} filterType={"caloricApport"} label="450 kcal of less" />
-                            <FilterChipRecipes numericValue={550} filterType={"caloricApport"} label="550 kcal or less" />
+                            {
+                                // caloricApport chips =====================================================================
+                                caloricApportChips &&
+                                    caloricApportChips.map((chip, index) => {
+                                        return (
+                                            <FilterChipRecipes
+                                                filters={filtersName}
+                                                key={index}
+                                                propValue={chip.propValue}
+                                                filterType={"caloricApport"}
+                                                label={chip.label}
+                                            />
+                                        )
+                                    })
+                            }
                         </div>
                     </div>
 
-                    <div className={classes.filterSection}>
+                    <div className={classes.section}>
                         <h4>Difficulty</h4>
                         <div className={classes.filterChipWrapper}>
-                            <FilterChipRecipes numericValue={"all"} filterType={"difficulty"} label="All" />
-                            <FilterChipRecipes numericValue={"easy"} filterType={"difficulty"} label="Easy" />
-                            <FilterChipRecipes numericValue={"medium"} filterType={"difficulty"} label="Medium" />
-                            <FilterChipRecipes numericValue={"hard"} filterType={"difficulty"} label="Hard" />
+                            {
+                                // recipe difficulty chips =====================================================================
+                                difficultyChips &&
+                                    difficultyChips.map((chip, index) => {
+                                        return (
+                                            <FilterChipRecipes
+                                                filters={filtersName}
+                                                key={index}
+                                                propValue={chip.propValue}
+                                                filterType={"difficulty"}
+                                                label={chip.label}
+                                            />
+                                        )
+                                    })
+                            }
                         </div>
                     </div>
                 </section>
-                <footer></footer>
+
+                {positionUnfixed && (
+                    <footer className={classes.footer}>
+                        <InlineMessage loading={preferencesUpdateLoading} error={preferencesUpdateError} />
+                        <div className={classes.buttonsWrapper}>
+                            <Button
+                                label="Discard"
+                                iconLeft={<DeleteOutlineOutlinedIcon fontSize="small" />}
+                                action={() => {
+                                    navigate({ to: "/settings" })
+                                }}
+                            />
+                            <Button
+                                label="Save"
+                                iconLeft={<DoneAllOutlinedIcon fontSize="small" />}
+                                style="primary"
+                                action={() => {
+                                    updateDBFilters()
+
+                                    const intervalId = setInterval(() => {
+                                        if (!preferencesUpdateLoading && !preferencesUpdateError) {
+                                            handleOpenSnackbar("Your preferences were successfully updated")
+                                            navigate({ to: "/settings" })
+
+                                            clearInterval(intervalId)
+                                        }
+                                    }, 350) // Controllo ogni 350ms (c'è il debounce di 300)
+                                }}
+                            />
+                        </div>
+                    </footer>
+                )}
             </div>
-        </div>
+            <Snackbar />
+        </>
     )
 }

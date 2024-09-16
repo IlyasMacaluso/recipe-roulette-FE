@@ -7,9 +7,27 @@
     justify-content: center;
 
     padding: $size-20;
-    padding-bottom: 2rem;
     box-sizing: border-box;
+    background-color: white;
 
     height: 100%;
     overflow: hidden;
+}
+
+.noVerticalPadding {
+    padding: 0 $size-20;
+}
+
+noHorizontalPadding {
+    padding: $size-20 0;
+}
+.noPadding {
+    padding: 0;
+}
+
+@media screen and (min-width: 1120px) {
+    .pageFH {
+        padding: $size-24;
+        padding-top: 0;
+    }
 }

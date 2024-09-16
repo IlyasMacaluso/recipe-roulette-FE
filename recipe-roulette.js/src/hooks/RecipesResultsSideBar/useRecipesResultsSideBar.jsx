@@ -1,14 +1,14 @@
 import { useState } from "react";
 
 export function useRecipesResultsSideBar() {
-  const [sideBarState, setSideBarState] = useState(false);
+  const [filtersSidebar, setSideBarState] = useState(false);
 
-  function toggleSidebarRecipes() {
+  function setFiltersSidebar() {
     setSideBarState((prev) => !prev);
   }
 
   return {
-    sideBarState,
-    toggleSidebarRecipes,
+    filtersSidebar,
+    setFiltersSidebar,
   };
 }

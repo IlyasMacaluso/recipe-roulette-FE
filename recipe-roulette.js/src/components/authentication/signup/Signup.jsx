@@ -7,7 +7,6 @@ import EditNoteIcon from "@mui/icons-material/EditNote"
 import StartIcon from "@mui/icons-material/Start"
 import CloseIcon from "@mui/icons-material/Close"
 
-
 import classes from "../login/Login.module.scss"
 import { Input } from "../../Input/Input"
 import { useForm } from "../../../hooks/useForm/useForm"
@@ -28,6 +27,20 @@ export function Signup({ setShowPopup = null, setChangeToSignup = null }) {
     const { password, confirmPass, username, email, termsAndConditions } = useMemo(() => {
         return data
     }, [data])
+
+    const message = useMemo(() => {
+        if (password && confirmPass) {
+            if (password.length >= 8 || confirmPass.length >= 8) {
+                if (password !== confirmPass) {
+                    return "Passwords do not match"
+                } else {
+                    return null
+                }
+            } else {
+                return "Password must be at least 8 characters long"
+            }
+        }
+    })
 
     return (
         <div className={`${classes.container}`}>
@@ -98,7 +111,7 @@ export function Signup({ setShowPopup = null, setChangeToSignup = null }) {
                     />
                 </div>
 
-                <InlineMessage error={error} loading={loading} />
+                <InlineMessage message={message && message} error={error} loading={loading} />
 
                 <div className={classes.buttonsWrapper}>
                     <Button
@@ -106,7 +119,7 @@ export function Signup({ setShowPopup = null, setChangeToSignup = null }) {
                         width="fill"
                         type="submit"
                         label="Sign up"
-                        icon={<EditNoteIcon fontSize="small" />}
+                        iconLeft={<EditNoteIcon fontSize="small" />}
                         active={username && password && confirmPass && email && termsAndConditions && confirmPass === password}
                         prevPath={location.pathname}
                     />
@@ -115,7 +128,7 @@ export function Signup({ setShowPopup = null, setChangeToSignup = null }) {
                         action={() => setShowPopup && setShowPopup(false)}
                         prevPath={location.pathname}
                         label="Skip"
-                        icon={<StartIcon fontSize="small" />}
+                        iconLeft={<StartIcon fontSize="small" />}
                     />
                 </div>
                 <div className={classes.loginToSignup}>

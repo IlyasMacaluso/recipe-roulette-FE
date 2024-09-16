@@ -1,20 +1,24 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { useCancelMutation } from "../useCancelMutation.jsx/useCancelMutation"
 import axios from "axios"
+import { useLocalStorage } from "../useLocalStorage/useLocalStorage"
 
 export function usePostRequest() {
     const { cancelMutation } = useCancelMutation()
+    const { getValue } = useLocalStorage()
     const queryClient = useQueryClient()
 
     const postRequest = async (data) => {
+        const userData = getValue("userData")
         try {
-            const url = data.url
-            const signal = data?.signal
-            const payload = data?.payload
-            const res = await axios.post(url, payload, { signal })
+            const { url = null, signal = null, payload = null } = data
+            const token = userData?.token
+            const headers = token ? { Authorization: `Bearer ${token}` } : undefined
+
+            const res = await axios.post(url, payload, { headers, signal })
 
             if (res.status !== 201) {
-                throw new Error(`Network error, ${res?.data.msg || "Bad request"}`)
+                throw new Error(`Network error, ${res.data.msg || "Something went wrong"} `)
             }
 
             return res.data
@@ -31,12 +35,16 @@ export function usePostRequest() {
     const mutation = useMutation({
         mutationFn: postRequest,
         onMutate: async (variables) => {
-            const abortController = new AbortController()
-            const context = { id: variables.mutationId, abortController, variables }
-            return context
+            if (variables.mutationId) {
+                const abortController = new AbortController()
+                const context = { id: variables.mutationId, abortController, variables }
+                return context
+            }
         },
         onSuccess: (data, variables) => {
-            data && console.log(data)
+            console.log(data)
+
+            variables.onSuccess && variables.onSuccess() // se c'è un parametro onSuccess, esegui il suo contenuto
 
             if (variables?.queryKey) {
                 variables.queryKey.forEach((key) => {
@@ -44,24 +52,30 @@ export function usePostRequest() {
                 })
             }
         },
-        onError: (error) => {
-            console.error(error)
+        onError: (error, variables) => {
+            console.error(error.response.data.msg)
+            variables.onError && variables.onError() // se c'è un parametro onError, esegui il suo contenuto
         },
     })
 
-    const handlePostRequest = async ({ url, payload, mutationId = null, queryKey = null }, meta = null) => {
+    const handlePostRequest = async (
+        { url, payload, mutationId = null, queryKey = null, onSuccess = null, onError = null },
+        meta = null
+    ) => {
         mutationId && cancelMutation(mutationId)
         mutation.mutate(
             {
                 url,
                 payload, //data needed for the post request
                 mutationId, // needed to cancel previous requests
-                queryKey, //invalidate query onSuccess (re execute query with this id)
+                queryKey, //invalidate query onSuccess (re-fetch query with this id)
+                onSuccess, //operations to execute on query success
+                onError,
                 signal: mutationId ? mutation?.context?.abortController.signal : null, // cancels previous requests with that mutationId
             },
             { meta } //scopeId (queue requests with same scopeId)
         )
     }
 
-    return { handlePostRequest, postRequest }
+    return { handlePostRequest, postRequest, loading: mutation.isPending, error: mutation.error }
 }

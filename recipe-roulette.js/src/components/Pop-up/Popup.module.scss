@@ -13,7 +13,7 @@
 
     padding: $size-24 0;
     z-index: 1000;
-    animation: fadeIn 0.5s;
+    animation: fadeIn 0.45s cubic-bezier(0.08, 0.82, 0.17, 1);
     box-sizing: border-box;
 }
 
@@ -22,10 +22,8 @@
     flex-direction: column;
     gap: $size-8;
     height: fit-content;
-    animation: slideUp 0.5s;
-    //fixa il popup che non si chiude e permette comunque di scrollare quando necessario 
-    //centra vericalmente e orizzontalmente quindi ho tolto i justify-content e align items
-    margin: auto; 
+    animation: zoomIn 0.45s cubic-bezier(0.08, 0.82, 0.17, 1);
+    margin: auto;
 }
 
 @keyframes fadeIn {
@@ -37,11 +35,11 @@
     }
 }
 
-@keyframes slideUp {
+@keyframes zoomIn {
     from {
-        transform: translateY(100%);
+        scale: 0.7;
     }
     to {
-        transform: translateY(0);
+        scale: 1;
     }
 }

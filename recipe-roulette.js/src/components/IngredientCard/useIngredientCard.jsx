@@ -29,7 +29,7 @@ export function useIngredientCard(ing) {
     function handleIngredientClick() {
         if (cardState.is_blacklisted && !cardState.is_selected) {
             handleOpenSnackbar("The ingredient is blacklisted!")
-        } else if (!ingredients?.filtered.find((ing) => ing.id === cardState.id) && !cardState.is_selected) {
+        } else if (!ingredients?.filteredFavorites.find((ing) => ing.id === cardState.id) && !cardState.is_selected) {
             handleOpenSnackbar("You have filtered this type of ingredeints!")
         } else {
             handleIngUpdate("is_selected", cardState)

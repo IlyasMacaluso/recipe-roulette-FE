@@ -9,14 +9,14 @@ export function useGetRequest() {
 
             const res = await axios.get(url)
 
-            if (res.status !== 200) {
+            if (res.status !== 200) {                
                 throw new Error(`Network error, ${res?.data.msg || "Bad request"}`)
             }
 
             return res.data
         } catch (error) {
             console.log(error)
-            throw new Error(error || "soemthing went wrong")
+            throw new Error(error || "Something went wrong")
         }
     }
 

@@ -1,8 +1,10 @@
-import RecipeCard from "../../components/RecipeCard/RecipeCard"
 import { useAnimate } from "../../hooks/animatePages/useAnimate"
 import { useRecipesContext } from "../../contexts/RecipesContext"
 import { useMemo, useState } from "react"
 import { useAuth } from "../../hooks/Auth/useAuth"
+import { useLoginToSignup } from "../../hooks/loginToSignup/useLoginToSignup"
+
+import { RecipeCard } from "../../components/RecipeCard/RecipeCard"
 import { Popup } from "../../components/Pop-up/Popup"
 import { createPortal } from "react-dom"
 import { Login } from "../../components/authentication/login/Login"
@@ -10,101 +12,137 @@ import { useLocationHook } from "../../hooks/useLocationHook"
 import { Button } from "../../components/Buttons/Button/Button"
 import { Skeleton } from "@mui/material"
 import { Placeholder } from "../../components/Placeholder/Placeholder"
+import { Signup } from "../../components/authentication/signup/Signup"
+import { InlineMessage } from "../../components/InlineMessage/InlineMessage"
 
 import LoopOutlinedIcon from "@mui/icons-material/LoopOutlined"
 import RotateLeftOutlinedIcon from "@mui/icons-material/RotateLeftOutlined"
 import LoginIcon from "@mui/icons-material/Login"
-import classes from "./Favorite.module.scss"
+
+import loginImage from "../../assets/images/Mobile login-bro.svg"
+import addNoteImage from "../../assets/images/Add notes-bro.svg"
+import shrugImage from "../../assets/images/Shrug-bro.svg"
+
+import layout from "../../assets/scss/pageLayout/pageWScroll.module.scss"
+import transition from "../../assets/scss/pageLayout/pageTransition.module.scss"
 
 export function Favorited() {
-    const { recipes, inputValue, handleDeselectRecipeFilters, setInputValue, favoritedLoading, historyLoading, foodPrefLoading } =
-        useRecipesContext()
-    const { isAuthenticated } = useAuth()
     const [showPopup, setShowPopup] = useState()
+    const {
+        recipes,
+        inputValue,
+        deselectFilters,
+        setInputValue,
+        favoritedLoading,
+        historyLoading,
+        foodPrefLoading,
+        favoritedError,
+        recipeFilters,
+        setRecipeFilters
+    } = useRecipesContext()
+    const { isAuthenticated } = useAuth()
+    const { changeToSignup, setChangeToSignup } = useLoginToSignup()
 
     const { location } = useLocationHook()
     const { animate } = useAnimate(location)
 
     const searchFavorites = useMemo(() => {
-        return recipes.filtered.filter((recipe) => recipe.title.toLowerCase().includes(inputValue.toLowerCase()))
-    }, [inputValue, recipes.filtered, recipes.favorited])
+        return recipes.filteredFavorites.filter((rec) => rec.title.toLowerCase().includes(inputValue.toLowerCase()))
+    }, [inputValue, recipes.filteredFavorites, recipes.favorited, recipeFilters])
 
-    return (
-        <div className={`${classes.favoritePage} ${animate && classes.animateFavorite}`}>
-            {favoritedLoading || foodPrefLoading || historyLoading ? (
-                [...Array(3)].map(() => (
-                    <Skeleton key={Math.random()} sx={{ bgcolor: "#c5e4c9" }} variant="rounded" width={"100%"} height={"280px"} />
-                ))
-            ) : isAuthenticated && recipes?.favorited.length > 0 ? (
-                <>
-                    {searchFavorites && searchFavorites.length > 0 ? (
-                        <section className={classes.recipesWrapper}>
-                            {searchFavorites.map((recipe) => (
-                                <RecipeCard recipe={recipe} key={recipe.id + recipe.title} />
-                            ))}
-                        </section>
-                    ) : (
-                        <Placeholder
-                            bottomImage={"searching.svg"}
-                            text="Your search has  "
-                            hightlitedText="no matching results"
-                            highlightColor="#dd3e46"
-                            spacious={true}
-                            buttons={[
-                                <Button
-                                    icon={<RotateLeftOutlinedIcon fontSize="small"/>}
-                                    height={"large"}
-                                    label="Reset Filters"
-                                    action={() => {
-                                        setInputValue("")
-                                        handleDeselectRecipeFilters()
-                                    }}
-                                />,
-                            ]}
-                        />
-                    )}
-                </>
-            ) : isAuthenticated ? (
-                <Placeholder
-                    topImage={"undraw_add_files_re_v09.svg"}
-                    text="Your Favorited list is empty!  "
-                    hightlitedText="Favorite your first recipe!"
-                    buttons={[
-                        <Button
-                            icon={<LoopOutlinedIcon fontSize="small" />}
-                            height="large"
-                            style="primary"
-                            label="Start Ingredients Shuffle"
-                            link={"/roulette"}
-                        />,
-                    ]}
-                />
-            ) : (
-                <>
+    if (favoritedError) {
+        return (
+            <div className={`${layout.scrollPage} ${animate ? transition.animationEnd : transition.animationStart}`}>
+                <InlineMessage error={favoritedError} />
+                <Placeholder topImage={shrugImage} text="Oops >.< something went wrong!" />
+            </div>
+        )
+    } else {
+        return (
+            <div className={`${layout.scrollPage} ${animate ? transition.animationEnd : transition.animationStart}`}>
+                {favoritedLoading || foodPrefLoading || historyLoading ? (
+                    [...Array(3)].map(() => (
+                        <Skeleton key={Math.random()} sx={{ bgcolor: "#c5e4c9" }} variant="rounded" width={"100%"} height={"280px"} />
+                    ))
+                ) : isAuthenticated && recipes?.favorited.length > 0 ? (
+                    <>
+                        {searchFavorites && searchFavorites.length > 0 ? (
+                            <section className={layout.recipesWrapper}>
+                                    {searchFavorites.map((recipe, index) => (
+                                        <RecipeCard recipe={recipe} key={`${recipe.id}_${recipe.title}`} />
+                                    ))}
+                            </section>
+                        ) : (
+                            <Placeholder
+                                bottomImage={shrugImage}
+                                text="Your search has  "
+                                hightlitedText="no matching results"
+                                bottomPadding={true}
+                                buttons={[
+                                    <Button
+                                        iconLeft={<RotateLeftOutlinedIcon fontSize="small" />}
+                                        height={"large"}
+                                        label="Reset Filters"
+                                        key={"Reset Filters"}
+                                        action={() => {
+                                            setInputValue("")
+                                            deselectFilters({ filters: "recipeFilters", setFilters: setRecipeFilters })
+
+                                        }}
+                                    />,
+                                ]}
+                            />
+                        )}
+                    </>
+                ) : isAuthenticated ? (
                     <Placeholder
-                        topImage={"undraw_access_account_re_8spm.svg"}
-                        text="Your Favorited list is empty,  "
+                        topImage={addNoteImage}
+                        text="Your Favorited list is empty!  "
                         hightlitedText="Favorite your first recipe!"
-                        spacious={true}
+                        bottomPadding={true}
                         buttons={[
                             <Button
-                                icon={<LoginIcon fontSize="small" />}
-                                style="primary"
+                                iconLeft={<LoopOutlinedIcon fontSize="small" />}
                                 height="large"
-                                label="Login or Signup"
-                                action={() => setShowPopup(true)}
+                                style="primary"
+                                key={"Start Ingredients Shuffle"}
+                                label="Start Ingredients Shuffle"
+                                link={"/roulette"}
                             />,
                         ]}
                     />
-                    {showPopup &&
-                        createPortal(
-                            <Popup>
-                                <Login setShowPopup={setShowPopup} />
-                            </Popup>,
-                            document.getElementById("popup-root")
-                        )}
-                </>
-            )}
-        </div>
-    )
+                ) : (
+                    <>
+                        <Placeholder
+                            topImage={loginImage}
+                            bottomPadding={true}
+                            text="You need to login,  "
+                            hightlitedText="to see add or see favorites!"
+                            buttons={[
+                                <Button
+                                    key={"Login or Signup"}
+                                    iconLeft={<LoginIcon fontSize="small" />}
+                                    style="primary"
+                                    height="large"
+                                    label="Login or Signup"
+                                    action={() => setShowPopup(true)}
+                                />,
+                            ]}
+                        />
+                        {showPopup &&
+                            createPortal(
+                                <Popup>
+                                    {!changeToSignup ? (
+                                        <Login setChangeToSignup={setChangeToSignup} setShowPopup={setShowPopup} />
+                                    ) : (
+                                        <Signup setChangeToSignup={setChangeToSignup} setShowPopup={setShowPopup} />
+                                    )}
+                                </Popup>,
+                                document.getElementById("popup-root")
+                            )}
+                    </>
+                )}
+            </div>
+        )
+    }
 }

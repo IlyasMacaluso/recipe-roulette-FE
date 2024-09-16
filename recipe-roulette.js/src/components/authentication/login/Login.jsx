@@ -33,7 +33,7 @@ export function Login({ setShowPopup = null, setChangeToSignup = null }) {
         const userData = getValue("userData")
         if (userData) {
             const { username, rememberMe } = userData
-            userData.rememberMe && setData((prev) => ({ ...prev, username: username, rememberMe: rememberMe }))
+            rememberMe && setData((prev) => ({ ...prev, username: username, rememberMe: rememberMe }))
         }
     }, [])
 
@@ -95,7 +95,7 @@ export function Login({ setShowPopup = null, setChangeToSignup = null }) {
                         type="submit"
                         style="primary"
                         label="Login"
-                        icon={<LoginIcon fontSize="small" />}
+                        iconLeft={<LoginIcon fontSize="small" />}
                         active={data.username && data.password}
                     />
 
@@ -103,7 +103,7 @@ export function Login({ setShowPopup = null, setChangeToSignup = null }) {
                         action={() => setShowPopup && setShowPopup(false)}
                         prevPath={location.pathname}
                         label="Skip"
-                        icon={<StartIcon fontSize="small" />}
+                        iconLeft={<StartIcon fontSize="small" />}
                     />
                 </div>
 

@@ -1,66 +1,72 @@
 @use "../../assets/scss/" as *;
 
 .snackbar {
-  z-index: 10 ;
-  position: fixed;
+    position: fixed;
+    z-index: 10;
 
-  left: 50%;
-  transform: translateX(-50%);
+    left: 50%;
+    transform: translateX(-50%);
 
-  width: 91%;
-  padding: 1rem 1rem;
-  border-radius: 1rem;
-  box-shadow: 0 0 10px rgba($color: $darkest-gray, $alpha: 0.2);
-  box-sizing: border-box;
-  color: $darkish-gray;
-  background-color: $lightest-green;
-  border: 1px solid $light-gray;
+    width: calc(100vw - 32px);
+    padding: 1rem;
+    border-radius: 1rem;
+    box-shadow: 0 0 10px rgba($color: $darkest-gray, $alpha: 0.2);
+    box-sizing: border-box;
 
+    color: $dark-green;
+    background-color: white;
+    border: 1px solid $light-desaturated-green;
 
-  font-family: $header-text;
-  font-size: 14px;
-  font-weight: 600;
+    font-family: $font-poppins;
+    font-size: 14px;
+    font-weight: 600;
 
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 .snackbar .leftItems {
-  height: 100%;
-
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
 }
 .snackbar p {
-  margin: 0;
+    margin: 0;
 }
 .snackbar .rightItems {
-  display: flex;
-  align-items: center;
+    display: flex;
+    align-items: center;
 }
 .snackbar .ico {
-  border: none;
-  background-color: transparent;
-  padding-top: 2px;
-  color: $darkish-gray;
+    padding-top: 2px;
 }
 
 .snackbarInactive {
-  bottom: -5rem;
-  transition: bottom 0.3s ease;
+    bottom: -15rem;
+    transition: bottom 0.3s ease;
 }
 .snackbarActive {
-  bottom: 1rem;
-  transition: bottom 0.3s ease;
+    bottom: .75rem;
+    transition: bottom 0.3s ease;
 }
 
 .snackbar button {
-  padding: 0 4px;
-  font-weight: 600;
-  text-decoration: underline;
-  color: #58933D;
-  border: none;
-  text-decoration: none;
-  background-color: transparent;
+    padding: 0 4px;
+    font-weight: 600;
+    text-decoration: underline;
+    color: #58933d;
+    border: none;
+    text-decoration: none;
+    background-color: transparent;
+}
+
+@media screen and (min-width: 1120px) {
+    .snackbar {
+        position: absolute;
+        width: calc(100% - 48px)
+    }
+    .snackbarActive {
+        bottom: $size-24;
+    }
 }

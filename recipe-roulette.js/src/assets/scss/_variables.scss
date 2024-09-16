@@ -2,9 +2,8 @@
 @import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
 
 // font
-$font-logo: "Poppins";
-$font-title: "Puritan", "Noto Sans", "system-ui";
-$header-text: "Poppins", "Lato", "Roboto", "Segoe UI", "system-ui";
+$font-metropolitan: "Metropolitan", "Noto Sans", "system-ui";
+$font-poppins: "Poppins", "Montserrat", "Lato", "Roboto", "Segoe UI", "system-ui";
 $font-text: "Noto Sans CJK KR", "Lato", "Roboto", "system-ui";
 
 // text dimension
@@ -23,6 +22,7 @@ $darkest-green: #23512a;
 $dark-green: #2f7a4f;
 $darkish-green: #449a50;
 $medium-green: #87c38f;
+$card-img-green: #DEF7E5;
 $light-green: #c5e4c9;
 $light-desaturated-green: #d9e9dc;
 $lightest-green: #f8fff8;
@@ -33,8 +33,10 @@ $yellow: #ba9f36;
 
 // red
 $red: #dd3e46;
-$dark-red: #a2191f;
+$dark-red: #881a20;
 $medium-red: #fa4d56;
+$light-red: #fff6f7;
+$light-desaturated-red: #f0e2e2;
 
 // yellow
 $light-yellow: #ece4b9;
@@ -52,6 +54,7 @@ $lighter-gray: #f7f3f2; // outline (when selected)
 // layout (border, padding, margin)
 $size-4: 4px;
 $size-8: 8px;
+$size-12: 12px;
 $size-16: 16px;
 $size-20: 20px;
 $size-24: 24px;

@@ -1,14 +1,18 @@
-import RecipeCard from "../../components/RecipeCard/RecipeCard"
-import { useAnimate } from "../../hooks/animatePages/useAnimate"
+import { RecipeCard } from "../../components/RecipeCard/RecipeCard"
 
+import { useAnimate } from "../../hooks/animatePages/useAnimate"
 import { useRecipesContext } from "../../contexts/RecipesContext"
 import { useSnackbar } from "../../components/Snackbar/useSnackbar"
 import { useLocationHook } from "../../hooks/useLocationHook"
 
-import classes from "./RecipesResults.module.scss"
 import { BlocksShuffleThree } from "react-svg-spinners"
 import { useRecipesFetch } from "../../hooks/useRecipesFetch/useRecipesFetch"
 import { Placeholder } from "../../components/Placeholder/Placeholder"
+
+import loadingImage from "../../assets/images/healthy food-bro.svg"
+
+import layout from "../../assets/scss/pageLayout/pageWScroll.module.scss"
+import transition from "../../assets/scss/pageLayout/pageTransition.module.scss"
 
 export function RecipeResults() {
     const { recipes } = useRecipesContext()
@@ -19,15 +23,15 @@ export function RecipeResults() {
     const { animate } = useAnimate(location)
 
     return (
-        <div className={`${classes.recipesResultsPage} ${animate && classes.animateFavorite} `}>
-            {!state.loading ? (
-                <section className={classes.recipesWrapper}>
+        <div className={`${layout.scrollPage} ${animate ? transition.animationEnd : transition.animationStart} `}>
+            {state.loading ? (
+                <section className={layout.recipesWrapper}>
                     {recipes.results &&
                         recipes.results.map((recipe) => {
                             return (
                                 <RecipeCard
                                     handleClickLoginSnackBar={handleClickLoginSnackBar}
-                                    key={recipe.id + recipe.title}
+                                    key={`${recipe.id}_${recipe.title}`}
                                     recipe={recipe}
                                 />
                             )
@@ -35,9 +39,13 @@ export function RecipeResults() {
                 </section>
             ) : (
                 <Placeholder
+                    topPadding={true}
+                    bottomPadding={true}
                     text="Generating Your Recipes, "
+                    highlightColor={"#449a50"}
                     hightlitedText="This could take a few minutes"
-                    loadingAnimation={<BlocksShuffleThree color="#00a55b" width={"40%"} height={"40%"} />}
+                    topImage={loadingImage}
+                    loadingAnimation={<BlocksShuffleThree color="#449a50" width={"20%"} height={"20%"} />}
                 />
             )}
         </div>

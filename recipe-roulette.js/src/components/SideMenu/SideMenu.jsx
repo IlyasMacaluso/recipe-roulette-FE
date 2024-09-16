@@ -1,15 +1,12 @@
-import { useAuth } from "../../hooks/Auth/useAuth"
+// components
 import { NavigationLink } from "./NavigationLink/NavigationLink"
 import { IcoButton } from "../Buttons/IcoButton/IcoButton"
 import { createPortal } from "react-dom"
 import { Popup } from "../Pop-up/Popup"
-import { useState } from "react"
-import { ValidationBox } from "../Validation Box/ValidationBox"
 import { Login } from "../authentication/login/Login"
-import { useLocation } from "@tanstack/react-router"
-import { useLoginToSignup } from "../../hooks/loginToSignup/useLoginToSignup"
 import { Signup } from "../authentication/signup/Signup"
-import { useLogout } from "../../hooks/Form/useLogout"
+import { ConfirmPopup } from "../ConfirmPopup/ConfirmPopup"
+import { Button } from "../Buttons/Button/Button"
 
 import BookmarksOutlinedIcon from "@mui/icons-material/BookmarksOutlined"
 import SettingsOutlinedIcon from "@mui/icons-material/SettingsOutlined"
@@ -19,6 +16,14 @@ import LogoutIcon from "@mui/icons-material/Logout"
 import CloseIcon from "@mui/icons-material/Close"
 import HistoryIcon from "@mui/icons-material/History"
 
+// hooks
+import { useState } from "react"
+import { useLogout } from "../../hooks/Form/useLogout"
+import { useLocation } from "@tanstack/react-router"
+import { useLoginToSignup } from "../../hooks/loginToSignup/useLoginToSignup"
+import { useAuth } from "../../hooks/Auth/useAuth"
+
+// CSS
 import classes from "./SideMenu.module.scss"
 
 export function SideMenu({ handleMenuToggle, menuState = false }) {
@@ -62,23 +67,27 @@ export function SideMenu({ handleMenuToggle, menuState = false }) {
     ]
 
     return (
-        <div>
+        <>
+
             <div
-                onClick={handleMenuToggle}
+                onClick={() => handleMenuToggle(false)}
                 className={`${classes.backgroundOverlay} ${menuState && classes.backgroundOverlayToggled}`}
             ></div>
+
             <div className={`${classes.sidebar} ${menuState && classes.sidebarToggled}`}>
+
                 <header>
                     <h4>Browse</h4>
-                    <IcoButton action={handleMenuToggle} icon={<CloseIcon />} style="transparent" />
+                    <IcoButton action={() => handleMenuToggle(false)} icon={<CloseIcon />} style="transparent" />
                 </header>
+
                 <section className={classes.links}>
                     {navigationLinks.map((item) => {
                         return (
                             <NavigationLink
                                 key={item.id}
                                 path={pathname}
-                                handleMenuToggle={handleMenuToggle}
+                                handleMenuToggle={()=>handleMenuToggle(false)}
                                 label={item.label}
                                 destination={item.destination}
                                 icon={item.icon}
@@ -87,17 +96,28 @@ export function SideMenu({ handleMenuToggle, menuState = false }) {
                         )
                     })}
                 </section>
+
             </div>
+
             {showPopup &&
                 createPortal(
                     <Popup>
                         {isAuthenticated ? (
-                            <ValidationBox
+                            <ConfirmPopup
+                                title={"Are you sure you want to logout?"}
                                 loading={loading}
                                 error={error}
-                                message="Confirm logout?"
-                                setShowPopup={setShowPopup}
-                                handleValidation={handleLogout}
+                                buttons={[
+                                    <Button key={"button2"} label="Cancel" action={() => setShowPopup(false)} />,
+                                    <Button
+                                        key={"button1"}
+                                        style={"primary"}
+                                        label="Logout"
+                                        action={() => {
+                                            handleLogout()
+                                        }}
+                                    />,
+                                ]}
                             />
                         ) : !changeToSignup ? (
                             <Login setChangeToSignup={setChangeToSignup} setShowPopup={setShowPopup} />
@@ -107,6 +127,7 @@ export function SideMenu({ handleMenuToggle, menuState = false }) {
                     </Popup>,
                     document.getElementById("popup-root")
                 )}
-        </div>
+                
+        </>
     )
 }

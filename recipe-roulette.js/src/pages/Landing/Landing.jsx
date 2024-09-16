@@ -1,26 +1,41 @@
-import { Link } from "@tanstack/react-router"
 import { useAnimate } from "../../hooks/animatePages/useAnimate"
 import { useLocationHook } from "../../hooks/useLocationHook"
 
-import LoopOutlinedIcon from "@mui/icons-material/LoopOutlined"
-import VolunteerActivismOutlinedIcon from "@mui/icons-material/VolunteerActivismOutlined"
-import classes from "./Landing.module.scss"
 import { Placeholder } from "../../components/Placeholder/Placeholder"
 import { Button } from "../../components/Buttons/Button/Button"
+
+import LoopOutlinedIcon from "@mui/icons-material/LoopOutlined"
+import VolunteerActivismOutlinedIcon from "@mui/icons-material/VolunteerActivismOutlined"
+
+import landingImage from "../../assets/images/eating a variety of foods-bro.svg"
+
+import layout from "../../assets/scss/pageLayout/pageFH.module.scss"
+import transition from "../../assets/scss/pageLayout/pageTransition.module.scss"
 
 export function Landing() {
     const { location } = useLocationHook()
     const { animate } = useAnimate(location)
 
     return (
-        <div className={`${classes.discoveryPreview} ${animate && classes.discoveryPreviewAnimate}`}>
+        <div className={`${layout.pageFH} ${animate ? transition.animationEnd : transition.animationStart}`}>
             <Placeholder
                 text="Reduce food wastes and get inspired by "
                 hightlitedText="Recipe Roulette"
-                topImage={"undraw_ideas_flow_re_bmea.svg"}
+                topImage={landingImage}
                 buttons={[
-                    <Button style="primary" label="Start Ingredients Shuffle" height={"large"} icon={<LoopOutlinedIcon />} link="/roulette" />,
-                    <Button label="Support the Developers" icon={<VolunteerActivismOutlinedIcon fontSize="small" />} />,
+                    <Button
+                        key={"Start Ingredients Shuffle"}
+                        style="primary"
+                        label="Start Ingredients Shuffle"
+                        height={"large"}
+                        iconLeft={<LoopOutlinedIcon />}
+                        link="/roulette"
+                    />,
+                    <Button
+                        key={"Support the Developers"}
+                        label="Support the Developers"
+                        iconLeft={<VolunteerActivismOutlinedIcon fontSize="small" />}
+                    />,
                 ]}
             />
         </div>

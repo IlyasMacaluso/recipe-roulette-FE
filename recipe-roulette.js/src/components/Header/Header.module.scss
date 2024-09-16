@@ -11,6 +11,8 @@
     gap: 0.5rem;
     box-sizing: border-box;
     min-height: fit-content;
+    background-color: white;
+    border-radius: $size-24 $size-24 0 0;
     .globalActions {
         z-index: 11;
         top: 58px;
@@ -54,5 +56,31 @@
             stroke: $dark-gray;
             stroke-width: 1;
         }
+    }
+}
+
+@media screen and (min-width: 1120px) {
+    .header {
+        position: initial;
+        height: fit-content;
+        box-sizing: border-box;
+        width: 100%;
+        padding: $size-24;
+        padding-bottom: $size-16;
+    }
+
+    .header .topItem {
+        padding: 1px;
+    }
+
+    .header > .globalActions {
+        padding: 0;
+    }
+
+    .header .topItem > button {
+        display: none;
+    }
+    .header .globalActions > button:last-child {
+        display: none;
     }
 }

@@ -44,7 +44,7 @@
         h4 {
             margin: 0;
             color: $dark-gray;
-            font-family: $header-text;
+            font-family: $font-poppins;
             letter-spacing: 0.05rem;
             font-size: $text-size-16;
         }
@@ -62,7 +62,7 @@
         width: 100%;
         .link {
             width: 100%;
-            font-family: $header-text;
+            font-family: $font-poppins;
             border-radius: 2rem;
             font-size: $size-16;
             font-weight: 500;
@@ -110,4 +110,30 @@
     background-color: $light-gray;
     margin: 0.5rem 0;
     box-sizing: border-box;
+}
+
+@media screen and (min-width: 1120px) {
+    .backgroundOverlay {
+        display: none;
+    }
+    .sidebar,
+    .sidebarToggled {
+        position: initial;
+        transform: translateX(0);
+        flex: 1.5 1 50px;
+        max-width: calc(27.4vw);
+        outline: 1px solid $lighter-gray;
+        border-radius: $size-16;
+        box-shadow: none;
+    }
+    .sidebar > header > button {
+        display: none;
+    }
+}
+
+@media screen and (min-width: 1440px) {
+    .sidebar,
+    .sidebarToggled {
+        max-width: calc(0.235 * 1440px)
+    }
 }

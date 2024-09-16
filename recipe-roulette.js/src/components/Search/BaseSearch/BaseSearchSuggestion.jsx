@@ -1,7 +1,6 @@
 import classes from "./BaseSearchSuggestion.module.scss"
 
 export function BaseSearchSuggestion({ inputRef = null, handleBlur = null, title = "", setInputValue, setState }) {
-    
     function handleSuggestionClick(e) {
         e.preventDefault()
         e.stopPropagation()
@@ -14,9 +13,9 @@ export function BaseSearchSuggestion({ inputRef = null, handleBlur = null, title
                 handleSuggestionClick(e)
                 handleBlur(inputRef, setState)
             }}
-            className={classes.suggestion}
+            className={classes.suggestionWrapper}
         >
-            <p>{title}</p>
+            <p className={classes.suggestion}>{title}</p>
         </div>
     )
 }

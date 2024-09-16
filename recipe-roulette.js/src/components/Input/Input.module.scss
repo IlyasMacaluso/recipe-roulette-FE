@@ -3,12 +3,12 @@
 .inputComponent {
     display: flex;
     flex-direction: column;
-    gap: 0.25rem;
+    gap: 0.5rem;
 
     label {
         padding-left: 0.25rem;
         font-size: $text-size-14;
-        font-family: $header-text;
+        font-family: $font-poppins;
         font-weight: 600;
         color: $dark-gray;
     }
@@ -47,17 +47,17 @@
         input {
             width: 100%;
             border-radius: $size-24;
-            border: 1px solid $light-gray;
+            border: 1px solid $lighter-gray;
             min-height: 40px;
             max-height: 40px;
             box-sizing: border-box;
             padding-left: $size-16;
             font-size: $text-size-14;
-            font-family: $header-text;
+            font-family: $font-poppins;
             letter-spacing: 0.025rem;
 
             &:focus {
-                outline: 2px solid $medium-green;
+                outline: 1px solid $medium-green;
             }
             &::placeholder {
                 font-size: $text-size-14;
@@ -72,7 +72,7 @@
     align-items: center;
     gap: 0.5rem;
     font-size: $text-size-14;
-    font-family: $header-text;
+    font-family: $font-poppins;
     font-weight: 600;
     color: $dark-gray;
 

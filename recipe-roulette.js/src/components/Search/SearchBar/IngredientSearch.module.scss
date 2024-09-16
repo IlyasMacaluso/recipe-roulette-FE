@@ -24,7 +24,7 @@
         display: flex;
         align-items: center;
 
-        font-family: $header-text;
+        font-family: $font-poppins;
         font-size: $text-size-14;
         font-weight: 500;
         line-height: 120%;
@@ -70,7 +70,7 @@
 .inputInactive {
     background-color: white;
     border-radius: $size-24;
-    outline: 1px solid $light-gray;
+    outline: 1px solid $lighter-gray;
     outline-offset: -2px;
     transition: border-radius 1s cubic-bezier(0.08, 0.82, 0.17, 1);
 }
@@ -89,4 +89,19 @@
     height: 100svh;
     padding-bottom: 1rem;
     box-sizing: border-box;
+}
+
+@media screen and (min-width: 1120px) {
+    .positionFixed {
+        position: absolute;
+        top: 0;
+        width: 100%;
+        height: calc(100vh - 2.9rem);
+        border-radius: 1rem;
+        left: 50%;
+        transform: translateX(-50%);
+        overflow: hidden;
+        box-shadow: 0 0 20px rgba($color: #000000, $alpha: 0.1);
+    }
+
 }

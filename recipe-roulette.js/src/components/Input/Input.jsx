@@ -16,7 +16,7 @@ export function Input({
     showText = false,
     handleShowText = false,
     error = null,
-    value = null,
+    value = undefined,
     hasIcons = false,
 }) {
     const { scrollToCenter, refs } = useCenterItem(1)
@@ -39,7 +39,8 @@ export function Input({
                     placeholder={placeholder}
                     required={required}
                     // input content
-                    value={value}
+                    value={type !== "checkbox" ? value : undefined}
+                    checked={type === "checkbox" ? value : null}
                     // ref & actions
                     ref={refs[0]}
                     onChange={(e) => handleInputChange && handleInputChange(e)}

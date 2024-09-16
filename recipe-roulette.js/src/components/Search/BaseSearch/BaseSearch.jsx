@@ -1,12 +1,12 @@
 import { BaseSearchSuggestion } from "./BaseSearchSuggestion"
-
-import CloseIcon from "@mui/icons-material/Close"
-import SearchIcon from "@mui/icons-material/Search"
-
-import classes from "./BaseSearch.module.scss"
 import { useIngredientSearch } from "../SearchBar/useIngredientSearch"
 import { useHandleBackButton } from "../../../hooks/useHandleBackBtn/useHandleBackBtn"
 import { Placeholder } from "../../Placeholder/Placeholder"
+import CloseIcon from "@mui/icons-material/Close"
+import SearchIcon from "@mui/icons-material/Search"
+
+import placeholderImage from "../../../assets/images/Shrug-bro.svg"
+import classes from "./BaseSearch.module.scss"
 
 export function BaseSearch({ data = [], inputValue = "", setInputValue }) {
     const { handlePressEnter, handleInputActivation, handleBlur, setSearchState, setFixedPosition, searchState } = useIngredientSearch()
@@ -19,7 +19,12 @@ export function BaseSearch({ data = [], inputValue = "", setInputValue }) {
                     ref={inputRef}
                     autoComplete="off"
                     className={classes.input}
-                    onKeyDown={(e) => handlePressEnter(e, inputRef, { setCondition: setSearchState, setComponent: setFixedPosition })}
+                    onKeyDown={(e) => {
+                        handlePressEnter(e, inputRef, { setCondition: setSearchState, setComponent: setFixedPosition }, true)
+                        if (e.key === "Escape") {
+                            setInputValue("")
+                        }
+                    }}
                     onClick={handleInputActivation}
                     onChange={(e) => setInputValue(e.target.value)}
                     value={inputValue}
@@ -48,7 +53,7 @@ export function BaseSearch({ data = [], inputValue = "", setInputValue }) {
                     data.map((recipe) => (
                         <BaseSearchSuggestion
                             inputRef={inputRef}
-                            key={recipe.id}
+                            key={`${recipe.id}_${recipe.title}`}
                             id={recipe.id}
                             handleBlur={handleBlur}
                             setInputValue={setInputValue}
@@ -58,12 +63,12 @@ export function BaseSearch({ data = [], inputValue = "", setInputValue }) {
                     ))
                 ) : (
                     <Placeholder
-                    bottomImage={"searching.svg"}
-                    text="Your search has  "
-                    hightlitedText="no matching results"
-                    highlightColor="#dd3e46"
-                    spacious={true}
-                     />
+                        topImage={placeholderImage}
+                        text="Your search has  "
+                        hightlitedText="no matching results"
+                        highlightColor="#dd3e46"
+                        spacious={true}
+                    />
                 )}
             </div>
         </div>

@@ -1,5 +1,5 @@
 import { useAuth } from "../Auth/useAuth"
-import { useMutation } from "@tanstack/react-query"
+import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { useSnackbar } from "../../components/Snackbar/useSnackbar"
 import { useLocalStorage } from "../useLocalStorage/useLocalStorage"
 import { usePostRequest } from "../usePostRequest/usePostRequest"
@@ -9,21 +9,29 @@ export function useLogout(setShowPopup) {
     const { setIsAuthenticated } = useAuth()
     const { handleOpenSnackbar } = useSnackbar()
     const { postRequest } = usePostRequest()
+    const queryClient = useQueryClient()
 
     const Logout = useMutation({
-        mutationFn: () => postRequest({ url: "http://localhost:3000/api/users/logout", payload: getValue("userData") }),
+        mutationFn: () => {
+            const { username, email, token, id } = getValue("userData")
+            const user = {username, email, token, id}
+            return postRequest({ url: "http://localhost:3000/api/users/logout", payload: user })
+        },
         onSuccess: () => {
             let newUserData = getValue("userData")
             newUserData = { ...newUserData, token: null }
 
-            setValue("userData", newUserData) // setLocalStorage localStorage
             setIsAuthenticated(false)
+            setValue("userData", newUserData) // setLocalStorage localStorage
+
+            const keys = [["get-recipes-history"], ["get-food-preferences"], ["get-favorited-recipes"], ["ingredients"]]
+            keys.forEach((key) => queryClient.invalidateQueries(key))
+
             handleOpenSnackbar("You are now logged out!", 3000)
             setTimeout(() => setShowPopup(false), 0)
         },
         onError: (error) => {
-            handleOpenSnackbar(error.message, 3500)
-            console.error("Login failed:", error.message)
+            console.error("Logout failed:", error.message)
         },
     })
 

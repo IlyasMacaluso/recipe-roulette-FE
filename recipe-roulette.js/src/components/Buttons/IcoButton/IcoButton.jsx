@@ -1,7 +1,7 @@
 import { useNavigate } from "@tanstack/react-router"
 import classes from "./IcoButton.module.scss"
 
-export function IcoButton({ style = "default", navigateTo = null, icon = null, action = null, active = true }) {
+export function IcoButton({ style = "default", link = null, icon = null, action = null, active = true }) {
     const navigate = useNavigate()
     return (
         <button
@@ -9,8 +9,8 @@ export function IcoButton({ style = "default", navigateTo = null, icon = null, a
             onClick={() => {
                 action && action()
                 setTimeout(() => {
-                    navigateTo && navigate(navigateTo)
-                }, 0);
+                    link && navigate({ to: link })
+                }, 0)
             }}
             className={`
                 ${classes.button}

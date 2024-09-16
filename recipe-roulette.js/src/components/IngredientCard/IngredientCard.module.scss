@@ -2,10 +2,10 @@
 
 .ingredientCard {
     width: 100%;
-    
+
     height: 0;
     flex-grow: 1;
-    
+
     box-sizing: border-box;
 
     display: flex;
@@ -26,9 +26,9 @@
     p {
         padding-left: 0.5rem;
         align-content: center;
-        font-family: "Puritan";
-        font-weight: 400;
-        font-size: 18px;
+        font-family: "Metropolitan";
+        font-weight: 500;
+        font-size: $text-size-16;
         color: $dark-gray;
         transition:
             font-size 0.3s ease,
@@ -53,13 +53,17 @@
     }
 }
 .ingredientCard:last-child {
-    border-radius: 8px 8px 16px 16px;
+    border-bottom-right-radius: $size-16;
+    border-bottom-left-radius: $size-16;
 }
 .ingredientCard:first-child {
-    border-radius: 16px 16px 8px 8px;
-}
+    border-top-right-radius: $size-16;
+    border-top-left-radius: $size-16;}
 
 .unselected {
+    background-color: $lightest-green;
+    // outline: 1px solid $light-desaturated-green;
+    // outline-offset: -2px;
     transition: border-radius 0.3s ease-out;
     .rightItems {
         opacity: 1;
@@ -67,16 +71,16 @@
     }
 }
 .selected {
-    outline: 2px solid $darkish-gray;
+    outline: 1px solid $darkish-gray;
     outline-offset: -2px;
     transition: border-radius 0.3s ease-out;
+    background-color: $light-green;
     .leftItems {
         transform: translateX(0.25em);
         transition: transform 0.3s ease;
     }
     p {
         padding-left: 0.75rem;
-        font-weight: bold;
         transition: padding 0.3s ease;
     }
     .checkIco {
@@ -88,6 +92,15 @@
         transition: opacity 0.2s ease-in-out;
     }
 }
-.ingredientCard:hover{
+.ingredientCard:hover {
     cursor: pointer;
+}
+@media screen and (min-width: 880px) {
+    .ingredientCard {
+        border-radius: $size-8 ;
+    }
+    .selected {
+        outline-width: 3px;
+        outline-offset: -3px;
+    }    
 }

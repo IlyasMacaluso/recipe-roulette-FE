@@ -1,14 +1,81 @@
 import { useAuth } from "../../hooks/Auth/useAuth"
 import { useLocalStorage } from "../../hooks/useLocalStorage/useLocalStorage"
 import { usePostRequest } from "../../hooks/usePostRequest/usePostRequest"
+import { useDebounce } from "../../hooks/useDebounce/useDebounce"
+import { useEffect, useState } from "react"
 
-export const useRecipesUpdate = (setRecipes) => {
+export const useRecipesUpdate = (recipes, setRecipes) => {
+    const [updatedRec, setUpdatedRec] = useState({ previous: null, current: null })
     const { setValue, getValue } = useLocalStorage()
     const { handlePostRequest } = usePostRequest()
     const { isAuthenticated } = useAuth() // Stato di autenticazione
+    const { debounceValue } = useDebounce(updatedRec.current)
+
+    useEffect(() => {
+        //chiamata di rete quando cambia il valore di debounce (ricetta da aggiornare)
+
+        if (!updatedRec.current) {
+            return
+        }
+
+        if (isAuthenticated) {
+            const userData = getValue("userData")
+
+            //favorited
+            handlePostRequest({
+                url: "http://localhost:3000/api/preferences/set-favorited-recipes",
+                payload: { recipe: updatedRec.current, userId: userData.id },
+            })
+
+            //history
+            handlePostRequest({
+                url: "http://localhost:3000/api/preferences/update-recipes-history",
+                payload: { recipe: updatedRec.current, userId: userData.id },
+            })
+        }
+    }, [debounceValue])
+
+    useEffect(() => {
+        //chiamata di rete quando cambia il updatedRec.previous (durante l'attesa del valore di debounce,)
+
+        if (!updatedRec.previous) {
+            return
+        }
+
+        if (isAuthenticated) {
+            const userData = getValue("userData")
+
+            const prevRecId = `${updatedRec.previous?.id}_${updatedRec.previous?.title}`
+            const currentRecId = `${updatedRec.current?.id}_${updatedRec.current?.title}`
+
+            //se la ricetta precedente è la stessa (quindi è stata modificata la prop isFavorited), non aggiornare adesso
+            if (!updatedRec.previous || prevRecId === currentRecId) {
+                return
+            }
+
+            //favorited
+            handlePostRequest({
+                url: "http://localhost:3000/api/preferences/set-favorited-recipes",
+                payload: { recipe: updatedRec.previous, userId: userData.id },
+            })
+
+            //history
+            handlePostRequest({
+                url: "http://localhost:3000/api/preferences/update-recipes-history",
+                payload: { recipe: updatedRec.previous, userId: userData.id },
+            })
+        }
+    }, [updatedRec.previous])
 
     const handleRecipesUpdate = (recipe, setRecipe) => {
         const updatedRecipe = { ...recipe, isFavorited: !recipe.isFavorited }
+
+        if (!updatedRec.current) {
+            setUpdatedRec((prev) => ({ ...prev, current: updatedRecipe }))
+        } else {
+            setUpdatedRec((prev) => ({ previous: prev.current, current: updatedRecipe }))
+        }
+
         setRecipes((prev) => {
             let newFavorites
             let newResults
@@ -21,41 +88,23 @@ export const useRecipesUpdate = (setRecipes) => {
             newResults = prev.results.map((rec) => (rec.id === recipe.id && rec.title === recipe.title ? updatedRecipe : rec))
             newHistory = prev.history.map((rec) => (rec.id === recipe.id && rec.title === recipe.title ? updatedRecipe : rec))
 
-            const isTargetedRecipe = prev?.targetedRecipe?.id + prev?.targetedRecipe?.title === recipe.id + recipe.title
+            const isTargetedRecipe = prev?.targetedRecipe?.id + prev?.targetedRecipe?.title === `${recipe.id}_${recipe.title}`
 
             const updatedRecipes = {
                 ...prev,
                 results: newResults,
-                filtered: newFavorites || [],
-                searched: newFavorites || [],
+                filteredFavorites: newFavorites || [],
+                searchFavorites: newFavorites || [],
                 favorited: newFavorites || [],
                 history: newHistory || [],
+                filteredHistory: newHistory || [],
+                searchHistory: newHistory || [],
                 targetedRecipe: isTargetedRecipe ? updatedRecipe : prev.targetedRecipe,
             }
-
             // Aggiornamento localStorage e DB se autenticati
             if (isAuthenticated) {
-                const userData = getValue("userData")
                 setValue("recipes", updatedRecipes)
-                const mutationId = updatedRecipe.id + updatedRecipe.title
-
-                userData.id &&
-                    handlePostRequest({
-                        url: "http://localhost:3000/api/preferences/set-favorited-recipes",
-                        payload: { recipe: updatedRecipe, userId: userData.id },
-                        mutationId: mutationId,
-                        queryKey: [["get-favorited-recipes"], ["get-recipes-history"]],
-                    })
-
-                userData.id &&
-                    handlePostRequest({
-                        url: "http://localhost:3000/api/preferences/update-recipes-history",
-                        payload: { recipe: updatedRecipe, userId: userData.id },
-                        mutationId: mutationId,
-                        queryKey: [["get-favorited-recipes"], ["get-recipes-history"]],
-                    })
             }
-
             return updatedRecipes
         })
 
@@ -74,14 +123,13 @@ export const useRecipesUpdate = (setRecipes) => {
                 setValue("recipes", updatedRecipes)
 
                 const userData = getValue("userData")
-                const mutationId = recipe.id + recipe.title
+                const mutationId = `${recipe.id}_${recipe.title}`
 
                 userData.id &&
                     handlePostRequest({
                         url: "http://localhost:3000/api/preferences/update-recipes-history",
                         payload: { recipe, userId: userData.id },
                         mutationId: mutationId,
-                        queryKey: [["get-recipes-history"]],
                     })
             }
 
