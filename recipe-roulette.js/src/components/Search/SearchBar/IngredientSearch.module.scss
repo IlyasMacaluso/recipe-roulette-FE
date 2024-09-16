@@ -56,6 +56,9 @@
         padding-bottom: 0.125rem;
         top: 50%;
         transform: translateY(-50%);
+        > svg {
+            font-size: 18px;
+        }
     }
     .searchIco {
         right: 0.5rem;
@@ -92,6 +95,10 @@
 }
 
 @media screen and (min-width: 1120px) {
+    .inputInactive {
+        outline-color: $light-gray;
+
+    }
     .positionFixed {
         position: absolute;
         top: 0;

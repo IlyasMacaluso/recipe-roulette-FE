@@ -10,7 +10,7 @@
     .label {
         color: $darkish-gray;
         font-size: $text-size-14;
-        font-weight:600;
+        font-weight: 600;
         font-family: $font-metropolitan;
     }
 }
@@ -57,4 +57,10 @@
 .select {
     background-color: $lightest-green;
     outline-color: $light-desaturated-green;
+}
+
+@media screen and (min-width: 1120px) {
+    .switch {
+        outline-color: $light-gray;
+    }
 }

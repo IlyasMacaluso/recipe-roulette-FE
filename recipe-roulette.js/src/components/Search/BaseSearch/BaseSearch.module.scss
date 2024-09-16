@@ -25,7 +25,7 @@
             box-sizing: border-box;
             padding: 0 1.25rem;
             border: none;
-            font-family: $font-poppins;
+            font-family: $font-metropolitan;
             font-size: $text-size-14;
             font-weight: 500;
         }
@@ -40,6 +40,9 @@
             right: 0.5rem;
             top: 50%;
             transform: translateY(-50%);
+            > svg {
+                font-size: 18px;
+            }
         }
     }
 
@@ -83,8 +86,14 @@
     box-sizing: border-box;
 }
 @media screen and (min-width: 1120px) {
+    header .baseSearch {
+        outline-color: $light-gray;
+    }
+
     header .baseSearchActive {
         position: absolute;
+        outline: none;
+
         width: 100%;
         height: calc(100vh - 2.9rem);
         border-radius: 1rem;
