@@ -304,7 +304,7 @@ export function Sidebar({
                                             }
                                         })
 
-                                        handleOpenSnackbar("Your changes were discarded")
+                                        handleOpenSnackbar("Changes were discarded", 1500)
                                         navigate({ to: "/settings" })
                                     }}
                                 />
@@ -321,7 +321,7 @@ export function Sidebar({
                                                 (!preferencesUpdateLoading && !preferencesUpdateError && !blacklistUpdateErr,
                                                 !blacklistUpdateLoading)
                                             ) {
-                                                handleOpenSnackbar("Your preferences were successfully updated")
+                                                handleOpenSnackbar("Your preferences were successfully updated", 2000)
                                                 navigate({ to: "/settings" })
 
                                                 clearInterval(intervalId)
