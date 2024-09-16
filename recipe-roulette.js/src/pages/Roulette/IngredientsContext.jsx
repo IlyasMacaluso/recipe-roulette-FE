@@ -20,7 +20,7 @@ export const IngredientsProvider = ({ children }) => {
     const { isAuthenticated } = useAuth()
     const { recipePreferences } = useRecipesContext()
     const { setValue, getValue } = useLocalStorage()
-    
+
     const { handleIngUpdate, deselectIngredients } = useIngredientUpdate(ingredients, setIngredients)
     const { handleIngDecrement, handleIngIncrement, shuffleIng, generateIngredients } = useDisplayedIngredients(ingredients, setIngredients)
     const { getRequest } = useGetRequest()
@@ -55,18 +55,21 @@ export const IngredientsProvider = ({ children }) => {
         const initialSetup = async () => {
             if (ingredientsLoading || blacklistedLoading) return // Wait until data is loaded
 
-            const markBlacklisted = (ings, blIngs) => {
+            const initIngredientProps = (ings, blIngs, displayedIngs) => {
                 return ings.map((ingredient) => ({
                     ...ingredient,
-                    is_blacklisted: blIngs.includes(ingredient.id),
+                    is_blacklisted: blIngs ? blIngs.some((id) => id === ingredient.id) : ingredient.is_blacklisted,
+                    is_selected: displayedIngs ? displayedIngs.some((id) => id === ingredient.id) : ingredient.is_selected,
                 }))
             }
 
             if (DBIngredients) {
                 setIngredients((prev) => {
                     const blacklistedIds = DBBlacklisted?.map((ing) => ing.id)
-                    const all = markBlacklisted(DBIngredients, blacklistedIds || [])
-                    const displayed = markBlacklisted(localIngredients?.displayed || [], blacklistedIds || [])
+                    const selectedIds = localIngredients?.displayed?.map((ing) => (ing.is_selected ? ing.id : null))
+
+                    const all = initIngredientProps(DBIngredients, blacklistedIds, selectedIds || [])
+                    const displayed = initIngredientProps(localIngredients?.displayed || [], blacklistedIds || [])
 
                     if (!localIngredients?.displayed.length && !displayed.length) {
                         generateIngredients()
@@ -88,6 +91,7 @@ export const IngredientsProvider = ({ children }) => {
 
     useEffect(() => {
         if (ingredientsLoading || blacklistedLoading) return // Wait until data is loaded
+
         setIngredients((prev) => {
             if (prev?.all) {
                 let filtering = prev?.all.filter((ing) => !ing.is_blacklisted)
@@ -117,7 +121,7 @@ export const IngredientsProvider = ({ children }) => {
                 ingredients,
                 ingredientsLoading,
                 blacklistedLoading,
-                ingredientsError
+                ingredientsError,
             }}
         >
             {children}

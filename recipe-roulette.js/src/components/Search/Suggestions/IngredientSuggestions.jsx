@@ -28,6 +28,7 @@ export function IngredientSuggestions({ inputRef = null, setInputState, inputAct
         }
         return true
     }
+
     if (ingredientsError) {
         return (
             <div className={`${classes.suggestions} ${inputActive && classes.active}`}>
@@ -51,7 +52,7 @@ export function IngredientSuggestions({ inputRef = null, setInputState, inputAct
                             />
                         ))}
                     </>
-                ) : suggestions && suggestions.length > 0 ? (
+                ) : suggestions?.length > 0 ? (
                     suggestions
                         .sort((a, b) => (a.name === b.name ? 0 : a.name > b.name ? 1 : -1))
                         .map((ingredient) => {
