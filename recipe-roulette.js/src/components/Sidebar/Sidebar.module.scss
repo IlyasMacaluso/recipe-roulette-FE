@@ -157,9 +157,12 @@ h4 {
     z-index: initial;
     max-width: none;
     width: 100%;
+    height: 0;
+    flex-grow: 1;
 }
 
 .positionUnfixed .sidebarBody {
+    padding-top: $size-8;
     padding-bottom: 8rem;
 }
 

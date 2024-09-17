@@ -13,6 +13,8 @@ import loadingImage from "../../assets/images/healthy food-bro.svg"
 
 import layout from "../../assets/scss/pageLayout/pageWScroll.module.scss"
 import transition from "../../assets/scss/pageLayout/pageTransition.module.scss"
+import { Header } from "../../components/Header/Header"
+import { InlineMessage } from "../../components/InlineMessage/InlineMessage"
 
 export function RecipeResults() {
     const { recipes } = useRecipesContext()
@@ -24,8 +26,12 @@ export function RecipeResults() {
 
     return (
         <div className={`${layout.scrollPage} ${animate ? transition.animationEnd : transition.animationStart} `}>
-            {state.loading ? (
+            <div style={{ paddingLeft: "8px", paddingRight: "8px" }}>
+                <Header pageTitle="New Recipes" />
+            </div>
+            {!state.loading ? (
                 <section className={layout.recipesWrapper}>
+                    {state.error && <InlineMessage error={state.error} />}
                     {recipes.results &&
                         recipes.results.map((recipe) => {
                             return (

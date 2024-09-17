@@ -3,59 +3,49 @@
 
 .header {
     position: relative;
+    box-sizing: border-box;
+
     display: flex;
-    flex-direction: column;
     align-items: center;
     justify-content: space-between;
-    padding: 1rem 0;
-    gap: 0.5rem;
-    box-sizing: border-box;
+    gap: $size-24;
+
+    padding: $size-16 0;
+    padding-bottom: $size-12;
+    padding-left: $size-4;
+
     min-height: fit-content;
     background-color: white;
-    border-radius: $size-24 $size-24 0 0;
-    .globalActions {
-        z-index: 11;
-        top: 58px;
-        display: flex;
-        width: 100%;
-        padding: 0 $size-16;
-        box-sizing: border-box;
-        gap: 0.5rem;
-        align-items: center;
-        background-color: white;
-    }
-    .topItem {
+
+    .leftItems,
+    .rightItems {
         display: flex;
         align-items: center;
         gap: 0.75rem;
         box-sizing: border-box;
-        padding: 0 1.25rem;
-        padding-right: 1rem;
-        width: 100%;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-    }
-    .leftItems {
         display: flex;
         align-items: center;
         color: $dark-gray;
-        h1 {
-            font-family: "Poppins";
-            font-size: $text-size-24;
-            line-height: 120%;
-            color: $dark-gray;
-            font-weight: 700;
-            margin: 0;
-            width: 100%;
-        }
-        > button {
-            justify-content: flex-start;
-        }
-        svg {
-            stroke: $dark-gray;
-            stroke-width: 1;
-        }
+    }
+    .leftItems > h1 {
+        font-family: $font-poppins;
+        font-size: $text-size-24;
+        line-height: 120%;
+        font-weight: 700;
+        margin: 0;
+    }
+
+    .icoWrapper {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 32px;
+        min-width: 32px;
+    }
+
+    .leftItems svg {
+        stroke: $dark-gray;
+        stroke-width: 1;
     }
 }
 
@@ -65,7 +55,7 @@
         height: fit-content;
         box-sizing: border-box;
         width: 100%;
-        padding: $size-24;
+        padding-top: $size-24;
         padding-bottom: $size-16;
     }
 

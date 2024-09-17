@@ -15,7 +15,7 @@ export function RecipeCard({ isExpanded = false, recipe, handleClickLoginSnackBa
     const navigate = useNavigate()
     const cardImage = useImagesContext()
 
-    const { recipeAnimation } = useRecipesContext()
+    const { recipeAnimation, handleTargetedRecipe } = useRecipesContext()
     const { isAuthenticated } = useAuth()
     const { title, attributes, is_gluten_free, is_vegetarian, is_vegan, ingQuantities, preparation } = recipe
     const { handleCardState, cardState, expandedCard, expandedIngredients, handleIngWrapperState, handleOpenRecipePage } = useRecipeCard(
@@ -29,6 +29,7 @@ export function RecipeCard({ isExpanded = false, recipe, handleClickLoginSnackBa
                 if (!expandedCard) {
                     localStorage.setItem("prevPath", location.pathname)
                     handleOpenRecipePage(recipe)
+                    handleTargetedRecipe(recipe)
                     navigate({ to: "/recipe" })
                 }
             }}

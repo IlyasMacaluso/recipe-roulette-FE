@@ -32,13 +32,15 @@ body {
         flex-direction: column;
         height: 100%;
         background-color: white;
-        border-radius: $size-16;
         outline: 1px solid $lighter-gray;
         overflow: hidden;
     }
 }
 
 @media screen and (min-width: 1120px) {
+    .appContainer .centerContent {
+        border-radius: $size-16;
+    }
     #root {
         background-color: $lightest-green;
     }

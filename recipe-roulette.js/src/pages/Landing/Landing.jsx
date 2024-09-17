@@ -11,6 +11,7 @@ import landingImage from "../../assets/images/eating a variety of foods-bro.svg"
 
 import layout from "../../assets/scss/pageLayout/pageFH.module.scss"
 import transition from "../../assets/scss/pageLayout/pageTransition.module.scss"
+import { Header } from "../../components/Header/Header"
 
 export function Landing() {
     const { location } = useLocationHook()
@@ -18,6 +19,7 @@ export function Landing() {
 
     return (
         <div className={`${layout.pageFH} ${animate ? transition.animationEnd : transition.animationStart}`}>
+            <Header pageTitle="Welcome!" />
             <Placeholder
                 text="Reduce food wastes and get inspired by "
                 hightlitedText="Recipe Roulette"

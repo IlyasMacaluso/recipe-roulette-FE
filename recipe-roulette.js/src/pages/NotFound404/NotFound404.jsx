@@ -10,6 +10,7 @@ import notFountImage from "../../assets/images/404 Error with a cute animal-bro.
 
 import transitions from "../../assets/scss/pageLayout/pageTransition.module.scss"
 import layouts from "../../assets/scss/pageLayout/pageFH.module.scss"
+import { Header } from "../../components/Header/Header"
 
 export function NotFound404() {
     const { location } = useLocationHook()
@@ -17,6 +18,7 @@ export function NotFound404() {
 
     return (
         <div className={`${layouts.pageFH} ${animate ? transitions.animationEnd : transitions.animationStart}`}>
+            <Header pageTitle="Page not found" />
             <Placeholder
                 topImage={notFountImage}
                 buttons={[<Button key={"Return to home"} label="Return to home" iconLeft={<HomeOutlinedIcon />} link={"/"} height={"large"} />]}

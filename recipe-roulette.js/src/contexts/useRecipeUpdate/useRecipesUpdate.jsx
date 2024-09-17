@@ -116,7 +116,17 @@ export const useRecipesUpdate = (recipes, setRecipes) => {
     const handleTargetedRecipe = (recipe) => {
         if (!recipe) return
         setRecipes((prev) => {
-            const updatedRecipes = { ...prev, targetedRecipe: recipe }
+            const isNewRecipe = !prev?.history.some((rec) => `${rec.id}_${rec.title}` === `${recipe.id}_${recipe.title}`)
+            let newHistory
+
+            if (isNewRecipe) {
+                newHistory = [recipe, ...prev.history]
+            } else {
+                const tempHistory = prev?.history.filter((rec) => `${rec.id}_${rec.title}` !== `${recipe.id}_${recipe.title}`) //remove it from the history
+                newHistory = [recipe, ...tempHistory] //re add it on the first position of the array
+            }
+
+            const updatedRecipes = { ...prev, targetedRecipe: recipe, history: newHistory }
 
             // Aggiornamento localStorage se autenticati
             if (isAuthenticated) {

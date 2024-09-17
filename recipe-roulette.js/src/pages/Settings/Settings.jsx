@@ -30,6 +30,7 @@ import { Link } from "@tanstack/react-router"
 import { useTutorial } from "../../hooks/useTutorial/useTutorial"
 import { Tutorial } from "../../components/tutorial/Tutorial"
 import { useRecipesContext } from "../../contexts/RecipesContext"
+import { Header } from "../../components/Header/Header"
 
 export function Settings() {
     const [showPopup, setShowPopup] = useState(false)
@@ -69,6 +70,7 @@ export function Settings() {
     } else {
         return (
             <div className={`${layout.scrollPage}  ${layout.padding24} ${animate ? transitions.animationEnd : transitions.animationStart}`}>
+                <Header pageTitle={'Settings'} />
                 <div className={classes.pageContent}>
                     <SettingsCard
                         isEditing={isEditing}

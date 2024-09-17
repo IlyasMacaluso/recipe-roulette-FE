@@ -11,23 +11,31 @@ import { Skeleton } from "@mui/material"
 import { InlineMessage } from "../../components/InlineMessage/InlineMessage"
 import { Placeholder } from "../../components/Placeholder/Placeholder"
 import { Tutorial } from "../../components/tutorial/Tutorial"
+import { useTutorial } from "../../hooks/useTutorial/useTutorial"
+import { createPortal } from "react-dom"
+import { useLocalStorage } from "../../hooks/useLocalStorage/useLocalStorage"
+import { Header } from "../../components/Header/Header"
+import { useSidebar } from "../../contexts/SidebarProvider/SidebarProvider"
 
 import ManageSearchOutlinedIcon from "@mui/icons-material/ManageSearchOutlined"
 import AddIcon from "@mui/icons-material/Add"
 import LoopOutlinedIcon from "@mui/icons-material/LoopOutlined"
+import LockResetIcon from "@mui/icons-material/LockReset"
+import FilterListIcon from "@mui/icons-material/FilterList"
 
 import shrugImage from "../../assets/images/Shrug-bro.svg"
 
 import classes from "./Roulette.module.scss"
 import layout from "../../assets/scss/pageLayout/pageFH.module.scss"
+import searchWrapper from "../../assets/scss/searchWrapper.module.scss"
+
 import transition from "../../assets/scss/pageLayout/pageTransition.module.scss"
-import { useTutorial } from "../../hooks/useTutorial/useTutorial"
-import { createPortal } from "react-dom"
-import { useLocalStorage } from "../../hooks/useLocalStorage/useLocalStorage"
-import { useMemo } from "react"
+import { IcoButton } from "../../components/Buttons/IcoButton/IcoButton"
+import { IngredientSearch } from "../../components/Search/SearchBar/IngredientSearch"
 
 export function Roulette() {
-    const { ingredients, shuffleIng, handleIngIncrement, ingredientsLoading, blacklistedLoading, ingredientsError } = useManageIngredients()
+    const { ingredients, shuffleIng, handleIngIncrement, ingredientsLoading, blacklistedLoading, ingredientsError, deselectIngredients } =
+        useManageIngredients()
     const { recipePreferences } = useRecipesContext()
     const { isActive } = useButtonState(ingredients)
     const { location } = useLocationHook()
@@ -35,22 +43,36 @@ export function Roulette() {
     const { handleRecipesFetch } = useRecipesFetch()
     const { handleAnimation, animationState } = useShakeAnimation()
     const { getValue } = useLocalStorage()
+    const { setNavSidebar, setPrefSidebar } = useSidebar()
 
     const showTutorialAgain = getValue("showTutorial")
-    const { showTutorial, setShowTutorial} = useTutorial(showTutorialAgain)
+    const { showTutorial, setShowTutorial } = useTutorial(showTutorialAgain)
 
     if (showTutorial) {
         return <>{createPortal(<Tutorial setShowTutorial={setShowTutorial} checkbox={true} />, document.getElementById("popup-root"))}</>
     } else if (ingredientsError) {
         return (
             <div className={`${layout.pageFH} ${layout.noVerticalPadding}`}>
+                <Header pageTitle="Roulette" toggleNavSidebar={setNavSidebar()} />
                 <InlineMessage error={ingredientsError} />
                 <Placeholder topImage={shrugImage} text="Oops >.< something went wrong!" />
             </div>
         )
     } else {
         return (
-            <div className={`${layout.pageFH} ${layout.noVerticalPadding} ${animate ? transition.animationEnd : transition.animationStart}`}>
+            <div
+                className={`${layout.pageFH} ${layout.noVerticalPadding} ${animate ? transition.animationEnd : transition.animationStart}`}
+            >
+                <div>
+                    <Header pageTitle="Roulette" />
+
+                    <div className={searchWrapper.globalActions}>
+                        <IngredientSearch searchCriteria="is_selected" />
+                        <IcoButton action={() => deselectIngredients("is_selected")} icon={<LockResetIcon fontSize={"small"} />} />
+                        <IcoButton action={() => setPrefSidebar((b) => !b)} icon={<FilterListIcon fontSize={"small"} />} />
+                    </div>
+                </div>
+
                 <div className={classes.contentWrapper}>
                     <div className={classes.ingredientsWrapper}>
                         {ingredientsLoading || blacklistedLoading

@@ -18,6 +18,7 @@ import { InlineMessage } from "../../components/InlineMessage/InlineMessage"
 import LoopOutlinedIcon from "@mui/icons-material/LoopOutlined"
 import RotateLeftOutlinedIcon from "@mui/icons-material/RotateLeftOutlined"
 import LoginIcon from "@mui/icons-material/Login"
+import FilterListIcon from "@mui/icons-material/FilterList"
 
 import loginImage from "../../assets/images/Mobile login-bro.svg"
 import addNoteImage from "../../assets/images/Add notes-bro.svg"
@@ -25,6 +26,13 @@ import shrugImage from "../../assets/images/Shrug-bro.svg"
 
 import layout from "../../assets/scss/pageLayout/pageWScroll.module.scss"
 import transition from "../../assets/scss/pageLayout/pageTransition.module.scss"
+import classes from "./Favorited.module.scss"
+import searchWrapper from "../../assets/scss/searchWrapper.module.scss"
+
+import { Header } from "../../components/Header/Header"
+import { IcoButton } from "../../components/Buttons/IcoButton/IcoButton"
+import { BaseSearch } from "../../components/Search/BaseSearch/BaseSearch"
+import { useSidebar } from "../../contexts/SidebarProvider/SidebarProvider"
 
 export function Favorited() {
     const [showPopup, setShowPopup] = useState()
@@ -38,13 +46,14 @@ export function Favorited() {
         foodPrefLoading,
         favoritedError,
         recipeFilters,
-        setRecipeFilters
+        setRecipeFilters,
     } = useRecipesContext()
     const { isAuthenticated } = useAuth()
     const { changeToSignup, setChangeToSignup } = useLoginToSignup()
 
     const { location } = useLocationHook()
     const { animate } = useAnimate(location)
+    const { setFilterSidebar } = useSidebar()
 
     const searchFavorites = useMemo(() => {
         return recipes.filteredFavorites.filter((rec) => rec.title.toLowerCase().includes(inputValue.toLowerCase()))
@@ -53,6 +62,7 @@ export function Favorited() {
     if (favoritedError) {
         return (
             <div className={`${layout.scrollPage} ${animate ? transition.animationEnd : transition.animationStart}`}>
+                <Header pageTitle="Favorited" />
                 <InlineMessage error={favoritedError} />
                 <Placeholder topImage={shrugImage} text="Oops >.< something went wrong!" />
             </div>
@@ -60,6 +70,22 @@ export function Favorited() {
     } else {
         return (
             <div className={`${layout.scrollPage} ${animate ? transition.animationEnd : transition.animationStart}`}>
+                     <div style={{ paddingLeft: "8px", paddingRight: "8px" }}>
+                    <Header pageTitle="Favorited" />
+
+                    {isAuthenticated && recipes?.favorited && recipes?.favorited.length > 0 && (
+
+                        <section className={searchWrapper.globalActions}>
+                            <BaseSearch data={searchFavorites} inputValue={inputValue} setInputValue={setInputValue} />
+                            <IcoButton
+                                action={() => setFilterSidebar((b) => !b)}
+                                label="Filters"
+                                icon={<FilterListIcon fontSize="small" />}
+                            />
+                        </section>
+                    )}
+                </div>
+
                 {favoritedLoading || foodPrefLoading || historyLoading ? (
                     [...Array(3)].map(() => (
                         <Skeleton key={Math.random()} sx={{ bgcolor: "#c5e4c9" }} variant="rounded" width={"100%"} height={"280px"} />
@@ -68,9 +94,9 @@ export function Favorited() {
                     <>
                         {searchFavorites && searchFavorites.length > 0 ? (
                             <section className={layout.recipesWrapper}>
-                                    {searchFavorites.map((recipe, index) => (
-                                        <RecipeCard recipe={recipe} key={`${recipe.id}_${recipe.title}`} />
-                                    ))}
+                                {searchFavorites.map((recipe, index) => (
+                                    <RecipeCard recipe={recipe} key={`${recipe.id}_${recipe.title}`} />
+                                ))}
                             </section>
                         ) : (
                             <Placeholder
@@ -87,7 +113,6 @@ export function Favorited() {
                                         action={() => {
                                             setInputValue("")
                                             deselectFilters({ filters: "recipeFilters", setFilters: setRecipeFilters })
-
                                         }}
                                     />,
                                 ]}

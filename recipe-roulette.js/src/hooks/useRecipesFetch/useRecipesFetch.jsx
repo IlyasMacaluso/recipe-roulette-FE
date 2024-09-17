@@ -53,7 +53,7 @@ export const RecipesFetchProvider = ({ children }) => {
                 setState({ loading: false, error: false })
             } catch (error) {
                 console.error("An error occurred while fetching recipes:", error)
-                setState({ error: true, loading: false })
+                setState({ error: error, loading: false })
             }
         },
         [setRecipes]

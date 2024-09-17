@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from "react"
+import { useMemo } from "react"
 import { useManageIngredients } from "../../pages/Roulette/IngredientsContext"
 import { FilterChip } from "../FilterChip/FilterChip"
 import { Switch } from "../Switch/Switch"
@@ -24,6 +24,7 @@ import { useAnimate } from "../../hooks/animatePages/useAnimate.jsx"
 import classes from "./Sidebar.module.scss"
 import animation from "../../assets/scss/pageLayout/pageTransition.module.scss"
 import { Skeleton } from "@mui/material"
+import { useSidebar } from "../../contexts/SidebarProvider/SidebarProvider.jsx"
 
 export function Sidebar({
     removeBgOverlay = false,
@@ -33,9 +34,7 @@ export function Sidebar({
     discardPrefChanges = null,
     discardBLChanges = null,
     filtersName = "recipeFilters",
-
-    sidebarState = false,
-    setSidebarState,
+    sidebarState = null,
 }) {
     const {
         deselectIngredients,
@@ -46,6 +45,7 @@ export function Sidebar({
         blacklistUpdateLoading,
         setIngredients,
     } = useManageIngredients()
+
     const {
         updateFilters,
         updateDBFilters,
@@ -59,6 +59,7 @@ export function Sidebar({
     } = useRecipesContext()
 
     const { cuisineEthnicityChips, difficultyChips, prepTimeChips, caloricApportChips } = filterChipsArray()
+    const { setFilterSidebar, setPrefSidebar, prefSidebar, filterSidebar } = useSidebar()
     const { handleOpenSnackbar } = useSnackbar()
 
     const { location } = useLocationHook()
@@ -75,10 +76,13 @@ export function Sidebar({
 
     const setFilters = filtersName === "recipeFilters" ? setRecipeFilters : setRecipePreferences
 
+    !sidebarState && (sidebarState = filtersName === "recipeFilters" ? filterSidebar : prefSidebar)
+    const setSidebarState = filtersName === "recipeFilters" ? setFilterSidebar : setPrefSidebar
+
     return (
         <>
             <div
-                onClick={setSidebarState}
+                onClick={() => setSidebarState(false)}
                 className={`${classes.backgroundOverlay} ${removeBgOverlay && classes.removeBgOverlay} ${sidebarState && classes.backgroundOverlayToggled}`}
             ></div>
             <div
@@ -99,26 +103,20 @@ export function Sidebar({
                                     deselectIngredients("is_blacklisted")
                                 }}
                             />
-                            <IcoButton action={setSidebarState} style="transparent" icon={<CloseIcon fontSize="small" />} />
+                            <IcoButton action={() => setSidebarState(false)} style="transparent" icon={<CloseIcon fontSize="small" />} />
                         </div>
                     </header>
                 )}
 
                 <section className={classes.sidebarBody}>
                     {positionUnfixed && (
+
                         <div className={`${classes.section} ${classes.rowSection}`}>
-
-                            <InlineMessage message={"Preferences you set here will be used as defaults for all generated recipes"} />
-
-                            <Button
-                                label="Reset All Preferences"
-                                iconLeft={<RotateLeftOutlinedIcon fontSize="small" />}
-                                action={() => {
-                                    deselectFilters({ filters: filtersName, setFilters: setFilters })
-                                    deselectIngredients("is_blacklisted")
-                                }}
+                            <InlineMessage
+                                message={
+                                    "Preferences you set here will be used as defaults. You can temporarily change preferences before generating a recipe"
+                                }
                             />
-                        
                         </div>
                     )}
 
@@ -295,14 +293,13 @@ export function Sidebar({
                     //footer visible only in FoodPreferences
                     positionUnfixed && (
                         <footer className={classes.footer}>
-
                             {(preferencesUpdateLoading || blacklistUpdateLoading || blacklistUpdateErr || preferencesUpdateError) && (
                                 <InlineMessage
                                     loading={preferencesUpdateLoading || blacklistUpdateLoading}
                                     error={preferencesUpdateError || blacklistUpdateErr}
                                 />
                             )}
-                            
+
                             <div className={classes.buttonsWrapper}>
                                 <Button
                                     label="Discard"

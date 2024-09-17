@@ -25,14 +25,15 @@ import { useAuth } from "../../hooks/Auth/useAuth"
 
 // CSS
 import classes from "./SideMenu.module.scss"
+import { useSidebar } from "../../contexts/SidebarProvider/SidebarProvider"
 
-export function SideMenu({ handleMenuToggle, menuState = false }) {
+export function SideMenu() {
     const [showPopup, setShowPopup] = useState()
     const { isAuthenticated } = useAuth()
     const { loading, error, handleLogout } = useLogout(setShowPopup)
     const { changeToSignup, setChangeToSignup } = useLoginToSignup()
     const { pathname } = useLocation()
-
+    const { setNavSidebar, navSidebar } = useSidebar()
     const navigationLinks = [
         {
             id: "roulette",
@@ -68,17 +69,15 @@ export function SideMenu({ handleMenuToggle, menuState = false }) {
 
     return (
         <>
-
             <div
-                onClick={() => handleMenuToggle(false)}
-                className={`${classes.backgroundOverlay} ${menuState && classes.backgroundOverlayToggled}`}
+                onClick={() => setNavSidebar(false)}
+                className={`${classes.backgroundOverlay} ${navSidebar && classes.backgroundOverlayToggled}`}
             ></div>
 
-            <div className={`${classes.sidebar} ${menuState && classes.sidebarToggled}`}>
-
+            <div className={`${classes.sidebar} ${navSidebar && classes.sidebarToggled}`}>
                 <header>
                     <h4>Browse</h4>
-                    <IcoButton action={() => handleMenuToggle(false)} icon={<CloseIcon />} style="transparent" />
+                    <IcoButton action={() => setNavSidebar(false)} icon={<CloseIcon />} style="transparent" />
                 </header>
 
                 <section className={classes.links}>
@@ -87,7 +86,7 @@ export function SideMenu({ handleMenuToggle, menuState = false }) {
                             <NavigationLink
                                 key={item.id}
                                 path={pathname}
-                                handleMenuToggle={()=>handleMenuToggle(false)}
+                                setNavSidebar={() => setNavSidebar(false)}
                                 label={item.label}
                                 destination={item.destination}
                                 icon={item.icon}
@@ -96,7 +95,6 @@ export function SideMenu({ handleMenuToggle, menuState = false }) {
                         )
                     })}
                 </section>
-
             </div>
 
             {showPopup &&
@@ -127,7 +125,6 @@ export function SideMenu({ handleMenuToggle, menuState = false }) {
                     </Popup>,
                     document.getElementById("popup-root")
                 )}
-                
         </>
     )
 }
