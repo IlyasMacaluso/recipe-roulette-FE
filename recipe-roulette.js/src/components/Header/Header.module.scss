@@ -59,18 +59,7 @@
         padding-bottom: $size-16;
     }
 
-    .header .topItem {
-        padding: 1px;
-    }
-
-    .header > .globalActions {
-        padding: 0;
-    }
-
-    .header .topItem > button {
-        display: none;
-    }
-    .header .globalActions > button:last-child {
+    .header .rightItems > .icoWrapper:last-child {
         display: none;
     }
 }

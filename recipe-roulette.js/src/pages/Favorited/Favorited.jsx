@@ -26,7 +26,6 @@ import shrugImage from "../../assets/images/Shrug-bro.svg"
 
 import layout from "../../assets/scss/pageLayout/pageWScroll.module.scss"
 import transition from "../../assets/scss/pageLayout/pageTransition.module.scss"
-import classes from "./Favorited.module.scss"
 import searchWrapper from "../../assets/scss/searchWrapper.module.scss"
 
 import { Header } from "../../components/Header/Header"

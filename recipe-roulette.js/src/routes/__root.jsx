@@ -4,12 +4,10 @@ import { RecipesProvider } from "../contexts/RecipesContext"
 import { AuthProvider } from "../components/authentication/AuthContext"
 import { RecipesFetchProvider } from "../hooks/useRecipesFetch/useRecipesFetch"
 import { SnackbarProvider } from "../components/Snackbar/useSnackbar"
-import { useDiscoverySidebar } from "../hooks/DiscoverySidebar/useDiscoverySidebar"
-import { useRecipesResultsSideBar } from "../hooks/RecipesResultsSideBar/useRecipesResultsSideBar"
 import { SideMenu } from "../components/SideMenu/SideMenu"
 import { Sidebar } from "../components/Sidebar/Sidebar"
 import { Snackbar } from "../components/Snackbar/Snackbar"
-import { SidebarProvider, useSidebar } from "../contexts/SidebarProvider/SidebarProvider"
+import { SidebarProvider, } from "../contexts/SidebarProvider/SidebarProvider"
 
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools"
 import { TanStackRouterDevtools } from "@tanstack/router-devtools"
@@ -17,7 +15,6 @@ import { ImageProvider } from "../contexts/imagesContext/ImageContext"
 
 export const Route = createRootRoute({
     component: () => {
-        const { setPreferencesSidebar, preferencesSidebar } = useDiscoverySidebar()
         const { pathname } = useLocation()
 
         return (

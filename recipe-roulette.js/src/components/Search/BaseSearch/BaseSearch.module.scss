@@ -88,11 +88,7 @@
     box-sizing: border-box;
 }
 @media screen and (min-width: 1120px) {
-    header .baseSearch {
-        outline-color: $light-gray;
-    }
-
-    header .baseSearchActive {
+    .baseSearchActive {
         position: absolute;
         outline: none;
 
