@@ -5,18 +5,17 @@ import { GoogleLoginBtn } from "../../SocialLoginButtons/GoogleLoginBtn"
 import { FacebookSocialBtn } from "../../SocialLoginButtons/FacebookLoginBtn"
 import { Button } from "../../Buttons/Button/Button"
 import { useForm } from "../../../hooks/useForm/useForm"
-import { useEffect } from "react"
+import { useEffect, useRef } from "react"
 import { useLocalStorage } from "../../../hooks/useLocalStorage/useLocalStorage"
 import { Input } from "../../Input/Input"
 import { InlineMessage } from "../../InlineMessage/InlineMessage"
 
 import CloseIcon from "@mui/icons-material/Close"
 import LoginIcon from "@mui/icons-material/Login"
-import StartIcon from "@mui/icons-material/Start"
 
 import classes from "./Login.module.scss"
 
-export function Login({ setShowPopup = null, setChangeToSignup = null }) {
+export function Login({ showPopup = null, setShowPopup = null, setChangeToSignup = null }) {
     const location = useLocation()
 
     const { getValue } = useLocalStorage()
@@ -41,11 +40,9 @@ export function Login({ setShowPopup = null, setChangeToSignup = null }) {
         <div className={`${classes.container}`}>
             <header className={classes.header}>
                 <h1>Login</h1>
-                {setShowPopup && (
-                    <div onClick={() => setShowPopup && setShowPopup()} className={classes.closeIco}>
-                        <CloseIcon />
-                    </div>
-                )}
+                <div onClick={() => setShowPopup && setShowPopup()} className={classes.closeIco}>
+                    <CloseIcon />
+                </div>
             </header>
 
             <form
@@ -57,19 +54,19 @@ export function Login({ setShowPopup = null, setChangeToSignup = null }) {
             >
                 <div className={classes.inputsWrapper}>
                     <Input
+                        isPopUp={showPopup}
                         name="username"
                         value={data.username}
-                        placeholder={"Insert username here"}
+                        placeholder={"Username"}
                         handleInputChange={(e) => handleInputChange(e)}
-                        label="Username"
                         required={true}
                     />
 
                     <Input
+                        isPopUp={showPopup}
                         name="password"
                         type={showText ? "text" : "password"}
-                        label="Password"
-                        placeholder={"Insert password here"}
+                        placeholder={"Password"}
                         value={data.password}
                         required={true}
                         hasIcons={true}
@@ -79,6 +76,7 @@ export function Login({ setShowPopup = null, setChangeToSignup = null }) {
                     />
 
                     <Input
+                        isPopUp={showPopup}
                         type="checkbox"
                         name="rememberMe"
                         id="rememberMe"
@@ -87,35 +85,28 @@ export function Login({ setShowPopup = null, setChangeToSignup = null }) {
                         label="Remember me"
                     />
 
-                    <InlineMessage error={error} loading={loading} />
+                    {(error || loading) && <InlineMessage error={error} loading={loading} />}
                 </div>
 
-                <div className={classes.buttonsWrapper}>
+                <div className={classes.bottomItems}>
                     <Button
                         type="submit"
                         style="primary"
                         label="Login"
+                        width="fill"
                         iconLeft={<LoginIcon fontSize="small" />}
                         active={data.username && data.password}
                     />
-
-                    <Button
-                        action={() => setShowPopup && setShowPopup(false)}
-                        prevPath={location.pathname}
-                        label="Skip"
-                        iconLeft={<StartIcon fontSize="small" />}
-                    />
+                    <div className={classes.loginToSignup}>
+                        <p className={classes.text}>Don't have an account yet?</p>
+                        <Button style="transparent" action={() => setChangeToSignup && setChangeToSignup(true)} label="Sign Up" />
+                    </div>
                 </div>
 
-                <div className={classes.externalLoginWrapper}>
+                {/* <div className={classes.externalLoginWrapper}>
                     <GoogleLoginBtn />
                     <FacebookSocialBtn />
-                </div>
-
-                <div className={classes.loginToSignup}>
-                    <p>Don't have an account yet?</p>
-                    <Button action={() => setChangeToSignup && setChangeToSignup(true)} label="Sign Up" />
-                </div>
+                </div> */}
             </form>
         </div>
     )

@@ -7,15 +7,17 @@
     box-sizing: border-box;
     border-radius: $size-16;
     width: calc(100vw - 3rem);
-    max-width: 30rem;
+    min-width: min-content;
+    max-width: max-content;
     justify-content: start;
     align-items: start;
     gap: $size-16;
     font-family: $font-poppins;
-    padding: $size-16 $size-24;
-    color: $dark-gray;
+    padding: $size-24;
+    padding-top: $size-16;
+    color: $darkish-gray;
 
-    .topItems{
+    .topItems {
         display: flex;
         flex-direction: column;
         gap: 8px;
@@ -31,8 +33,9 @@
     }
 
     .buttonsWrapper {
+        width: 100%;
         display: flex;
-        align-self: end;
+        justify-content: flex-end;
         gap: $size-8;
     }
 }

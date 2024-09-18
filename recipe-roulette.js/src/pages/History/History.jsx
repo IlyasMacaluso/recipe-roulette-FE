@@ -103,7 +103,7 @@ export function History() {
                                 buttons={[
                                     <Button
                                         iconLeft={<RotateLeftOutlinedIcon fontSize="small" />}
-                                        height="large"
+                                        cta={true}
                                         label="Reset Search"
                                         key="Reset Search"
                                         action={() => {
@@ -127,7 +127,7 @@ export function History() {
                                 link="roulette"
                                 label="Start Ingredients Shuffle"
                                 iconLeft={<LoopOutlinedIcon />}
-                                height="large"
+                                cta={true}
                             />,
                         ]}
                     />
@@ -143,9 +143,9 @@ export function History() {
                                     key={"Login or Signup"}
                                     action={() => setShowPopup(true)}
                                     style="primary"
-                                    label="Login or Signup"
-                                    iconLeft={<LoginIcon />}
-                                    height={"large"}
+                                    label="Login"
+                                    iconLeft={<LoginIcon fontSize="small"/>}
+                                    cta={true}
                                 />,
                             ]}
                         />

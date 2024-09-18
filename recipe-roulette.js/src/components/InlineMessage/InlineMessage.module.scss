@@ -13,11 +13,10 @@
     display: flex;
     align-items: center;
     gap: 0.5rem;
-    outline: 1px solid $light-desaturated-green;
     outline-offset: -2px;
     padding: 0.5rem 0.75rem;
     border-radius: 0.5rem;
-    background-color: $lightest-green;
+    background-color: $lighter-gray;
     color: $darkest-green;
     font-family: $font-metropolitan;
     font-weight: 500;

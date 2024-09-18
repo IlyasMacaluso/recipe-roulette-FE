@@ -31,4 +31,7 @@ noHorizontalPadding {
         padding: $size-24;
         padding-top: 0;
     }
+    .noVerticalPadding {
+        padding: 0 $size-20;
+    }
 }

@@ -55,16 +55,7 @@ body {
         max-width: 1440px;
         .centerContent {
             position: relative;
-            flex: 2 1 200px;
+            flex: 1.6 1 0;
         }
-    }
-}
-
-@media screen and (min-width: 1440px) {
-    #root {
-        background-color: $lightest-green;
-    }
-    .appContainer .centerContent {
-        flex: 3 1 200px;
     }
 }

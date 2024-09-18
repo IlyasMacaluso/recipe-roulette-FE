@@ -22,6 +22,8 @@ import NavigateNextIcon from "@mui/icons-material/NavigateNext"
 import BugReportIcon from "@mui/icons-material/BugReport"
 import RestaurantMenuIcon from "@mui/icons-material/RestaurantMenu"
 import FactCheckIcon from "@mui/icons-material/FactCheck"
+import CheckIcon from "@mui/icons-material/Check"
+import CloseIcon from "@mui/icons-material/Close"
 
 import classes from "./Settings.module.scss"
 import layout from "../../assets/scss/pageLayout/pageWScroll.module.scss"
@@ -29,7 +31,6 @@ import layout from "../../assets/scss/pageLayout/pageWScroll.module.scss"
 import { Link } from "@tanstack/react-router"
 import { useTutorial } from "../../hooks/useTutorial/useTutorial"
 import { Tutorial } from "../../components/tutorial/Tutorial"
-import { useRecipesContext } from "../../contexts/RecipesContext"
 import { Header } from "../../components/Header/Header"
 
 export function Settings() {
@@ -70,7 +71,7 @@ export function Settings() {
     } else {
         return (
             <div className={`${layout.scrollPage}  ${layout.padding24} ${animate ? transitions.animationEnd : transitions.animationStart}`}>
-                <Header pageTitle={'Settings'} />
+                <Header pageTitle={"Settings"} />
                 <div className={classes.pageContent}>
                     <SettingsCard
                         isEditing={isEditing}
@@ -129,6 +130,7 @@ export function Settings() {
                                     <Button
                                         type="submit"
                                         style="primary"
+                                        cta={true}
                                         label="Login"
                                         width="fill"
                                         iconLeft={<LoginIcon fontSize="small" />}
@@ -147,8 +149,19 @@ export function Settings() {
                                                 loading={popupLoading}
                                                 error={popupError}
                                                 buttons={[
-                                                    <Button key="button2" label="Cancel" action={() => setShowPopup(false)} />,
-                                                    <Button key="button1" style="primary" label="Logout" action={() => handleLogout()} />,
+                                                    <Button
+                                                        iconLeft={<CloseIcon fontSize="small" />}
+                                                        key="button2"
+                                                        label="Cancel"
+                                                        action={() => setShowPopup(false)}
+                                                    />,
+                                                    <Button
+                                                        iconLeft={<CheckIcon fontSize="small" />}
+                                                        key="button1"
+                                                        style="primary"
+                                                        label="Logout"
+                                                        action={() => handleLogout()}
+                                                    />,
                                                 ]}
                                             />
                                         ) : !changeToSignup ? (

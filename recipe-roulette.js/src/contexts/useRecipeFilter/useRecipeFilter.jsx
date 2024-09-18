@@ -65,15 +65,18 @@ export const useRecipeFilter = (isAuthenticated) => {
         if (!updatedFilter) {
             return
         }
-        if (isAuthenticated) {
-            const userData = getValue("userData")
 
-            handlePostRequest({
-                url: "http://localhost:3000/api/preferences/set-preferences",
-                payload: { newPreferences: recipePreferences, userId: userData.id },
-                mutationId: "filtersToggleUpdate", //mutationId
-            })
+        if (!isAuthenticated) {
+            return
         }
+
+        const userData = getValue("userData")
+
+        handlePostRequest({
+            url: "http://localhost:3000/api/preferences/set-preferences",
+            payload: { newPreferences: recipePreferences, userId: userData.id },
+            mutationId: "filtersToggleUpdate", //mutationId
+        })
     }
 
     // Gestione delle proprietà non booleane di recipePreferences

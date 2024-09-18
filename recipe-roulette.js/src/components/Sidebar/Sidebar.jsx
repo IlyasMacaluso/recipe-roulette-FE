@@ -25,6 +25,7 @@ import classes from "./Sidebar.module.scss"
 import animation from "../../assets/scss/pageLayout/pageTransition.module.scss"
 import { Skeleton } from "@mui/material"
 import { useSidebar } from "../../contexts/SidebarProvider/SidebarProvider.jsx"
+import { useAuth } from "../../hooks/Auth/useAuth.jsx"
 
 export function Sidebar({
     removeBgOverlay = false,
@@ -61,6 +62,7 @@ export function Sidebar({
     const { cuisineEthnicityChips, difficultyChips, prepTimeChips, caloricApportChips } = filterChipsArray()
     const { setFilterSidebar, setPrefSidebar, prefSidebar, filterSidebar } = useSidebar()
     const { handleOpenSnackbar } = useSnackbar()
+    const { isAuthenticated } = useAuth()
 
     const { location } = useLocationHook()
     const { animate } = useAnimate(location)
@@ -92,7 +94,7 @@ export function Sidebar({
             >
                 {!positionUnfixed && (
                     <header>
-                        <h2>Filters</h2>
+                        <h2>{filtersName === "recipeFilters" ? "Filters" : "Preferences"}</h2>
                         <div className={classes.rightItems}>
                             <Button
                                 label="Reset All"
@@ -110,7 +112,6 @@ export function Sidebar({
 
                 <section className={classes.sidebarBody}>
                     {positionUnfixed && (
-
                         <div className={`${classes.section} ${classes.rowSection}`}>
                             <InlineMessage
                                 message={
@@ -335,10 +336,14 @@ export function Sidebar({
                                                 (!preferencesUpdateLoading && !preferencesUpdateError && !blacklistUpdateErr,
                                                 !blacklistUpdateLoading)
                                             ) {
-                                                handleOpenSnackbar("Your preferences were successfully updated", 2000)
                                                 navigate({ to: "/settings" })
-
                                                 clearInterval(intervalId)
+
+                                                if (isAuthenticated) {
+                                                    handleOpenSnackbar("Your preferences were successfully updated", 2000)
+                                                } else {
+                                                    handleOpenSnackbar("Preferences updated for this session. Login to save changes", 3500)
+                                                }
                                             }
                                         }, 350) // Controllo ogni 350ms (c'è il debounce di 300)
                                     }}

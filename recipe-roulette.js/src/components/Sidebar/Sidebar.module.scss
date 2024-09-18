@@ -42,7 +42,7 @@
         justify-content: space-between;
         border-bottom: 1px solid $lighter-gray;
         h2 {
-            color: $dark-gray;
+            color: $darkish-gray;
             font-family: $font-poppins;
             font-size: $text-size-20;
             font-weight: 700;
@@ -58,7 +58,7 @@
             gap: 1rem;
             > button:last-child > svg {
                 stroke-width: 0.5;
-                stroke: $dark-gray;
+                stroke: $darkish-gray;
             }
         }
     }
@@ -137,7 +137,7 @@
 }
 
 h4 {
-    color: $dark-gray;
+    color: $darkish-gray;
     font-family: $font-poppins;
     font-size: $text-size-14;
     margin: 0;
@@ -204,19 +204,26 @@ h4 {
         position: relative;
         opacity: 1;
         transform: translateX(0);
-        flex: 1.5 1 50px;
+        flex: 1 1 0;
+        
         max-width: none;
         outline: 1px solid $lighter-gray;
         border-radius: $size-16;
         overflow: hidden;
     }
 
+    .sidebar .sidebarBody{
+        gap: 32px;
+    }
+
     .sidebar > header > .rightItems > button:last-child {
         display: none;
     }
-    .sidebar header h2 {
+
+    .sidebar h4 {
         font-size: $text-size-16;
-        letter-spacing: 0.05rem;
+        font-weight: 600;
+        letter-spacing: 0.025rem;
     }
 
     .footer {

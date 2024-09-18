@@ -21,7 +21,7 @@ export function NotFound404() {
             <Header pageTitle="Page not found" />
             <Placeholder
                 topImage={notFountImage}
-                buttons={[<Button key={"Return to home"} label="Return to home" iconLeft={<HomeOutlinedIcon />} link={"/"} height={"large"} />]}
+                buttons={[<Button key={"Return to home"} label="Return to home" iconLeft={<HomeOutlinedIcon />} link={"/"} cta={true} />]}
             />
         </div>
     )

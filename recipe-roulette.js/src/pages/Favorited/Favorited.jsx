@@ -106,7 +106,7 @@ export function Favorited() {
                                 buttons={[
                                     <Button
                                         iconLeft={<RotateLeftOutlinedIcon fontSize="small" />}
-                                        height={"large"}
+                                        cta={true}
                                         label="Reset Filters"
                                         key={"Reset Filters"}
                                         action={() => {
@@ -127,7 +127,7 @@ export function Favorited() {
                         buttons={[
                             <Button
                                 iconLeft={<LoopOutlinedIcon fontSize="small" />}
-                                height="large"
+                                cta={true}
                                 style="primary"
                                 key={"Start Ingredients Shuffle"}
                                 label="Start Ingredients Shuffle"
@@ -141,14 +141,14 @@ export function Favorited() {
                             topImage={loginImage}
                             bottomPadding={true}
                             text="You need to login,  "
-                            hightlitedText="to see add or see favorites!"
+                            hightlitedText="to add or see favorites!"
                             buttons={[
                                 <Button
                                     key={"Login or Signup"}
                                     iconLeft={<LoginIcon fontSize="small" />}
                                     style="primary"
-                                    height="large"
-                                    label="Login or Signup"
+                                    cta={true}
+                                    label="Login"
                                     action={() => setShowPopup(true)}
                                 />,
                             ]}

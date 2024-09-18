@@ -21,7 +21,6 @@
     width: fit-content;
     height: fit-content;
     font-size: $size-24;
-    letter-spacing: .05rem;
     color: $darkish-gray;
     font-size: $text-size-20;
     font-family: $font-metropolitan;
@@ -32,10 +31,11 @@
 }
 .mainContent h2 span {
     display: inline-block;
-    background-color: $primary-green;
-    color: white;
+    background-color: $light-green;
     padding: 0 0.5rem;
     border-radius: 0.5rem;
+    width: fit-content;
+    margin: $size-4 0;
 }
 
 .mainContent > img {

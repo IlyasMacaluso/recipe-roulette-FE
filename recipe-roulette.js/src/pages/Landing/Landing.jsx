@@ -11,6 +11,7 @@ import landingImage from "../../assets/images/eating a variety of foods-bro.svg"
 
 import layout from "../../assets/scss/pageLayout/pageFH.module.scss"
 import transition from "../../assets/scss/pageLayout/pageTransition.module.scss"
+
 import { Header } from "../../components/Header/Header"
 
 export function Landing() {
@@ -18,9 +19,11 @@ export function Landing() {
     const { animate } = useAnimate(location)
 
     return (
-        <div className={`${layout.pageFH} ${animate ? transition.animationEnd : transition.animationStart}`}>
+        <div className={`${layout.pageFH} ${layout.noVerticalPadding} ${animate ? transition.animationEnd : transition.animationStart}`}>
             <Header pageTitle="Welcome!" />
+
             <Placeholder
+            bottomPadding={true}
                 text="Reduce food wastes and get inspired by "
                 hightlitedText="Recipe Roulette"
                 topImage={landingImage}
@@ -29,8 +32,8 @@ export function Landing() {
                         key={"Start Ingredients Shuffle"}
                         style="primary"
                         label="Start Ingredients Shuffle"
-                        height={"large"}
-                        iconLeft={<LoopOutlinedIcon />}
+                        cta={true}
+                        iconLeft={<LoopOutlinedIcon fontSize="small" />}
                         link="/roulette"
                     />,
                     <Button

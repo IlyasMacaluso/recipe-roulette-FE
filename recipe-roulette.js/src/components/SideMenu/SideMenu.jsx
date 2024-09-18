@@ -15,25 +15,40 @@ import AutorenewIcon from "@mui/icons-material/Autorenew"
 import LogoutIcon from "@mui/icons-material/Logout"
 import CloseIcon from "@mui/icons-material/Close"
 import HistoryIcon from "@mui/icons-material/History"
+import CheckIcon from "@mui/icons-material/Check"
 
 // hooks
-import { useState } from "react"
+import { useEffect, useMemo, useState } from "react"
 import { useLogout } from "../../hooks/Form/useLogout"
-import { useLocation } from "@tanstack/react-router"
+import { useLocation, useNavigate } from "@tanstack/react-router"
 import { useLoginToSignup } from "../../hooks/loginToSignup/useLoginToSignup"
 import { useAuth } from "../../hooks/Auth/useAuth"
 
 // CSS
 import classes from "./SideMenu.module.scss"
 import { useSidebar } from "../../contexts/SidebarProvider/SidebarProvider"
+import { useProfile } from "../../hooks/Form/useProfile"
+import { useLocalStorage } from "../../hooks/useLocalStorage/useLocalStorage"
 
 export function SideMenu() {
     const [showPopup, setShowPopup] = useState()
+    const navigate = useNavigate()
+
     const { isAuthenticated } = useAuth()
     const { loading, error, handleLogout } = useLogout(setShowPopup)
     const { changeToSignup, setChangeToSignup } = useLoginToSignup()
     const { pathname } = useLocation()
     const { setNavSidebar, navSidebar } = useSidebar()
+    const { profileData, loading: profileDataLoading } = useProfile()
+
+    const {
+        username = null,
+        email = null,
+        avatar = null,
+    } = useMemo(() => {
+        return profileData
+    }, [profileData])
+
     const navigationLinks = [
         {
             id: "roulette",
@@ -81,6 +96,23 @@ export function SideMenu() {
                 </header>
 
                 <section className={classes.links}>
+                    {isAuthenticated && (
+                        <div className={classes.profileCard}>
+                            <div
+                                className={classes.informationWrapper}
+                                onClick={() => {
+                                    navigate({ to: "/settings" })
+                                    setNavSidebar(false)
+                                }}
+                            >
+                                <img className={classes.picture} src={`data:${avatar.type};base64,${avatar}`} alt="Profile" />
+                                <div className={classes.information}>
+                                    <p className={`${classes.text} ${classes.username}`}>{username}</p>
+                                    <p className={classes.text}>{email}</p>
+                                </div>
+                            </div>
+                        </div>
+                    )}
                     {navigationLinks.map((item) => {
                         return (
                             <NavigationLink
@@ -106,11 +138,17 @@ export function SideMenu() {
                                 loading={loading}
                                 error={error}
                                 buttons={[
-                                    <Button key={"button2"} label="Cancel" action={() => setShowPopup(false)} />,
+                                    <Button
+                                        iconLeft={<CloseIcon fontSize="small" />}
+                                        key={"button2"}
+                                        label="Cancel"
+                                        action={() => setShowPopup(false)}
+                                    />,
                                     <Button
                                         key={"button1"}
                                         style={"primary"}
                                         label="Logout"
+                                        iconLeft={<CheckIcon fontSize="small" />}
                                         action={() => {
                                             handleLogout()
                                         }}
@@ -118,9 +156,9 @@ export function SideMenu() {
                                 ]}
                             />
                         ) : !changeToSignup ? (
-                            <Login setChangeToSignup={setChangeToSignup} setShowPopup={setShowPopup} />
+                            <Login showPopup={showPopup} setChangeToSignup={setChangeToSignup} setShowPopup={setShowPopup} />
                         ) : (
-                            <Signup setChangeToSignup={setChangeToSignup} setShowPopup={setShowPopup} />
+                            <Signup showPopup={showPopup} setChangeToSignup={setChangeToSignup} setShowPopup={setShowPopup} />
                         )}
                     </Popup>,
                     document.getElementById("popup-root")

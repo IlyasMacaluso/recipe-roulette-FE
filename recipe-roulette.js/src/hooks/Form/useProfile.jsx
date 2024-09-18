@@ -5,11 +5,13 @@ import { useForm } from "../useForm/useForm"
 import { usePostRequest } from "../usePostRequest/usePostRequest"
 import { useImageToString } from "../imgToString/imgToString"
 import { useBlocker } from "@tanstack/react-router"
+import { useSnackbar } from "../../components/Snackbar/useSnackbar"
+import { useSidebar } from "../../contexts/SidebarProvider/SidebarProvider"
 
 export function useProfile() {
     const [isEditing, setIsEditing] = useState(false)
     const [blockCondition, setBlockCondition] = useState(false)
-
+    const { handleOpenSnackbar } = useSnackbar()
     const {
         data: profileData,
         showText,
@@ -29,6 +31,7 @@ export function useProfile() {
     const { isAuthenticated } = useAuth()
     const { handlePostRequest, error, loading } = usePostRequest()
     const { imgToString } = useImageToString()
+    const { navSidebar } = useSidebar()
     const { proceed, reset, status } = useBlocker({
         condition: blockCondition,
     })
@@ -84,7 +87,7 @@ export function useProfile() {
             }
             //aggiorna la variabile di stato quando si passa a !isEditing (dopo aver aggiornato i dati, o dopo il login)
         }
-    }, [isAuthenticated, isEditing])
+    }, [isAuthenticated, isEditing, navSidebar])
 
     const handleAvatarChange = (e) => {
         const avatar = e.target.files[0]
@@ -150,7 +153,10 @@ export function useProfile() {
                         newAvatar: avatarChanged ? prev.avatar : null,
                         userId: localData.id,
                     },
-                    onSuccess: () => setIsEditing(false),
+                    onSuccess: () => {
+                        handleOpenSnackbar("Your informations were succesfully updated", 2000)
+                        setIsEditing(false)
+                    },
                 })
             }
 

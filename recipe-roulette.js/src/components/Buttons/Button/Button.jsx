@@ -4,7 +4,7 @@ import classes from "./Button.module.scss"
 export function Button({
     type = "button",
     width = "fitContent",
-    height = null,
+    cta = null,
     label = "label",
     iconLeft = null,
     iconRight = null,
@@ -44,7 +44,7 @@ export function Button({
                 ${iconRight && classes.iconRight}
                 ${width === "fill" && classes.wideButton}
                 ${style === "primary" && classes.primaryColor}
-                ${height === "large" && classes.cta}
+                ${cta && classes.cta}
                 ${style === "transparent" && classes.transparent}`}
         >
             {iconLeft}

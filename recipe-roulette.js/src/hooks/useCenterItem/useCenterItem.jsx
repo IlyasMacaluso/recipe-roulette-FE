@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react"
 
-export const useCenterItem = (n) => {
+export const useCenterItem = (n, centerItem = false) => {
     const [isKeyboardOpen, setIsKeyboardOpen] = useState(false)
     const refs = Array.from({ length: n }, () => useRef(null)) // create an array of refs, with length equal to the "n" parameter
 
@@ -26,6 +26,7 @@ export const useCenterItem = (n) => {
     }, [])
 
     const scrollToCenter = (currentRef) => {
+        if (!centerItem) return
         const scrollItem = () => {
             currentRef.current.scrollIntoView({
                 behavior: "smooth",
@@ -35,7 +36,7 @@ export const useCenterItem = (n) => {
         // if the keyboard is opened, the item will be centered immediately
         if (isKeyboardOpen) {
             scrollItem()
-        // if the keyboard is closed the item will be centered after a 200ms delay, (wait the new window.innerHeight before the item is centered)
+            // if the keyboard is closed the item will be centered after a 200ms delay, (wait the new window.innerHeight before the item is centered)
         } else {
             setTimeout(() => scrollItem(), 150)
         }
