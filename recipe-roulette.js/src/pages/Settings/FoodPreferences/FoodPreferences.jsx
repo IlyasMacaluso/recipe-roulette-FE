@@ -27,10 +27,11 @@ export function FoodPreferences() {
 
     return (
         <div className={`${layout.pageFH}  ${layout.noPadding} ${styles.body}`}>
+
             <Header
-                rightIcons={[
+                itemsRight={[
                     {
-                        icon: (
+                        item: (
                             <Button
                                 label="Reset All"
                                 action={() => {
@@ -42,9 +43,10 @@ export function FoodPreferences() {
                         ),
                     },
                 ]}
-                leftIcons={[{ icon: <ArrowBackIcon fontSize="small" />, iconFn: () => navigate({ to: "/settings" }) }]}
+                itemsLeft={[{ item: <ArrowBackIcon fontSize="small" />, itemFn: () => navigate({ to: "/settings" }) }]}
                 pageTitle="Food Preferences"
             />
+
             <Sidebar
                 discardPrefChanges={discardPrefChanges}
                 discardBLChanges={discardBLChanges}

@@ -95,7 +95,7 @@ export function Settings() {
                         <>
                             <div className={classes.linksWrapper}>
                                 <Link to="/settings/food-preferences" className={classes.linkItem}>
-                                    <div className={classes.leftItems}>
+                                    <div className={classes.itemsLeft}>
                                         <RestaurantMenuIcon fontSize="small" />
                                         <p className={classes.label}>Food Preferences</p>
                                     </div>
@@ -103,14 +103,14 @@ export function Settings() {
                                 </Link>
 
                                 <Link className={classes.linkItem} onClick={() => setShowTutorial(true)}>
-                                    <div className={classes.leftItems}>
+                                    <div className={classes.itemsLeft}>
                                         <FactCheckIcon fontSize="small" />
                                         <p className={classes.label}> Show Tutorial</p>
                                     </div>
                                     <NavigateNextIcon fontSize="medium" />
                                 </Link>
                                 <Link to="/settings/feedback-&-support" className={classes.linkItem}>
-                                    <div className={classes.leftItems}>
+                                    <div className={classes.itemsLeft}>
                                         <BugReportIcon fontSize="small" />
                                         <p className={classes.label}>Report a Bug</p>
                                     </div>

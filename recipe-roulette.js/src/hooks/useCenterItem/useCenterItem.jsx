@@ -26,7 +26,7 @@ export const useCenterItem = (n, centerItem = false) => {
     }, [])
 
     const scrollToCenter = (currentRef) => {
-        if (!centerItem) return
+        if (!centerItem || !currentRef.current) return
         const scrollItem = () => {
             currentRef.current.scrollIntoView({
                 behavior: "smooth",

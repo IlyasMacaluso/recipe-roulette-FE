@@ -16,7 +16,6 @@
     font-family: $font-poppins;
     font-weight: 500;
     color: $dark-gray;
-    
 
     .profilePicture {
         width: 18vh;
@@ -24,7 +23,7 @@
         object-fit: cover;
         border-radius: 50%;
         outline: 1px solid $light-gray;
-        outline-offset: -2px;
+        outline-offset: -1px;
         background-color: $lightest-green;
     }
     .title {

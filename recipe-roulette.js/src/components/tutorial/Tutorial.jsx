@@ -38,7 +38,7 @@ export function Tutorial({ setShowTutorial = null, checkbox = false }) {
             <div className={`${styles.tutorial} ${animate ? animations.animationEnd : animations.animationStart}`}>
                 <header>
                     <h2>Tutorial</h2>
-                    <div className={styles.rightItems}>
+                    <div className={styles.itemsRight}>
                         <IcoButton
                             action={() => setShowTutorial && setShowTutorial(false)}
                             style="transparent"
@@ -144,7 +144,7 @@ export function Tutorial({ setShowTutorial = null, checkbox = false }) {
                         )}
                     </div>
                     <Button
-                        iconLeft={<SkipNextIcon fontSize="small" />}
+                        iconRight={<SkipNextIcon fontSize="small" />}
                         action={() => {
                             if (rememberShowTutorial) {
                                 setValue("showTutorial", false)

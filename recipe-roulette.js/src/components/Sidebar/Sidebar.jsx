@@ -41,6 +41,7 @@ export function Sidebar({
         deselectIngredients,
         ingredients,
         blacklistedLoading,
+        blacklistedError,
         updateDBBlacklist,
         blacklistUpdateErr,
         blacklistUpdateLoading,
@@ -57,6 +58,7 @@ export function Sidebar({
         recipePreferences,
         preferencesUpdateLoading,
         preferencesUpdateError,
+        foodPrefError,
     } = useRecipesContext()
 
     const { cuisineEthnicityChips, difficultyChips, prepTimeChips, caloricApportChips } = filterChipsArray()
@@ -94,19 +96,27 @@ export function Sidebar({
             >
                 {!positionUnfixed && (
                     <header>
-                        <h2>{filtersName === "recipeFilters" ? "Filters" : "Preferences"}</h2>
-                        <div className={classes.rightItems}>
-                            <Button
-                                label="Reset All"
-                                iconLeft={<RotateLeftOutlinedIcon fontSize="small" />}
-                                size={18}
-                                action={() => {
-                                    deselectFilters({ filters: filtersName, setFilters: setFilters })
-                                    deselectIngredients("is_blacklisted")
-                                }}
-                            />
-                            <IcoButton action={() => setSidebarState(false)} style="transparent" icon={<CloseIcon fontSize="small" />} />
+                        <div className={classes.contentWrapper}>
+                            <h2>{filtersName === "recipeFilters" ? "Filters" : "Preferences"}</h2>
+                            <div className={classes.itemsRight}>
+                                <Button
+                                    label="Reset All"
+                                    iconLeft={<RotateLeftOutlinedIcon fontSize="small" />}
+                                    size={18}
+                                    action={() => {
+                                        deselectFilters({ filters: filtersName, setFilters: setFilters })
+                                        deselectIngredients("is_blacklisted")
+                                    }}
+                                />
+                                <IcoButton
+                                    action={() => setSidebarState(false)}
+                                    style="transparent"
+                                    icon={<CloseIcon fontSize="small" />}
+                                />
+                            </div>
                         </div>
+
+                       {foodPrefError && <InlineMessage error={foodPrefError} />}
                     </header>
                 )}
 
@@ -143,6 +153,9 @@ export function Sidebar({
                                         ))}
                                     </div>
                                 )}
+
+                                {blacklistedError && <InlineMessage error={blacklistedError} />}
+
                                 {!blacklistedLoading && ingredients?.blacklisted && ingredients?.blacklisted.length > 0 && (
                                     // blacklisted ingredients
                                     <div className={classes.filterChipWrapper}>
@@ -186,7 +199,7 @@ export function Sidebar({
                     </div>
 
                     <div className={classes.section}>
-                        <h4>Preferences</h4>
+                        <h4>Dietary preferences</h4>
                         <div className={classes.switchesWrapper}>
                             <Switch
                                 state={filters.is_gluten_free}

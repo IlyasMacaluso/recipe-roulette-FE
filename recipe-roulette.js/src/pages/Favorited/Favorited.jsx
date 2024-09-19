@@ -69,11 +69,10 @@ export function Favorited() {
     } else {
         return (
             <div className={`${layout.scrollPage} ${animate ? transition.animationEnd : transition.animationStart}`}>
-                     <div style={{ paddingLeft: "8px", paddingRight: "8px" }}>
+                <div style={{ paddingLeft: "8px", paddingRight: "8px" }}>
                     <Header pageTitle="Favorited" />
 
                     {isAuthenticated && recipes?.favorited && recipes?.favorited.length > 0 && (
-
                         <section className={searchWrapper.globalActions}>
                             <BaseSearch data={searchFavorites} inputValue={inputValue} setInputValue={setInputValue} />
                             <IcoButton
@@ -86,9 +85,11 @@ export function Favorited() {
                 </div>
 
                 {favoritedLoading || foodPrefLoading || historyLoading ? (
-                    [...Array(3)].map(() => (
-                        <Skeleton key={Math.random()} sx={{ bgcolor: "#c5e4c9" }} variant="rounded" width={"100%"} height={"280px"} />
-                    ))
+                    <section className={layout.recipesWrapper}>
+                        {[...Array(3)].map(() => (
+                            <Skeleton key={Math.random()} sx={{ bgcolor: "#c5e4c9" }} variant="rounded" width={"100%"} height={"280px"} />
+                        ))}
+                    </section>
                 ) : isAuthenticated && recipes?.favorited.length > 0 ? (
                     <>
                         {searchFavorites && searchFavorites.length > 0 ? (

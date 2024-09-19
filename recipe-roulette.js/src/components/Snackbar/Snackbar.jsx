@@ -18,12 +18,12 @@ export function Snackbar() {
 
     return (
         <div className={`${classes.snackbar} ${isActive ? classes.snackbarActive : classes.snackbarInactive}`}>
-            <div className={classes.leftItems}>
+            <div className={classes.itemsLeft}>
                 <ErrorOutlineIcon fontSize="small" />
                 <p>{message}</p>
                 {showBtn && <Button label="Log in" action={() => setShowPopup(true)} />}
             </div>
-            <div tabIndex={-1} onClick={handleCloseSnackbar} className={classes.rightItems}>
+            <div tabIndex={-1} onClick={handleCloseSnackbar} className={classes.itemsRight}>
                 <CloseIcon fontSize="small" />
             </div>
             {showPopup &&

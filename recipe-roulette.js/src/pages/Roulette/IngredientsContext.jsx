@@ -122,6 +122,7 @@ export const IngredientsProvider = ({ children }) => {
                 deselectIngredients,
                 setIngredients,
                 updateDBBlacklist,
+                blacklistedError,
                 blacklistUpdateErr,
                 blacklistUpdateLoading,
                 ingredients,

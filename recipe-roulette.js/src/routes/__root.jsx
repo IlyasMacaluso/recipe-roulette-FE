@@ -7,7 +7,7 @@ import { SnackbarProvider } from "../components/Snackbar/useSnackbar"
 import { SideMenu } from "../components/SideMenu/SideMenu"
 import { Sidebar } from "../components/Sidebar/Sidebar"
 import { Snackbar } from "../components/Snackbar/Snackbar"
-import { SidebarProvider, } from "../contexts/SidebarProvider/SidebarProvider"
+import { SidebarProvider } from "../contexts/SidebarProvider/SidebarProvider"
 
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools"
 import { TanStackRouterDevtools } from "@tanstack/router-devtools"
@@ -36,24 +36,19 @@ export const Route = createRootRoute({
                                             {pathname === "/settings/food-preferences" ? null : (
                                                 <>
                                                     {pathname === "/roulette" && (
-                                                        <Sidebar
-                                                            showBlacklist={true}
-                                                            filtersName="recipePreferences"
-                                                        />
+                                                        <Sidebar showBlacklist={true} filtersName="recipePreferences" />
                                                     )}
 
                                                     {(pathname === "/favorited" || pathname === "/history") && (
-                                                        <Sidebar
-                                                            filtersName="recipeFilters"
-                                                        />
+                                                        <Sidebar filtersName="recipeFilters" />
                                                     )}
                                                 </>
                                             )}
                                         </SidebarProvider>
                                     </ImageProvider>
                                     <>
-                                        {/* <TanStackRouterDevtools />
-                                            <ReactQueryDevtools /> */}
+                                        <TanStackRouterDevtools />
+                                        <ReactQueryDevtools />
                                     </>
                                 </SnackbarProvider>
                             </RecipesFetchProvider>

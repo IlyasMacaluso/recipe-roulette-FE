@@ -9,8 +9,8 @@ import { useRecipesContext } from "../../contexts/RecipesContext"
 export function Header({
     pageTitle = "Welcome!",
     path,
-    leftIcons = [{ icon: null, iconFn: null }],
-    rightIcons = [{ icon: null, iconFn: null }],
+    itemsLeft = [{ item: null, itemFn: null }],
+    itemsRight = [{ item: null, itemFn: null }],
 }) {
     const navigate = useNavigate()
     const location = useLocation()
@@ -46,12 +46,12 @@ export function Header({
 
     return (
         <header className={classes.header}>
-            <div className={classes.leftItems}>
-                {leftIcons[0].icon &&
-                    leftIcons?.map((leftIcon, index) => {
+            <div className={classes.itemsLeft}>
+                {itemsLeft[0].item &&
+                    itemsLeft?.map((itemLeft, index) => {
                         return (
-                            <div key={index} onClick={leftIcon?.iconFn} className={classes.icoWrapper}>
-                                {leftIcon.icon}
+                            <div key={index} onClick={itemLeft?.itemFn} className={classes.icoWrapper}>
+                                {itemLeft.item}
                             </div>
                         )
                     })}
@@ -59,12 +59,12 @@ export function Header({
                 <h1>{pageTitle}</h1>
             </div>
 
-            <div className={classes.rightItems}>
-                {rightIcons[0].icon &&
-                    rightIcons?.map((rightIcon, index) => {
+            <div className={classes.itemsRight}>
+                {itemsRight[0].item &&
+                    itemsRight?.map((itemRight, index) => {
                         return (
-                            <div key={index} onClick={rightIcon.iconFn} className={classes.icoWrapper}>
-                                {rightIcon.icon}
+                            <div key={index} onClick={itemRight.itemFn} className={classes.icoWrapper}>
+                                {itemRight.item}
                             </div>
                         )
                     })}

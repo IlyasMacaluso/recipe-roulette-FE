@@ -41,7 +41,7 @@ export const RecipesProvider = ({ children }) => {
         updateFilters,
         deselectFilters,
         updateDBFilters,
-        
+
         preferencesUpdateLoading,
         preferencesUpdateError,
     } = useRecipeFilter(isAuthenticated)
@@ -53,6 +53,7 @@ export const RecipesProvider = ({ children }) => {
         data: DBFAvorited,
         error: favoritedError,
         isLoading: favoritedLoading,
+        isFetching: favoritedFetching,
         refetch: refetchFav,
     } = useQuery({
         queryKey: ["get-favorited-recipes"],
@@ -70,6 +71,7 @@ export const RecipesProvider = ({ children }) => {
         data: DBFoodPref,
         error: foodPrefError,
         isLoading: foodPrefLoading,
+        isFetching: foodPrefFetching,
         refetch: refetchFoodPrefs,
     } = useQuery({
         queryKey: ["get-food-preferences"],
@@ -84,9 +86,10 @@ export const RecipesProvider = ({ children }) => {
 
     //fetch cronologia ricette
     const {
-        data: recipesHistory,
+        data: DBHistory,
         error: historyError,
         isLoading: historyLoading,
+        isFetching: historyFetching,
         refetch: refetchHistory,
     } = useQuery({
         queryKey: ["get-recipes-history"],
@@ -100,66 +103,36 @@ export const RecipesProvider = ({ children }) => {
     })
 
     useEffect(() => {
-        const localRecipes = getValue("recipes")
-        const localFilters = getValue("recipePreferences")
-
-        localRecipes?.favorited && setRecipes(localRecipes)
-
-        localFilters && setRecipePreferences(localFilters)
-        localRecipes && setValue("recipes", localRecipes)
-
-        let isFirstTime = true
-
-        if (isAuthenticated && isFirstTime) {
-            if (!favoritedLoading && !foodPrefLoading && !historyLoading) {
-                const DBRecipes = {
-                    ...localRecipes,
-                    results: localRecipes?.results || [],
-                    favorited: DBFAvorited || [],
-                    filteredFavorites: DBFAvorited || [],
-                    searchFavorites: DBFAvorited || [],
-                    history: recipesHistory || [],
-                    filteredHistory: recipesHistory || [],
-                    searchHistory: recipesHistory || [],
-                }
-
-                DBRecipes && setRecipes(DBRecipes)
-                DBFoodPref && setValue("recipePreferences", DBFoodPref)
-
-                DBFoodPref && setRecipePreferences(DBFoodPref)
-                DBRecipes && setValue("recipes", DBRecipes)
-
-                isFirstTime = false
-            }
-        } else if (!isAuthenticated && isFirstTime) {
-            // Se non si è autenticati, setta isFavorited:false (nella variabile di stato)
-            const resetRecipeList = (list) => {
-                if (list && list.length > 0) {
-                    return list.map((rec) => ({ ...rec, isFavorited: false }))
-                }
-                return []
-            }
-
-            setRecipes((prevRecipes) => {
-                if (localRecipes) {
-                    return {
-                        ...prevRecipes,
-                        results: resetRecipeList(localRecipes.results) || [],
-                        targetedRecipe: localRecipes.targetedRecipe ? { ...prevRecipes.targetedRecipe, isFavorited: false } : null,
-                        favorited: [],
-                        filteredFavorites: [],
-                        searchFavorites: [],
-                        history: [],
-                        filteredHistory: [],
-                        searchHistory: [],
-                    }
-                }
-                console.log(prevRecipes)
-
-                return prevRecipes // Se localRecipes non è definito, ritorna lo stato corrente senza modifiche
-            })
+        if (favoritedLoading || historyLoading || foodPrefLoading) {
+            return
         }
-    }, [isAuthenticated, favoritedLoading, historyLoading, foodPrefLoading])
+
+        if (historyFetching || favoritedFetching || foodPrefFetching) {
+            return
+        }
+
+        if (!isAuthenticated) {
+            return
+        }
+
+        const DBRecipes = {
+            results: [],
+            favorited: DBFAvorited || [],
+            filteredFavorites: DBFAvorited || [],
+            searchFavorites: DBFAvorited || [],
+            history: DBHistory || [],
+            filteredHistory: DBHistory || [],
+            searchHistory: DBHistory || [],
+            targetedRecipe: null,
+        }
+
+        DBFoodPref && setRecipePreferences(DBFoodPref)
+        DBRecipes && setRecipes(DBRecipes)
+
+        DBFoodPref && setValue("recipePreferences", DBFoodPref)
+        DBRecipes && setValue("recipes", DBRecipes)
+
+    }, [isAuthenticated, favoritedLoading, historyLoading, foodPrefLoading, favoritedFetching, historyFetching, foodPrefFetching])
 
     // Animazione recipeCard
     useEffect(() => {
@@ -169,9 +142,9 @@ export const RecipesProvider = ({ children }) => {
         }
     }, [recipeFilters])
 
-    // When the patch changes refetch data needed, and reset inputValue
+    // When the path changes reset inputValue (global value)
     useEffect(() => {
-        ;(location.pathname === "history" || "/favorited") && setInputValue("")
+        (location.pathname === "history" || "/favorited") && setInputValue("")
     }, [location.pathname])
 
     // Filtro i risultati quando viene modificato l'input
@@ -245,6 +218,7 @@ export const RecipesProvider = ({ children }) => {
                 favoritedError,
                 historyError,
                 preferencesUpdateError,
+                foodPrefError,
 
                 recipePreferences,
                 setRecipePreferences,

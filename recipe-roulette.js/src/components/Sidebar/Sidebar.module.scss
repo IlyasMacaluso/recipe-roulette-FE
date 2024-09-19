@@ -34,13 +34,17 @@
         opacity 0.4s ease;
 
     header {
-        position: abs;
-        padding: 1rem $size-20;
-        padding-right: 0.75rem;
         display: flex;
-        align-items: center;
-        justify-content: space-between;
+        flex-direction: column;
         border-bottom: 1px solid $lighter-gray;
+        padding: 1rem $size-20;
+        gap: $size-12;
+        padding-right: 0.75rem;
+        .contentWrapper {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
         h2 {
             color: $darkish-gray;
             font-family: $font-poppins;
@@ -52,7 +56,7 @@
         button {
             height: 36px;
         }
-        .rightItems {
+        .itemsRight {
             display: flex;
             align-items: center;
             gap: 1rem;
@@ -205,18 +209,18 @@ h4 {
         opacity: 1;
         transform: translateX(0);
         flex: 1 1 0;
-        
+
         max-width: none;
         outline: 1px solid $lighter-gray;
         border-radius: $size-16;
         overflow: hidden;
     }
 
-    .sidebar .sidebarBody{
+    .sidebar .sidebarBody {
         gap: 32px;
     }
 
-    .sidebar > header > .rightItems > button:last-child {
+    .sidebar > header > .itemsRight > button:last-child {
         display: none;
     }
 

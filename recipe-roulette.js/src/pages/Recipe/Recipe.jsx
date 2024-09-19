@@ -28,10 +28,10 @@ export function Recipe() {
                 <>
                     <Header
                         pageTitle={recipes?.targetedRecipe?.title || "Recipe"}
-                        leftIcons={[
+                        itemsLeft={[
                             {
-                                icon: <ArrowBackIcon fontSize="small" />,
-                                iconFn: () => {
+                                item: <ArrowBackIcon fontSize="small" />,
+                                itemFn: () => {
                                     try {
                                         const prevPath = localStorage.getItem("prevPath")
                                         navigate({ to: prevPath ? prevPath : "/" })

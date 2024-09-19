@@ -17,8 +17,8 @@
     min-height: fit-content;
     background-color: white;
 
-    .leftItems,
-    .rightItems {
+    .itemsLeft,
+    .itemsRight {
         display: flex;
         align-items: center;
         gap: 0.75rem;
@@ -27,7 +27,7 @@
         align-items: center;
         color: $dark-gray;
     }
-    .leftItems > h1 {
+    .itemsLeft > h1 {
         font-family: $font-poppins;
         font-size: $text-size-24;
         line-height: 120%;
@@ -43,7 +43,7 @@
         min-width: 32px;
     }
 
-    .leftItems svg {
+    .itemsLeft svg {
         stroke: $dark-gray;
         stroke-width: 1;
     }
@@ -59,7 +59,7 @@
         padding-bottom: $size-16;
     }
 
-    .header .rightItems > .icoWrapper:last-child {
+    .header .itemsRight > .icoWrapper:last-child {
         display: none;
     }
 }
