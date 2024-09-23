@@ -10,6 +10,7 @@ import { Header } from "../../../components/Header/Header"
 import ArrowBackIcon from "@mui/icons-material/ArrowBack"
 import RotateLeftIcon from "@mui/icons-material/RotateLeft"
 import { Button } from "../../../components/Buttons/Button/Button"
+import { padding } from "@mui/system"
 
 export function FoodPreferences() {
     const { discardPrefChanges, setDiscardChanges, recipePreferences, deselectFilters, setRecipePreferences } = useRecipesContext()
@@ -27,25 +28,26 @@ export function FoodPreferences() {
 
     return (
         <div className={`${layout.pageFH}  ${layout.noPadding} ${styles.body}`}>
-
-            <Header
-                itemsRight={[
-                    {
-                        item: (
-                            <Button
-                                label="Reset All"
-                                action={() => {
-                                    deselectFilters({ filters: "recipePreferences", setFilters: setRecipePreferences })
-                                    deselectIngredients("is_blacklisted")
-                                }}
-                                iconLeft={<RotateLeftIcon fontSize="small" />}
-                            />
-                        ),
-                    },
-                ]}
-                itemsLeft={[{ item: <ArrowBackIcon fontSize="small" />, itemFn: () => navigate({ to: "/settings" }) }]}
-                pageTitle="Food Preferences"
-            />
+            <div style={{ paddingLeft: "8px", paddingRight: "16px" }}>
+                <Header
+                    itemsRight={[
+                        {
+                            item: (
+                                <Button
+                                    label="Reset All"
+                                    action={() => {
+                                        deselectFilters({ filters: "recipePreferences", setFilters: setRecipePreferences })
+                                        deselectIngredients("is_blacklisted")
+                                    }}
+                                    iconLeft={<RotateLeftIcon fontSize="small" />}
+                                />
+                            ),
+                        },
+                    ]}
+                    itemsLeft={[{ item: <ArrowBackIcon fontSize="small" />, itemFn: () => navigate({ to: "/settings" }) }]}
+                    pageTitle="Food Preferences"
+                />
+            </div>
 
             <Sidebar
                 discardPrefChanges={discardPrefChanges}

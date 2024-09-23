@@ -21,6 +21,10 @@ export const useRecipesUpdate = (recipes, setRecipes) => {
         if (isAuthenticated) {
             const userData = getValue("userData")
 
+            if (!userData) {
+                return
+            }
+
             //favorited
             handlePostRequest({
                 url: "http://localhost:3000/api/preferences/set-favorited-recipes",
@@ -53,6 +57,10 @@ export const useRecipesUpdate = (recipes, setRecipes) => {
                 return
             }
 
+            if (!userData) {
+                return
+            }
+            
             //favorited
             handlePostRequest({
                 url: "http://localhost:3000/api/preferences/set-favorited-recipes",

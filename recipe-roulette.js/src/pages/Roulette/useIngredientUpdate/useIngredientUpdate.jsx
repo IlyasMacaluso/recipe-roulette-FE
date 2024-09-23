@@ -39,7 +39,7 @@ export const useIngredientUpdate = (ingredients, setIngredients) => {
         if (isAuthenticated) {
             const userData = getValue("userData")
 
-            userData.id &&
+            userData?.id &&
                 handlePostRequest({
                     url: "http://localhost:3000/api/preferences/set-blacklisted-ingredients",
                     payload: { newBlacklist: blacklistedIngredients, userId: userData.id },

@@ -15,7 +15,7 @@ import { InlineMessage } from "../../InlineMessage/InlineMessage"
 export function Signup({ showPopup = false, setShowPopup = null, setChangeToSignup = null }) {
     const location = useLocation()
 
-    const { handleSubmit, error, loading } = useSignup(setShowPopup)
+    const { handleSubmit, error, loading, success } = useSignup(setShowPopup)
     const { data, showText, handleInputChange, handleShowText } = useForm({
         username: "",
         email: "",
@@ -23,11 +23,14 @@ export function Signup({ showPopup = false, setShowPopup = null, setChangeToSign
         confirmPass: "",
     })
 
-    const { password, confirmPass, username, email, termsAndConditions } = useMemo(() => {
+    const { password, confirmPass, username, email } = useMemo(() => {
         return data
     }, [data])
 
     const message = useMemo(() => {
+        if (success) {
+            return "Signup successful! Please verify your email"
+        }
         if (password && confirmPass) {
             if (password.length >= 8 || confirmPass.length >= 8) {
                 if (password !== confirmPass) {
@@ -39,7 +42,7 @@ export function Signup({ showPopup = false, setShowPopup = null, setChangeToSign
                 return "Password must be at least 8 characters long"
             }
         }
-    })
+    }, [password, confirmPass, success])
 
     return (
         <div className={`${classes.container}`}>

@@ -55,38 +55,40 @@ export function useProfile() {
             return
         }
 
-        if (userData) {
-            const { username = null, email = null, avatar = null } = userData
+        if (!userData) {
+            return
+        }
 
-            if (!avatar) {
-                imgToString("src/assets/images/3d_avatar_26.png").then((base64Avatar) => {
-                    setData((prev) => {
-                        return {
-                            ...prev,
-                            username: username || prev.username,
-                            email: email || prev.email,
-                            avatar: base64Avatar,
-                            oldPassword: "",
-                            newPassword: "",
-                            confirmNewPass: "",
-                        }
-                    })
-                })
-            } else {
+        const { username = null, email = null, avatar = null } = userData
+
+        if (!avatar) {
+            imgToString("src/assets/images/3d_avatar_26.png").then((base64Avatar) => {
                 setData((prev) => {
                     return {
                         ...prev,
                         username: username || prev.username,
                         email: email || prev.email,
-                        avatar: avatar,
+                        avatar: base64Avatar,
                         oldPassword: "",
                         newPassword: "",
                         confirmNewPass: "",
                     }
                 })
-            }
-            //aggiorna la variabile di stato quando si passa a !isEditing (dopo aver aggiornato i dati, o dopo il login)
+            })
+        } else {
+            setData((prev) => {
+                return {
+                    ...prev,
+                    username: username || prev.username,
+                    email: email || prev.email,
+                    avatar: avatar,
+                    oldPassword: "",
+                    newPassword: "",
+                    confirmNewPass: "",
+                }
+            })
         }
+        //aggiorna la variabile di stato quando si passa a !isEditing (dopo aver aggiornato i dati, o dopo il login)
     }, [isAuthenticated, isEditing, navSidebar])
 
     const handleAvatarChange = (e) => {
@@ -106,7 +108,7 @@ export function useProfile() {
                 })
 
                 localData = {
-                    ...localData,
+                    ...(localData || {}),
                     avatar: base64String,
                 }
             }
@@ -116,6 +118,7 @@ export function useProfile() {
 
     const handleSaveChanges = () => {
         let localData = getValue("userData")
+
         const { username = null, email = null, avatar = null } = localData
 
         setData((prev) => {
@@ -133,7 +136,7 @@ export function useProfile() {
             }
 
             localData = {
-                ...localData, //token etc
+                ...(localData || {}),
                 username: usernameChanged ? prev.username : username,
                 email: emailChanged ? prev.email : email,
                 avatar: avatarChanged ? prev.avatar : avatar,

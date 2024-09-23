@@ -33,7 +33,7 @@
         transform 0.4s ease,
         opacity 0.4s ease;
 
-    header {
+    >header {
         display: flex;
         flex-direction: column;
         border-bottom: 1px solid $lighter-gray;

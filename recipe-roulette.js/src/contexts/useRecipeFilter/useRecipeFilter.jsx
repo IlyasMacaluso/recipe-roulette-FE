@@ -61,6 +61,13 @@ export const useRecipeFilter = (isAuthenticated) => {
     //     }
     // }, [debounceValue])
 
+    useEffect(() => {
+        if (!isAuthenticated) {
+            setRecipeFilters(new RecipeFilter())
+            setRecipePreferences(new RecipeFilter())
+        }
+    }, [isAuthenticated])
+
     const updateDBFilters = () => {
         if (!updatedFilter) {
             return
@@ -71,6 +78,10 @@ export const useRecipeFilter = (isAuthenticated) => {
         }
 
         const userData = getValue("userData")
+
+        if (!userData) {
+            return
+        }
 
         handlePostRequest({
             url: "http://localhost:3000/api/preferences/set-preferences",

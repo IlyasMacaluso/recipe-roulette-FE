@@ -14,7 +14,9 @@ export function useLogout(setShowPopup) {
     const Logout = useMutation({
         mutationFn: () => {
             const { username, email, token, id } = getValue("userData")
-            const user = {username, email, token, id}
+            const user = { username, email, token, id }
+            
+            setValue(null, "userData")
             return postRequest({ url: "http://localhost:3000/api/users/logout", payload: user })
         },
         onSuccess: () => {

@@ -64,7 +64,7 @@
 @media screen and (min-width: 1120px) {
     .snackbar {
         position: absolute;
-        width: calc(100% - 48px)
+        width: calc(100% - 40px)
     }
     .snackbarActive {
         bottom: $size-24;
