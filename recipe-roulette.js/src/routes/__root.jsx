@@ -46,10 +46,10 @@ export const Route = createRootRoute({
                                             )}
                                         </SidebarProvider>
                                     </ImageProvider>
-                                    <>
+                                    {/* <>
                                         <TanStackRouterDevtools />
                                         <ReactQueryDevtools />
-                                    </>
+                                    </> */}
                                 </SnackbarProvider>
                             </RecipesFetchProvider>
                         </IngredientsProvider>

@@ -26,8 +26,8 @@
     p {
         padding-left: 0.5rem;
         align-content: center;
-        font-family: "Metropolitan";
-        font-weight: 500;
+        font-family: $font-metropolitan;
+        font-weight: 550;
         font-size: $text-size-16;
         color: $dark-gray;
         transition:
@@ -101,7 +101,7 @@
         border-radius: $size-8 ;
     }
     .selected {
-        outline-width: 3px;
-        outline-offset: -3px;
+        outline-width: 2.5px;
+        outline-offset: -2.5px;
     }    
 }

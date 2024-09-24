@@ -26,9 +26,6 @@ export function useLogout(setShowPopup) {
             setIsAuthenticated(false)
             setValue("userData", newUserData) // setLocalStorage localStorage
 
-            const keys = [["get-recipes-history"], ["get-food-preferences"], ["get-favorited-recipes"], ["ingredients"]]
-            keys.forEach((key) => queryClient.invalidateQueries(key))
-
             handleOpenSnackbar("You are now logged out!", 3000)
             setTimeout(() => setShowPopup(false), 0)
         },

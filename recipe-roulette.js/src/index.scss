@@ -9,13 +9,10 @@ body {
     overflow: hidden;
 }
 
-#root {
+#root, #popup-root {
     height: 100%;
     box-sizing: border-box;
     overflow: hidden;
-    -webkit-tap-highlight-color: transparent;
-}
-#popup-root {
     -webkit-tap-highlight-color: transparent;
 }
 
