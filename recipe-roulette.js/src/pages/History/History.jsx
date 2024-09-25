@@ -29,6 +29,7 @@ import { IcoButton } from "../../components/Buttons/IcoButton/IcoButton"
 import { BaseSearch } from "../../components/Search/BaseSearch/BaseSearch"
 import { Header } from "../../components/Header/Header"
 import { useSidebar } from "../../contexts/SidebarProvider/SidebarProvider"
+import { AuthenticationPopup } from "../../components/authentication/login/AuthenticationPopup"
 
 export function History() {
     const [showPopup, setShowPopup] = useState()
@@ -152,9 +153,9 @@ export function History() {
                         {showPopup &&
                             createPortal(
                                 <Popup>
-                                    <Login setShowPopup={setShowPopup} />
+                                    <AuthenticationPopup showPopup={showPopup} setShowPopup={setShowPopup} />
                                 </Popup>,
-                                document.getElementById("popup-root")
+                                document.getElementById("root")
                             )}
                     </>
                 )}

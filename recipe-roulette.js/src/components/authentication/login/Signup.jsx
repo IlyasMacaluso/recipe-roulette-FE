@@ -4,7 +4,6 @@ import { useLocation } from "@tanstack/react-router"
 import { useMemo } from "react"
 
 import EditNoteIcon from "@mui/icons-material/EditNote"
-import StartIcon from "@mui/icons-material/Start"
 import CloseIcon from "@mui/icons-material/Close"
 
 import classes from "../login/Login.module.scss"
@@ -12,7 +11,7 @@ import { Input } from "../../Input/Input"
 import { useForm } from "../../../hooks/useForm/useForm"
 import { InlineMessage } from "../../InlineMessage/InlineMessage"
 
-export function Signup({ showPopup = false, setShowPopup = null, setChangeToSignup = null }) {
+export function Signup({ showPopup = false, setShowPopup = null, setIsRegistered = null }) {
     const location = useLocation()
 
     const { handleSubmit, error, loading, success } = useSignup(setShowPopup)
@@ -116,9 +115,11 @@ export function Signup({ showPopup = false, setShowPopup = null, setChangeToSign
                         active={username && password && confirmPass && email && confirmPass === password}
                         prevPath={location.pathname}
                     />
-                    <div className={classes.loginToSignup}>
+                    
+
+                    <div className={classes.textBlock}>
                         <p className={classes.text}>Already have an account?</p>
-                        <Button style="transparent" action={() => setChangeToSignup(false)} label="Login" />
+                        <Button style="transparent" action={() => setIsRegistered(true)} label="Login" />
                     </div>
                 </div>
             </form>

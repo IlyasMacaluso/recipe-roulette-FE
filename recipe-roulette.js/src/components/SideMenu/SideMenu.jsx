@@ -4,7 +4,7 @@ import { IcoButton } from "../Buttons/IcoButton/IcoButton"
 import { createPortal } from "react-dom"
 import { Popup } from "../Pop-up/Popup"
 import { Login } from "../authentication/login/Login"
-import { Signup } from "../authentication/signup/Signup"
+import { Signup } from "../authentication/login/Signup"
 import { ConfirmPopup } from "../ConfirmPopup/ConfirmPopup"
 import { Button } from "../Buttons/Button/Button"
 
@@ -29,6 +29,7 @@ import classes from "./SideMenu.module.scss"
 import { useSidebar } from "../../contexts/SidebarProvider/SidebarProvider"
 import { useProfile } from "../../hooks/Form/useProfile"
 import { useLocalStorage } from "../../hooks/useLocalStorage/useLocalStorage"
+import { AuthenticationPopup } from "../authentication/login/AuthenticationPopup"
 
 export function SideMenu() {
     const [showPopup, setShowPopup] = useState()
@@ -155,13 +156,11 @@ export function SideMenu() {
                                     />,
                                 ]}
                             />
-                        ) : !changeToSignup ? (
-                            <Login showPopup={showPopup} setChangeToSignup={setChangeToSignup} setShowPopup={setShowPopup} />
                         ) : (
-                            <Signup showPopup={showPopup} setChangeToSignup={setChangeToSignup} setShowPopup={setShowPopup} />
+                            <AuthenticationPopup showPopup={showPopup} setShowPopup={setShowPopup} />
                         )}
                     </Popup>,
-                    document.getElementById("popup-root")
+                    document.getElementById("root")
                 )}
         </>
     )

@@ -8,7 +8,7 @@ import { Popup } from "../../components/Pop-up/Popup"
 import { ConfirmPopup } from "../../components/ConfirmPopup/ConfirmPopup"
 import { useLogout } from "../../hooks/Form/useLogout"
 import { Login } from "../../components/authentication/login/Login"
-import { Signup } from "../../components/authentication/signup/Signup"
+import { Signup } from "../../components/authentication/login/Signup"
 import { useState } from "react"
 
 import { useLoginToSignup } from "../../hooks/loginToSignup/useLoginToSignup"
@@ -32,6 +32,7 @@ import { Link } from "@tanstack/react-router"
 import { useTutorial } from "../../hooks/useTutorial/useTutorial"
 import { Tutorial } from "../../components/tutorial/Tutorial"
 import { Header } from "../../components/Header/Header"
+import { AuthenticationPopup } from "../../components/authentication/login/AuthenticationPopup"
 
 export function Settings() {
     const [showPopup, setShowPopup] = useState(false)
@@ -67,7 +68,7 @@ export function Settings() {
     const { showTutorial, setShowTutorial } = useTutorial(false)
 
     if (showTutorial) {
-        return <>{createPortal(<Tutorial setShowTutorial={setShowTutorial} />, document.getElementById("popup-root"))}</>
+        return <>{createPortal(<Tutorial setShowTutorial={setShowTutorial} />, document.getElementById("root"))}</>
     } else {
         return (
             <div className={`${layout.scrollPage}  ${layout.padding24} ${animate ? transitions.animationEnd : transitions.animationStart}`}>
@@ -164,13 +165,11 @@ export function Settings() {
                                                     />,
                                                 ]}
                                             />
-                                        ) : !changeToSignup ? (
-                                            <Login setChangeToSignup={setChangeToSignup} setShowPopup={setShowPopup} />
                                         ) : (
-                                            <Signup setChangeToSignup={setChangeToSignup} setShowPopup={setShowPopup} />
+                                            <AuthenticationPopup showPopup={showPopup} setShowPopup={setShowPopup} />
                                         )}
                                     </Popup>,
-                                    document.getElementById("popup-root")
+                                    document.getElementById("root")
                                 )}
                         </>
                     )}

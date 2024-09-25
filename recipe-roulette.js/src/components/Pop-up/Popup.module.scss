@@ -9,16 +9,16 @@
     height: 100%;
     background-color: rgba(0, 0, 0, 0.5);
     display: flex;
-    align-items: center;
-    justify-content: center;
     padding: $size-24;
     z-index: 999;
     animation: fadeIn 0.45s cubic-bezier(0.08, 0.82, 0.17, 1);
     box-sizing: border-box;
+    overflow-y: scroll;
 }
 
 .popup {
     display: flex;
+    margin: auto;
     flex-direction: column;
     gap: $size-8;
     height: fit-content;

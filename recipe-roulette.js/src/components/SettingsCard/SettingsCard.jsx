@@ -192,7 +192,7 @@ export function SettingsCard({
                                     ]}
                                 />
                             </Popup>,
-                            document.getElementById("popup-root")
+                            document.getElementById("root")
                         )}
                 </div>
             ) : (

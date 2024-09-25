@@ -8,10 +8,7 @@
     padding: 0 1rem;
     min-width: max-content;
     height: $height-40;
-    color: $dark-green;
-    border: 1px solid $light-desaturated-green;
     border-radius: 12px;
-    background-color: $lightest-green;
     transition:
         color 0.4s ease,
         background-color 0.4s ease;
@@ -22,23 +19,11 @@
     font-family: $font-metropolitan;
     line-height: 100%;
 }
-.button:active {
-    background-color: $light-green;
-    transition:
-        color 0.4s ease,
-        background-color 0.4s ease;
-}
+
 button:hover {
     cursor: pointer;
 }
 
-.disabled:active {
-    background-color: $lighter-gray;
-    color: $medium-gray;
-    transition:
-        color 0.4s ease,
-        background-color 0.4s ease;
-}
 .wideButton {
     width: 100%;
     padding-right: 0.75rem;
@@ -47,25 +32,41 @@ button:hover {
     min-width: fit-content;
 }
 
+.secondaryColor {
+    color: $dark-green;
+    border: 1px solid $light-desaturated-green;
+    background-color: $lightest-green;
+    &:active {
+        background-color: $light-green;
+        transition:
+            color 0.4s ease,
+            background-color 0.4s ease;
+    }
+}
+
 .primaryColor {
     background-color: $darkish-green;
     border: none;
     color: $lightest-green;
     font-weight: 600;
+    &:active {
+        background-color: $dark-green;
+        transition:
+            color 0.4s ease,
+            background-color 0.4s ease;
+    }
 }
 
 .transparent {
+    color: $dark-green;
     background-color: transparent;
     border-radius: $size-8;
     border: none;
-}
-
-.primaryColor:active {
-    color: white;
-    background-color: $darkish-green;
-    transition:
-        color 0.4s ease,
-        background-color 0.4s ease;
+    transition: color 0.4s ease;
+    &:active {
+        color: $darkest-green;
+        transition: color 0.4s ease;
+    }
 }
 
 .disabled {
@@ -75,6 +76,11 @@ button:hover {
     transition:
         color 0.4s ease,
         background-color 0.4s ease;
+    &:active {
+        border: 1px solid $light-gray;
+        background-color: $lighter-gray;
+        color: $medium-gray;
+    }
 }
 
 .cta {

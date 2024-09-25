@@ -44,6 +44,7 @@ export function Button({
                 ${iconRight && classes.iconRight}
                 ${width === "fill" && classes.wideButton}
                 ${style === "primary" && classes.primaryColor}
+                ${style === "secondary" && classes.secondaryColor}
                 ${cta && classes.cta}
                 ${style === "transparent" && classes.transparent}`}
         >

@@ -5,11 +5,12 @@ import { createPortal } from "react-dom"
 import { Popup } from "../Pop-up/Popup"
 import { Button } from "../Buttons/Button/Button"
 import { Login } from "../authentication/login/Login"
-import { Signup } from "../authentication/signup/Signup"
+import { Signup } from "../authentication/login/Signup"
 
 import CloseIcon from "@mui/icons-material/Close"
 import ErrorOutlineIcon from "@mui/icons-material/ErrorOutline"
 import classes from "./Snackbar.module.scss"
+import { AuthenticationPopup } from "../authentication/login/AuthenticationPopup"
 
 export function Snackbar() {
     const { isActive, message, handleCloseSnackbar, showBtn } = useSnackbar()
@@ -29,13 +30,9 @@ export function Snackbar() {
             {showPopup &&
                 createPortal(
                     <Popup>
-                        {!changeToSignup ? (
-                            <Login setChangeToSignup={setChangeToSignup} setShowPopup={setShowPopup} />
-                        ) : (
-                            <Signup setChangeToSignup={setChangeToSignup} setShowPopup={setShowPopup} />
-                        )}
+                        <AuthenticationPopup showPopup={showPopup} setShowPopup={setShowPopup} />
                     </Popup>,
-                    document.getElementById("popup-root")
+                    document.getElementById("root")
                 )}
         </div>
     )

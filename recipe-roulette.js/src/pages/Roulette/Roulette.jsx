@@ -49,7 +49,7 @@ export function Roulette() {
     const { showTutorial, setShowTutorial } = useTutorial(showTutorialAgain)
 
     if (showTutorial) {
-        return <>{createPortal(<Tutorial setShowTutorial={setShowTutorial} checkbox={true} />, document.getElementById("popup-root"))}</>
+        return <>{createPortal(<Tutorial setShowTutorial={setShowTutorial} checkbox={true} />, document.getElementById("root"))}</>
     } else if (ingredientsError) {
         return (
             <div className={`${layout.pageFH} ${layout.noVerticalPadding}`}>

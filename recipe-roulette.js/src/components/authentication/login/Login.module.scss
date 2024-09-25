@@ -8,7 +8,7 @@
     width: calc(100vw - 3rem);
     max-width: 25rem;
     font-size: $text-size-14;
-    .text{
+    .text {
         font-size: $text-size-14;
     }
 }
@@ -50,7 +50,7 @@
     justify-content: space-between;
     align-items: center;
     padding: 0 1.5rem;
-    padding-bottom: 2rem;
+    padding-bottom: 1rem;
     box-sizing: border-box;
     gap: $size-24;
     height: 100%;
@@ -62,6 +62,9 @@
     gap: 1rem;
     margin-top: 1rem;
     width: 100%;
+    label {
+        font-size: 13px;
+    }
 }
 .bottomItems {
     display: flex;
@@ -77,8 +80,12 @@
     gap: 0.5rem;
     box-sizing: border-box;
 }
-
-.loginToSignup {
+.divider {
+    border-top: 1px solid;
+    width: 100%;
+    color: $light-gray;
+}
+.textBlock {
     display: flex;
     gap: 0 $size-8;
     flex-wrap: wrap;
@@ -93,7 +100,6 @@
         margin: 0;
         min-width: max-content;
     }
-
     button {
         display: inline;
         padding: 0;

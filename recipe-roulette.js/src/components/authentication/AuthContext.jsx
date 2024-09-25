@@ -64,7 +64,7 @@ export function AuthProvider({ children }) {
         } catch (error) {
             console.error(error)
         }
-    }, [data])
+    }, [data])    
 
     useEffect(() => {
         queryClient.invalidateQueries()

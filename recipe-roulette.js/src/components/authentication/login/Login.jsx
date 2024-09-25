@@ -5,7 +5,7 @@ import { GoogleLoginBtn } from "../../SocialLoginButtons/GoogleLoginBtn"
 import { FacebookSocialBtn } from "../../SocialLoginButtons/FacebookLoginBtn"
 import { Button } from "../../Buttons/Button/Button"
 import { useForm } from "../../../hooks/useForm/useForm"
-import { useEffect, useRef } from "react"
+import { useEffect, useRef, useState } from "react"
 import { useLocalStorage } from "../../../hooks/useLocalStorage/useLocalStorage"
 import { Input } from "../../Input/Input"
 import { InlineMessage } from "../../InlineMessage/InlineMessage"
@@ -15,9 +15,7 @@ import LoginIcon from "@mui/icons-material/Login"
 
 import classes from "./Login.module.scss"
 
-export function Login({ showPopup = null, setShowPopup = null, setChangeToSignup = null }) {
-    const location = useLocation()
-
+export function Login({ showPopup = null, setShowPopup = null, setForgotPassword = null, setIsRegistered = null }) {
     const { getValue } = useLocalStorage()
     const { handleSubmit, error, loading } = useLogin(setShowPopup)
     const { data, setData, showText, handleInputChange, handleShowText } = useForm({
@@ -97,9 +95,14 @@ export function Login({ showPopup = null, setShowPopup = null, setChangeToSignup
                         iconLeft={<LoginIcon fontSize="small" />}
                         active={data.username && data.password}
                     />
-                    <div className={classes.loginToSignup}>
+
+                    <Button style="transparent" action={() => setForgotPassword && setForgotPassword(true)} label="Forgot your password?" />
+
+                    <div className={classes.divider} />
+
+                    <div className={classes.textBlock}>
                         <p className={classes.text}>Don't have an account yet?</p>
-                        <Button style="transparent" action={() => setChangeToSignup && setChangeToSignup(true)} label="Sign Up" />
+                        <Button style="transparent" action={() => setIsRegistered && setIsRegistered(false)} label="Sign Up" />
                     </div>
                 </div>
 

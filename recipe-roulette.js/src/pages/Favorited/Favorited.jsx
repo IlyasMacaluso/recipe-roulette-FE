@@ -12,7 +12,7 @@ import { useLocationHook } from "../../hooks/useLocationHook"
 import { Button } from "../../components/Buttons/Button/Button"
 import { Skeleton } from "@mui/material"
 import { Placeholder } from "../../components/Placeholder/Placeholder"
-import { Signup } from "../../components/authentication/signup/Signup"
+import { Signup } from "../../components/authentication/login/Signup"
 import { InlineMessage } from "../../components/InlineMessage/InlineMessage"
 
 import LoopOutlinedIcon from "@mui/icons-material/LoopOutlined"
@@ -32,6 +32,7 @@ import { Header } from "../../components/Header/Header"
 import { IcoButton } from "../../components/Buttons/IcoButton/IcoButton"
 import { BaseSearch } from "../../components/Search/BaseSearch/BaseSearch"
 import { useSidebar } from "../../contexts/SidebarProvider/SidebarProvider"
+import { AuthenticationPopup } from "../../components/authentication/login/AuthenticationPopup"
 
 export function Favorited() {
     const [showPopup, setShowPopup] = useState()
@@ -157,13 +158,9 @@ export function Favorited() {
                         {showPopup &&
                             createPortal(
                                 <Popup>
-                                    {!changeToSignup ? (
-                                        <Login setChangeToSignup={setChangeToSignup} setShowPopup={setShowPopup} />
-                                    ) : (
-                                        <Signup setChangeToSignup={setChangeToSignup} setShowPopup={setShowPopup} />
-                                    )}
+                                    <AuthenticationPopup showPopup={showPopup} setShowPopup={setShowPopup} />
                                 </Popup>,
-                                document.getElementById("popup-root")
+                                document.getElementById("root")
                             )}
                     </>
                 )}
