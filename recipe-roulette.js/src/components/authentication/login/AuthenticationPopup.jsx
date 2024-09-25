@@ -22,8 +22,4 @@ export function AuthenticationPopup({ showPopup = null, setShowPopup = null}) {
     if (forgotPassword) {
         return <ForgotPassword setResetPassword={setResetPassword} showPopup={showPopup} setShowPopup={setShowPopup} setForgotPassword={setForgotPassword}  />
     }
-
-    if (resetPassword) {
-        return <ResetPassword showPopup={showPopup} setShowPopup={setShowPopup} setForgotPassword={setForgotPassword} setResetPassword={setResetPassword}/>
-    }
 }

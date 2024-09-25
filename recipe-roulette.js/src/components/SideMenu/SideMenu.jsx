@@ -3,8 +3,7 @@ import { NavigationLink } from "./NavigationLink/NavigationLink"
 import { IcoButton } from "../Buttons/IcoButton/IcoButton"
 import { createPortal } from "react-dom"
 import { Popup } from "../Pop-up/Popup"
-import { Login } from "../authentication/login/Login"
-import { Signup } from "../authentication/login/Signup"
+
 import { ConfirmPopup } from "../ConfirmPopup/ConfirmPopup"
 import { Button } from "../Buttons/Button/Button"
 
@@ -21,14 +20,12 @@ import CheckIcon from "@mui/icons-material/Check"
 import { useEffect, useMemo, useState } from "react"
 import { useLogout } from "../../hooks/Form/useLogout"
 import { useLocation, useNavigate } from "@tanstack/react-router"
-import { useLoginToSignup } from "../../hooks/loginToSignup/useLoginToSignup"
 import { useAuth } from "../../hooks/Auth/useAuth"
 
 // CSS
 import classes from "./SideMenu.module.scss"
 import { useSidebar } from "../../contexts/SidebarProvider/SidebarProvider"
 import { useProfile } from "../../hooks/Form/useProfile"
-import { useLocalStorage } from "../../hooks/useLocalStorage/useLocalStorage"
 import { AuthenticationPopup } from "../authentication/login/AuthenticationPopup"
 
 export function SideMenu() {
@@ -37,7 +34,6 @@ export function SideMenu() {
 
     const { isAuthenticated } = useAuth()
     const { loading, error, handleLogout } = useLogout(setShowPopup)
-    const { changeToSignup, setChangeToSignup } = useLoginToSignup()
     const { pathname } = useLocation()
     const { setNavSidebar, navSidebar } = useSidebar()
     const { profileData, loading: profileDataLoading } = useProfile()

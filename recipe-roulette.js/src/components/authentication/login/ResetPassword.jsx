@@ -1,22 +1,34 @@
 import { Button } from "../../Buttons/Button/Button"
 import { useForm } from "../../../hooks/useForm/useForm"
-import { useMemo } from "react"
+import { useEffect, useMemo } from "react"
 import { Input } from "../../Input/Input"
 import { InlineMessage } from "../../InlineMessage/InlineMessage"
 
 import CloseIcon from "@mui/icons-material/Close"
-import CheckIcon from '@mui/icons-material/Check';
+import CheckIcon from "@mui/icons-material/Check"
 
 import classes from "./Login.module.scss"
+import { usePostRequest } from "../../../hooks/usePostRequest/usePostRequest"
+import { useNavigate, useSearch } from "@tanstack/react-router"
 
-export function ResetPassword({ showPopup = null, setShowPopup = null, setForgotPassword = null, setResetPassword = null }) {
+export function ResetPassword({ showPopup = null, setShowPopup = null }) {
     const { data, showText, handleInputChange, handleShowText } = useForm({
         password: "",
         confirmPass: "",
     })
 
+    const { handlePostRequest, error, loading, success } = usePostRequest()
+    const navigate = useNavigate()
+    const search = useSearch({})
+    const token = search?.token
+
     const message = useMemo(() => {
         const { password, confirmPass } = data
+        console.log(success)
+
+        if (success) {
+            return "Password updated successfully"
+        }
 
         if (password && confirmPass) {
             if (password.length >= 8 || confirmPass.length >= 8) {
@@ -29,7 +41,7 @@ export function ResetPassword({ showPopup = null, setShowPopup = null, setForgot
                 return "Password must be at least 8 characters long"
             }
         }
-    }, [data])
+    }, [data, success])
 
     const buttonActive = useMemo(() => {
         const { password, confirmPass } = data
@@ -49,7 +61,15 @@ export function ResetPassword({ showPopup = null, setShowPopup = null, setForgot
         }
     }, [data])
 
-    console.log(buttonActive)
+    useEffect(() => {
+        if (!token) {
+            navigate({ to: "/roulette" })
+        }
+    }, [])
+
+    if (!token) {
+        return
+    }
 
     return (
         <div className={`${classes.container}`}>
@@ -60,7 +80,17 @@ export function ResetPassword({ showPopup = null, setShowPopup = null, setForgot
                 </div>
             </header>
 
-            <form className={classes.formWrapper} onSubmit={(e) => e.preventDefault()}>
+            <form
+                className={classes.formWrapper}
+                onSubmit={(e) => {
+                    e.preventDefault()
+                    handlePostRequest({
+                        url: "http://localhost:3000/api/users/reset-password",
+                        payload: { password: data.password },
+                        token: token,
+                    })
+                }}
+            >
                 <div className={classes.inputsWrapper}>
                     <Input
                         isPopUp={showPopup}
@@ -86,31 +116,21 @@ export function ResetPassword({ showPopup = null, setShowPopup = null, setForgot
                         value={data.confirmPass}
                     />
 
-                    {/* {(error || loading) && <InlineMessage error={error} loading={loading} />} */}
+                    {(error || loading) && <InlineMessage error={error} loading={loading} />}
                     {message && <InlineMessage message={message} />}
                 </div>
 
                 <div className={classes.bottomItems}>
                     <Button
-                        type={"button"}
+                        type={"submit"}
                         style="primary"
                         label={"Change Password"}
                         width="fill"
                         iconLeft={<CheckIcon fontSize="small" />}
                         active={buttonActive}
-                        action={() => "send reset password email"}
                     />
 
-                    <div className={classes.textBlock}>
-                        <Button
-                            style="transparent"
-                            action={() => {
-                                setResetPassword && setResetPassword(false)
-                                setForgotPassword && setForgotPassword(true)
-                            }}
-                            label={"Return to login"}
-                        />
-                    </div>
+                    <div className={classes.textBlock}></div>
                 </div>
             </form>
         </div>

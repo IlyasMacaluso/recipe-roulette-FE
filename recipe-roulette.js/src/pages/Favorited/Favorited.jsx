@@ -2,17 +2,14 @@ import { useAnimate } from "../../hooks/animatePages/useAnimate"
 import { useRecipesContext } from "../../contexts/RecipesContext"
 import { useMemo, useState } from "react"
 import { useAuth } from "../../hooks/Auth/useAuth"
-import { useLoginToSignup } from "../../hooks/loginToSignup/useLoginToSignup"
 
 import { RecipeCard } from "../../components/RecipeCard/RecipeCard"
 import { Popup } from "../../components/Pop-up/Popup"
 import { createPortal } from "react-dom"
-import { Login } from "../../components/authentication/login/Login"
 import { useLocationHook } from "../../hooks/useLocationHook"
 import { Button } from "../../components/Buttons/Button/Button"
 import { Skeleton } from "@mui/material"
 import { Placeholder } from "../../components/Placeholder/Placeholder"
-import { Signup } from "../../components/authentication/login/Signup"
 import { InlineMessage } from "../../components/InlineMessage/InlineMessage"
 
 import LoopOutlinedIcon from "@mui/icons-material/LoopOutlined"
@@ -35,7 +32,8 @@ import { useSidebar } from "../../contexts/SidebarProvider/SidebarProvider"
 import { AuthenticationPopup } from "../../components/authentication/login/AuthenticationPopup"
 
 export function Favorited() {
-    const [showPopup, setShowPopup] = useState()
+    const [showPopup, setShowPopup] = useState(false)
+
     const {
         recipes,
         inputValue,
@@ -49,7 +47,6 @@ export function Favorited() {
         setRecipeFilters,
     } = useRecipesContext()
     const { isAuthenticated } = useAuth()
-    const { changeToSignup, setChangeToSignup } = useLoginToSignup()
 
     const { location } = useLocationHook()
     const { animate } = useAnimate(location)

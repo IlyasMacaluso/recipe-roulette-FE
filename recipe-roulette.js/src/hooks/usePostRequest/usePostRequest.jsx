@@ -11,8 +11,13 @@ export function usePostRequest() {
     const postRequest = async (data) => {
         const userData = getValue("userData")
         try {
+            let { token = null } = data
             const { url = null, signal = null, payload = null } = data
-            const token = userData?.token
+            
+            if (!token) {
+                token = userData?.token
+            }
+
             const headers = token ? { Authorization: `Bearer ${token}` } : undefined
 
             const res = await axios.post(url, payload, { headers, signal })
@@ -59,13 +64,14 @@ export function usePostRequest() {
     })
 
     const handlePostRequest = async (
-        { url, payload, mutationId = null, queryKey = null, onSuccess = null, onError = null },
+        { url, payload, mutationId = null, queryKey = null, onSuccess = null, onError = null, token = null },
         meta = null
     ) => {
         mutationId && cancelMutation(mutationId)
         mutation.mutate(
             {
                 url,
+                token,
                 payload, //data needed for the post request
                 mutationId, // needed to cancel previous requests
                 queryKey, //invalidate query onSuccess (re-fetch query with this id)
@@ -77,5 +83,5 @@ export function usePostRequest() {
         )
     }
 
-    return { handlePostRequest, postRequest, loading: mutation.isPending, error: mutation.error }
+    return { handlePostRequest, postRequest, loading: mutation.isPending, error: mutation.error, success: mutation.isSuccess }
 }

@@ -1,6 +1,5 @@
 import { Button } from "../../Buttons/Button/Button"
 import { useForm } from "../../../hooks/useForm/useForm"
-import { useLocalStorage } from "../../../hooks/useLocalStorage/useLocalStorage"
 import { Input } from "../../Input/Input"
 import { InlineMessage } from "../../InlineMessage/InlineMessage"
 
@@ -8,12 +7,20 @@ import CloseIcon from "@mui/icons-material/Close"
 import ForwardToInboxOutlinedIcon from "@mui/icons-material/ForwardToInboxOutlined"
 
 import classes from "./Login.module.scss"
+import { usePostRequest } from "../../../hooks/usePostRequest/usePostRequest"
+import { useMemo } from "react"
 
 export function ForgotPassword({ setResetPassword = null, showPopup = false, setShowPopup = null, setForgotPassword = null }) {
-    const { getValue } = useLocalStorage()
+    const { handlePostRequest, error, loading, success } = usePostRequest()
     const { data, handleInputChange } = useForm({
         emailOrUsername: "",
     })
+
+    const message = useMemo(() => {
+        if (success) {
+            return "Email sent succesfully"
+        }
+    }, [success])
 
     return (
         <div className={`${classes.container}`}>
@@ -24,7 +31,16 @@ export function ForgotPassword({ setResetPassword = null, showPopup = false, set
                 </div>
             </header>
 
-            <form className={classes.formWrapper} onSubmit={(e) => e.preventDefault()}>
+            <form
+                className={classes.formWrapper}
+                onSubmit={(e) => {
+                    e.preventDefault()
+                    handlePostRequest({
+                        url: "http://localhost:3000/api/users/forgot-password",
+                        payload: { emailOrUsername: data.emailOrUsername },
+                    })
+                }}
+            >
                 <div className={classes.inputsWrapper}>
                     <Input
                         isPopUp={showPopup}
@@ -35,22 +51,18 @@ export function ForgotPassword({ setResetPassword = null, showPopup = false, set
                         required={true}
                     />
 
-                    {/* {(error || loading) && <InlineMessage error={error} loading={loading} />} */}
+                    {(error || loading) && <InlineMessage error={error} loading={loading} />}
+                    {message && <InlineMessage message={message} />}
                 </div>
 
                 <div className={classes.bottomItems}>
                     <Button
-                        type={"button"}
+                        type="submit"
                         style="primary"
                         label={"Reset Password"}
                         width="fill"
                         iconLeft={<ForwardToInboxOutlinedIcon fontSize="small" />}
                         active={data.emailOrUsername}
-                        action={() => {
-                            "send reset password email"
-                            setResetPassword && setResetPassword(true)
-                            setForgotPassword && setForgotPassword(false)
-                        }}
                         // username or email exists in DB ? create token with jwt and send email to user.email
                     />
 

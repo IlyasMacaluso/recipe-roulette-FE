@@ -7,11 +7,8 @@ import { createPortal } from "react-dom"
 import { Popup } from "../../components/Pop-up/Popup"
 import { ConfirmPopup } from "../../components/ConfirmPopup/ConfirmPopup"
 import { useLogout } from "../../hooks/Form/useLogout"
-import { Login } from "../../components/authentication/login/Login"
-import { Signup } from "../../components/authentication/login/Signup"
 import { useState } from "react"
 
-import { useLoginToSignup } from "../../hooks/loginToSignup/useLoginToSignup"
 import { useAuth } from "../../hooks/Auth/useAuth"
 import { Button } from "../../components/Buttons/Button/Button"
 
@@ -62,7 +59,6 @@ export function Settings() {
 
     const { handleLogout, loading: popupLoading, error: popupError } = useLogout(setShowPopup)
     const { isAuthenticated } = useAuth()
-    const { changeToSignup, setChangeToSignup } = useLoginToSignup()
     const { location } = useLocationHook()
     const { animate } = useAnimate(location)
     const { showTutorial, setShowTutorial } = useTutorial(false)
