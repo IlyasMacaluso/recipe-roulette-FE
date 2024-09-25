@@ -1,21 +1,15 @@
-import { useCenterItem } from "../../../hooks/useCenterItem/useCenterItem"
-import { useLocation } from "@tanstack/react-router"
-import { useLogin } from "../../../hooks/Form/useLogin"
-import { GoogleLoginBtn } from "../../SocialLoginButtons/GoogleLoginBtn"
-import { FacebookSocialBtn } from "../../SocialLoginButtons/FacebookLoginBtn"
 import { Button } from "../../Buttons/Button/Button"
 import { useForm } from "../../../hooks/useForm/useForm"
-import { useEffect, useMemo, useRef, useState } from "react"
-import { useLocalStorage } from "../../../hooks/useLocalStorage/useLocalStorage"
+import { useMemo } from "react"
 import { Input } from "../../Input/Input"
 import { InlineMessage } from "../../InlineMessage/InlineMessage"
 
 import CloseIcon from "@mui/icons-material/Close"
-import LoginIcon from "@mui/icons-material/Login"
+import CheckIcon from '@mui/icons-material/Check';
 
 import classes from "./Login.module.scss"
 
-export function ResetPassword(showPopup = null, setShowPopup = null, setForgotPassword = null, setResetPassword = null) {
+export function ResetPassword({ showPopup = null, setShowPopup = null, setForgotPassword = null, setResetPassword = null }) {
     const { data, showText, handleInputChange, handleShowText } = useForm({
         password: "",
         confirmPass: "",
@@ -53,7 +47,6 @@ export function ResetPassword(showPopup = null, setShowPopup = null, setForgotPa
         } else {
             return false
         }
-        
     }, [data])
 
     console.log(buttonActive)
@@ -61,7 +54,7 @@ export function ResetPassword(showPopup = null, setShowPopup = null, setForgotPa
     return (
         <div className={`${classes.container}`}>
             <header className={classes.header}>
-                <h1>Set New Password</h1>
+                <h1>Set new password</h1>
                 <div onClick={() => setShowPopup && setShowPopup()} className={classes.closeIco}>
                     <CloseIcon />
                 </div>
@@ -73,7 +66,7 @@ export function ResetPassword(showPopup = null, setShowPopup = null, setForgotPa
                         isPopUp={showPopup}
                         name="password"
                         type={showText ? "text" : "password"}
-                        placeholder={"Password"}
+                        placeholder={"New password"}
                         handleInputChange={handleInputChange}
                         hasIcons={true}
                         handleShowText={handleShowText}
@@ -85,7 +78,7 @@ export function ResetPassword(showPopup = null, setShowPopup = null, setForgotPa
                         isPopUp={showPopup}
                         name="confirmPass"
                         type={showText ? "text" : "password"}
-                        placeholder={"Confrim password"}
+                        placeholder={"Confrim new password"}
                         handleInputChange={handleInputChange}
                         hasIcons={true}
                         handleShowText={handleShowText}
@@ -101,9 +94,9 @@ export function ResetPassword(showPopup = null, setShowPopup = null, setForgotPa
                     <Button
                         type={"button"}
                         style="primary"
-                        label={"Reset Password"}
+                        label={"Change Password"}
                         width="fill"
-                        iconLeft={<LoginIcon fontSize="small" />}
+                        iconLeft={<CheckIcon fontSize="small" />}
                         active={buttonActive}
                         action={() => "send reset password email"}
                     />
@@ -112,16 +105,11 @@ export function ResetPassword(showPopup = null, setShowPopup = null, setForgotPa
                         <Button
                             style="transparent"
                             action={() => {
-                                setForgotPassword(false)
+                                setResetPassword && setResetPassword(false)
+                                setForgotPassword && setForgotPassword(true)
                             }}
                             label={"Return to login"}
                         />
-                    </div>
-                    <div className={classes.divider} />
-
-                    <div className={classes.textBlock}>
-                        <p className={classes.text}>Don't have an account yet?</p>
-                        <Button style="transparent" action={() => setChangeToSignup && setChangeToSignup(true)} label="Sign Up" />
                     </div>
                 </div>
             </form>

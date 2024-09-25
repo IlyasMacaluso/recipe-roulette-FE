@@ -18,7 +18,7 @@ export function ForgotPassword({ setResetPassword = null, showPopup = false, set
     return (
         <div className={`${classes.container}`}>
             <header className={classes.header}>
-                <h1>Reset Your Password</h1>
+                <h1>Reset your password</h1>
                 <div onClick={() => setShowPopup && setShowPopup()} className={classes.closeIco}>
                     <CloseIcon />
                 </div>
