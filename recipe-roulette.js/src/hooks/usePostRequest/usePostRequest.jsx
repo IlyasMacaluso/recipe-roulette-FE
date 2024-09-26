@@ -13,7 +13,7 @@ export function usePostRequest() {
         try {
             let { token = null } = data
             const { url = null, signal = null, payload = null } = data
-            
+
             if (!token) {
                 token = userData?.token
             }
@@ -32,7 +32,7 @@ export function usePostRequest() {
                 console.log("request canceled", error.message)
             } else {
                 console.log(error)
-                throw new Error(error.response?.data.msg || "Something went wrong")
+                throw new Error(error.response?.data?.msg || error.response?.data || "Something went wrong")
             }
         }
     }

@@ -15,7 +15,7 @@ export function useLogin(setShowPopup) {
         mutationFn: (variables) => postRequest({ url: "http://localhost:3000/api/users/login", payload: variables }),
         onSuccess: (data, variables) => {
             const { id, username, email, token, avatar } = data
-            
+
             setValue("userData", { id, username, email, token, rememberMe: variables.rememberMe, avatar })
             setIsAuthenticated(true)
 
@@ -35,5 +35,6 @@ export function useLogin(setShowPopup) {
         error: Login.error,
         loading: Login.isPending,
         handleSubmit,
+        loginData: Login.data,
     }
 }

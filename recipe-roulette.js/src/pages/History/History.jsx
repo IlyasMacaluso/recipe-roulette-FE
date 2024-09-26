@@ -123,6 +123,7 @@ export function History() {
                         bottomPadding={true}
                         buttons={[
                             <Button
+                            style="primary"
                                 key="Start Ingredients Shuffle"
                                 link="roulette"
                                 label="Start Ingredients Shuffle"

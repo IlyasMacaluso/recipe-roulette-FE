@@ -13,7 +13,7 @@ import { useMemo } from "react"
 export function ForgotPassword({ setResetPassword = null, showPopup = false, setShowPopup = null, setForgotPassword = null }) {
     const { handlePostRequest, error, loading, success } = usePostRequest()
     const { data, handleInputChange } = useForm({
-        emailOrUsername: "",
+        userInformation: "",
     })
 
     const message = useMemo(() => {
@@ -36,16 +36,16 @@ export function ForgotPassword({ setResetPassword = null, showPopup = false, set
                 onSubmit={(e) => {
                     e.preventDefault()
                     handlePostRequest({
-                        url: "http://localhost:3000/api/users/forgot-password",
-                        payload: { emailOrUsername: data.emailOrUsername },
+                        url: "http://localhost:3000/api/users/create-secure-link",
+                        payload: { userInformation: data.userInformation },
                     })
                 }}
             >
                 <div className={classes.inputsWrapper}>
                     <Input
                         isPopUp={showPopup}
-                        name="emailOrUsername"
-                        value={data.emailOrUsername}
+                        name="userInformation"
+                        value={data.userInformation}
                         placeholder={"Email or Username"}
                         handleInputChange={(e) => handleInputChange(e)}
                         required={true}
@@ -62,7 +62,7 @@ export function ForgotPassword({ setResetPassword = null, showPopup = false, set
                         label={"Reset Password"}
                         width="fill"
                         iconLeft={<ForwardToInboxOutlinedIcon fontSize="small" />}
-                        active={data.emailOrUsername}
+                        active={data.userInformation}
                         // username or email exists in DB ? create token with jwt and send email to user.email
                     />
 

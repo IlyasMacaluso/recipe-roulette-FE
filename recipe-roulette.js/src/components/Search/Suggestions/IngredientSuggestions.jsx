@@ -82,7 +82,7 @@ export function IngredientSuggestions({ inputRef = null, setInputState, inputAct
                         topImage={placeholderImage}
                         text="Your search has "
                         hightlitedText="no matching results"
-                        highlightColor="#dd3e46"
+                        highlightColor="#f9dde0"
                     />
                 )}
             </div>

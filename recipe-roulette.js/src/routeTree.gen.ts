@@ -11,6 +11,7 @@
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
+import { Route as VerifyEmailImport } from './routes/verify-email'
 import { Route as RouletteImport } from './routes/roulette'
 import { Route as ResetPasswordImport } from './routes/reset-password'
 import { Route as RecipeResultsImport } from './routes/recipe-results'
@@ -23,6 +24,11 @@ import { Route as settingsSettingsImport } from './routes/(settings)/settings'
 import { Route as settingsfoodPreferencesSettingsFoodPreferencesImport } from './routes/(settings)/(foodPreferences)/settings.food-preferences'
 
 // Create/Update Routes
+
+const VerifyEmailRoute = VerifyEmailImport.update({
+  path: '/verify-email',
+  getParentRoute: () => rootRoute,
+} as any)
 
 const RouletteRoute = RouletteImport.update({
   path: '/roulette',
@@ -135,6 +141,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof RouletteImport
       parentRoute: typeof rootRoute
     }
+    '/verify-email': {
+      id: '/verify-email'
+      path: '/verify-email'
+      fullPath: '/verify-email'
+      preLoaderRoute: typeof VerifyEmailImport
+      parentRoute: typeof rootRoute
+    }
     '/(settings)/settings': {
       id: '/settings'
       path: '/settings'
@@ -163,6 +176,7 @@ export const routeTree = rootRoute.addChildren({
   RecipeResultsRoute,
   ResetPasswordRoute,
   RouletteRoute,
+  VerifyEmailRoute,
   settingsSettingsRoute,
   settingsfoodPreferencesSettingsFoodPreferencesRoute,
 })
@@ -183,6 +197,7 @@ export const routeTree = rootRoute.addChildren({
         "/recipe-results",
         "/reset-password",
         "/roulette",
+        "/verify-email",
         "/settings",
         "/settings/food-preferences"
       ]
@@ -210,6 +225,9 @@ export const routeTree = rootRoute.addChildren({
     },
     "/roulette": {
       "filePath": "roulette.jsx"
+    },
+    "/verify-email": {
+      "filePath": "verify-email.jsx"
     },
     "/settings": {
       "filePath": "(settings)/settings.jsx"

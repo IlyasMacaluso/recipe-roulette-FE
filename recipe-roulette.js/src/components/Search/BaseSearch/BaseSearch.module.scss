@@ -72,7 +72,8 @@
     top: 0;
     left: 0;
     width: 100%;
-    height: fit-content;
+    height: 100%;
+    overflow-y: hidden;
     border-radius: 0;
     transition: border-radius 1s cubic-bezier(0.08, 0.82, 0.17, 1);
 }

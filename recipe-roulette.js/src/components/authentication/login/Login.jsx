@@ -5,7 +5,7 @@ import { GoogleLoginBtn } from "../../SocialLoginButtons/GoogleLoginBtn"
 import { FacebookSocialBtn } from "../../SocialLoginButtons/FacebookLoginBtn"
 import { Button } from "../../Buttons/Button/Button"
 import { useForm } from "../../../hooks/useForm/useForm"
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useMemo, useRef, useState } from "react"
 import { useLocalStorage } from "../../../hooks/useLocalStorage/useLocalStorage"
 import { Input } from "../../Input/Input"
 import { InlineMessage } from "../../InlineMessage/InlineMessage"
@@ -14,10 +14,12 @@ import CloseIcon from "@mui/icons-material/Close"
 import LoginIcon from "@mui/icons-material/Login"
 
 import classes from "./Login.module.scss"
+import { usePostRequest } from "../../../hooks/usePostRequest/usePostRequest"
 
 export function Login({ showPopup = null, setShowPopup = null, setForgotPassword = null, setIsRegistered = null }) {
     const { getValue } = useLocalStorage()
     const { handleSubmit, error, loading } = useLogin(setShowPopup)
+    const { handlePostRequest, error: emailError, loading: emailLoading, success: emailSuccess } = usePostRequest()
     const { data, setData, showText, handleInputChange, handleShowText } = useForm({
         username: "",
         email: "",
@@ -33,6 +35,11 @@ export function Login({ showPopup = null, setShowPopup = null, setForgotPassword
             rememberMe && setData((prev) => ({ ...prev, username: username, rememberMe: rememberMe }))
         }
     }, [])
+
+    const message = useMemo(() => {
+        if (!emailSuccess) return null
+        return "Verification email sent successfully"
+    }, [emailSuccess])
 
     return (
         <div className={`${classes.container}`}>
@@ -84,6 +91,22 @@ export function Login({ showPopup = null, setShowPopup = null, setForgotPassword
                     />
 
                     {(error || loading) && <InlineMessage error={error} loading={loading} />}
+                    {(emailError || emailLoading || message) && (
+                        <InlineMessage error={emailError} loading={emailLoading} message={message} />
+                    )}
+                    {error && !error.is_verified && (
+                        // this creates a new token and send a new email to the user
+                        <Button
+                            style="transparent"
+                            action={() =>
+                                handlePostRequest({
+                                    url: "http://localhost:3000/api/users/create-secure-link",
+                                    payload: { userInformation: data.username },
+                                })
+                            }
+                            label="Resend verification email"
+                        />
+                    )}
                 </div>
 
                 <div className={classes.bottomItems}>
