@@ -1,5 +1,4 @@
 import { IngredientCard } from "../../components/IngredientCard/IngredientCard"
-import { useAnimate } from "../../hooks/animatePages/useAnimate"
 import { Button } from "../../components/Buttons/Button/Button"
 import { useButtonState } from "../../hooks/ButtonState/useButtonState"
 import { useRecipesContext } from "../../contexts/RecipesContext"
@@ -29,7 +28,6 @@ import classes from "./Roulette.module.scss"
 import layout from "../../assets/scss/pageLayout/pageFH.module.scss"
 import searchWrapper from "../../assets/scss/searchWrapper.module.scss"
 
-import transition from "../../assets/scss/pageLayout/pageTransition.module.scss"
 import { IcoButton } from "../../components/Buttons/IcoButton/IcoButton"
 import { IngredientSearch } from "../../components/Search/SearchBar/IngredientSearch"
 
@@ -38,8 +36,6 @@ export function Roulette() {
         useManageIngredients()
     const { recipePreferences } = useRecipesContext()
     const { isActive } = useButtonState(ingredients)
-    const { location } = useLocationHook()
-    const { animate } = useAnimate(location)
     const { handleRecipesFetch } = useRecipesFetch()
     const { handleAnimation, animationState } = useShakeAnimation()
     const { getValue } = useLocalStorage()
@@ -61,7 +57,7 @@ export function Roulette() {
     } else {
         return (
             <div
-                className={`${layout.pageFH} ${layout.noVerticalPadding} ${animate ? transition.animationEnd : transition.animationStart}`}
+                className={`${layout.pageFH} ${layout.noVerticalPadding}`}
             >
                 <div>
                     <Header pageTitle="Roulette" />

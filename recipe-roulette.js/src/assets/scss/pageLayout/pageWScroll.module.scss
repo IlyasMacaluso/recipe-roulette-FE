@@ -1,4 +1,5 @@
 @use "../variables" as *;
+@import "./pageTransition.module.scss";
 
 .scrollPage {
     display: flex;
@@ -12,6 +13,8 @@
     padding-bottom: 0;
     overflow: hidden;
     background-color: white;
+
+    animation: scaleAnimation 0.35s cubic-bezier(0.08, 0.82, 0.17, 1) forwards;
 }
 .padding24{
     padding-left: $size-24;
@@ -30,17 +33,9 @@
     gap: $size-20;
     box-sizing: border-box;
     width: 100%;
-    min-height: fit-content;
     overflow-y: scroll;
 }
 
-// .scrollPage .search {
-//     position: relative;
-//     width: 100%;
-//     box-sizing: border-box;
-//     display: flex;
-//     gap: $size-8;
-// }
 @media screen and (min-width: 880px) {
     .recipesWrapper {
         flex-direction: row;

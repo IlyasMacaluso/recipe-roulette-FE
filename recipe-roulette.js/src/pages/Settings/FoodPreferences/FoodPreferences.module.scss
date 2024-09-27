@@ -1,5 +1,89 @@
 @use "../../../assets/scss" as *;
 
-.body {
-    padding: 0 $size-4;
+.foodPrefPage {
+    display: flex;
+    flex-direction: column;
+    padding: 0 $size-20;
+    height: 100%;
+    animation: scaleAnimation 0.35s cubic-bezier(0.08, 0.82, 0.17, 1) forwards;
+
+    .pageBody {
+        padding-top: $size-4;
+        display: flex;
+        flex-direction: column;
+        gap: $size-24;
+        height: 0;
+        flex-grow: 1;
+        overflow-y: scroll;
+        padding-bottom: calc(40px + 48px + 32px);
+        .section,
+        .switchesWrapper {
+            display: flex;
+            flex-direction: column;
+            gap: $size-8;
+        }
+        h4 {
+            font-size: $text-size-14;
+            font-weight: 600;
+            letter-spacing: 0.0125rem;
+            color: $darkish-gray;
+            font-family: $font-poppins;
+            margin: 0;
+        }
+    }
+    .footer {
+        position: absolute;
+
+        display: flex;
+        flex-direction: column;
+        gap: $size-12;
+
+        box-sizing: border-box;
+        padding: $size-16;
+        bottom: 0;
+        left: 50%;
+        transform: translateX(-50%);
+        width: 100%;
+        background-color: white;
+        border-top: 1px solid $lighter-gray;
+        .buttonsWrapper {
+            display: flex;
+            gap: $size-12;
+            > :first-child {
+                flex: 1 1 0;
+            }
+            > :last-child {
+                flex: 2 1 0;
+            }
+        }
+    }
+}
+
+.blacklistWrapper {
+    display: flex;
+    flex-direction: column;
+    gap: $size-8;
+    .blacklist {
+        display: flex;
+        flex-direction: column;
+        gap: $size-12;
+    }
+}
+
+@keyframes scaleAnimation {
+    0% {
+        transform: scale(0.8);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+@media screen and (min-width: 1120px) {
+    .foodPrefPage {
+        padding: 0 $size-24;
+        .footer {
+            padding: 24px;
+        }
+    }
 }

@@ -43,7 +43,7 @@ export function RecipeCard({ isExpanded = false, recipe, handleClickLoginSnackBa
                     }}
                     className={`${classes.favIcon} ${!cardState.isFavorited ? classes.notFav : classes.isFav}`}
                 >
-                    <FavoriteIcon stroke={"#3C3838"} strokeWidth={"1px"} />
+                    <FavoriteIcon stroke={"#e5e0df"} strokeWidth={cardState.isFavorited ? "0" : "1px"} />
                 </div>
 
                 {!cardImage ? (

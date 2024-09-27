@@ -1,6 +1,3 @@
-import { useAnimate } from "../../hooks/animatePages/useAnimate"
-import { useLocationHook } from "../../hooks/useLocationHook"
-
 import { Placeholder } from "../../components/Placeholder/Placeholder"
 import { Button } from "../../components/Buttons/Button/Button"
 
@@ -23,8 +20,6 @@ import { useNavigate, useSearch } from "@tanstack/react-router"
 export function VerifyEmailPage() {
     const [showPopup, setShowPopup] = useState(true)
     const { handlePostRequest, success, error, loading } = usePostRequest()
-    const { location } = useLocationHook()
-    const { animate } = useAnimate(location)
     const navigate = useNavigate()
     const search = useSearch({})
     const token = search?.token
@@ -55,7 +50,7 @@ export function VerifyEmailPage() {
     }
 
     return (
-        <div className={`${layout.pageFH} ${layout.noVerticalPadding} ${animate ? transition.animationEnd : transition.animationStart}`}>
+        <div className={`${layout.pageFH} ${layout.noVerticalPadding}`}>
             <Header pageTitle="Welcome!" />
 
             <Placeholder

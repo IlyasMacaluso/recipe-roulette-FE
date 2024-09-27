@@ -1,6 +1,3 @@
-import { useAnimate } from "../../hooks/animatePages/useAnimate"
-import { useLocationHook } from "../../hooks/useLocationHook"
-
 import { Placeholder } from "../../components/Placeholder/Placeholder"
 import { Button } from "../../components/Buttons/Button/Button"
 
@@ -15,11 +12,8 @@ import transition from "../../assets/scss/pageLayout/pageTransition.module.scss"
 import { Header } from "../../components/Header/Header"
 
 export function Landing() {
-    const { location } = useLocationHook()
-    const { animate } = useAnimate(location)
-
     return (
-        <div className={`${layout.pageFH} ${layout.noVerticalPadding} ${animate ? transition.animationEnd : transition.animationStart}`}>
+        <div className={`${layout.pageFH} ${layout.noVerticalPadding}`}>
             <Header pageTitle="Welcome!" />
 
             <Placeholder

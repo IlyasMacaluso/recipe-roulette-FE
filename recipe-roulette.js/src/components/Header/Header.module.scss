@@ -6,31 +6,36 @@
     box-sizing: border-box;
 
     display: flex;
-    align-items: center;
-    gap: $size-24;
+    flex-direction: column;
     width: 100%;
-    justify-content: space-between;
     padding: $size-16 0;
     padding-bottom: $size-12;
-    padding-left: $size-4;
 
+    gap: $size-12;
     min-height: fit-content;
     background-color: white;
-
+    .topItems {
+        gap: $size-12;
+        display: flex;
+        width: 100%;
+        justify-content: space-between;
+        align-items: center;
+    }
     .itemsLeft,
-    .itemsRight {
+    .itemsRight,
+    .itemsBottom {
         display: flex;
         align-items: center;
-        gap: 0.75rem;
+        gap: $size-12;
         box-sizing: border-box;
-        display: flex;
         color: $dark-gray;
     }
     .itemsLeft > h1 {
         font-family: $font-poppins;
         font-size: $text-size-24;
         line-height: 120%;
-        font-weight: 700;
+        font-weight: 600;
+        letter-spacing: 0.0125rem;
         margin: 0;
     }
 
@@ -46,10 +51,14 @@
         stroke: $dark-gray;
         stroke-width: 1;
     }
+    .itemsBottom button {
+        flex-grow: 1;
+    }
 }
 
 @media screen and (min-width: 1120px) {
     .header {
+        flex-direction: row;
         position: initial;
         height: fit-content;
         box-sizing: border-box;

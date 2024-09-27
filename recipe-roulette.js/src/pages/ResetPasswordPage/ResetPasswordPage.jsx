@@ -1,6 +1,3 @@
-import { useAnimate } from "../../hooks/animatePages/useAnimate"
-import { useLocationHook } from "../../hooks/useLocationHook"
-
 import { Placeholder } from "../../components/Placeholder/Placeholder"
 import { Button } from "../../components/Buttons/Button/Button"
 
@@ -20,11 +17,9 @@ import { Popup } from "../../components/Pop-up/Popup"
 
 export function ResetPasswordPage() {
     const [showPopup, setShowPopup] = useState(true)
-    const { location } = useLocationHook()
-    const { animate } = useAnimate(location)
 
     return (
-        <div className={`${layout.pageFH} ${layout.noVerticalPadding} ${animate ? transition.animationEnd : transition.animationStart}`}>
+        <div className={`${layout.pageFH} ${layout.noVerticalPadding}`}>
             <Header pageTitle="Welcome!" />
 
             <Placeholder

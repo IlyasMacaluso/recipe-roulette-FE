@@ -7,7 +7,7 @@ import CloseIcon from "@mui/icons-material/Close"
 import NavigateBeforeIcon from "@mui/icons-material/NavigateBefore"
 import NavigateNextIcon from "@mui/icons-material/NavigateNext"
 import SkipNextIcon from "@mui/icons-material/SkipNext"
-import DoneAllIcon from '@mui/icons-material/DoneAll';
+import DoneAllIcon from "@mui/icons-material/DoneAll"
 
 import step1Img from "../../assets/images/tutorial/Appreciation-bro.svg"
 import step2Img from "../../assets/images/tutorial/Bullet journal-bro.svg"
@@ -20,22 +20,14 @@ import { useLocalStorage } from "../../hooks/useLocalStorage/useLocalStorage"
 import { useTutorial } from "../../hooks/useTutorial/useTutorial"
 
 import styles from "./Tutorial.module.scss"
-import animations from "../../assets/scss/pageLayout/pageTransition.module.scss"
 
 export function Tutorial({ setShowTutorial = null, checkbox = false }) {
     const { setValue } = useLocalStorage()
     const { tutorialStep, setTutorialStep, rememberShowTutorial, setRememberShowTutorial } = useTutorial()
-    const [animate, setAnimate] = useState(false)
-
-    useEffect(() => {
-        setTimeout(() => {
-            setAnimate(true)
-        }, 0)
-    }, [])
 
     return (
         <div className={styles.bgOverlay}>
-            <div className={`${styles.tutorial} ${animate ? animations.animationEnd : animations.animationStart}`}>
+            <div className={styles.tutorial}>
                 <header>
                     <h2>Tutorial</h2>
                     <div className={styles.itemsRight}>
@@ -91,7 +83,9 @@ export function Tutorial({ setShowTutorial = null, checkbox = false }) {
                     {tutorialStep === 6 && (
                         <div className={styles.stepBody}>
                             <h2>Step 6</h2>
-                            <p className={styles.text}>Tap "Generate Recipes" to create recipes with ingredients and preferences you selected! </p>
+                            <p className={styles.text}>
+                                Tap "Generate Recipes" to create recipes with ingredients and preferences you selected!{" "}
+                            </p>
                             <img src={step6Img} alt="" />
                         </div>
                     )}

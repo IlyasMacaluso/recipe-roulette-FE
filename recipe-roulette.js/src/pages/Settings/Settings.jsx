@@ -1,7 +1,5 @@
-import { useAnimate } from "../../hooks/animatePages/useAnimate"
 import { useProfile } from "../../hooks/Form/useProfile"
 import { SettingsCard } from "../../components/SettingsCard/SettingsCard"
-import { useLocationHook } from "../../hooks/useLocationHook"
 
 import { createPortal } from "react-dom"
 import { Popup } from "../../components/Pop-up/Popup"
@@ -12,7 +10,6 @@ import { useState } from "react"
 import { useAuth } from "../../hooks/Auth/useAuth"
 import { Button } from "../../components/Buttons/Button/Button"
 
-import transitions from "../../assets/scss/pageLayout/pageTransition.module.scss"
 import LogoutIcon from "@mui/icons-material/Logout"
 import LoginIcon from "@mui/icons-material/Login"
 import NavigateNextIcon from "@mui/icons-material/NavigateNext"
@@ -23,7 +20,6 @@ import CheckIcon from "@mui/icons-material/Check"
 import CloseIcon from "@mui/icons-material/Close"
 
 import classes from "./Settings.module.scss"
-import layout from "../../assets/scss/pageLayout/pageWScroll.module.scss"
 
 import { Link } from "@tanstack/react-router"
 import { useTutorial } from "../../hooks/useTutorial/useTutorial"
@@ -59,118 +55,114 @@ export function Settings() {
 
     const { handleLogout, loading: popupLoading, error: popupError } = useLogout(setShowPopup)
     const { isAuthenticated } = useAuth()
-    const { location } = useLocationHook()
-    const { animate } = useAnimate(location)
     const { showTutorial, setShowTutorial } = useTutorial(false)
 
-    if (showTutorial) {
-        return <>{createPortal(<Tutorial setShowTutorial={setShowTutorial} />, document.getElementById("root"))}</>
-    } else {
-        return (
-            <div className={`${layout.scrollPage}  ${layout.padding24} ${animate ? transitions.animationEnd : transitions.animationStart}`}>
-                <Header pageTitle={"Settings"} />
-                <div className={classes.pageContent}>
-                    <SettingsCard
-                        isEditing={isEditing}
-                        profileData={profileData}
-                        handleAvatarChange={handleAvatarChange}
-                        handleInputChange={handleInputChange}
-                        handleSaveChanges={handleSaveChanges}
-                        setIsEditing={setIsEditing}
-                        handleDiscardChanges={handleDiscardChanges}
-                        showText={showText}
-                        handleShowText={handleShowText}
-                        loading={loading}
-                        error={error}
-                        status={status}
-                        reset={reset}
-                        proceed={proceed}
-                        setBlockCondition={setBlockCondition}
-                    />
+    return (
+        <div className={classes.settingsPage}>
+            <Header pageTitle={"Settings"} />
+            <div className={classes.pageContent}>
+                <SettingsCard
+                    isEditing={isEditing}
+                    profileData={profileData}
+                    handleAvatarChange={handleAvatarChange}
+                    handleInputChange={handleInputChange}
+                    handleSaveChanges={handleSaveChanges}
+                    setIsEditing={setIsEditing}
+                    handleDiscardChanges={handleDiscardChanges}
+                    showText={showText}
+                    handleShowText={handleShowText}
+                    loading={loading}
+                    error={error}
+                    status={status}
+                    reset={reset}
+                    proceed={proceed}
+                    setBlockCondition={setBlockCondition}
+                />
 
-                    {!isEditing && (
-                        <>
-                            <div className={classes.linksWrapper}>
-                                <Link to="/settings/food-preferences" className={classes.linkItem}>
-                                    <div className={classes.itemsLeft}>
-                                        <RestaurantMenuIcon fontSize="small" />
-                                        <p className={classes.label}>Food Preferences</p>
-                                    </div>
-                                    <NavigateNextIcon fontSize="medium" />
-                                </Link>
+                {showTutorial && createPortal(<Tutorial setShowTutorial={setShowTutorial} />, document.querySelector(".appContainer > .centerContent"))}
 
-                                <Link className={classes.linkItem} onClick={() => setShowTutorial(true)}>
-                                    <div className={classes.itemsLeft}>
-                                        <FactCheckIcon fontSize="small" />
-                                        <p className={classes.label}> Show Tutorial</p>
-                                    </div>
-                                    <NavigateNextIcon fontSize="medium" />
-                                </Link>
-                                <Link to="/settings/feedback-&-support" className={classes.linkItem}>
-                                    <div className={classes.itemsLeft}>
-                                        <BugReportIcon fontSize="small" />
-                                        <p className={classes.label}>Report a Bug</p>
-                                    </div>
-                                    <NavigateNextIcon fontSize="medium" />
-                                </Link>
-                            </div>
+                {!isEditing && (
+                    <>
+                        <div className={classes.linksWrapper}>
+                            <Link to="/settings/food-preferences" className={classes.linkItem}>
+                                <div className={classes.itemsLeft}>
+                                    <RestaurantMenuIcon fontSize="small" />
+                                    <p className={classes.label}>Food Preferences</p>
+                                </div>
+                                <NavigateNextIcon fontSize="medium" />
+                            </Link>
 
-                            <div className={classes.bottomItems}>
-                                {isAuthenticated ? (
-                                    <Button
-                                        label="Logout"
-                                        width="fill"
-                                        action={() => setShowPopup(true)}
-                                        iconLeft={<LogoutIcon fontSize="small" />}
-                                    />
-                                ) : (
-                                    <Button
-                                        type="submit"
-                                        style="primary"
-                                        cta={true}
-                                        label="Login"
-                                        width="fill"
-                                        iconLeft={<LoginIcon fontSize="small" />}
-                                        action={() => setShowPopup(true)}
-                                    />
-                                )}
-                            </div>
+                            <Link className={classes.linkItem} onClick={() => setShowTutorial(true)}>
+                                <div className={classes.itemsLeft}>
+                                    <FactCheckIcon fontSize="small" />
+                                    <p className={classes.label}> Show Tutorial</p>
+                                </div>
+                                <NavigateNextIcon fontSize="medium" />
+                            </Link>
+                            <Link to="/settings/feedback-&-support" className={classes.linkItem}>
+                                <div className={classes.itemsLeft}>
+                                    <BugReportIcon fontSize="small" />
+                                    <p className={classes.label}>Report a Bug</p>
+                                </div>
+                                <NavigateNextIcon fontSize="medium" />
+                            </Link>
+                        </div>
 
-                            {/* popup a comparsa */}
-                            {showPopup &&
-                                createPortal(
-                                    <Popup>
-                                        {isAuthenticated ? (
-                                            <ConfirmPopup
-                                                title={"Are you sure you want to logout?"}
-                                                loading={popupLoading}
-                                                error={popupError}
-                                                buttons={[
-                                                    <Button
-                                                        iconLeft={<CloseIcon fontSize="small" />}
-                                                        key="button2"
-                                                        label="Cancel"
-                                                        action={() => setShowPopup(false)}
-                                                    />,
-                                                    <Button
-                                                        iconLeft={<CheckIcon fontSize="small" />}
-                                                        key="button1"
-                                                        style="primary"
-                                                        label="Logout"
-                                                        action={() => handleLogout()}
-                                                    />,
-                                                ]}
-                                            />
-                                        ) : (
-                                            <AuthenticationPopup showPopup={showPopup} setShowPopup={setShowPopup} />
-                                        )}
-                                    </Popup>,
-                                    document.getElementById("root")
-                                )}
-                        </>
-                    )}
-                </div>
+                        <div className={classes.bottomItems}>
+                            {isAuthenticated ? (
+                                <Button
+                                    label="Logout"
+                                    width="fill"
+                                    action={() => setShowPopup(true)}
+                                    iconLeft={<LogoutIcon fontSize="small" />}
+                                />
+                            ) : (
+                                <Button
+                                    type="submit"
+                                    style="primary"
+                                    cta={true}
+                                    label="Login"
+                                    width="fill"
+                                    iconLeft={<LoginIcon fontSize="small" />}
+                                    action={() => setShowPopup(true)}
+                                />
+                            )}
+                        </div>
+
+                        {/* popup a comparsa */}
+                        {showPopup &&
+                            createPortal(
+                                <Popup>
+                                    {isAuthenticated ? (
+                                        <ConfirmPopup
+                                            title={"Are you sure you want to logout?"}
+                                            loading={popupLoading}
+                                            error={popupError}
+                                            buttons={[
+                                                <Button
+                                                    iconLeft={<CloseIcon fontSize="small" />}
+                                                    key="button2"
+                                                    label="Cancel"
+                                                    action={() => setShowPopup(false)}
+                                                />,
+                                                <Button
+                                                    iconLeft={<CheckIcon fontSize="small" />}
+                                                    key="button1"
+                                                    style="primary"
+                                                    label="Logout"
+                                                    action={() => handleLogout()}
+                                                />,
+                                            ]}
+                                        />
+                                    ) : (
+                                        <AuthenticationPopup showPopup={showPopup} setShowPopup={setShowPopup} />
+                                    )}
+                                </Popup>,
+                                document.getElementById("root")
+                            )}
+                    </>
+                )}
             </div>
-        )
-    }
+        </div>
+    )
 }

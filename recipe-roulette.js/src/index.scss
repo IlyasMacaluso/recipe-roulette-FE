@@ -29,7 +29,8 @@ body {
         flex-direction: column;
         height: 100%;
         background-color: white;
-        outline: 1px solid $lighter-gray;
+        box-shadow: 0 0 4px rgba($color: #000000, $alpha: 0.15);
+    
         overflow: hidden;
     }
 }

@@ -1,9 +1,8 @@
 import { RecipeCard } from "../../components/RecipeCard/RecipeCard"
 
-import { useAnimate } from "../../hooks/animatePages/useAnimate"
 import { useRecipesContext } from "../../contexts/RecipesContext"
 import { useSnackbar } from "../../components/Snackbar/useSnackbar"
-import { useLocationHook } from "../../hooks/useLocationHook"
+
 
 import { BlocksShuffleThree } from "react-svg-spinners"
 import { useRecipesFetch } from "../../hooks/useRecipesFetch/useRecipesFetch"
@@ -21,11 +20,8 @@ export function RecipeResults() {
     const { handleClickLoginSnackBar } = useSnackbar()
     const { state } = useRecipesFetch()
 
-    const { location } = useLocationHook()
-    const { animate } = useAnimate(location)
-
     return (
-        <div className={`${layout.scrollPage} ${animate ? transition.animationEnd : transition.animationStart} `}>
+        <div className={layout.scrollPage}>
             <div style={{ paddingLeft: "8px", paddingRight: "8px" }}>
                 <Header pageTitle="New Recipes" />
             </div>

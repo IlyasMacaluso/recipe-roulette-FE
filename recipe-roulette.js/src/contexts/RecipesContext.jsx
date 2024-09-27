@@ -115,6 +115,7 @@ export const RecipesProvider = ({ children }) => {
             return
         }
 
+        const localRecipes = getValue("recipes")
         const DBRecipes = {
             results: [],
             favorited: DBFAvorited || [],
@@ -123,7 +124,7 @@ export const RecipesProvider = ({ children }) => {
             history: DBHistory || [],
             filteredHistory: DBHistory || [],
             searchHistory: DBHistory || [],
-            targetedRecipe: null,
+            targetedRecipe: localRecipes?.targetedRecipe || null,
         }
 
         DBFoodPref && setRecipePreferences(DBFoodPref)
@@ -131,7 +132,6 @@ export const RecipesProvider = ({ children }) => {
 
         DBFoodPref && setValue("recipePreferences", DBFoodPref)
         DBRecipes && setValue("recipes", DBRecipes)
-
     }, [isAuthenticated, favoritedLoading, historyLoading, foodPrefLoading, favoritedFetching, historyFetching, foodPrefFetching])
 
     // Animazione recipeCard
@@ -144,7 +144,7 @@ export const RecipesProvider = ({ children }) => {
 
     // When the path changes reset inputValue (global value)
     useEffect(() => {
-        (location.pathname === "history" || "/favorited") && setInputValue("")
+        ;(location.pathname === "history" || "/favorited") && setInputValue("")
     }, [location.pathname])
 
     // Filtro i risultati quando viene modificato l'input

@@ -1,11 +1,9 @@
 import { RecipeCard } from "../../components/RecipeCard/RecipeCard"
-import { useAnimate } from "../../hooks/animatePages/useAnimate"
 import { useRecipesContext } from "../../contexts/RecipesContext"
 import { useMemo, useState } from "react"
 import { useAuth } from "../../hooks/Auth/useAuth"
 import { Popup } from "../../components/Pop-up/Popup"
 import { createPortal } from "react-dom"
-import { useLocationHook } from "../../hooks/useLocationHook"
 import { Skeleton } from "@mui/material"
 import { Placeholder } from "../../components/Placeholder/Placeholder"
 import { Button } from "../../components/Buttons/Button/Button"
@@ -21,7 +19,6 @@ import addNoteImage from "../../assets/images/Add notes-bro.svg"
 import shrugImage from "../../assets/images/Shrug-bro.svg"
 
 import layout from "../../assets/scss/pageLayout/pageWScroll.module.scss"
-import transition from "../../assets/scss/pageLayout/pageTransition.module.scss"
 import searchWrapper from "../../assets/scss/searchWrapper.module.scss"
 
 import { IcoButton } from "../../components/Buttons/IcoButton/IcoButton"
@@ -46,17 +43,19 @@ export function History() {
         setRecipeFilters,
     } = useRecipesContext()
     const { isAuthenticated } = useAuth()
-    const { location } = useLocationHook()
-    const { animate } = useAnimate(location)
     const { setFilterSidebar } = useSidebar()
 
     const searchHistory = useMemo(() => {
         return recipes.filteredHistory.filter((rec) => rec.title.toLowerCase().includes(inputValue.toLowerCase()))
     }, [inputValue, recipes.filteredHistory, recipes.history, recipeFilters])
 
+    const skeletonStyle = useMemo(()=> {
+        return { bgcolor: "#f8fff8", border: "1px solid #d9e9dc", borderRadius: "16px" }
+    },[])
+
     if (historyError) {
         return (
-            <div className={`${layout.scrollPage} ${animate ? transition.animationEnd : transition.animationStart}`}>
+            <div className={layout.scrollPage}>
                 <Header pageTitle="History" />
                 <InlineMessage error={historyError} />
                 <Placeholder topImage={shrugImage} text="Oops >.< something went wrong!" />
@@ -64,7 +63,7 @@ export function History() {
         )
     } else {
         return (
-            <div className={`${layout.scrollPage} ${animate ? transition.animationEnd : transition.animationStart}`}>
+            <div className={layout.scrollPage}>
                 <div style={{ paddingLeft: "8px", paddingRight: "8px" }}>
                     <Header pageTitle="History" />
 
@@ -83,7 +82,7 @@ export function History() {
                 {favoritedLoading || foodPrefLoading || historyLoading ? (
                     <section className={layout.recipesWrapper}>
                         {[...Array(3)].map(() => (
-                            <Skeleton key={Math.random()} sx={{ bgcolor: "#c5e4c9" }} variant="rounded" width={"100%"} height={"280px"} />
+                            <Skeleton key={Math.random()} sx={skeletonStyle} variant="rounded" width={"100%"} height={"280px"} />
                         ))}
                     </section>
                 ) : isAuthenticated && recipes?.history.length > 0 ? (
