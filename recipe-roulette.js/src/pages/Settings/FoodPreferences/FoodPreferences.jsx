@@ -71,6 +71,7 @@ export function FoodPreferences() {
             <Header
                 itemsBottom={[
                     <Button
+                        key="Reset all"
                         label="Reset All"
                         action={() => {
                             deselectFilters({ filters: "recipePreferences", setFilters: setRecipePreferences })
@@ -115,7 +116,7 @@ export function FoodPreferences() {
                             </div>
                         )}
 
-                        {!blacklistedLoading && ingredients?.blacklisted && ingredients?.blacklisted.length > 0 && (
+                        {!blacklistedLoading && ingredients?.blacklisted?.length > 0 && (
                             // blacklisted ingredients
                             <div className={classes.filterChipWrapper}>
                                 {ingredients?.blacklisted.map((ing) => {
@@ -203,18 +204,17 @@ export function FoodPreferences() {
                     <div className={classes.filterChipWrapper}>
                         {
                             // cuisineEthnicity chips =====================================================================
-                            cuisineEthnicityChips &&
-                                cuisineEthnicityChips.map((chip, index) => {
-                                    return (
-                                        <FilterChipRecipes
-                                            filters={"recipePreferences"}
-                                            key={index}
-                                            propValue={chip.propValue}
-                                            filterType={"cuisineEthnicity"}
-                                            label={chip.label}
-                                        />
-                                    )
-                                })
+                            cuisineEthnicityChips?.map((chip, index) => {
+                                return (
+                                    <FilterChipRecipes
+                                        filters={"recipePreferences"}
+                                        key={index}
+                                        propValue={chip.propValue}
+                                        filterType={"cuisineEthnicity"}
+                                        label={chip.label}
+                                    />
+                                )
+                            })
                         }
                     </div>
                 </div>
@@ -224,18 +224,17 @@ export function FoodPreferences() {
                     <div className={classes.filterChipWrapper}>
                         {
                             // caloricApport chips =====================================================================
-                            caloricApportChips &&
-                                caloricApportChips.map((chip, index) => {
-                                    return (
-                                        <FilterChipRecipes
-                                            filters={"recipePreferences"}
-                                            key={index}
-                                            propValue={chip.propValue}
-                                            filterType={"caloricApport"}
-                                            label={chip.label}
-                                        />
-                                    )
-                                })
+                            caloricApportChips?.map((chip, index) => {
+                                return (
+                                    <FilterChipRecipes
+                                        filters={"recipePreferences"}
+                                        key={index}
+                                        propValue={chip.propValue}
+                                        filterType={"caloricApport"}
+                                        label={chip.label}
+                                    />
+                                )
+                            })
                         }
                     </div>
                 </div>
@@ -245,29 +244,31 @@ export function FoodPreferences() {
                     <div className={classes.filterChipWrapper}>
                         {
                             // recipe difficulty chips =====================================================================
-                            difficultyChips &&
-                                difficultyChips.map((chip, index) => {
-                                    return (
-                                        <FilterChipRecipes
-                                            filters={"recipePreferences"}
-                                            key={index}
-                                            propValue={chip.propValue}
-                                            filterType={"difficulty"}
-                                            label={chip.label}
-                                        />
-                                    )
-                                })
+                            difficultyChips?.map((chip, index) => {
+                                return (
+                                    <FilterChipRecipes
+                                        filters={"recipePreferences"}
+                                        key={index}
+                                        propValue={chip.propValue}
+                                        filterType={"difficulty"}
+                                        label={chip.label}
+                                    />
+                                )
+                            })
                         }
                     </div>
                 </div>
             </section>
 
             <footer className={styles.footer}>
-                {(preferencesUpdateLoading || blacklistUpdateLoading || blacklistUpdateErr || preferencesUpdateError) && (
-                    <InlineMessage
-                        loading={preferencesUpdateLoading || blacklistUpdateLoading}
-                        error={preferencesUpdateError || blacklistUpdateErr}
-                    />
+                {(preferencesUpdateLoading || blacklistUpdateLoading) && (
+                    <InlineMessage loading={preferencesUpdateLoading || blacklistUpdateLoading} />
+                )}
+                {(blacklistUpdateErr || preferencesUpdateError) && (
+                    <>
+                        <InlineMessage error={blacklistUpdateErr} />
+                        <InlineMessage error={preferencesUpdateError} />
+                    </>
                 )}
 
                 <div className={styles.buttonsWrapper}>
@@ -297,23 +298,15 @@ export function FoodPreferences() {
                         iconLeft={<DoneAllOutlinedIcon fontSize="small" />}
                         style="primary"
                         action={() => {
-                            updateDBFilters()
-                            updateDBBlacklist()
+                            if (!isAuthenticated) {
+                                handleOpenSnackbar("Preferences updated for this session. Login to save changes", 3000)
+                                return
+                            }
 
-                            const intervalId = setInterval(() => {
-                                if (
-                                    (!preferencesUpdateLoading && !preferencesUpdateError && !blacklistUpdateErr, !blacklistUpdateLoading)
-                                ) {
-                                    navigate({ to: "/settings" })
-                                    clearInterval(intervalId)
-
-                                    if (isAuthenticated) {
-                                        handleOpenSnackbar("Your preferences were successfully updated", 2000)
-                                    } else {
-                                        handleOpenSnackbar("Preferences updated for this session. Login to save changes", 3500)
-                                    }
-                                }
-                            }, 350) // Controllo ogni 350ms (c'è il debounce di 300)
+                            Promise.all([updateDBFilters(), updateDBBlacklist()]).then(() => {
+                                navigate({ to: "/settings" })
+                                handleOpenSnackbar("Your preferences were successfully updated", 2500)
+                            })
                         }}
                     />
                 </div>

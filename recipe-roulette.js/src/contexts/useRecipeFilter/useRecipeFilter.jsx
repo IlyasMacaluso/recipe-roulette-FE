@@ -68,7 +68,13 @@ export const useRecipeFilter = (isAuthenticated) => {
         }
     }, [isAuthenticated])
 
-    const updateDBFilters = () => {
+    const updateDBFilters = async () => {
+        const userData = getValue("userData")
+
+        if (!userData.id) {
+            return
+        }
+
         if (!updatedFilter) {
             return
         }
@@ -77,13 +83,7 @@ export const useRecipeFilter = (isAuthenticated) => {
             return
         }
 
-        const userData = getValue("userData")
-
-        if (!userData) {
-            return
-        }
-
-        handlePostRequest({
+        await handlePostRequest({
             url: "http://localhost:3000/api/preferences/set-preferences",
             payload: { newPreferences: recipePreferences, userId: userData.id },
             mutationId: "filtersToggleUpdate", //mutationId

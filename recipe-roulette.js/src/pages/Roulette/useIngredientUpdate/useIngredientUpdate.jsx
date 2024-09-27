@@ -31,21 +31,25 @@ export const useIngredientUpdate = (ingredients, setIngredients) => {
     //     }
     // }, [debounceValue])
 
-    const updateDBBlacklist = () => {
+    const updateDBBlacklist = async () => {
+        const userData = getValue("userData")
+        
+        if (!userData.id) {
+            return 
+        }
         if (!blacklistedIngredients) {
-            return
+            return 
         }
 
-        if (isAuthenticated) {
-            const userData = getValue("userData")
-
-            userData?.id &&
-                handlePostRequest({
-                    url: "http://localhost:3000/api/preferences/set-blacklisted-ingredients",
-                    payload: { newBlacklist: blacklistedIngredients, userId: userData.id },
-                    mutationId: "blacklistUpdate",
-                })
+        if (!isAuthenticated) {
+            return 
         }
+
+        await handlePostRequest({
+            url: "http://localhost:3000/api/preferences/set-blacklisted-ingredients",
+            payload: { newBlacklist: blacklistedIngredients, userId: userData.id },
+            mutationId: "blacklistUpdate",
+        })
     }
 
     const handleIngUpdate = (prop, cardState) => {

@@ -68,7 +68,7 @@ export function usePostRequest() {
         meta = null
     ) => {
         mutationId && cancelMutation(mutationId)
-        mutation.mutate(
+        await mutation.mutateAsync(
             {
                 url,
                 token,
