@@ -8,6 +8,7 @@ import classes from "./IngredientCard.module.scss"
 
 export function IngredientCard({ ing }) {
     const { handleIngredientClick, handleXClick, cardState } = useIngredientCard(ing)
+    
     const bg = {
         backgroundColor: cardState.bg_color,
     }

@@ -22,7 +22,7 @@
         opacity 0.65s cubic-bezier(0.08, 0.82, 0.17, 1),
         padding 0.65s cubic-bezier(0.08, 0.82, 0.17, 1);
 
-    .activeSuggestion {
+    .unlockedSuggestion {
         color: $dark-gray;
         background-color: white;
         transition: background-color 0.3s ease;
@@ -31,11 +31,11 @@
         color: rgb(198, 198, 198);
     }
 }
-.activeSuggestion:hover {
+.unlockedSuggestion:hover {
     background-color: $light-green;
     transition: background-color 0.3s ease;
 }
-.activeSuggestion:active {
+.unlockedSuggestion:active {
     background-color: $light-green;
     transition: background-color 0.3s ease;
 }

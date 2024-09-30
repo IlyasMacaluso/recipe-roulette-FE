@@ -4,6 +4,7 @@ import { useSnackbar } from "../../Snackbar/useSnackbar"
 
 import classes from "./IngredientSearch.module.scss"
 import styles from "../../Header/Header.module.scss"
+import { useLocation } from "@tanstack/react-router"
 
 export function useIngredientSearch(searchCriteria, preferencesSidebar = false) {
     const { ingredients, deselectIngredients, handleIngUpdate } = useManageIngredients()
@@ -11,6 +12,7 @@ export function useIngredientSearch(searchCriteria, preferencesSidebar = false) 
 
     const [fixedPosition, setFixedPosition] = useState(false)
     const [searchState, setSearchState] = useState(false)
+    const { pathname } = useLocation()
 
     const [condition, setCondition] = useState(true) //used in conditional statement
     const [inputValues, setInputValues] = useState({ initial: "", current: "" })
@@ -61,7 +63,7 @@ export function useIngredientSearch(searchCriteria, preferencesSidebar = false) 
         if (location.pathname !== "/history" && location.pathname !== "/favorited") {
             setInputValues((prev) => ({ ...prev, current: "" }))
         }
-        
+
         inputRef && inputRef.current.blur()
         setState?.setCondition && setState.setCondition(false)
         setState?.setComponent && setState.setComponent(false)
@@ -87,6 +89,11 @@ export function useIngredientSearch(searchCriteria, preferencesSidebar = false) 
             } else {
                 // aggiornamento e feedback se non sono già selezionati 8 elementi
                 handleIngUpdate(prop, cardState, setCardState)
+
+                if (pathname !== "/roulette") {
+                    return
+                }
+                
                 !cardState.is_selected
                     ? handleOpenSnackbar(`${cardState.label} was locked!`, 1500)
                     : handleOpenSnackbar(`${cardState.label} was unlocked`, 1500)
