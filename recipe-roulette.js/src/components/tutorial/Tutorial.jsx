@@ -47,7 +47,7 @@ export function Tutorial({ setShowTutorial = null, checkbox = false }) {
             <div className={styles.stepBody}>
               <h2>Step 1</h2>
               <p className={styles.text}>
-                Tap "Shuffle" to swap ingredients with new random ones
+                Tap {`"Shuffle"`} to swap ingredients with new random ones
               </p>
               <img src={step1Img} alt="" />
             </div>
@@ -96,8 +96,8 @@ export function Tutorial({ setShowTutorial = null, checkbox = false }) {
             <div className={styles.stepBody}>
               <h2>Step 6</h2>
               <p className={styles.text}>
-                Tap "Generate Recipes" to create recipes with ingredients and
-                preferences you selected!{" "}
+                Tap {`"Generate Recipes"`} to create recipes with ingredients
+                and preferences you selected!
               </p>
               <img src={step6Img} alt="" />
             </div>
@@ -108,7 +108,7 @@ export function Tutorial({ setShowTutorial = null, checkbox = false }) {
           {checkbox && (
             <div className={styles.rememberMe}>
               <label htmlFor="rememberShowTutorial">
-                Don't show this again
+                {`Don't show this again`}
               </label>
               <input
                 className={styles.checkbox}
