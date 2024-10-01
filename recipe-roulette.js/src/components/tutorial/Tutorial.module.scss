@@ -1,113 +1,133 @@
 @use "../../assets/scss/" as *;
 @import "../../assets/scss/pageLayout/pageTransition.module.scss";
 
-h2 {
-    color: $dark-gray;
-    font-family: $font-poppins;
-    font-size: $text-size-20;
-    font-weight: 700;
-    letter-spacing: 0.5px;
-    margin: 0;
+h2,
+h1 {
+  color: $dark-gray;
+  font-family: $font-poppins;
+  font-size: $text-size-20;
+  font-weight: 600;
+  letter-spacing: 0.0125rem;
+  margin: 0;
+}
+h1 {
+  font-size: $text-size-24;
 }
 
 p,
 label {
-    margin: 0;
-    font-family: $font-poppins;
-    font-weight: 500;
-    font-size: $text-size-16;
+  margin: 0;
+  font-family: $font-poppins;
+  font-weight: 500;
+  font-size: $text-size-16;
 }
 .text {
-    font-size: $text-size-14;
-    color: $dark-gray;
-    font-weight: 500;
+  font-size: $text-size-14;
+  color: $dark-gray;
+  font-weight: 500;
 }
 .bgOverlay {
-    display: flex;
-    position: absolute;
-    justify-content: center;
-    align-items: center;
-    top: 0;
-    left: 0;
-    z-index: 999;
-    height: 100%;
-    width: 100%;
-    background-color: rgba($color: #000000, $alpha: 0.2);
+  display: flex;
+  position: absolute;
+  justify-content: center;
+  align-items: center;
+  top: 0;
+  left: 0;
+  z-index: 999;
+  height: 100%;
+  width: 100%;
+  background-color: rgba($color: #000000, $alpha: 0.2);
 }
+
 .tutorial {
+  display: flex;
+  flex-direction: column;
+  width: calc(100% - 32px);
+  height: calc(100% - 32px);
+  border-radius: 16px;
+  background-color: white;
+  overflow: hidden;
+  animation: scaleAnimation 0.35s cubic-bezier(0.08, 0.82, 0.17, 1) forwards;
+
+  header {
+    padding: 1rem $size-20;
+    padding-right: 0.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    border-bottom: 1px solid $lighter-gray;
+
+    .itemsRight {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+
+      > button:last-child > svg {
+        stroke-width: 0.5;
+        stroke: $dark-gray;
+      }
+    }
+  }
+  .tutorialStep {
     display: flex;
     flex-direction: column;
-    width: calc(100% - 32px);
-    height: calc(100% - 32px);
-    border-radius: 16px;
-    background-color: white;
-    overflow: hidden;
+    padding: $size-16 $size-24;
+    gap: $size-16;
+    flex-grow: 1;
 
-    animation: scaleAnimation 0.35s cubic-bezier(0.08, 0.82, 0.17, 1) forwards;
-    header {
-        padding: 1rem $size-20;
-        padding-right: 0.75rem;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        border-bottom: 1px solid $lighter-gray;
-        .itemsRight {
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            > button:last-child > svg {
-                stroke-width: 0.5;
-                stroke: $dark-gray;
-            }
-        }
-    }
-    .tutorialStep {
-        display: flex;
-        flex-direction: column;
-        padding: $size-16 $size-24;
-        gap: $size-16;
+    .stepBody {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      flex-grow: 1;
+
+      img {
+        box-sizing: border-box;
+        object-fit: contain;
+        width: 100%;
+        height: 0;
         flex-grow: 1;
-        .stepBody {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-            flex-grow: 1;
-            img {
-                box-sizing: border-box;
-                object-fit: contain;
-                width: 100%;
-                height: 0;
-                flex-grow: 1;
-            }
-        }
+      }
+    }
+  }
+
+  .bottomItems {
+    display: flex;
+    flex-direction: column;
+    padding: $size-24;
+    padding-top: $size-16;
+    gap: $size-16;
+
+    .rememberMe {
+      display: flex;
+      align-items: center;
+      gap: $size-8;
+      padding: $size-8;
+
+      > label {
+        cursor: pointer;
+        color: $darkish-gray;
+        font-weight: 500;
+        font-size: $text-size-14;
+      }
+
+      > .checkbox {
+        cursor: pointer;
+        width: 18px;
+        height: 18px;
+        margin: 0;
+      }
     }
 
-    .bottomItems {
-        display: flex;
-        flex-direction: column;
-        padding: $size-24;
-        padding-top: $size-16;
-        gap: $size-16;
-        .rememberMe {
-            display: flex;
-            align-items: center;
-            gap: $size-8;
-            padding: $size-8;
-            & .checkbox {
-                width: 20px;
-                height: 20px;
-                margin: 0;
-            }
-        }
-        .navigationButtonsWrapper {
-            display: flex;
-            gap: $size-16;
-        }
+    .navigationButtonsWrapper {
+      display: flex;
+      gap: $size-16;
     }
+  }
 }
 
 @media screen and (min-width: 880px) {
-    .tutorial .navigationButtonsWrapper > button {
-        padding: 0 24px;
-    }
+  .tutorial .navigationButtonsWrapper > button {
+    padding: 0 24px;
+  }
 }
