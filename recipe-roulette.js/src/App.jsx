@@ -12,5 +12,5 @@ function App() {
         </>
     )
 }
-//comment
+//
 export default App
