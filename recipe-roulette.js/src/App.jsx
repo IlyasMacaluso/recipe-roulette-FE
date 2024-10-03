@@ -12,5 +12,5 @@ function App() {
         </>
     )
 }
-//my my
+
 export default App
