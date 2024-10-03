@@ -8,9 +8,12 @@
     width: calc(100vw - 3rem);
     max-width: 25rem;
     font-size: $text-size-14;
+    .text {
+        font-size: $text-size-14;
+    }
 }
 
-.header {
+.container .header {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -21,11 +24,13 @@
     h1 {
         margin: 0;
         font-size: $text-size-24;
-        color: $dark-gray;
+        font-family: $font-poppins;
+        font-weight: 600;
+        color: $darkish-gray;
     }
 
     .closeIco {
-        color: $dark-gray;
+        color: $darkish-gray;
         display: flex;
         height: 2rem;
         width: 2rem;
@@ -33,7 +38,7 @@
         align-items: center;
 
         svg {
-            stroke: $dark-gray;
+            stroke: $darkish-gray;
             stroke-width: 0.5;
         }
     }
@@ -43,10 +48,11 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
+    align-items: center;
     padding: 0 1.5rem;
-    padding-bottom: 2rem;
+    padding-bottom: 1rem;
     box-sizing: border-box;
-    gap: 1rem;
+    gap: $size-24;
     height: 100%;
 }
 
@@ -55,9 +61,15 @@
     flex-direction: column;
     gap: 1rem;
     margin-top: 1rem;
+    width: 100%;
+    label {
+        font-size: 13px;
+    }
 }
-.buttonsWrapper {
+.bottomItems {
     display: flex;
+    width: 100%;
+    align-items: center;
     flex-direction: column;
     gap: 0.75rem;
 }
@@ -68,32 +80,28 @@
     gap: 0.5rem;
     box-sizing: border-box;
 }
-
-.loginToSignup {
-    display: inline;
+.divider {
+    border-top: 1px solid;
+    width: 100%;
+    color: $light-gray;
+}
+.textBlock {
+    display: flex;
+    gap: 0 $size-8;
+    flex-wrap: wrap;
     justify-content: center;
     align-items: center;
     font-size: $text-size-14;
     font-family: $font-poppins;
     font-weight: 500;
-    padding: 0;
-    color: $dark-gray;
+    color: $darkish-gray;
     width: fit-content;
-
     p {
-        display: inline;
         margin: 0;
-        padding-left: 0.25rem;
-        width: fit-content;
+        min-width: max-content;
     }
-
     button {
         display: inline;
-        padding: 0 0.25rem;
-        font-weight: 600;
-        color: #58933d;
-        border: none;
-        background-color: transparent;
-        text-decoration: none;
+        padding: 0;
     }
 }

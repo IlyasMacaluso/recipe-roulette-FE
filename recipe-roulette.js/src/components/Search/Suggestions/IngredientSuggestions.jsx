@@ -14,7 +14,7 @@ export function IngredientSuggestions({ inputRef = null, setInputState, inputAct
     const { ingredientsLoading, blacklistedLoading, ingredientsError } = useManageIngredients()
 
     const isIngredientActive = (ingredient) => {
-        if (ingredient.is_selected || ingredient.is_blacklisted) {
+        if (ingredient.is_blacklisted) {
             return false
         }
         if (recipePreferences.is_vegetarian && !ingredient.is_vegetarian) {
@@ -69,8 +69,6 @@ export function IngredientSuggestions({ inputRef = null, setInputState, inputAct
                             } else {
                                 return (
                                     <IngredientSuggestionInactive
-                                        inputRef={inputRef}
-                                        setInputState={setInputState}
                                         ing={ingredient}
                                         key={ingredient.id}
                                     />
@@ -82,7 +80,7 @@ export function IngredientSuggestions({ inputRef = null, setInputState, inputAct
                         topImage={placeholderImage}
                         text="Your search has "
                         hightlitedText="no matching results"
-                        highlightColor="#dd3e46"
+                        highlightColor="#f9dde0"
                     />
                 )}
             </div>

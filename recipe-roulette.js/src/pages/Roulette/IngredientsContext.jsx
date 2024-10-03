@@ -21,7 +21,10 @@ export const IngredientsProvider = ({ children }) => {
     const { recipePreferences } = useRecipesContext()
     const { setValue, getValue } = useLocalStorage()
 
-    const { handleIngUpdate, deselectIngredients } = useIngredientUpdate(ingredients, setIngredients)
+    const { handleIngUpdate, deselectIngredients, updateDBBlacklist, blacklistUpdateErr, blacklistUpdateLoading, discardBLChanges, setDiscardBLChanges } = useIngredientUpdate(
+        ingredients,
+        setIngredients
+    )
     const { handleIngDecrement, handleIngIncrement, shuffleIng, generateIngredients } = useDisplayedIngredients(ingredients, setIngredients)
     const { getRequest } = useGetRequest()
 
@@ -43,7 +46,7 @@ export const IngredientsProvider = ({ children }) => {
     } = useQuery({
         queryKey: ["blacklisted-ingredients"],
         queryFn: async () => {
-            const { id } = getValue("userData")
+            const { id = null } = getValue("userData")
             const res = await getRequest(`http://localhost:3000/api/preferences/get-blacklisted-ingredients/${id}`)
             return res
         },
@@ -118,10 +121,17 @@ export const IngredientsProvider = ({ children }) => {
                 generateIngredients,
                 deselectIngredients,
                 setIngredients,
+                updateDBBlacklist,
+                blacklistedError,
+                blacklistUpdateErr,
+                blacklistUpdateLoading,
                 ingredients,
                 ingredientsLoading,
                 blacklistedLoading,
                 ingredientsError,
+
+                discardBLChanges,
+                setDiscardBLChanges,
             }}
         >
             {children}

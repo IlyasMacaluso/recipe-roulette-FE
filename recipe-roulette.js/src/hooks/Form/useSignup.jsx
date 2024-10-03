@@ -13,12 +13,8 @@ export function useSignup(setShowPopup) {
     const Signup = useMutation({
         mutationFn: (data) => postRequest({ url: "http://localhost:3000/api/users/signup", payload: data }),
         onSuccess: (data) => {
-            const { id, username, email, token, avatar } = data
-            setValue("userData", { id, username, email, token, rememberMe: data.rememberMe, avatar })
-            
-            setIsAuthenticated(true)
-            handleOpenSnackbar("Signup & Login successfull!", 3000)
-            setTimeout(() => setShowPopup(false), 0)
+            const { id, username, email, token, avatar, is_verified } = data
+            setValue("userData", { id, username, email, token, rememberMe: data.rememberMe, avatar, isVerified: is_verified })
         },
         onError: (error) => {
             console.error(error.message)
@@ -32,6 +28,7 @@ export function useSignup(setShowPopup) {
     return {
         loading: Signup.isPending,
         error: Signup.error,
+        success: Signup.isSuccess,
         handleSubmit,
     }
 }

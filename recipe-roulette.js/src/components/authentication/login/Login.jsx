@@ -5,22 +5,21 @@ import { GoogleLoginBtn } from "../../SocialLoginButtons/GoogleLoginBtn"
 import { FacebookSocialBtn } from "../../SocialLoginButtons/FacebookLoginBtn"
 import { Button } from "../../Buttons/Button/Button"
 import { useForm } from "../../../hooks/useForm/useForm"
-import { useEffect } from "react"
+import { useEffect, useMemo, useRef, useState } from "react"
 import { useLocalStorage } from "../../../hooks/useLocalStorage/useLocalStorage"
 import { Input } from "../../Input/Input"
 import { InlineMessage } from "../../InlineMessage/InlineMessage"
 
 import CloseIcon from "@mui/icons-material/Close"
 import LoginIcon from "@mui/icons-material/Login"
-import StartIcon from "@mui/icons-material/Start"
 
 import classes from "./Login.module.scss"
+import { usePostRequest } from "../../../hooks/usePostRequest/usePostRequest"
 
-export function Login({ setShowPopup = null, setChangeToSignup = null }) {
-    const location = useLocation()
-
+export function Login({ showPopup = null, setShowPopup = null, setForgotPassword = null, setIsRegistered = null }) {
     const { getValue } = useLocalStorage()
     const { handleSubmit, error, loading } = useLogin(setShowPopup)
+    const { handlePostRequest, error: emailError, loading: emailLoading, success: emailSuccess } = usePostRequest()
     const { data, setData, showText, handleInputChange, handleShowText } = useForm({
         username: "",
         email: "",
@@ -37,15 +36,18 @@ export function Login({ setShowPopup = null, setChangeToSignup = null }) {
         }
     }, [])
 
+    const message = useMemo(() => {
+        if (!emailSuccess) return null
+        return "Verification email sent successfully"
+    }, [emailSuccess])
+
     return (
         <div className={`${classes.container}`}>
             <header className={classes.header}>
                 <h1>Login</h1>
-                {setShowPopup && (
-                    <div onClick={() => setShowPopup && setShowPopup()} className={classes.closeIco}>
-                        <CloseIcon />
-                    </div>
-                )}
+                <div onClick={() => setShowPopup && setShowPopup()} className={classes.closeIco}>
+                    <CloseIcon />
+                </div>
             </header>
 
             <form
@@ -57,19 +59,19 @@ export function Login({ setShowPopup = null, setChangeToSignup = null }) {
             >
                 <div className={classes.inputsWrapper}>
                     <Input
+                        isPopUp={showPopup}
                         name="username"
                         value={data.username}
-                        placeholder={"Insert username here"}
+                        placeholder={"Username"}
                         handleInputChange={(e) => handleInputChange(e)}
-                        label="Username"
                         required={true}
                     />
 
                     <Input
+                        isPopUp={showPopup}
                         name="password"
                         type={showText ? "text" : "password"}
-                        label="Password"
-                        placeholder={"Insert password here"}
+                        placeholder={"Password"}
                         value={data.password}
                         required={true}
                         hasIcons={true}
@@ -79,6 +81,7 @@ export function Login({ setShowPopup = null, setChangeToSignup = null }) {
                     />
 
                     <Input
+                        isPopUp={showPopup}
                         type="checkbox"
                         name="rememberMe"
                         id="rememberMe"
@@ -87,35 +90,49 @@ export function Login({ setShowPopup = null, setChangeToSignup = null }) {
                         label="Remember me"
                     />
 
-                    <InlineMessage error={error} loading={loading} />
+                    {(error || loading) && <InlineMessage error={error} loading={loading} />}
+                    {(emailError || emailLoading || message) && (
+                        <InlineMessage error={emailError} loading={emailLoading} message={message} />
+                    )}
+                    {error && !error.is_verified && (
+                        // this creates a new token and send a new email to the user
+                        <Button
+                            style="transparent"
+                            action={() =>
+                                handlePostRequest({
+                                    url: "http://localhost:3000/api/users/create-secure-link",
+                                    payload: { userInformation: data.username },
+                                })
+                            }
+                            label="Resend verification email"
+                        />
+                    )}
                 </div>
 
-                <div className={classes.buttonsWrapper}>
+                <div className={classes.bottomItems}>
                     <Button
                         type="submit"
                         style="primary"
                         label="Login"
+                        width="fill"
                         iconLeft={<LoginIcon fontSize="small" />}
                         active={data.username && data.password}
                     />
 
-                    <Button
-                        action={() => setShowPopup && setShowPopup(false)}
-                        prevPath={location.pathname}
-                        label="Skip"
-                        iconLeft={<StartIcon fontSize="small" />}
-                    />
+                    <Button style="transparent" action={() => setForgotPassword && setForgotPassword(true)} label="Forgot your password?" />
+
+                    <div className={classes.divider} />
+
+                    <div className={classes.textBlock}>
+                        <p className={classes.text}>Don't have an account yet?</p>
+                        <Button style="transparent" action={() => setIsRegistered && setIsRegistered(false)} label="Sign Up" />
+                    </div>
                 </div>
 
-                <div className={classes.externalLoginWrapper}>
+                {/* <div className={classes.externalLoginWrapper}>
                     <GoogleLoginBtn />
                     <FacebookSocialBtn />
-                </div>
-
-                <div className={classes.loginToSignup}>
-                    <p>Don't have an account yet?</p>
-                    <Button action={() => setChangeToSignup && setChangeToSignup(true)} label="Sign Up" />
-                </div>
+                </div> */}
             </form>
         </div>
     )

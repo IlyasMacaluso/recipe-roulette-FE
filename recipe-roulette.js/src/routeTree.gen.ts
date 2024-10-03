@@ -11,7 +11,9 @@
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
+import { Route as VerifyEmailImport } from './routes/verify-email'
 import { Route as RouletteImport } from './routes/roulette'
+import { Route as ResetPasswordImport } from './routes/reset-password'
 import { Route as RecipeResultsImport } from './routes/recipe-results'
 import { Route as RecipeImport } from './routes/recipe'
 import { Route as NotFoundImport } from './routes/not-found'
@@ -23,8 +25,18 @@ import { Route as settingsfoodPreferencesSettingsFoodPreferencesImport } from '.
 
 // Create/Update Routes
 
+const VerifyEmailRoute = VerifyEmailImport.update({
+  path: '/verify-email',
+  getParentRoute: () => rootRoute,
+} as any)
+
 const RouletteRoute = RouletteImport.update({
   path: '/roulette',
+  getParentRoute: () => rootRoute,
+} as any)
+
+const ResetPasswordRoute = ResetPasswordImport.update({
+  path: '/reset-password',
   getParentRoute: () => rootRoute,
 } as any)
 
@@ -115,11 +127,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof RecipeResultsImport
       parentRoute: typeof rootRoute
     }
+    '/reset-password': {
+      id: '/reset-password'
+      path: '/reset-password'
+      fullPath: '/reset-password'
+      preLoaderRoute: typeof ResetPasswordImport
+      parentRoute: typeof rootRoute
+    }
     '/roulette': {
       id: '/roulette'
       path: '/roulette'
       fullPath: '/roulette'
       preLoaderRoute: typeof RouletteImport
+      parentRoute: typeof rootRoute
+    }
+    '/verify-email': {
+      id: '/verify-email'
+      path: '/verify-email'
+      fullPath: '/verify-email'
+      preLoaderRoute: typeof VerifyEmailImport
       parentRoute: typeof rootRoute
     }
     '/(settings)/settings': {
@@ -148,7 +174,9 @@ export const routeTree = rootRoute.addChildren({
   NotFoundRoute,
   RecipeRoute,
   RecipeResultsRoute,
+  ResetPasswordRoute,
   RouletteRoute,
+  VerifyEmailRoute,
   settingsSettingsRoute,
   settingsfoodPreferencesSettingsFoodPreferencesRoute,
 })
@@ -167,7 +195,9 @@ export const routeTree = rootRoute.addChildren({
         "/not-found",
         "/recipe",
         "/recipe-results",
+        "/reset-password",
         "/roulette",
+        "/verify-email",
         "/settings",
         "/settings/food-preferences"
       ]
@@ -190,8 +220,14 @@ export const routeTree = rootRoute.addChildren({
     "/recipe-results": {
       "filePath": "recipe-results.jsx"
     },
+    "/reset-password": {
+      "filePath": "reset-password.jsx"
+    },
     "/roulette": {
       "filePath": "roulette.jsx"
+    },
+    "/verify-email": {
+      "filePath": "verify-email.jsx"
     },
     "/settings": {
       "filePath": "(settings)/settings.jsx"

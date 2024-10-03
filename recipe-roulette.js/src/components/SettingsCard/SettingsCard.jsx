@@ -61,12 +61,7 @@ export function SettingsCard({
     })
 
     if (!isAuthenticated) {
-        return (
-            <div className={classes.profileSection}>
-                <h2 className={classes.title}>Not Logged In</h2>
-                <p className={classes.profileEmail}>Please log in to edit your profile</p>
-            </div>
-        )
+        return
     }
 
     return (
@@ -115,24 +110,22 @@ export function SettingsCard({
                             <Input
                                 name="oldPassword"
                                 type={showText ? "text" : "password"}
-                                placeholder={"Insert old password"}
+                                placeholder={"Old password"}
                                 handleInputChange={handleInputChange}
                                 hasIcons={true}
                                 handleShowText={handleShowText}
                                 value={oldPassword}
-                                label="Old password"
                             />
 
                             <Input
                                 name="newPassword"
                                 type={showText ? "text" : "password"}
-                                placeholder={"Insert new password"}
+                                placeholder={"New password"}
                                 handleInputChange={handleInputChange}
                                 hasIcons={true}
                                 handleShowText={handleShowText}
                                 error={newPassword && confirmNewPass && newPassword !== confirmNewPass}
                                 value={newPassword}
-                                label="New password"
                             />
 
                             <Input
@@ -144,20 +137,19 @@ export function SettingsCard({
                                 handleShowText={handleShowText}
                                 error={newPassword && confirmNewPass && newPassword !== confirmNewPass}
                                 value={confirmNewPass}
-                                label="Confirm new password"
                             />
                         </section>
 
-                        {(error || message || loading) && (
-                            <InlineMessage
-                                message={message && message}
-                                error={error}
-                                loading={loading}
-                                loadingMessage="Updating your informations"
-                            />
-                        )}
-
                         <div className={classes.bottomItems}>
+                            {(error || message || loading) && (
+                                <InlineMessage
+                                    message={message && message}
+                                    error={error}
+                                    loading={loading}
+                                    loadingMessage="Updating your informations"
+                                />
+                            )}
+
                             <Button
                                 active={(!newPassword && !confirmNewPass) || (newPassword.length >= 8 && newPassword === confirmNewPass)}
                                 style="primary"
@@ -188,8 +180,8 @@ export function SettingsCard({
                                             key={"button1"}
                                             style={"primary"}
                                             label="Continue"
-                                            action={() => {     
-                                                if(firstTime) {
+                                            action={() => {
+                                                if (firstTime) {
                                                     reset()
                                                 } else {
                                                     proceed()
@@ -200,7 +192,7 @@ export function SettingsCard({
                                     ]}
                                 />
                             </Popup>,
-                            document.getElementById("popup-root")
+                            document.getElementById("root")
                         )}
                 </div>
             ) : (

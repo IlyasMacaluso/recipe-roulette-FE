@@ -16,6 +16,8 @@
     transition: opacity 0.4s ease;
 }
 .sidebar {
+    display: flex;
+    flex-direction: column;
     z-index: 13;
 
     position: fixed;
@@ -43,15 +45,15 @@
         justify-content: space-between;
         h4 {
             margin: 0;
-            color: $dark-gray;
+            color: $darkish-gray;
             font-family: $font-poppins;
             letter-spacing: 0.05rem;
             font-size: $text-size-16;
         }
         > button > svg {
-            color: $dark-gray;
+            color: $darkish-gray;
             stroke-width: 0.25px;
-            stroke: $dark-gray;
+            stroke: $darkish-gray;
         }
     }
     .links {
@@ -60,6 +62,9 @@
         flex-direction: column;
         box-sizing: border-box;
         width: 100%;
+        padding-bottom: 2rem;
+        height: 0;
+        flex-grow: 1;
         .link {
             width: 100%;
             font-family: $font-poppins;
@@ -67,7 +72,7 @@
             font-size: $size-16;
             font-weight: 500;
             text-decoration: none;
-            color: $dark-gray;
+            color: $darkish-gray;
             display: flex;
             align-items: center;
             gap: 0.75rem;
@@ -90,6 +95,58 @@
     }
 }
 
+.sidebar .profileCard {
+    box-sizing: border-box;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: $size-4;
+    padding: $size-4;
+    padding-bottom: $size-24;
+    .text {
+        font-size: $text-size-12;
+        font-weight: 600;
+        font-family: $font-poppins;
+        color: $darkish-gray;
+        width: fit-content;
+    }
+    > .text {
+        color: $darkish-gray;
+        padding-left: 4px;
+    }
+    .informationWrapper {
+        box-shadow: 0 0 3px rgba($color: #000000, $alpha: 0.15);
+        padding: $size-16;
+        border-radius: $size-12;
+        display: flex;
+        gap: $size-12;
+        align-items: center;
+        box-sizing: border-box;
+        width: 100%;
+        background-color: white;
+        transition: background-color 0.3s ease;
+        &:active {
+            background-color: $lighter-gray;
+            transition: background-color 0.3s ease;
+        }
+    }
+    .picture {
+        border-radius: 64px;
+        border: 1px solid $light-gray;
+        height: 48px;
+        width: 48px;
+    }
+    .information {
+        display: flex;
+        width: fit-content;
+        flex-direction: column;
+        box-sizing: border-box;
+        .username {
+            font-weight: 600;
+            font-size: $text-size-16;
+        }
+    }
+}
 .backgroundOverlayToggled {
     transform: translateX(0);
     opacity: 1;
@@ -120,11 +177,14 @@
     .sidebarToggled {
         position: initial;
         transform: translateX(0);
-        flex: 1.5 1 50px;
-        max-width: calc(27.4vw);
-        outline: 1px solid $lighter-gray;
+        width: 320px;
+        box-shadow: 0 0 4px rgba($color: #000000, $alpha: 0.15);
         border-radius: $size-16;
-        box-shadow: none;
+    }
+    .sidebar .profileCard .informationWrapper:hover {
+        transition: background-color 0.3s ease;
+        cursor: pointer;
+        background-color: $lighter-gray;
     }
     .sidebar > header > button {
         display: none;
@@ -134,6 +194,6 @@
 @media screen and (min-width: 1440px) {
     .sidebar,
     .sidebarToggled {
-        max-width: calc(0.235 * 1440px)
+        max-width: calc(0.235 * 1440px);
     }
 }

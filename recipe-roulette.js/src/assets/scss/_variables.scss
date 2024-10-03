@@ -1,13 +1,16 @@
 @import url("https://fonts.googleapis.com/css2?family=Lilita+One&family=Noto+Sans:ital,wght@0,100..900;1,100..900&family=Puritan:ital,wght@0,400;0,700;1,400;1,700&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Quicksand:wght@300..700&display=swap");
 
 // font
-$font-metropolitan: "Metropolitan", "Noto Sans", "system-ui";
+$font-metropolitan: "Quicksand", "Noto Sans", "system-ui";
 $font-poppins: "Poppins", "Montserrat", "Lato", "Roboto", "Segoe UI", "system-ui";
 $font-text: "Noto Sans CJK KR", "Lato", "Roboto", "system-ui";
 
 // text dimension
-$text-size-12: 12px;
+$text-size-12: 13px;
 $text-size-14: 14px;
 $text-size-16: 16px;
 $text-size-20: 20px;
@@ -22,7 +25,7 @@ $darkest-green: #23512a;
 $dark-green: #2f7a4f;
 $darkish-green: #449a50;
 $medium-green: #87c38f;
-$card-img-green: #DEF7E5;
+$card-img-green: #def7e5;
 $light-green: #c5e4c9;
 $light-desaturated-green: #d9e9dc;
 $lightest-green: #f8fff8;
@@ -32,10 +35,11 @@ $accent-color: #f9f7eb;
 $yellow: #ba9f36;
 
 // red
-$red: #dd3e46;
+$red: #f9dde0;
 $dark-red: #881a20;
 $medium-red: #fa4d56;
-$light-red: #fff6f7;
+$medium-light-red: #f9dde0;
+$light-red: #f9dde0;
 $light-desaturated-red: #f0e2e2;
 
 // yellow

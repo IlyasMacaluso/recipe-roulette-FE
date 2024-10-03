@@ -6,29 +6,51 @@ import { useDebounce } from "../../../hooks/useDebounce/useDebounce"
 
 export const useIngredientUpdate = (ingredients, setIngredients) => {
     const [blacklistedIngredients, setBlacklistedIngredients] = useState(null)
+    const [discardBLChanges, setDiscardBLChanges] = useState(null)
     const { setValue, getValue } = useLocalStorage()
-    const { handlePostRequest } = usePostRequest()
+    const { handlePostRequest, error: blacklistUpdateErr, loading: blacklistUpdateLoading } = usePostRequest()
     const { isAuthenticated } = useAuth()
     const { debounceValue } = useDebounce(blacklistedIngredients)
 
-    useEffect(() => {
-        //chiamata di rete quando cambia il valore di debounce (ricetta da aggiornare)
+    // useEffect(() => {
+    //     //chiamata di rete quando cambia il valore di debounce (ricetta da aggiornare)
 
+    //     if (!blacklistedIngredients) {
+    //         return
+    //     }
+
+    //     if (isAuthenticated) {
+    //         const userData = getValue("userData")
+
+    //         userData.id &&
+    //             handlePostRequest({
+    //                 url: "http://localhost:3000/api/preferences/set-blacklisted-ingredients",
+    //                 payload: { newBlacklist: blacklistedIngredients, userId: userData.id },
+    //                 mutationId: "blacklistUpdate",
+    //             })
+    //     }
+    // }, [debounceValue])
+
+    const updateDBBlacklist = async () => {
+        const userData = getValue("userData")
+        
+        if (!userData.id) {
+            return 
+        }
         if (!blacklistedIngredients) {
-            return
+            return 
         }
 
-        if (isAuthenticated) {
-            const userData = getValue("userData")
-
-            userData.id &&
-                handlePostRequest({
-                    url: "http://localhost:3000/api/preferences/set-blacklisted-ingredients",
-                    payload: { newBlacklist: blacklistedIngredients, userId: userData.id },
-                    mutationId: "blacklistUpdate",
-                })
+        if (!isAuthenticated) {
+            return 
         }
-    }, [debounceValue])
+
+        await handlePostRequest({
+            url: "http://localhost:3000/api/preferences/set-blacklisted-ingredients",
+            payload: { newBlacklist: blacklistedIngredients, userId: userData.id },
+            mutationId: "blacklistUpdate",
+        })
+    }
 
     const handleIngUpdate = (prop, cardState) => {
         setIngredients((prev) => {
@@ -100,7 +122,7 @@ export const useIngredientUpdate = (ingredients, setIngredients) => {
         setIngredients((prev) => {
             const newIngredients = mapArray(prev?.all)
             let newDisplayed = mapArray(prev.displayed)
-            let newBlacklisted = []
+            let newBlacklisted = prop === "is_blacklisted" ? [] : prev.blacklisted
 
             setBlacklistedIngredients(newBlacklisted)
 
@@ -114,5 +136,13 @@ export const useIngredientUpdate = (ingredients, setIngredients) => {
         })
     }
 
-    return { handleIngUpdate, deselectIngredients }
+    return {
+        handleIngUpdate,
+        deselectIngredients,
+        updateDBBlacklist,
+        blacklistUpdateErr,
+        blacklistUpdateLoading,
+        discardBLChanges,
+        setDiscardBLChanges,
+    }
 }

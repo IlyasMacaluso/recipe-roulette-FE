@@ -24,9 +24,9 @@
         display: flex;
         align-items: center;
 
-        font-family: $font-poppins;
+        font-family: $font-metropolitan;
         font-size: $text-size-14;
-        font-weight: 500;
+        font-weight: 550;
         line-height: 120%;
         color: $dark-gray;
 
@@ -56,6 +56,9 @@
         padding-bottom: 0.125rem;
         top: 50%;
         transform: translateY(-50%);
+        > svg {
+            font-size: 18px;
+        }
     }
     .searchIco {
         right: 0.5rem;
@@ -92,6 +95,7 @@
 }
 
 @media screen and (min-width: 1120px) {
+
     .positionFixed {
         position: absolute;
         top: 0;

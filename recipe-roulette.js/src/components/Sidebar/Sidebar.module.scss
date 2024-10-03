@@ -17,6 +17,8 @@
     transition: opacity 0.3s ease;
 }
 .sidebar {
+    display: flex;
+    flex-direction: column;
     z-index: 13;
     position: fixed;
     bottom: 0;
@@ -33,32 +35,44 @@
         transform 0.4s ease,
         opacity 0.4s ease;
 
-    header {
-        position: abs;
-        padding: 1rem $size-20;
-        padding-right: 0.75rem;
+    > header {
         display: flex;
-        align-items: center;
-        justify-content: space-between;
         border-bottom: 1px solid $lighter-gray;
+        padding: $size-16 $size-20;
+        gap: $size-8;
+        padding-right: 0.75rem;
+        .contentWrapper {
+            display: flex;
+            width: 100%;
+            flex-direction: column;
+            gap: $size-8;
+            .topItems,
+            .bottomItems {
+                gap: $size-12;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+            }
+        }
         h2 {
-            color: $dark-gray;
+            color: $darkish-gray;
             font-family: $font-poppins;
             font-size: $text-size-20;
-            font-weight: 700;
+            font-weight: 600;
             letter-spacing: 0.5px;
             margin: 0;
         }
         button {
             height: 36px;
         }
-        .rightItems {
+        .itemsRight {
             display: flex;
             align-items: center;
-            gap: 1rem;
+            justify-content: flex-end;
+            gap: $size-8;
             > button:last-child > svg {
                 stroke-width: 0.5;
-                stroke: $dark-gray;
+                stroke: $darkish-gray;
             }
         }
     }
@@ -68,26 +82,36 @@
     padding: $size-20 0;
     display: flex;
     flex-direction: column;
-    gap: 1.5rem;
-    height: 100%;
-    padding-bottom: 6rem;
+    gap: $size-24;
+    height: 0;
+    flex-grow: 1;
     overflow-y: scroll;
     .section {
         display: flex;
         flex-direction: column;
         padding: 0 $size-16;
         gap: $size-8;
+
         .switchesWrapper {
             display: flex;
             flex-direction: column;
             gap: 0.75rem;
         }
     }
+
+    .rowSection {
+        gap: $size-12;
+    }
 }
 
 .blackListedWrapper h4,
 .section h4 {
-    font-size: $text-size-16;
+    font-size: $text-size-14;
+    font-weight: 600;
+    letter-spacing: 0.0125rem;
+    color: $darkish-gray;
+    font-family: $font-poppins;
+    margin: 0;
 }
 
 .blackListedWrapper {
@@ -131,59 +155,10 @@
         opacity 0.4s ease;
 }
 
-h4 {
-    color: $dark-gray;
-    font-family: $font-poppins;
-    font-size: $text-size-14;
-    margin: 0;
-}
-
 ::-webkit-scrollbar {
     display: none;
 }
 
-.removeBgOverlay {
-    display: none;
-    z-index: 0;
-}
-
-.positionUnfixed {
-    position: unset;
-    z-index: initial;
-    max-width: none;
-    width: 100%;
-}
-
-.positionUnfixed .sidebarBody {
-    padding-bottom: 8rem;
-}
-
-.footer {
-    position: absolute;
-    
-    display: flex;
-    flex-direction: column;
-    gap: $size-12;
-
-    box-sizing: border-box;
-    padding: $size-16;
-    bottom: 0;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 100%;
-    background-color: white;
-    border-top: 1px solid $lighter-gray;
-    .buttonsWrapper {
-        display: flex;
-        gap: $size-12;
-        > :first-child {
-            flex: 1 1 0;
-        }
-        > :last-child {
-            flex: 2 1 0;
-        }
-    }
-}
 @media screen and (min-width: 1120px) {
     .backgroundOverlay,
     .backgroundOverlayToggled {
@@ -196,26 +171,14 @@ h4 {
         position: relative;
         opacity: 1;
         transform: translateX(0);
-        flex: 1.5 1 50px;
+        flex: 1 1 0;
+
         max-width: none;
-        outline: 1px solid $lighter-gray;
+        box-shadow: 0 0 4px rgba($color: #000000, $alpha: 0.15);
         border-radius: $size-16;
         overflow: hidden;
     }
 
-    .sidebar > header > .rightItems > button:last-child {
-        display: none;
-    }
-    .sidebar header h2 {
-        font-size: $text-size-16;
-        letter-spacing: 0.05rem;
-    }
-
-    .footer {
-        padding-left: $size-24;
-        padding-right: $size-24;
-        padding-bottom: $size-24;
-    }
     ::-webkit-scrollbar {
         width: 8px;
     }
@@ -236,5 +199,34 @@ h4 {
 
     .noOutline {
         outline: none;
+    }
+
+    .sidebar {
+        header {
+            padding: $size-16;
+        }
+        header .contentWrapper {
+            gap: $size-12;
+            flex-direction: row;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            .topItems {
+                display: flex;
+                flex-grow: 1;
+            }
+            .bottomItems {
+                flex-grow: 1;
+            }
+        }
+        .itemsRight {
+            flex-grow: 1;
+            flex-shrink: 1;
+            > button {
+                flex-grow: 1;
+            }
+            > :last-child {
+                display: none;
+            }
+        }
     }
 }

@@ -6,6 +6,7 @@
 
     width: 100%;
     height: 0;
+    flex-grow: 1;
     padding: 0 0.75rem;
     box-sizing: border-box;
     opacity: 1;
@@ -15,14 +16,13 @@
 
     display: flex;
     flex-direction: column;
-    flex-grow: 1;
     gap: 0.5rem;
 
     transition:
         opacity 0.65s cubic-bezier(0.08, 0.82, 0.17, 1),
         padding 0.65s cubic-bezier(0.08, 0.82, 0.17, 1);
 
-    .activeSuggestion {
+    .unlockedSuggestion {
         color: $dark-gray;
         background-color: white;
         transition: background-color 0.3s ease;
@@ -31,11 +31,11 @@
         color: rgb(198, 198, 198);
     }
 }
-.activeSuggestion:hover {
+.unlockedSuggestion:hover {
     background-color: $light-green;
     transition: background-color 0.3s ease;
 }
-.activeSuggestion:active {
+.unlockedSuggestion:active {
     background-color: $light-green;
     transition: background-color 0.3s ease;
 }
@@ -51,19 +51,22 @@
 }
 
 .ingredientSuggestion {
-    font-family: $font-poppins;
+    font-family: $font-metropolitan;
     border-radius: 1rem;
     width: 100%;
     min-height: 2.5rem;
     display: flex;
     align-items: center;
-    gap: 0.75rem;
+    gap: $size-8;
     margin: 0;
     padding: 0 1rem;
     font-size: $text-size-14;
     background-color: white;
     box-sizing: border-box;
-    font-weight: 500;
+    font-weight: 550;
+    > svg {
+        font-size: 18px;
+    }
 }
 .lockedSuggestion {
     color: $dark-gray;

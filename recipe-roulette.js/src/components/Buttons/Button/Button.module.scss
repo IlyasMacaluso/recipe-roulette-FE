@@ -8,38 +8,22 @@
     padding: 0 1rem;
     min-width: max-content;
     height: $height-40;
-    color: $darkish-green;
-    border: 1px solid $light-desaturated-green;
-    border-radius: 1.5rem;
-    background-color: $lightest-green;
+    border-radius: 12px;
     transition:
         color 0.4s ease,
         background-color 0.4s ease;
 }
 .button > .p {
     font-size: $text-size-14;
-    font-weight: 600;
-    font-family: $font-poppins;
+    font-weight: 650;
+    font-family: $font-metropolitan;
     line-height: 100%;
 }
-.button:active {
-    background-color: $light-green;
-    color: $darkest-green;
-    transition:
-        color 0.4s ease,
-        background-color 0.4s ease;
-}
+
 button:hover {
     cursor: pointer;
 }
 
-.disabled:active {
-    background-color: $lighter-gray;
-    color: $medium-gray;
-    transition:
-        color 0.4s ease,
-        background-color 0.4s ease;
-}
 .wideButton {
     width: 100%;
     padding-right: 0.75rem;
@@ -47,37 +31,67 @@ button:hover {
     gap: 0.375rem;
     min-width: fit-content;
 }
+
+.secondaryColor {
+    color: $dark-green;
+    border: 1px solid $light-desaturated-green;
+    background-color: $lightest-green;
+    &:active {
+        background-color: $light-green;
+        transition:
+            color 0.4s ease,
+            background-color 0.4s ease;
+    }
+}
+
 .primaryColor {
-    background-color: $primary-green;
+    background-color: $darkish-green;
     border: none;
     color: $lightest-green;
     font-weight: 600;
+    &:active {
+        background-color: $dark-green;
+        transition:
+            color 0.4s ease,
+            background-color 0.4s ease;
+    }
 }
 
 .transparent {
+    color: $dark-green;
     background-color: transparent;
+    border-radius: $size-8;
     border: none;
-}
-
-.primaryColor:active {
-    color: white;
-    background-color: $darkish-green;
-    transition:
-        color 0.4s ease,
-        background-color 0.4s ease;
+    transition: color 0.4s ease;
+    &:active {
+        color: $darkest-green;
+        transition: color 0.4s ease;
+    }
 }
 
 .disabled {
-    border: 1px solid $lighter-gray;
+    border: 1px solid $light-gray;
     background-color: $lighter-gray;
     color: $medium-gray;
     transition:
         color 0.4s ease,
         background-color 0.4s ease;
+    &:active {
+        border: 1px solid $light-gray;
+        background-color: $lighter-gray;
+        color: $medium-gray;
+    }
 }
 
 .cta {
-    height: 80px;
+    height: 56px;
+    gap: $size-8;
+    border-radius: 12px;
+}
+.cta > .p {
+    font-size: $text-size-16;
+    font-family: $font-poppins;
+    font-weight: 500;
 }
 
 .iconRight {

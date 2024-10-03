@@ -4,7 +4,6 @@ import { useLocation } from "@tanstack/react-router"
 import { useMemo } from "react"
 
 import EditNoteIcon from "@mui/icons-material/EditNote"
-import StartIcon from "@mui/icons-material/Start"
 import CloseIcon from "@mui/icons-material/Close"
 
 import classes from "../login/Login.module.scss"
@@ -12,23 +11,25 @@ import { Input } from "../../Input/Input"
 import { useForm } from "../../../hooks/useForm/useForm"
 import { InlineMessage } from "../../InlineMessage/InlineMessage"
 
-export function Signup({ setShowPopup = null, setChangeToSignup = null }) {
+export function Signup({ showPopup = false, setShowPopup = null, setIsRegistered = null }) {
     const location = useLocation()
 
-    const { handleSubmit, error, loading } = useSignup(setShowPopup)
+    const { handleSubmit, error, loading, success } = useSignup(setShowPopup)
     const { data, showText, handleInputChange, handleShowText } = useForm({
         username: "",
         email: "",
         password: "",
         confirmPass: "",
-        termsAndConditions: false,
     })
 
-    const { password, confirmPass, username, email, termsAndConditions } = useMemo(() => {
+    const { password, confirmPass, username, email } = useMemo(() => {
         return data
     }, [data])
 
     const message = useMemo(() => {
+        if (success) {
+            return "Signup successful! Please verify your email"
+        }
         if (password && confirmPass) {
             if (password.length >= 8 || confirmPass.length >= 8) {
                 if (password !== confirmPass) {
@@ -40,12 +41,12 @@ export function Signup({ setShowPopup = null, setChangeToSignup = null }) {
                 return "Password must be at least 8 characters long"
             }
         }
-    })
+    }, [password, confirmPass, success])
 
     return (
         <div className={`${classes.container}`}>
             <header className={classes.header}>
-                <h1>Signup</h1>
+                <h1>Sign Up</h1>
                 <div onClick={() => setShowPopup && setShowPopup()} className={classes.closeIco}>
                     <CloseIcon />
                 </div>
@@ -60,80 +61,66 @@ export function Signup({ setShowPopup = null, setChangeToSignup = null }) {
             >
                 <div className={classes.inputsWrapper}>
                     <Input
+                        isPopUp={showPopup}
                         name="username"
                         value={username}
                         handleInputChange={handleInputChange}
-                        placeholder={"Insert your username"}
-                        label="Username"
+                        placeholder={"Username"}
                         required={true}
                     />
 
                     <Input
+                        isPopUp={showPopup}
                         name="email"
                         type="email"
                         value={email}
                         handleInputChange={handleInputChange}
-                        placeholder={"Insert your email"}
-                        label="Email"
+                        placeholder={"Email"}
                     />
 
                     <Input
+                        isPopUp={showPopup}
                         name="password"
                         type={showText ? "text" : "password"}
-                        placeholder={"Insert your password"}
+                        placeholder={"Password"}
                         handleInputChange={handleInputChange}
                         hasIcons={true}
                         handleShowText={handleShowText}
                         error={password && confirmPass && password !== confirmPass}
                         value={password}
-                        label="Password"
                     />
 
                     <Input
+                        isPopUp={showPopup}
                         name="confirmPass"
                         type={showText ? "text" : "password"}
-                        placeholder={"Confrim your password"}
+                        placeholder={"Confrim password"}
                         handleInputChange={handleInputChange}
                         hasIcons={true}
                         handleShowText={handleShowText}
                         error={password && confirmPass && password !== confirmPass}
                         value={confirmPass}
-                        label="Password"
-                    />
-
-                    <Input
-                        type="checkbox"
-                        name="termsAndConditions"
-                        id="termsAndConditions"
-                        value={termsAndConditions}
-                        handleInputChange={handleInputChange}
-                        label={"I agree with Terms & Conditions"}
                     />
                 </div>
 
-                <InlineMessage message={message && message} error={error} loading={loading} />
+                {(message || error || loading) && <InlineMessage message={message && message} error={error} loading={loading} />}
 
-                <div className={classes.buttonsWrapper}>
+                <div className={classes.bottomItems}>
                     <Button
                         style="primary"
                         width="fill"
                         type="submit"
                         label="Sign up"
                         iconLeft={<EditNoteIcon fontSize="small" />}
-                        active={username && password && confirmPass && email && termsAndConditions && confirmPass === password}
+                        active={username && password && confirmPass && email && confirmPass === password}
                         prevPath={location.pathname}
                     />
+                    
 
-                    <Button
-                        action={() => setShowPopup && setShowPopup(false)}
-                        prevPath={location.pathname}
-                        label="Skip"
-                        iconLeft={<StartIcon fontSize="small" />}
-                    />
-                </div>
-                <div className={classes.loginToSignup}>
-                    <p>Already have an account?</p>
-                    <Button action={() => setChangeToSignup(false)} label="Login" />
+                    <div className={classes.textBlock}>
+                        <p className={classes.text}>Already have an account?</p>
+                        <Button style="transparent" action={() => setIsRegistered(true)} label="Login" />
+                    </div>
                 </div>
             </form>
         </div>

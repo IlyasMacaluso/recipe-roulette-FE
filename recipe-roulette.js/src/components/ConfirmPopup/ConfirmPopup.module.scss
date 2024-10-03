@@ -7,17 +7,19 @@
     box-sizing: border-box;
     border-radius: $size-16;
     width: calc(100vw - 3rem);
-    max-width: 30rem;
+    min-width: min-content;
     justify-content: start;
     align-items: start;
     gap: $size-16;
     font-family: $font-poppins;
-    padding: $size-16 $size-24;
-    color: $dark-gray;
+    padding: $size-24;
+    padding-top: $size-16;
+    color: $darkish-gray;
 
-    .topItems{
+    .topItems {
         display: flex;
         flex-direction: column;
+        width: 100%;
         gap: 8px;
         .header {
             font-size: $text-size-20;
@@ -31,8 +33,16 @@
     }
 
     .buttonsWrapper {
+        width: 100%;
         display: flex;
-        align-self: end;
+        justify-content: flex-end;
         gap: $size-8;
     }
+}
+
+@media screen and (min-width: 1120px) {
+    .confirmPopup {
+        max-width: 480px;
+    }
+    
 }

@@ -11,10 +11,6 @@ const btnStyle = {
   paddingRight: ".1rem",
 };
 
-/* const textStyle = {
-  fontSize: "1rem",
-}; */
-
 export function GoogleLoginBtn() {
   return (
     <LoginSocialGoogle

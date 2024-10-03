@@ -21,13 +21,12 @@
             position: absolute;
             display: flex;
             align-items: center;
-            background-color: transparent;
+            background-color: $lighter-gray;
             top: 50%;
             transform: translateY(-50%);
             right: 2px;
             color: $medium-light-gray;
-            background-color: white;
-            border-radius: 2rem;
+            border-radius: $size-8;
             padding-right: 0.5rem;
         }
 
@@ -46,18 +45,21 @@
 
         input {
             width: 100%;
-            border-radius: $size-24;
+            border-radius: $size-8;
             border: 1px solid $lighter-gray;
-            min-height: 40px;
-            max-height: 40px;
+            min-height: 48px;
+            max-height: 48px;
             box-sizing: border-box;
             padding-left: $size-16;
             font-size: $text-size-14;
             font-family: $font-poppins;
+            font-weight: 400;
             letter-spacing: 0.025rem;
-
+            background-color: $lighter-gray;
+            color: $darkish-gray;
             &:focus {
-                outline: 1px solid $medium-green;
+                outline: 1px solid $light-green;
+                outline-offset: -2px;
             }
             &::placeholder {
                 font-size: $text-size-14;
@@ -75,10 +77,11 @@
     font-family: $font-poppins;
     font-weight: 600;
     color: $dark-gray;
-
     label {
         margin: 0;
         padding-left: 0.25rem;
+        font-size: $text-size-14;
+        padding-left: $size-4;
     }
 
     input {

@@ -8,6 +8,7 @@ import classes from "./IngredientCard.module.scss"
 
 export function IngredientCard({ ing }) {
     const { handleIngredientClick, handleXClick, cardState } = useIngredientCard(ing)
+    
     const bg = {
         backgroundColor: cardState.bg_color,
     }
@@ -17,7 +18,7 @@ export function IngredientCard({ ing }) {
             style={bg}
             className={`${classes.ingredientCard} ${cardState.is_selected ? classes.selected : classes.unselected}`}
         >
-            <div className={classes.leftItems}>
+            <div className={classes.itemsLeft}>
                 {!cardState.is_selected ? (
                     <LockOpenIcon className={classes.checkIco} />
                 ) : (
@@ -25,7 +26,7 @@ export function IngredientCard({ ing }) {
                 )}
                 <p>{ing.name}</p>
             </div>
-            <div className={classes.rightItems}>
+            <div className={classes.itemsRight}>
                 <CloseIcon onClick={(e) => handleXClick(e)} className={classes.rightIco} />
             </div>
         </div>

@@ -16,7 +16,7 @@
     padding-right: 0.5rem;
     border-radius: 0.375rem;
 
-    .leftItems {
+    .itemsLeft {
         display: flex;
         align-items: center;
         height: 100%;
@@ -26,8 +26,8 @@
     p {
         padding-left: 0.5rem;
         align-content: center;
-        font-family: "Metropolitan";
-        font-weight: 500;
+        font-family: $font-metropolitan;
+        font-weight: 550;
         font-size: $text-size-16;
         color: $dark-gray;
         transition:
@@ -39,7 +39,7 @@
         color: $dark-gray;
         font-size: 18px;
     }
-    .rightItems {
+    .itemsRight {
         box-sizing: border-box;
         display: flex;
         justify-content: center;
@@ -47,8 +47,9 @@
         .rightIco {
             padding: 0.5rem;
             border: none;
-            color: $darkish-gray;
+            color: $dark-gray;
             background-color: transparent;
+            font-size: 20px;
         }
     }
 }
@@ -65,7 +66,7 @@
     // outline: 1px solid $light-desaturated-green;
     // outline-offset: -2px;
     transition: border-radius 0.3s ease-out;
-    .rightItems {
+    .itemsRight {
         opacity: 1;
         transition: opacity 0.2s ease-in-out;
     }
@@ -75,7 +76,7 @@
     outline-offset: -2px;
     transition: border-radius 0.3s ease-out;
     background-color: $light-green;
-    .leftItems {
+    .itemsLeft {
         transform: translateX(0.25em);
         transition: transform 0.3s ease;
     }
@@ -87,7 +88,7 @@
         font-size: 20px;
         transition: scale 0.3s ease;
     }
-    .rightItems {
+    .itemsRight {
         opacity: 0;
         transition: opacity 0.2s ease-in-out;
     }
@@ -100,7 +101,7 @@
         border-radius: $size-8 ;
     }
     .selected {
-        outline-width: 3px;
-        outline-offset: -3px;
+        outline-width: 2.5px;
+        outline-offset: -2.5px;
     }    
 }

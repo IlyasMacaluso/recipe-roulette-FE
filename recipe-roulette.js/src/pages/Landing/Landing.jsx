@@ -1,6 +1,3 @@
-import { useAnimate } from "../../hooks/animatePages/useAnimate"
-import { useLocationHook } from "../../hooks/useLocationHook"
-
 import { Placeholder } from "../../components/Placeholder/Placeholder"
 import { Button } from "../../components/Buttons/Button/Button"
 
@@ -12,13 +9,15 @@ import landingImage from "../../assets/images/eating a variety of foods-bro.svg"
 import layout from "../../assets/scss/pageLayout/pageFH.module.scss"
 import transition from "../../assets/scss/pageLayout/pageTransition.module.scss"
 
-export function Landing() {
-    const { location } = useLocationHook()
-    const { animate } = useAnimate(location)
+import { Header } from "../../components/Header/Header"
 
+export function Landing() {
     return (
-        <div className={`${layout.pageFH} ${animate ? transition.animationEnd : transition.animationStart}`}>
+        <div className={`${layout.pageFH} ${layout.noVerticalPadding}`}>
+            <Header pageTitle="Welcome!" />
+
             <Placeholder
+            bottomPadding={true}
                 text="Reduce food wastes and get inspired by "
                 hightlitedText="Recipe Roulette"
                 topImage={landingImage}
@@ -27,8 +26,8 @@ export function Landing() {
                         key={"Start Ingredients Shuffle"}
                         style="primary"
                         label="Start Ingredients Shuffle"
-                        height={"large"}
-                        iconLeft={<LoopOutlinedIcon />}
+                        cta={true}
+                        iconLeft={<LoopOutlinedIcon fontSize="small" />}
                         link="/roulette"
                     />,
                     <Button

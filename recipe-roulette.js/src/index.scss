@@ -15,9 +15,6 @@ body {
     overflow: hidden;
     -webkit-tap-highlight-color: transparent;
 }
-#popup-root {
-    -webkit-tap-highlight-color: transparent;
-}
 
 .appContainer {
     display: flex;
@@ -32,13 +29,16 @@ body {
         flex-direction: column;
         height: 100%;
         background-color: white;
-        border-radius: $size-16;
-        outline: 1px solid $lighter-gray;
+        box-shadow: 0 0 4px rgba($color: #000000, $alpha: 0.15);
+    
         overflow: hidden;
     }
 }
 
 @media screen and (min-width: 1120px) {
+    .appContainer .centerContent {
+        border-radius: $size-16;
+    }
     #root {
         background-color: $lightest-green;
     }
@@ -53,16 +53,7 @@ body {
         max-width: 1440px;
         .centerContent {
             position: relative;
-            flex: 2 1 200px;
+            flex: 1.6 1 0;
         }
-    }
-}
-
-@media screen and (min-width: 1440px) {
-    #root {
-        background-color: $lightest-green;
-    }
-    .appContainer .centerContent {
-        flex: 3 1 200px;
     }
 }

@@ -37,6 +37,7 @@ export const useRecipeFilter = (isAuthenticated) => {
     const [recipePreferences, setRecipePreferences] = useState(new RecipeFilter())
     const [recipeFilters, setRecipeFilters] = useState(new RecipeFilter())
     const [updatedFilter, setUpdatedFilter] = useState(null)
+    const [discardPrefChanges, setDiscardChanges] = useState(null)
 
     const { setValue, getValue } = useLocalStorage()
     const { handlePostRequest, loading: preferencesUpdateLoading, error: preferencesUpdateError } = usePostRequest()
@@ -44,6 +45,9 @@ export const useRecipeFilter = (isAuthenticated) => {
 
     // useEffect(() => {
     //     //chiamata di rete quando cambia il valore di debounce (ricetta da aggiornare)
+    // if(!updatedFilter) {
+    //     return
+    // }
     //     if (isAuthenticated) {
     //         const userData = getValue("userData")
 
@@ -57,16 +61,33 @@ export const useRecipeFilter = (isAuthenticated) => {
     //     }
     // }, [debounceValue])
 
-    const updateDBFilters = () => {
-        if (isAuthenticated) {
-            const userData = getValue("userData")
-
-            handlePostRequest({
-                url: "http://localhost:3000/api/preferences/set-preferences",
-                payload: { newPreferences: recipePreferences, userId: userData.id },
-                mutationId: "filtersToggleUpdate", //mutationId
-            })
+    useEffect(() => {
+        if (!isAuthenticated) {
+            setRecipeFilters(new RecipeFilter())
+            setRecipePreferences(new RecipeFilter())
         }
+    }, [isAuthenticated])
+
+    const updateDBFilters = async () => {
+        const userData = getValue("userData")
+
+        if (!userData.id) {
+            return
+        }
+
+        if (!updatedFilter) {
+            return
+        }
+
+        if (!isAuthenticated) {
+            return
+        }
+
+        await handlePostRequest({
+            url: "http://localhost:3000/api/preferences/set-preferences",
+            payload: { newPreferences: recipePreferences, userId: userData.id },
+            mutationId: "filtersToggleUpdate", //mutationId
+        })
     }
 
     // Gestione delle proprietà non booleane di recipePreferences
@@ -134,11 +155,13 @@ export const useRecipeFilter = (isAuthenticated) => {
         recipePreferences,
         setRecipePreferences,
         recipeFilters,
+        setRecipeFilters,
+        discardPrefChanges,
+        setDiscardChanges,
 
         preferencesUpdateLoading,
         preferencesUpdateError,
 
-        setRecipeFilters,
         updateFilters,
         deselectFilters,
         updateDBFilters,

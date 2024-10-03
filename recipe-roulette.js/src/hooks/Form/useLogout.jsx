@@ -14,7 +14,9 @@ export function useLogout(setShowPopup) {
     const Logout = useMutation({
         mutationFn: () => {
             const { username, email, token, id } = getValue("userData")
-            const user = {username, email, token, id}
+            const user = { username, email, token, id }
+            
+            setValue(null, "userData")
             return postRequest({ url: "http://localhost:3000/api/users/logout", payload: user })
         },
         onSuccess: () => {
@@ -23,9 +25,6 @@ export function useLogout(setShowPopup) {
 
             setIsAuthenticated(false)
             setValue("userData", newUserData) // setLocalStorage localStorage
-
-            const keys = [["get-recipes-history"], ["get-food-preferences"], ["get-favorited-recipes"], ["ingredients"]]
-            keys.forEach((key) => queryClient.invalidateQueries(key))
 
             handleOpenSnackbar("You are now logged out!", 3000)
             setTimeout(() => setShowPopup(false), 0)

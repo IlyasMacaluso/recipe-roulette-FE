@@ -1,0 +1,30 @@
+@use "../../assets/scss/variables" as *;
+@import "../../assets/scss/pageLayout/pageTransition.module.scss";
+
+.recipePage {
+    display: flex;
+    flex-direction: column;
+
+    padding: $size-20;
+    padding-bottom: 0;
+    box-sizing: border-box;
+    background-color: white;
+
+    height: 100%;
+    overflow-y: hidden;
+
+    animation: scaleAnimation 0.35s cubic-bezier(0.08, 0.82, 0.17, 1) forwards;
+}
+.skeletonWrapper{
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    padding-top: $size-24;
+    gap: $size-16;
+}
+
+@media screen and (min-width: 1120px) {
+    .recipePage {
+        padding: 0 $size-24;
+    }
+}

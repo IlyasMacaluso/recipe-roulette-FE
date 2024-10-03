@@ -15,18 +15,9 @@ export function useLogin(setShowPopup) {
         mutationFn: (variables) => postRequest({ url: "http://localhost:3000/api/users/login", payload: variables }),
         onSuccess: (data, variables) => {
             const { id, username, email, token, avatar } = data
-            
+
             setValue("userData", { id, username, email, token, rememberMe: variables.rememberMe, avatar })
             setIsAuthenticated(true)
-
-            const keys = [
-                ["get-recipes-history"],
-                ["get-food-preferences"],
-                ["get-favorited-recipes"],
-                ["blacklisted-ingredients"],
-                ["ingredients"],
-            ]
-            keys.forEach((key) => queryClient.invalidateQueries(key))
 
             handleOpenSnackbar("You are now logged in!", 3000)
             setTimeout(() => setShowPopup(false), 0)
@@ -44,5 +35,6 @@ export function useLogin(setShowPopup) {
         error: Login.error,
         loading: Login.isPending,
         handleSubmit,
+        loginData: Login.data,
     }
 }

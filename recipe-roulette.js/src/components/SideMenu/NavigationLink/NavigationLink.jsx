@@ -1,11 +1,11 @@
 import { Link } from "@tanstack/react-router"
 import classes from "../SideMenu.module.scss"
 
-export function NavigationLink({ label, icon, destination, path, handleMenuToggle, action }) {
+export function NavigationLink({ label, icon, destination, path, setNavSidebar, action }) {
     return (
         <Link
             onClick={() => {
-                handleMenuToggle()
+                setNavSidebar()
                 action && action()
             }}
             className={`${classes.link} ${path && destination && (path === destination) && classes.activeLink}`}

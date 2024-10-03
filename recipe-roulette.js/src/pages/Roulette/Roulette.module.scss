@@ -41,6 +41,9 @@
         &:focus {
             outline: none;
         }
+        > svg {
+            font-size: 18px;
+        }
     }
 }
 
@@ -80,7 +83,6 @@
 @media screen and (min-width: 1120px) {
     .bottomButtons {
         padding-top: $size-16;
-        padding-bottom: 0;
     }
 }
 

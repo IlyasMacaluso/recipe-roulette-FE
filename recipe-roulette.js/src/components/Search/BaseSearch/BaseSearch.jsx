@@ -66,7 +66,7 @@ export function BaseSearch({ data = [], inputValue = "", setInputValue }) {
                         topImage={placeholderImage}
                         text="Your search has  "
                         hightlitedText="no matching results"
-                        highlightColor="#dd3e46"
+                        highlightColor="#f9dde0"
                         spacious={true}
                     />
                 )}

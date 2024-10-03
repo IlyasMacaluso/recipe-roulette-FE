@@ -1,4 +1,5 @@
 @use "../variables" as *;
+@import "./pageTransition.module.scss";
 
 .pageFH {
     display: flex;
@@ -11,7 +12,10 @@
     background-color: white;
 
     height: 100%;
+    max-height: 100%;
     overflow: hidden;
+
+    animation: scaleAnimation 0.35s cubic-bezier(0.08, 0.82, 0.17, 1) forwards;
 }
 
 .noVerticalPadding {
@@ -29,5 +33,8 @@ noHorizontalPadding {
     .pageFH {
         padding: $size-24;
         padding-top: 0;
+    }
+    .noVerticalPadding {
+        padding: 0 $size-24;
     }
 }

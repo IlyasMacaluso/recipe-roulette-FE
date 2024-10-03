@@ -9,13 +9,13 @@
     padding: 0 1.5rem;
     background-color: white;
     font-size: 14px;
-    padding: $size-8 $size-16;
+    padding: $size-12 $size-20;
 }
 
 .suggestion {
     color: $dark-gray;
     font-size: $text-size-14;
-    font-family: $font-poppins;
+    font-family: $font-metropolitan;
 }
 .suggestionWrapper:hover {
     cursor: pointer;

@@ -4,6 +4,7 @@ import VisibilityOffIcon from "@mui/icons-material/VisibilityOff"
 import VisibilityIcon from "@mui/icons-material/Visibility"
 
 import classes from "./Input.module.scss"
+import { useEffect } from "react"
 
 export function Input({
     type = "text",
@@ -18,8 +19,19 @@ export function Input({
     error = null,
     value = undefined,
     hasIcons = false,
+    isPopUp = false,
 }) {
-    const { scrollToCenter, refs } = useCenterItem(1)
+    const { scrollToCenter, refs } = useCenterItem(1, isPopUp)
+
+    useEffect(() => {
+        if(!isPopUp) return
+        const element = document.activeElement
+        if (element.tagName === "INPUT") return
+            if (refs[0].current && !value) {
+                refs[0].current.focus()
+                return
+            }
+    }, [isPopUp])
 
     return (
         <div className={`${type === "checkbox" ? classes.checkbox : classes.inputComponent}`}>
@@ -45,7 +57,7 @@ export function Input({
                     ref={refs[0]}
                     onChange={(e) => handleInputChange && handleInputChange(e)}
                     onFocus={(e) => {
-                        // refs[0].current = e.target
+                        // refs[0].current => e.target
                         scrollToCenter(refs[0])
                     }}
                 />
