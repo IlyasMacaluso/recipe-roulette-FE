@@ -1,111 +1,112 @@
 @use "../../../assets/scss/" as *;
 
 .search {
-    z-index: 1;
-    width: 100%;
-    height: 2.5rem;
-    box-sizing: border-box;
-    overflow: hidden;
-    overscroll-behavior: contain;
+  z-index: 1;
+  width: 100%;
+  height: 2.5rem;
+  box-sizing: border-box;
+  overflow: hidden;
+  overscroll-behavior: contain;
 
-    left: 0;
+  left: 0;
 }
 .searchBar {
-    position: relative;
+  position: relative;
+  display: flex;
+  align-items: center;
+
+  width: 100%;
+  height: 2.5rem;
+  padding: 0;
+  box-sizing: border-box;
+  overflow: hidden;
+  input {
     display: flex;
     align-items: center;
 
+    font-family: $font-metropolitan;
+    font-size: $text-size-14;
+    font-weight: 550;
+    line-height: 120%;
+    color: $dark-gray;
+
     width: 100%;
-    height: 2.5rem;
+    height: 100%;
     padding: 0;
+    padding-left: $size-20;
     box-sizing: border-box;
-    overflow: hidden;
-    input {
-        display: flex;
-        align-items: center;
 
-        font-family: $font-metropolitan;
-        font-size: $text-size-14;
-        font-weight: 550;
-        line-height: 120%;
-        color: $dark-gray;
-
-        width: 100%;
-        height: 100%;
-        padding: 0;
-        padding-left: $size-20;
-        box-sizing: border-box;
-
-        border: none;
-        background-color: transparent;
+    border: none;
+    background-color: transparent;
+  }
+  ::placeholder {
+    color: $medium-gray;
+  }
+  :focus {
+    outline: none;
+  }
+  .ico {
+    color: $darkish-gray;
+    position: absolute;
+    height: 2rem;
+    width: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-bottom: 0.125rem;
+    top: 50%;
+    transform: translateY(-50%);
+    > svg {
+      font-size: 18px;
     }
-    ::placeholder {
-        color: $medium-gray;
-    }
-    :focus {
-        outline: none;
-    }
-    .ico {
-        color: $darkish-gray;
-        position: absolute;
-        height: 2rem;
-        width: 2rem;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        padding-bottom: 0.125rem;
-        top: 50%;
-        transform: translateY(-50%);
-        > svg {
-            font-size: 18px;
-        }
-    }
-    .searchIco {
-        right: 0.5rem;
-    }
-    .closeIco {
-        right: 0.5em;
-        background-color: transparent;
-        border: none;
-    }
+  }
+  .searchIco {
+    right: 0.5rem;
+  }
+  .closeIco {
+    right: 0.5em;
+    background-color: transparent;
+    border: none;
+  }
 }
 
 .inputInactive {
-    background-color: white;
-    border-radius: $size-24;
-    outline: 1px solid $lighter-gray;
-    outline-offset: -2px;
-    transition: border-radius 1s cubic-bezier(0.08, 0.82, 0.17, 1);
+  background-color: white;
+  border-radius: $size-24;
+  outline: 1px solid $lighter-gray;
+  outline-offset: -2px;
+  transition: border-radius 1s cubic-bezier(0.08, 0.82, 0.17, 1);
 }
 
 .inputActive {
-    height: 3rem;
-    border-radius: 0;
-    background-color: $light-green;
-    transition: border-radius 1s cubic-bezier(0.08, 0.82, 0.17, 1);
+  height: 3rem;
+  border-radius: 0;
+  background-color: $light-green;
+  transition: border-radius 1s cubic-bezier(0.08, 0.82, 0.17, 1);
 }
 .positionFixed {
-    position: fixed;
-    z-index: 11;
+  position: fixed;
+  z-index: 11;
+  top: 0;
+  width: 100%;
+  height: 100svh;
+  padding-bottom: 1rem;
+  box-sizing: border-box;
+}
+@media screen and (min-width: 880px) {
+  .positionFixed {
+    height: 100%;
+  }
+}
+@media screen and (min-width: 1120px) {
+  .positionFixed {
+    position: absolute;
     top: 0;
     width: 100%;
-    height: 100svh;
-    padding-bottom: 1rem;
-    box-sizing: border-box;
-}
-
-@media screen and (min-width: 1120px) {
-
-    .positionFixed {
-        position: absolute;
-        top: 0;
-        width: 100%;
-        height: calc(100vh - 2.9rem);
-        border-radius: 1rem;
-        left: 50%;
-        transform: translateX(-50%);
-        overflow: hidden;
-        box-shadow: 0 0 20px rgba($color: #000000, $alpha: 0.1);
-    }
-
+    border-radius: 1rem;
+    left: 50%;
+    transform: translateX(-50%);
+    overflow: hidden;
+    box-shadow: 0 0 20px rgba($color: #000000, $alpha: 0.1);
+  }
 }

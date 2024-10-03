@@ -10,8 +10,6 @@ import { InlineMessage } from "../../components/InlineMessage/InlineMessage";
 
 import loadingImage from "../../assets/images/healthy food-bro.svg";
 import layout from "../../assets/scss/pageLayout/pageWScroll.module.scss";
-import { useNavigate } from "@tanstack/react-router";
-import { useEffect } from "react";
 
 export function RecipeResults() {
   const { recipes } = useRecipesContext();

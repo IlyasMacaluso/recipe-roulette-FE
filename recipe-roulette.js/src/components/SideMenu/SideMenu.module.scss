@@ -1,199 +1,245 @@
 @use "../../assets/scss/" as *;
 
 .backgroundOverlay {
-    position: fixed;
-    z-index: 12;
+  position: fixed;
+  z-index: 12;
 
-    height: 100%;
-    width: 100%;
-    left: 0;
-    top: 0;
-    transform: translateX(100%);
+  height: 100%;
+  width: 100%;
+  left: 0;
+  top: 0;
+  transform: translateX(100%);
 
-    background-color: rgba($color: $darkest-gray, $alpha: 0.2);
-    opacity: 0;
+  background-color: rgba($color: $darkest-gray, $alpha: 0.2);
+  opacity: 0;
 
-    transition: opacity 0.4s ease;
+  transition: opacity 0.4s ease;
 }
 .sidebar {
+  display: flex;
+  flex-direction: column;
+  z-index: 13;
+
+  position: fixed;
+  bottom: 0;
+  right: 0;
+
+  box-sizing: border-box;
+  height: 100%;
+  width: $width-360;
+  max-width: 90%;
+
+  background-color: white;
+  border-radius: $size-24 0 0 $size-24;
+
+  transform: translateX($width-360);
+  transition:
+    transform 0.4s ease,
+    opacity 0.4s ease;
+
+  header {
+    padding: $size-24 $size-16 0 $size-24;
+    height: fit-content;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    h4 {
+      margin: 0;
+      color: $darkish-gray;
+      font-family: $font-poppins;
+      font-weight: 600;
+      letter-spacing: 0.05rem;
+      font-size: $text-size-16;
+    }
+    > button > svg {
+      color: $darkish-gray;
+      stroke-width: 0.25px;
+      stroke: $darkish-gray;
+    }
+  }
+  .links {
+    padding: 0.75rem;
     display: flex;
     flex-direction: column;
-    z-index: 13;
-
-    position: fixed;
-    bottom: 0;
-    right: 0;
-
     box-sizing: border-box;
-    height: 100%;
-    width: $width-360;
-    max-width: 90%;
-
-    background-color: white;
-    border-radius: $size-24 0 0 $size-24;
-
-    transform: translateX($width-360);
-    transition:
-        transform 0.4s ease,
-        opacity 0.4s ease;
-
-    header {
-        padding: $size-24 $size-16 0 $size-24;
-        height: fit-content;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        h4 {
-            margin: 0;
-            color: $darkish-gray;
-            font-family: $font-poppins;
-            letter-spacing: 0.05rem;
-            font-size: $text-size-16;
-        }
-        > button > svg {
-            color: $darkish-gray;
-            stroke-width: 0.25px;
-            stroke: $darkish-gray;
-        }
+    width: 100%;
+    padding-bottom: 2rem;
+    height: 0;
+    flex-grow: 1;
+    .link {
+      width: 100%;
+      font-family: $font-poppins;
+      border-radius: 2rem;
+      font-size: $size-16;
+      font-weight: 500;
+      text-decoration: none;
+      color: $darkish-gray;
+      display: flex;
+      box-sizing: border-box;
+      align-items: center;
+      gap: 0.75rem;
+      height: 3.5rem;
+      padding: 0 $size-16;
+      letter-spacing: 0.025rem;
+      outline-color: transparent;
+      transition:
+        background 0.2s ease,
+        outline 0.2s ease,
+        color 0.2s ease;
     }
-    .links {
-        padding: 0.75rem;
-        display: flex;
-        flex-direction: column;
-        box-sizing: border-box;
-        width: 100%;
-        padding-bottom: 2rem;
-        height: 0;
-        flex-grow: 1;
-        .link {
-            width: 100%;
-            font-family: $font-poppins;
-            border-radius: 2rem;
-            font-size: $size-16;
-            font-weight: 500;
-            text-decoration: none;
-            color: $darkish-gray;
-            display: flex;
-            align-items: center;
-            gap: 0.75rem;
-            height: 3.5rem;
-            padding: 0 $size-16;
-            letter-spacing: 0.025rem;
-        }
-        .activeLink {
-            background-color: $lightest-green;
-            box-sizing: border-box;
-            border: 1px solid $light-desaturated-green;
-            color: $darkish-green;
-        }
+    .activeLink {
+      display: flex;
+      align-items: center;
+      background-color: $lightest-green;
+      outline: 1px solid $light-desaturated-green;
+      color: $darkish-green;
+      transition:
+        background 0.2s ease,
+        outline 0.2s ease,
+        color 0.2s ease;
     }
+  }
 
-    .logoutBtn {
-        display: flex;
-        justify-content: center;
-        padding: $size-24;
-    }
+  .logoutBtn {
+    display: flex;
+    justify-content: center;
+    padding: $size-24;
+  }
 }
 
 .sidebar .profileCard {
+  box-sizing: border-box;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  gap: $size-4;
+  padding: $size-4;
+  padding-bottom: $size-24;
+  .text {
+    font-size: $text-size-12;
+    font-weight: 600;
+    font-family: $font-poppins;
+    color: $darkish-gray;
+    width: fit-content;
+  }
+  > .text {
+    color: $darkish-gray;
+    padding-left: 4px;
+  }
+  .informationWrapper {
+    box-shadow: 0 0 3px rgba($color: #000000, $alpha: 0.15);
+    padding: $size-16;
+    border-radius: $size-12;
+    display: flex;
+    gap: $size-12;
+    align-items: center;
     box-sizing: border-box;
     width: 100%;
+    background-color: white;
+    transition: background-color 0.3s ease;
+    &:active {
+      background-color: $lighter-gray;
+      transition: background-color 0.3s ease;
+    }
+  }
+  .picture {
+    border-radius: 64px;
+    outline: 1px solid $light-gray;
+    height: 48px;
+    width: 48px;
+  }
+  .information {
     display: flex;
+    width: fit-content;
     flex-direction: column;
-    gap: $size-4;
-    padding: $size-4;
-    padding-bottom: $size-24;
-    .text {
-        font-size: $text-size-12;
-        font-weight: 600;
-        font-family: $font-poppins;
-        color: $darkish-gray;
-        width: fit-content;
+    box-sizing: border-box;
+    .username {
+      font-weight: 600;
+      font-size: $text-size-16;
     }
-    > .text {
-        color: $darkish-gray;
-        padding-left: 4px;
-    }
-    .informationWrapper {
-        box-shadow: 0 0 3px rgba($color: #000000, $alpha: 0.15);
-        padding: $size-16;
-        border-radius: $size-12;
-        display: flex;
-        gap: $size-12;
-        align-items: center;
-        box-sizing: border-box;
-        width: 100%;
-        background-color: white;
-        transition: background-color 0.3s ease;
-        &:active {
-            background-color: $lighter-gray;
-            transition: background-color 0.3s ease;
-        }
-    }
-    .picture {
-        border-radius: 64px;
-        border: 1px solid $light-gray;
-        height: 48px;
-        width: 48px;
-    }
-    .information {
-        display: flex;
-        width: fit-content;
-        flex-direction: column;
-        box-sizing: border-box;
-        .username {
-            font-weight: 600;
-            font-size: $text-size-16;
-        }
-    }
+  }
 }
 .backgroundOverlayToggled {
-    transform: translateX(0);
-    opacity: 1;
-    transition: opacity 0.5s ease;
+  transform: translateX(0);
+  opacity: 1;
+  transition: opacity 0.5s ease;
 }
 .sidebarToggled {
-    box-shadow: 0 0 20px rgba($color: #000000, $alpha: 0.2);
-    transform: translateX(0);
-    opacity: 1;
-    transition:
-        transform 0.4s ease,
-        opacity 0.4s ease;
+  box-shadow: 0 0 20px rgba($color: #000000, $alpha: 0.2);
+  transform: translateX(0);
+  opacity: 1;
+  transition:
+    transform 0.4s ease,
+    opacity 0.4s ease;
 }
 
 .sidebar .separator {
-    width: 100%;
-    height: 1px;
-    background-color: $light-gray;
-    margin: 0.5rem 0;
-    box-sizing: border-box;
+  width: 100%;
+  height: 1px;
+  background-color: $light-gray;
+  margin: 0.5rem 0;
+  box-sizing: border-box;
 }
 
-@media screen and (min-width: 1120px) {
-    .backgroundOverlay {
-        display: none;
-    }
-    .sidebar,
-    .sidebarToggled {
-        position: initial;
-        transform: translateX(0);
-        width: 320px;
-        box-shadow: 0 0 4px rgba($color: #000000, $alpha: 0.15);
-        border-radius: $size-16;
-    }
-    .sidebar .profileCard .informationWrapper:hover {
-        transition: background-color 0.3s ease;
-        cursor: pointer;
-        background-color: $lighter-gray;
-    }
-    .sidebar > header > button {
-        display: none;
-    }
+@media screen and (min-width: 880px) {
+  .backgroundOverlay {
+    display: none;
+  }
+  .sidebar,
+  .sidebarToggled {
+    position: initial;
+    transform: translateX(0);
+    box-shadow: 0 0 4px rgba($color: #000000, $alpha: 0.15);
+    border-radius: $size-16;
+  }
+  .sidebar .profileCard .informationWrapper:hover {
+    transition: background-color 0.3s ease;
+    cursor: pointer;
+    background-color: $lighter-gray;
+  }
+  .sidebar > header > button {
+    display: none;
+  }
 }
 
-@media screen and (min-width: 1440px) {
-    .sidebar,
-    .sidebarToggled {
-        max-width: calc(0.235 * 1440px);
+@media screen and (min-width: 880px) and (max-width: 1199px) {
+  .sidebar,
+  .sidebarToggled {
+    width: fit-content;
+    > header {
+      padding: 16px;
+      padding-bottom: 0;
     }
+    .profileCard {
+      padding: 0;
+      padding-bottom: $size-24;
+      width: fit-content;
+      .informationWrapper {
+        padding: 8px;
+        .information {
+          display: none;
+        }
+      }
+    }
+    .links {
+      align-items: center;
+      .link {
+        justify-content: center;
+        padding: 0;
+        gap: 0;
+        width: 56px;
+        height: 56px;
+        p {
+          display: none;
+        }
+      }
+    }
+  }
+}
+
+@media screen and (min-width: 1200px) {
+  .sidebar,
+  .sidebarToggled {
+    width: 320px;
+  }
 }

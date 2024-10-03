@@ -12,7 +12,7 @@ export function NavigationLink({ label, icon, destination, path, setNavSidebar, 
             to={destination}
         >
             {icon}
-            {label}
+            {label && <p>{label}</p>}
         </Link>
     )
 }
