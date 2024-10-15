@@ -32,7 +32,7 @@ export function RecipeResults() {
               return (
                 <RecipeCard
                   handleClickLoginSnackBar={handleClickLoginSnackBar}
-                  key={`${recipe.id}_${recipe.title}`}
+                  key={`${recipe.recipe_id}_${recipe.title}`}
                   recipe={recipe}
                 />
               );

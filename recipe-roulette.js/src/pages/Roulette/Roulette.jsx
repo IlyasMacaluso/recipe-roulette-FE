@@ -134,9 +134,9 @@ export function Roulette() {
               const ingNames = ingredients?.displayed.map((ing) => ing.name);
               handleRecipesFetch(
                 ingNames,
-                recipePreferences.preparationTime,
-                recipePreferences.caloricApport,
-                recipePreferences.cuisineEthnicity,
+                recipePreferences.preparation_time,
+                recipePreferences.caloric_apport,
+                recipePreferences.cuisine_ethnicity,
                 recipePreferences.is_vegetarian,
                 recipePreferences.is_vegan,
                 recipePreferences.is_gluten_free,

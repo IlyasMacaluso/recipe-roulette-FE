@@ -1,44 +1,49 @@
-import { useEffect, useState } from "react"
-import { useRecipesContext } from "../../contexts/RecipesContext"
-import { useLocation, useNavigate } from "@tanstack/react-router"
-import { useAuth } from "../../hooks/Auth/useAuth"
+import { useEffect, useState } from "react";
+import { useRecipesContext } from "../../contexts/RecipesContext";
+import { useLocation, useNavigate } from "@tanstack/react-router";
+import { useAuth } from "../../hooks/Auth/useAuth";
 
 export function useRecipeCard(recipe, isExpanded) {
-    const location = useLocation()
-    
-    const [cardState, setCardState] = useState(recipe)
-    const [expandedCard, setExpandedCard] = useState(isExpanded)
-    const [expandedIngredients, setExpandedIngredients] = useState(true)
-    const { handleRecipesUpdate, setRecipes, handleTargetedRecipe } = useRecipesContext()
-    const { isAuthenticated } = useAuth()
+  const location = useLocation();
 
-    useEffect(() => {
-        setCardState((prevState) => ({ ...prevState, isFavorited: recipe.isFavorited, id: recipe.id }))
-    }, [recipe.isFavorited, recipe.id, isAuthenticated])
+  const [cardState, setCardState] = useState(recipe);
+  const [expandedCard, setExpandedCard] = useState(isExpanded);
+  const [expandedIngredients, setExpandedIngredients] = useState(true);
+  const { handleRecipesUpdate, setRecipes, handleTargetedRecipe } =
+    useRecipesContext();
+  const { isAuthenticated } = useAuth();
 
-    function handleCardState(e) {
-        e.preventDefault()
-        e.stopPropagation()
-        handleRecipesUpdate(cardState, setCardState, location.pathname)
-    }
+  useEffect(() => {
+    setCardState((prevState) => ({
+      ...prevState,
+      is_favorited: recipe.is_favorited,
+      id: recipe.recipe_id,
+    }));
+  }, [recipe.is_favorited, recipe.recipe_id, isAuthenticated]);
 
-    function handleIngWrapperState(e) {
-        e.stopPropagation()
-        e.preventDefault()
-        setExpandedIngredients((b) => !b)
-    }
+  function handleCardState(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    handleRecipesUpdate(cardState, setCardState, location.pathname);
+  }
 
-    function handleOpenRecipePage(recipe) {
-        handleTargetedRecipe(recipe)
-    }
+  function handleIngWrapperState(e) {
+    e.stopPropagation();
+    e.preventDefault();
+    setExpandedIngredients((b) => !b);
+  }
 
-    return {
-        cardState,
-        expandedCard,
-        expandedIngredients,
-        handleIngWrapperState,
-        handleCardState,
-        handleOpenRecipePage,
-        setExpandedCard,
-    }
+  function handleOpenRecipePage(recipe) {
+    handleTargetedRecipe(recipe);
+  }
+
+  return {
+    cardState,
+    expandedCard,
+    expandedIngredients,
+    handleIngWrapperState,
+    handleCardState,
+    handleOpenRecipePage,
+    setExpandedCard,
+  };
 }

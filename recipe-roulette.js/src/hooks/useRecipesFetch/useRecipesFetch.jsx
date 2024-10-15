@@ -16,9 +16,9 @@ export const RecipesFetchProvider = ({ children }) => {
   const handleRecipesFetch = useCallback(
     async (
       ingredients,
-      prepTime,
-      caloricApport,
-      cuisineEthnicity,
+      prep_time,
+      caloric_apport,
+      cuisine_ethnicity,
       is_vegetarian,
       is_vegan,
       is_gluten_free,
@@ -31,9 +31,9 @@ export const RecipesFetchProvider = ({ children }) => {
           "http://localhost:3000/api/generate-recipes",
           {
             ingredients,
-            prepTime,
-            caloricApport,
-            cuisineEthnicity,
+            prep_time,
+            caloric_apport,
+            cuisine_ethnicity,
             difficulty,
             preferences: {
               is_vegan,
@@ -48,7 +48,7 @@ export const RecipesFetchProvider = ({ children }) => {
         setRecipes((prev) => {
           const updatedRecipes = {
             ...prev,
-            results: parsedData?.meals,
+            results: parsedData?.recipes,
           };
 
           // Salva le ricette aggiornate nel local storage

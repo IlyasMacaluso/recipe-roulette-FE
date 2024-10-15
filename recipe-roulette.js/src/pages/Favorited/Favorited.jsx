@@ -113,7 +113,7 @@ export function Favorited() {
                 {searchFavorites.map((recipe) => (
                   <RecipeCard
                     recipe={recipe}
-                    key={`${recipe.id}_${recipe.title}`}
+                    key={`${recipe.recipe_id}_${recipe.title}`}
                   />
                 ))}
               </section>

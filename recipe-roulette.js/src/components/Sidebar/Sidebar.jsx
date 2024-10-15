@@ -175,13 +175,13 @@ export function Sidebar({
             <h4>Preparation Time</h4>
             <div className={classes.filterChipWrapper}>
               {
-                // prepTime chips =====================================================================
+                // prep_time chips =====================================================================
                 prepTimeChips?.map((chip, index) => {
                   return (
                     <FilterChipRecipes
                       filters={filtersName}
                       key={index}
-                      filterType={"preparationTime"}
+                      filterType={"preparation_time"}
                       propValue={chip.propValue}
                       label={chip.label}
                     />
@@ -236,14 +236,14 @@ export function Sidebar({
             <h4>Cousine Etnicity</h4>
             <div className={classes.filterChipWrapper}>
               {
-                // cuisineEthnicity chips =====================================================================
+                // cuisine_ethnicity chips =====================================================================
                 cuisineEthnicityChips?.map((chip, index) => {
                   return (
                     <FilterChipRecipes
                       filters={filtersName}
                       key={index}
                       propValue={chip.propValue}
-                      filterType={"cuisineEthnicity"}
+                      filterType={"cuisine_ethnicity"}
                       label={chip.label}
                     />
                   );
@@ -256,14 +256,14 @@ export function Sidebar({
             <h4>Caloric Apport</h4>
             <div className={classes.filterChipWrapper}>
               {
-                // caloricApport chips =====================================================================
+                // caloric_apport chips =====================================================================
                 caloricApportChips?.map((chip, index) => {
                   return (
                     <FilterChipRecipes
                       filters={filtersName}
                       key={index}
                       propValue={chip.propValue}
-                      filterType={"caloricApport"}
+                      filterType={"caloric_apport"}
                       label={chip.label}
                     />
                   );

@@ -213,14 +213,14 @@ export const RecipesProvider = ({ children }) => {
     const filterRecipes = (array) => {
       return array.filter((rec) => {
         return (
-          rec.caloricApport <= recipeFilters.caloricApport &&
-          rec.preparationTime <= recipeFilters.preparationTime &&
+          rec.caloric_apport <= recipeFilters.caloric_apport &&
+          rec.preparation_time <= recipeFilters.preparation_time &&
           (recipeFilters.is_gluten_free ? rec.is_gluten_free : true) &&
           (recipeFilters.is_vegetarian ? rec.is_vegetarian : true) &&
           (recipeFilters.is_vegan ? rec.is_vegan : true) &&
-          (recipeFilters.cuisineEthnicity.includes("all") ||
-            recipeFilters.cuisineEthnicity.includes(
-              rec.cuisineEthnicity.toLowerCase(),
+          (recipeFilters.cuisine_ethnicity.includes("all") ||
+            recipeFilters.cuisine_ethnicity.includes(
+              rec.cuisine_ethnicity.toLowerCase(),
             )) &&
           (recipeFilters.difficulty === "all" ||
             recipeFilters.difficulty.toLowerCase() ===
