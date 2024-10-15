@@ -2,72 +2,72 @@
 @import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
 
 .header {
-    position: relative;
-    box-sizing: border-box;
+  position: relative;
+  box-sizing: border-box;
 
-    display: flex;
-    flex-direction: column;
-    width: 100%;
-    padding: $size-16 0;
-    padding-bottom: $size-12;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding: $size-16 0;
+  padding-bottom: $size-12;
 
+  gap: $size-12;
+  min-height: fit-content;
+  background-color: white;
+  .topItems {
     gap: $size-12;
-    min-height: fit-content;
-    background-color: white;
-    .topItems {
-        gap: $size-12;
-        display: flex;
-        width: 100%;
-        justify-content: space-between;
-        align-items: center;
-    }
-    .itemsLeft,
-    .itemsRight,
-    .itemsBottom {
-        display: flex;
-        align-items: center;
-        gap: $size-12;
-        box-sizing: border-box;
-        color: $dark-gray;
-    }
-    .itemsLeft > h1 {
-        font-family: $font-poppins;
-        font-size: $text-size-24;
-        line-height: 120%;
-        font-weight: 600;
-        letter-spacing: 0.0125rem;
-        margin: 0;
-    }
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .itemsLeft,
+  .itemsRight,
+  .itemsBottom {
+    display: flex;
+    align-items: center;
+    gap: $size-12;
+    box-sizing: border-box;
+    color: $dark-gray;
+  }
+  .itemsLeft > h1 {
+    font-family: $font-poppins;
+    font-size: $text-size-24;
+    line-height: 120%;
+    font-weight: 600;
+    letter-spacing: 0.0125rem;
+    margin: 0;
+  }
 
-    .icoWrapper {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        height: 32px;
-        min-width: 32px;
-    }
+  .icoWrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 32px;
+    min-width: 32px;
+  }
 
-    .itemsLeft svg {
-        stroke: $dark-gray;
-        stroke-width: 1;
-    }
-    .itemsBottom button {
-        flex-grow: 1;
-    }
+  .itemsLeft svg {
+    stroke: $dark-gray;
+    stroke-width: 1;
+  }
+  .itemsBottom button {
+    flex-grow: 1;
+  }
 }
 
-@media screen and (min-width: 1120px) {
-    .header {
-        flex-direction: row;
-        position: initial;
-        height: fit-content;
-        box-sizing: border-box;
-        width: 100%;
-        padding-top: $size-24;
-        padding-bottom: $size-16;
-    }
+@media screen and (min-width: 880px) {
+  .header {
+    flex-direction: row;
+    position: initial;
+    height: fit-content;
+    box-sizing: border-box;
+    width: 100%;
+    padding-top: $size-24;
+    padding-bottom: $size-16;
+  }
 
-    .header .itemsRight > .icoWrapper:last-child {
-        display: none;
-    }
+  .header .itemsRight > .icoWrapper:last-child {
+    display: none;
+  }
 }

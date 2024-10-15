@@ -2,79 +2,79 @@
 @import url(./root.css);
 
 body {
-    margin: 0;
-    box-sizing: border-box;
-    height: 100svh;
-    width: 100vw;
-    overflow: hidden;
+  margin: 0;
+  box-sizing: border-box;
+  height: 100svh;
+  width: 100vw;
+  overflow: hidden;
 }
 
 #root {
-    height: 100%;
-    box-sizing: border-box;
-    overflow: hidden;
-    -webkit-tap-highlight-color: transparent;
+  height: 100%;
+  box-sizing: border-box;
+  overflow: hidden;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .appContainer {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  height: 100%;
+  overflow: hidden;
+  .centerContent {
+    position: relative;
     display: flex;
     flex-direction: column;
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
     height: 100%;
+    background-color: white;
+    box-shadow: 0 0 4px rgba($color: #000000, $alpha: 0.15);
     overflow: hidden;
-    .centerContent {
-        display: flex;
-        flex-direction: column;
-        height: 100%;
-        background-color: white;
-        box-shadow: 0 0 4px rgba($color: #000000, $alpha: 0.15);
-    
-        overflow: hidden;
-    }
+  }
 }
 @media screen and (min-width: 880px) {
-    .appContainer .centerContent {
-        border-radius: $size-16;
+  .appContainer .centerContent {
+    border-radius: $size-16;
+  }
+  #root {
+    background-color: $lightest-green;
+  }
+  .appContainer {
+    flex-direction: row;
+    gap: 20px;
+    padding: 24px;
+    box-sizing: border-box;
+    width: 100%;
+    height: 100%;
+    margin: 0 auto;
+    max-width: 1440px;
+    .centerContent {
+      position: relative;
+      flex: 1.6 1 0;
     }
-    #root {
-        background-color: $lightest-green;
-    }
-    .appContainer {
-        flex-direction: row;
-        gap: 20px;
-        padding: 24px;
-        box-sizing: border-box;
-        width: 100%;
-        height: 100%;
-        margin: 0 auto;
-        max-width: 1440px;
-        .centerContent {
-            position: relative;
-            flex: 1.6 1 0;
-        }
-    }
+  }
 }
 @media screen and (min-width: 1120px) {
-    .appContainer .centerContent {
-        border-radius: $size-16;
+  .appContainer .centerContent {
+    border-radius: $size-16;
+  }
+  #root {
+    background-color: $lightest-green;
+  }
+  .appContainer {
+    flex-direction: row;
+    gap: 20px;
+    padding: 24px;
+    box-sizing: border-box;
+    width: 100%;
+    height: 100%;
+    margin: 0 auto;
+    max-width: 1440px;
+    .centerContent {
+      position: relative;
+      flex: 1.6 1 0;
     }
-    #root {
-        background-color: $lightest-green;
-    }
-    .appContainer {
-        flex-direction: row;
-        gap: 20px;
-        padding: 24px;
-        box-sizing: border-box;
-        width: 100%;
-        height: 100%;
-        margin: 0 auto;
-        max-width: 1440px;
-        .centerContent {
-            position: relative;
-            flex: 1.6 1 0;
-        }
-    }
+  }
 }
