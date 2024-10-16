@@ -1,148 +1,164 @@
-import { useEffect, useState } from "react"
-import { useAuth } from "../../../hooks/Auth/useAuth"
-import { useLocalStorage } from "../../../hooks/useLocalStorage/useLocalStorage"
-import { usePostRequest } from "../../../hooks/usePostRequest/usePostRequest"
-import { useDebounce } from "../../../hooks/useDebounce/useDebounce"
+import { useState } from "react";
+import { useAuth } from "../../../hooks/Auth/useAuth";
+import { useLocalStorage } from "../../../hooks/useLocalStorage/useLocalStorage";
+import { usePostRequest } from "../../../hooks/usePostRequest/usePostRequest";
 
 export const useIngredientUpdate = (ingredients, setIngredients) => {
-    const [blacklistedIngredients, setBlacklistedIngredients] = useState(null)
-    const [discardBLChanges, setDiscardBLChanges] = useState(null)
-    const { setValue, getValue } = useLocalStorage()
-    const { handlePostRequest, error: blacklistUpdateErr, loading: blacklistUpdateLoading } = usePostRequest()
-    const { isAuthenticated } = useAuth()
-    const { debounceValue } = useDebounce(blacklistedIngredients)
+  const [blacklistedIngredients, setBlacklistedIngredients] = useState(null);
+  const [discardBLChanges, setDiscardBLChanges] = useState(null);
+  const { setValue, getValue } = useLocalStorage();
+  const { isAuthenticated } = useAuth();
+  const {
+    handlePostRequest,
+    error: blacklistUpdateErr,
+    loading: blacklistUpdateLoading,
+  } = usePostRequest();
 
-    // useEffect(() => {
-    //     //chiamata di rete quando cambia il valore di debounce (ricetta da aggiornare)
+  async function updateDBBlacklist() {
+    const userData = getValue("userData");
 
-    //     if (!blacklistedIngredients) {
-    //         return
-    //     }
+    if (!userData.id) {
+      return;
+    }
+    if (!blacklistedIngredients) {
+      return;
+    }
 
-    //     if (isAuthenticated) {
-    //         const userData = getValue("userData")
+    if (!isAuthenticated) {
+      return;
+    }
 
-    //         userData.id &&
-    //             handlePostRequest({
-    //                 url: "http://localhost:3000/api/preferences/set-blacklisted-ingredients",
-    //                 payload: { newBlacklist: blacklistedIngredients, userId: userData.id },
-    //                 mutationId: "blacklistUpdate",
-    //             })
-    //     }
-    // }, [debounceValue])
+    await handlePostRequest({
+      url: "http://localhost:3000/api/preferences/set-blacklisted-ingredients",
+      payload: { newBlacklist: blacklistedIngredients, userId: userData.id },
+      mutationId: "blacklistUpdate",
+    });
+  }
 
-    const updateDBBlacklist = async () => {
-        const userData = getValue("userData")
-        
-        if (!userData.id) {
-            return 
+  function toggle_is_blacklisted(ingredient) {
+    const is_blacklisted = !ingredient.is_blacklisted; // newState === !oldState (toggle)
+
+    function mapArray(array) {
+      return array.map((item) =>
+        item.id === ingredient.id ? { ...item, is_blacklisted } : item,
+      );
+    }
+
+    setIngredients((prev) => {
+      setBlacklistedIngredients(() => {
+        return mapArray(prev.all).filter((item) => item.is_blacklisted);
+      });
+
+      return {
+        ...prev,
+        all: mapArray(prev.all),
+        displayed: mapArray(prev.displayed),
+        blacklisted: mapArray(prev.all).filter((item) => item.is_blacklisted),
+        filtered: mapArray(prev.filtered),
+      };
+    });
+  }
+
+  function toggle_is_selected(ingredient) {
+    const is_selected = !ingredient.is_selected; // newState === !oldState (toggle)
+
+    function mapArray(array) {
+      return array.map((item) =>
+        item.id === ingredient.id ? { ...item, is_selected } : item,
+      );
+    }
+
+    setIngredients((prev) => {
+      let newIngredients;
+
+      // define those that are the same across all cases
+      newIngredients = {
+        ...prev,
+        all: mapArray(prev.all),
+        blacklisted: mapArray(prev.blacklisted),
+        filtered: mapArray(prev.filtered),
+      };
+
+      const isDisplayed = prev.displayed.some(
+        (item) => item.id === ingredient.id,
+      );
+
+      switch (isDisplayed) {
+        case true: {
+          newIngredients = {
+            ...newIngredients,
+            displayed: mapArray(prev.displayed),
+          };
+          break;
         }
-        if (!blacklistedIngredients) {
-            return 
+
+        case false: {
+          // define the new ingredient (will be added in ingredients.displayed array)
+          const updatedIngredient = { ...ingredient, is_selected };
+
+          if (prev.displayed.length < 8) {
+            newIngredients = {
+              ...newIngredients,
+              displayed: [updatedIngredient, ...prev.displayed],
+            };
+          }
+
+          if (prev.displayed.length === 8) {
+            const itemToRemove = prev.displayed.find(
+              (item) => !item.is_selected,
+            ); // firnd the first unselected ing to replace it with the new selected ingredient
+
+            newIngredients = {
+              ...newIngredients,
+              displayed: [
+                updatedIngredient,
+                ...prev.displayed.filter((item) => item.id !== itemToRemove.id),
+              ],
+            };
+          }
+          break;
         }
+      }
 
-        if (!isAuthenticated) {
-            return 
-        }
+      setValue("ingredients", newIngredients);
+      return newIngredients;
+    });
+    return;
+  }
 
-        await handlePostRequest({
-            url: "http://localhost:3000/api/preferences/set-blacklisted-ingredients",
-            payload: { newBlacklist: blacklistedIngredients, userId: userData.id },
-            mutationId: "blacklistUpdate",
-        })
-    }
+  //Nota: deleseziona anche gli elementi blacklistati a seconda della prop passata!!
+  function deselectIngredients(prop) {
+    // Funzione per mappare l'array e impostare il valore della proprietà a false
+    const mapArray = (array) =>
+      array &&
+      array.length > 0 &&
+      array.map((item) => ({ ...item, [prop]: false }));
 
-    const handleIngUpdate = (prop, cardState) => {
-        setIngredients((prev) => {
-            // Aggiorna la proprietà specificata per l'ingrediente corrispondente in tutti gli ingredienti
-            const updatedIngs = prev?.all.map((item) => (item.id === cardState.id ? { ...item, [prop]: !cardState[prop] } : item))
+    setIngredients((prev) => {
+      const newIngredients = mapArray(prev?.all);
+      let newDisplayed = mapArray(prev.displayed);
+      let newBlacklisted = prop === "is_blacklisted" ? [] : prev.blacklisted;
 
-            // Aggiorna la proprietà specificata per l'ingrediente corrispondente negli ingredienti visualizzati
-            const updatedDisplayedIngs = prev.displayed.map((item) =>
-                item.id === cardState.id ? { ...item, [prop]: !cardState[prop] } : item
-            )
+      setBlacklistedIngredients(newBlacklisted);
 
-            // Trova l'ingrediente aggiornato
-            const updatedIng = updatedIngs.find((ingredient) => ingredient.id === cardState.id)
+      // Ritorna il nuovo stato degli ingredienti
+      return {
+        ...prev,
+        all: newIngredients,
+        displayed: newDisplayed,
+        blacklisted: newBlacklisted,
+      };
+    });
+  }
 
-            // Verifica se l'ingrediente è già visualizzato
-            const isDisplayed = prev.displayed.some((ingredient) => ingredient.id === cardState.id)
-
-            // Inizializza newDisplayed con gli ingredienti visualizzati aggiornati
-            let newDisplayed = updatedDisplayedIngs
-
-            // Filtra gli ingredienti nella blacklist
-            const newBlacklisted = updatedIngs.filter((item) => item.is_blacklisted)
-
-            if (prop === "is_selected") {
-                if (isDisplayed) {
-                    newDisplayed = updatedDisplayedIngs
-                } else if (prev.displayed.length === 8) {
-                    // Se il numero di ingredienti visualizzati è il massimo (8)
-                    newDisplayed = []
-                    let firstUnselected = true
-
-                    // Cerca il primo elemento non selezionato per sostituirlo con il nuovo
-                    prev.displayed.forEach((ing) => {
-                        if (!ing.is_selected && firstUnselected) {
-                            newDisplayed.push(updatedIng)
-                            firstUnselected = false
-                        } else {
-                            newDisplayed.push(ing)
-                        }
-                    })
-                } else {
-                    // Aggiunge il nuovo ingrediente agli ingredienti visualizzati
-                    newDisplayed = [updatedIng, ...prev.displayed]
-                }
-            }
-
-            // Crea il nuovo stato degli ingredienti
-            const newIngredients = {
-                ...prev,
-                all: updatedIngs,
-                displayed: newDisplayed,
-                blacklisted: newBlacklisted,
-            }
-
-            setBlacklistedIngredients(newBlacklisted)
-
-            // Aggiorna il valore degli ingredienti
-            setValue("ingredients", newIngredients)
-
-            return newIngredients
-        })
-    }
-
-    //Nota: deleseziona anche gli elementi blacklistati!!
-    const deselectIngredients = (prop) => {
-        // Funzione per mappare l'array e impostare il valore della proprietà a false
-        const mapArray = (array) => array && array.length > 0 && array.map((item) => ({ ...item, [prop]: false }))
-
-        setIngredients((prev) => {
-            const newIngredients = mapArray(prev?.all)
-            let newDisplayed = mapArray(prev.displayed)
-            let newBlacklisted = prop === "is_blacklisted" ? [] : prev.blacklisted
-
-            setBlacklistedIngredients(newBlacklisted)
-
-            // Ritorna il nuovo stato degli ingredienti
-            return {
-                ...prev,
-                all: newIngredients,
-                displayed: newDisplayed,
-                blacklisted: newBlacklisted,
-            }
-        })
-    }
-
-    return {
-        handleIngUpdate,
-        deselectIngredients,
-        updateDBBlacklist,
-        blacklistUpdateErr,
-        blacklistUpdateLoading,
-        discardBLChanges,
-        setDiscardBLChanges,
-    }
-}
+  return {
+    toggle_is_selected,
+    toggle_is_blacklisted,
+    deselectIngredients,
+    updateDBBlacklist,
+    blacklistUpdateErr,
+    blacklistUpdateLoading,
+    discardBLChanges,
+    setDiscardBLChanges,
+  };
+};

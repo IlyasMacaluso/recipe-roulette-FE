@@ -2,39 +2,35 @@
 @import "./pageTransition.module.scss";
 
 .pageFH {
-    display: flex;
-    flex-direction: column;
+  display: flex;
+  flex-direction: column;
 
-    justify-content: center;
+  justify-content: center;
 
-    padding: $size-20;
-    box-sizing: border-box;
-    background-color: white;
+  padding: $size-20;
+  box-sizing: border-box;
+  background-color: white;
 
-    height: 100%;
-    max-height: 100%;
-    overflow: hidden;
+  height: 100%;
+  max-height: 100%;
+  overflow: hidden;
 
-    animation: scaleAnimation 0.35s cubic-bezier(0.08, 0.82, 0.17, 1) forwards;
+  animation: scaleAnimation 0.35s cubic-bezier(0.08, 0.82, 0.17, 1) forwards;
 }
 
 .noVerticalPadding {
-    padding: 0 $size-20;
+  padding: 0 $size-20;
 }
 
 noHorizontalPadding {
-    padding: $size-20 0;
+  padding: $size-20 0;
 }
 .noPadding {
-    padding: 0;
+  padding: 0;
 }
 
 @media screen and (min-width: 1120px) {
-    .pageFH {
-        padding: $size-24;
-        padding-top: 0;
-    }
-    .noVerticalPadding {
-        padding: 0 $size-24;
-    }
+  .pageFH {
+    padding-top: 0;
+  }
 }

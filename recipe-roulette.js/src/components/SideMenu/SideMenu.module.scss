@@ -58,12 +58,12 @@
     }
   }
   .links {
-    padding: 0.75rem;
+    padding: $size-12;
     display: flex;
     flex-direction: column;
     box-sizing: border-box;
     width: 100%;
-    padding-bottom: 2rem;
+    padding-bottom: 32px;
     height: 0;
     flex-grow: 1;
     .link {
@@ -202,35 +202,47 @@
   }
 }
 
-@media screen and (min-width: 880px) and (max-width: 1199px) {
+@media screen and (min-width: 880px) and (max-width: 1200px) {
   .sidebar,
   .sidebarToggled {
-    width: fit-content;
+    width: calc(56px + 24px);
+    min-width: fit-content;
+    transition: width 0.5s ease;
+
     > header {
       padding: 16px;
       padding-bottom: 0;
     }
+
     .profileCard {
       padding: 0;
       padding-bottom: $size-24;
       width: fit-content;
+
       .informationWrapper {
         padding: 8px;
+        gap: 0;
+
         .information {
-          display: none;
+          opacity: 0;
+          width: 0;
         }
       }
     }
+
     .links {
       align-items: center;
+
       .link {
         justify-content: center;
         padding: 0;
         gap: 0;
         width: 56px;
         height: 56px;
+
         p {
-          display: none;
+          opacity: 0;
+          width: 0;
         }
       }
     }
@@ -241,5 +253,16 @@
   .sidebar,
   .sidebarToggled {
     width: 320px;
+    transition: width 0.5s ease;
+
+    .profileCard .informationWrapper .information {
+      opacity: 1;
+      transition: opacity 0.5s ease;
+    }
+
+    .links .link p {
+      opacity: 1;
+      transition: opacity 0.5s ease;
+    }
   }
 }

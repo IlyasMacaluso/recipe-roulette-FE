@@ -1,9 +1,17 @@
 .globalActions {
-    display: flex;
-    width: 100%;
-    box-sizing: border-box;
-    gap: 0.5rem;
-    align-items: center;
-    background-color: white;
-    padding-bottom: 16px;
+  display: flex;
+  width: 100%;
+  box-sizing: border-box;
+  gap: 0.5rem;
+  align-items: center;
+  background-color: white;
+  padding-bottom: 16px;
+}
+
+@media screen and (min-width: 880px) {
+  .globalActions {
+    > button:last-child {
+      display: none;
+    }
+  }
 }
