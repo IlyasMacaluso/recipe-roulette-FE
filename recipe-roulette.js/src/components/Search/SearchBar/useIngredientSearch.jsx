@@ -100,7 +100,7 @@ export function useIngredientSearch(
           return;
         }
 
-        // if the above "if" doesn't happen, select the new item
+        // if the above "if" statement doesn't happen, select the new item
         toggle_is_selected(cardState);
 
         // and open a snackbar message if we are in the /roulette page
