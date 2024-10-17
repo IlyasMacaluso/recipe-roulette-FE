@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { useManageIngredients } from "../../pages/Roulette/IngredientsContext";
+import { useSnackbar } from "../Snackbar/useSnackbar";
 
 export function useFilterChips(
   id,
@@ -16,10 +17,12 @@ export function useFilterChips(
     is_blacklisted,
   });
 
-  const { toggle_is_selected, toggle_is_blacklisted } = useManageIngredients();
+  const { handleOpenSnackbar } = useSnackbar();
+  const { toggle_is_blacklisted } = useManageIngredients();
 
   function handleDeselectChip() {
     toggle_is_blacklisted(ingState);
+    handleOpenSnackbar(`${ingState.label} was removed from blacklist`, 1500);
   }
 
   return {

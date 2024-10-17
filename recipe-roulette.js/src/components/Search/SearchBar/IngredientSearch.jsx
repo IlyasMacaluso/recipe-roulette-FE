@@ -1,7 +1,7 @@
-import React from "react";
 import { useIngredientSearch } from "./useIngredientSearch";
-import { IngredientSuggestions } from "../Suggestions/IngredientSuggestions";
 import { useHandleBackButton } from "../../../hooks/useHandleBackBtn/useHandleBackBtn";
+
+import { IngredientSuggestions } from "../Suggestions/IngredientSuggestions";
 
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 import CloseOutlinedIcon from "@mui/icons-material/CloseOutlined";
@@ -13,8 +13,8 @@ export function IngredientSearch({
   preferencesSidebar = false,
 }) {
   const {
-    suggestions,
     inputValues,
+    setInputValues,
     searchState,
     fixedPosition,
     handlePressEnter,
@@ -23,7 +23,8 @@ export function IngredientSearch({
     handleBlur,
     setSearchState,
     setFixedPosition,
-    setInputValues,
+    handleNavigation,
+    suggestions,
   } = useIngredientSearch(searchCriteria, preferencesSidebar);
 
   const { inputRef } = useHandleBackButton(
@@ -41,6 +42,7 @@ export function IngredientSearch({
         className={`${classes.searchBar} ${searchState ? classes.inputActive : classes.inputInactive}`}
       >
         <input
+          value={inputValues.current}
           ref={inputRef}
           autoComplete="off"
           className={classes.header}
@@ -48,15 +50,17 @@ export function IngredientSearch({
           placeholder={`${searchCriteria === "is_selected" ? "Add an ingredient" : "Blacklist an ingredient"}`}
           name="search"
           type="text"
-          onBlur={() => setInputValues((prev) => ({ ...prev, current: "" }))}
-          onKeyUp={(e) =>
+          onKeyUp={(e) => {
+            handleNavigation(e, inputRef, {
+              setCondition: setSearchState,
+              setComponent: setFixedPosition,
+            });
             handlePressEnter(e, inputRef, {
               setCondition: setSearchState,
               setComponent: setFixedPosition,
-            })
-          }
+            });
+          }}
           onChange={handleInputChange}
-          value={inputValues.current}
         />
         {!searchState && (
           <div className={`${classes.ico} ${classes.searchIco}`}>
@@ -79,9 +83,11 @@ export function IngredientSearch({
         )}
       </div>
       <IngredientSuggestions
+        setInputValues={setInputValues}
+        suggestions={suggestions}
+        handleNavigation={handleNavigation}
         inputActive={searchState}
         searchCriteria={searchCriteria}
-        suggestions={suggestions}
         inputRef={inputRef}
         setInputState={{
           setCondition: setSearchState,

@@ -2,13 +2,13 @@
 
 .snackbar {
   position: fixed;
-  z-index: 10;
+  z-index: 99;
 
   left: 50%;
   transform: translateX(-50%);
 
   width: calc(100vw - 32px);
-  padding: 1rem;
+  padding: 1.5rem 1rem;
   border-radius: 1rem;
   box-shadow: 0 0 10px rgba($color: $darkest-gray, $alpha: 0.2);
   box-sizing: border-box;
@@ -47,7 +47,7 @@
   transition: bottom 0.3s ease;
 }
 .snackbarActive {
-  bottom: 0.75rem;
+  bottom: 1rem;
   transition: bottom 0.3s ease;
 }
 
@@ -64,9 +64,9 @@
 @media screen and (min-width: 880px) {
   .snackbar {
     position: absolute;
-    width: calc(100% - 40px);
+    width: calc(100% - 32px);
   }
   .snackbarActive {
-    bottom: $size-20;
+    bottom: $size-16;
   }
 }

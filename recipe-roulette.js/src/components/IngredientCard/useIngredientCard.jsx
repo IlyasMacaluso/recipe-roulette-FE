@@ -4,48 +4,14 @@ import { useSnackbar } from "../Snackbar/useSnackbar";
 import { useRecipesContext } from "../../contexts/RecipesContext";
 
 export function useIngredientCard(ing) {
-  // extract eact property into its own constant
-  const {
-    id,
-    name,
-    bg_color,
-    is_blacklisted,
-    is_selected,
-    is_gluten_free,
-    is_vegetarian,
-    is_vegan,
-  } = ing;
-
-  // create a state for the ingredient card initialised with the above constants
-  const [cardState, setCardState] = useState({
-    name,
-    id,
-    bg_color,
-    is_selected,
-    is_blacklisted,
-    is_gluten_free,
-    is_vegetarian,
-    is_vegan,
-  });
-
+  const [cardState, setCardState] = useState(ing);
   const { recipePreferences } = useRecipesContext();
   const { handleOpenSnackbar } = useSnackbar();
   const { toggle_is_selected, handleIngDecrement, ingredients } =
     useManageIngredients();
 
   useEffect(() => {
-    setCardState(() => {
-      return {
-        name,
-        id,
-        bg_color,
-        is_blacklisted,
-        is_gluten_free,
-        is_vegetarian,
-        is_vegan,
-        is_selected,
-      };
-    });
+    setCardState(ing);
   }, [ing]);
 
   function handleIngredientClick() {

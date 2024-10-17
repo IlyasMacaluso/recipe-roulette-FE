@@ -1,33 +1,61 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useManageIngredients } from "../../../pages/Roulette/IngredientsContext";
 import { useSnackbar } from "../../Snackbar/useSnackbar";
 import { useLocation } from "@tanstack/react-router";
 
+import classes from "../Suggestions/IngredientSuggestions.module.scss";
 import styles from "../../Header/Header.module.scss"; // used to select html elements using these styles
+import searchStyles from "./IngredientSearch.module.scss";
 
 export function useIngredientSearch(
   searchCriteria,
   preferencesSidebar = false,
 ) {
-  const {
-    ingredients,
-    deselectIngredients,
-    toggle_is_selected,
-    toggle_is_blacklisted,
-  } = useManageIngredients();
-
-  const { handleOpenSnackbar } = useSnackbar();
   const [fixedPosition, setFixedPosition] = useState(false);
   const [searchState, setSearchState] = useState(false);
-  const { pathname } = useLocation();
   const [inputValues, setInputValues] = useState({ initial: "", current: "" });
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  const suggestionsRef = useRef([]);
+
+  const { ingredients, toggle_is_selected, toggle_is_blacklisted } =
+    useManageIngredients();
   const [suggestions, setSuggestions] = useState(ingredients?.all);
+  const { handleOpenSnackbar } = useSnackbar();
+  const { pathname } = useLocation();
+
+  // aggiornamento dello stato di tutti i suggerimenti
+  useEffect(() => {
+    setSuggestions(ingredients?.all);
+  }, [ingredients?.all]);
+
+  // select suggestions items for suggestions navigation (keyup/keydown)
+  useEffect(() => {
+    const search = document.querySelectorAll(`.${searchStyles.positionFixed}`);
+
+    const activeSearch = Array.from(search).find((item) => {
+      const input = item.querySelector("input"); // Assicurati di usare il selettore corretto per l'input
+      if (input === document.activeElement) return item;
+    });
+
+    if (!activeSearch) {
+      return;
+    }
+
+    suggestionsRef.current = activeSearch.querySelectorAll(
+      `
+      .${classes.active} .${classes.unlockedSuggestion},
+      .${classes.active} .${classes.lockedSuggestion}
+      `,
+    );
+  }, [searchState, suggestions]);
 
   // chiudo la barra di ricerca se la sidebar viene aperta o chiusa
   useEffect(() => {
     setFixedPosition(false);
     setSearchState(false);
 
+    // disattivo gli altri input per evitare che il tasto "go" del telefono passi all'input successivo
     const input = document.querySelector(
       `.${styles.header} .${styles.globalActions} input`,
     );
@@ -43,20 +71,13 @@ export function useIngredientSearch(
     }
   }, [preferencesSidebar]);
 
-  // aggiornamento dei suggerimenti
-  useEffect(() => {
-    setSuggestions(ingredients?.all);
-  }, [searchState, ingredients?.all]);
-
-  // functions
-
-  const handleInputActivation = (e) => {
+  function handleInputActivation(e) {
     e.stopPropagation();
     setFixedPosition(true);
     setSearchState(true);
-  };
+  }
 
-  const handleBlur = (inputRef, setState) => {
+  function handleBlur(inputRef, setState) {
     if (pathname !== "/history" && pathname !== "/favorited") {
       setInputValues((prev) => ({ ...prev, current: "" }));
     }
@@ -64,25 +85,44 @@ export function useIngredientSearch(
     inputRef?.current.blur();
     setState?.setCondition(false);
     setState?.setComponent(false);
-  };
+  }
 
-  const handleInputChange = (e) => {
-    const inputValue = e.target.value.toUpperCase();
+  function handleInputChange(e) {
+    const inputValue = e.target.value.toLowerCase();
 
     setInputValues((prev) => ({ ...prev, current: e.target.value }));
 
     setSuggestions(
       ingredients?.all.filter((ing) =>
-        ing.name.toUpperCase().includes(inputValue),
+        ing.name.toLowerCase().includes(inputValue),
       ),
     );
-  };
+  }
 
-  const handleSuggestionClick = (prop, cardState) => {
-    setInputValues((prev) => ({ ...prev, current: "" })); // resetta il valore dell'input
+  useEffect(() => {
+    const inputValue = inputValues.current.toLowerCase();
+    setSuggestions(
+      ingredients?.all.filter((ing) =>
+        ing.name.toLowerCase().includes(inputValue),
+      ),
+    );
+  }, [inputValues, ingredients.all]);
 
+  function handleSuggestionClick(prop, cardState) {
     switch (prop) {
+      //
       case "is_blacklisted": {
+        handleOpenSnackbar(
+          `${cardState.name} was added to the blacklist`,
+          1500,
+        );
+
+        if (cardState.is_selected) {
+          toggle_is_selected(cardState);
+          toggle_is_blacklisted(cardState);
+          return;
+        }
+
         toggle_is_blacklisted(cardState);
         break;
       }
@@ -116,87 +156,82 @@ export function useIngredientSearch(
         break;
       }
     }
-  };
+  }
 
-  // const handleInputDeactivation = (prop) => {
-  //     // // Filtra gli ingredienti selezionati attualmente nella visualizzazione
-  //     // const selectedIngs = ingredients?.displayed.filter((ing) => ing.is_selected)
-
-  //     // // Filtra gli ingredienti nel database che corrispondono alla ricerca corrente
-  //     // const isInDatabase = ingredients?.filtered.filter(
-  //     //     (ing) => ing.name.toUpperCase().includes(inputValues.current.toUpperCase()) && !ing.is_selected && !ing.is_blacklisted
-  //     // )
-
-  //     // let firstAvailableIngredient = null
-
-  //     // if (prop === "is_blacklisted") {
-  //     //     // Filtra gli ingredienti già presenti nella lista nera
-  //     //     const notAlreadyBL = ingredients?.blacklisted.filter((blIngredient) =>
-  //     //         isInDatabase.some(
-  //     //             (dbIngredient) =>
-  //     //                 dbIngredient.id === blIngredient.id || dbIngredient.name.toUpperCase() === blIngredient.name.toUpperCase()
-  //     //         )
-  //     //     )
-
-  //     //     // Trova il primo ingrediente disponibile che non è già nella lista nera
-  //     //     firstAvailableIngredient = isInDatabase.find(
-  //     //         (dbIngredient) => !notAlreadyBL.some((blIngredient) => blIngredient.id === dbIngredient.id)
-  //     //     )
-  //     // } else if (prop === "is_selected") {
-  //     //     // Filtra gli ingredienti già selezionati nella visualizzazione
-  //     //     const notAlreadySelected = selectedIngs.filter((onDisplay) =>
-  //     //         isInDatabase.some(
-  //     //             (dbIngredient) => dbIngredient.id === onDisplay.id || dbIngredient.name.toUpperCase() === onDisplay.name.toUpperCase()
-  //     //         )
-  //     //     )
-
-  //     //     // Verifica se il numero massimo di ingredienti selezionati è stato raggiunto
-  //     //     if (selectedIngs.length === 8) {
-  //     //         handleOpenSnackbar("You've reached the maximum number of ingredients!")
-  //     //     } else {
-  //     //         // Trova il primo ingrediente disponibile che non è già stato selezionato
-  //     //         firstAvailableIngredient = isInDatabase.find(
-  //     //             (dbIngredient) => !notAlreadySelected.some((selIngredient) => selIngredient.id === dbIngredient.id)
-  //     //         )
-  //     //     }
-  //     // }
-
-  //     // // Resetta il valore corrente dell'input e lo stato della ricerca
-  //     // setInputValues((prev) => ({ ...prev, current: "" }))
-
-  //     // // Se è stato trovato un ingrediente disponibile, aggiorna lo stato della carta e mostra una notifica
-  //     // if (firstAvailableIngredient) {
-  //     //     handleIngUpdate(prop, firstAvailableIngredient, setCardState)
-  //     //     prop === "is_selected" && handleOpenSnackbar(`${firstAvailableIngredient.name} was locked!`, 1500)
-  //     // }
-  // }
-
-  const handlePressEnter = (e, inputRef, setState, blur = false) => {
+  function handlePressEnter(e, inputRef, setState, blur = false) {
     if (e.key === "Enter") {
       e.preventDefault();
       blur && handleBlur(inputRef, setState);
     } else if (e.key === "Escape") {
       handleBlur(inputRef, setState);
     }
-  };
+  }
 
-  const handleReset = (prop, cardState, setCardState) => {
-    deselectIngredients(prop, cardState, setCardState);
-  };
+  function handleNavigation(e, ingredient, inputRef, setSearchState) {
+    e.preventDefault();
+    if (suggestionsRef.current.length === 0) return;
+
+    const has_focus = Array.from(suggestionsRef.current).some(
+      (item) => item === document.activeElement,
+    );
+
+    switch (has_focus) {
+      case true: {
+        if (e.key === "ArrowUp") {
+          if (currentIndex > 0) {
+            const prevIndex = currentIndex - 1;
+            suggestionsRef.current[prevIndex].focus();
+            setCurrentIndex(prevIndex);
+          }
+          return;
+        }
+
+        if (e.key === "ArrowDown") {
+          if (currentIndex < suggestionsRef.current.length - 1) {
+            const nextIndex = currentIndex + 1;
+            suggestionsRef.current[nextIndex].focus();
+            setCurrentIndex(nextIndex);
+          }
+          return;
+        }
+
+        if (e.key === "Enter") {
+          const prop_to_update = searchCriteria;
+          handleSuggestionClick(prop_to_update, ingredient);
+          handleBlur(inputRef, setSearchState);
+          return;
+        }
+
+        break;
+      }
+
+      case false: {
+        if (e.key === "ArrowUp" || e.key === "ArrowDown") {
+          // Se non c'è nessun elemento in focus, metti il focus sul primo
+          suggestionsRef.current[0].focus();
+          setCurrentIndex(0);
+        }
+        break;
+      }
+      default:
+        break;
+    }
+  }
 
   return {
     handleInputActivation,
     handleInputChange,
     handleSuggestionClick,
     handlePressEnter,
-    handleReset,
     setInputValues,
     handleBlur,
     setFixedPosition,
     setSearchState,
     inputValues,
     searchState,
-    suggestions,
     fixedPosition,
+    handleNavigation,
+    suggestions,
+    setSuggestions,
   };
 }

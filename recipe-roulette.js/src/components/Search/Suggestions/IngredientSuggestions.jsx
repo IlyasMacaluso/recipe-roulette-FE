@@ -1,20 +1,23 @@
 import { IngredientSuggestionActive } from "./IngredientSuggestionActive";
 import { IngredientSuggestionInactive } from "./IngredientSuggestionInactive";
-import { useRecipesContext } from "../../../contexts/RecipesContext";
 import { Placeholder } from "../../Placeholder/Placeholder";
 import { InlineMessage } from "../../InlineMessage/InlineMessage";
+import { Skeleton } from "@mui/material";
 
 import { useManageIngredients } from "../../../pages/Roulette/IngredientsContext";
-import { Skeleton } from "@mui/material";
+import { useRecipesContext } from "../../../contexts/RecipesContext";
+
 import placeholderImage from "../../../assets/images/Shrug-bro.svg";
 import classes from "./IngredientSuggestions.module.scss";
 
 export function IngredientSuggestions({
   inputRef = null,
+  suggestions,
   setInputState,
   inputActive,
   searchCriteria,
-  suggestions,
+  handleNavigation,
+  setInputValues,
 }) {
   const { recipePreferences } = useRecipesContext();
   const { ingredientsLoading, blacklistedLoading, ingredientsError } =
@@ -73,6 +76,8 @@ export function IngredientSuggestions({
               if (isIngredientActive(ingredient)) {
                 return (
                   <IngredientSuggestionActive
+                    setInputValues={setInputValues}
+                    handleNavigation={handleNavigation}
                     inputRef={inputRef}
                     setInputState={setInputState}
                     ing={ingredient}

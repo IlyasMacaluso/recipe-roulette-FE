@@ -1,29 +1,15 @@
 import { useEffect, useState } from "react";
 
-export function useIngredientSuggestion(
-  id,
-  name,
-  bg_color,
-  is_selected,
-  is_blacklisted,
-) {
-  const [ingState, setIngState] = useState({
-    id,
-    name,
-    bg_color,
-    is_selected,
-    is_blacklisted,
-  });
+export function useIngredientSuggestion(ing) {
+  const [ingState, setIngState] = useState(ing);
 
+  // aggiornamento dello stato del suggerimento singolo
   useEffect(() => {
-    setIngState((prev) => ({
-      id,
-      name,
-      bg_color,
-      is_selected,
-      is_blacklisted,
-    }));
-  }, [id, name, bg_color, is_selected, is_blacklisted]);
+    if (!ing) {
+      return;
+    }
+    setIngState(ing);
+  }, [ing]);
 
   return {
     ingState,
